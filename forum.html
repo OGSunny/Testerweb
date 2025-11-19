@@ -33,7 +33,7 @@
         
         .header-actions { display: flex; align-items: center; gap: 15px; }
         .user-badge { background: rgba(231,76,60,0.1); border: 1px solid var(--border); padding: 8px 15px; border-radius: 8px; font-size: 14px; font-weight: 600; }
-        .btn-logout { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 13px; transition: all 0.3s; color: white; text-decoration: none; }
+        .btn-logout { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 13px; transition: all 0.3s; color: white; text-decoration: none; border: none; }
         .btn-logout:hover { background: var(--primary); border-color: var(--primary); }
 
         /* AUTH PAGES */
@@ -49,9 +49,10 @@
         
         .btn-primary { width: 100%; padding: 16px; background: var(--primary); border: none; border-radius: 10px; color: white; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px; }
         .btn-primary:hover { background: var(--primary-light); transform: translateY(-2px); box-shadow: 0 10px 25px rgba(231,76,60,0.4); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .auth-link { text-align: center; margin-top: 25px; font-size: 14px; color: var(--text-secondary); }
-        .auth-link a { color: var(--primary); text-decoration: none; font-weight: 600; }
+        .auth-link a { color: var(--primary); text-decoration: none; font-weight: 600; cursor: pointer; }
         .auth-link a:hover { text-decoration: underline; }
 
         /* FORUM LAYOUT */
@@ -101,6 +102,10 @@
         .empty-state i { font-size: 64px; color: rgba(255,255,255,0.2); margin-bottom: 20px; }
         .empty-state p { color: var(--text-secondary); font-size: 16px; }
 
+        .alert { padding: 12px 16px; border-radius: 10px; margin-bottom: 20px; font-size: 14px; }
+        .alert-error { background: rgba(231,76,60,0.2); border: 1px solid var(--primary); color: white; }
+        .alert-success { background: rgba(46,204,113,0.2); border: 1px solid #2ecc71; color: white; }
+
         @media (max-width: 968px) {
             .forum-wrapper { grid-template-columns: 1fr; }
             .sidebar { position: relative; top: 0; }
@@ -111,115 +116,89 @@
     <div id="app"></div>
 
     <script>
-        // PERSISTENT STORAGE WITH CLAUDE'S STORAGE API
-        const STORAGE_PREFIX = 'fanatic_forum_';
-        
-        class ForumDB {
-            async getUsers() {
-                try {
-                    const result = await window.storage.get(STORAGE_PREFIX + 'users', true);
-                    return result ? JSON.parse(result.value) : [];
-                } catch {
-                    return [];
-                }
+        // SIMPLE localStorage DATABASE (works immediately, no setup needed)
+        const DB_USERS = 'fanatic_users';
+        const DB_POSTS = 'fanatic_posts';
+        const DB_CURRENT_USER = 'fanatic_current_user';
+
+        class Database {
+            getUsers() {
+                return JSON.parse(localStorage.getItem(DB_USERS) || '[]');
             }
 
-            async saveUser(user) {
-                const users = await this.getUsers();
+            saveUsers(users) {
+                localStorage.setItem(DB_USERS, JSON.stringify(users));
+            }
+
+            addUser(user) {
+                const users = this.getUsers();
                 users.push(user);
-                await window.storage.set(STORAGE_PREFIX + 'users', JSON.stringify(users), true);
+                this.saveUsers(users);
             }
 
-            async findUser(username, password) {
-                const users = await this.getUsers();
+            findUser(username, password) {
+                const users = this.getUsers();
                 return users.find(u => u.username === username && u.password === password);
             }
 
-            async userExists(username) {
-                const users = await this.getUsers();
+            userExists(username) {
+                const users = this.getUsers();
                 return users.some(u => u.username === username);
             }
 
-            async getPosts() {
-                try {
-                    const result = await window.storage.get(STORAGE_PREFIX + 'posts', true);
-                    return result ? JSON.parse(result.value) : [];
-                } catch {
-                    return [];
-                }
+            getPosts() {
+                return JSON.parse(localStorage.getItem(DB_POSTS) || '[]');
             }
 
-            async savePosts(posts) {
-                await window.storage.set(STORAGE_PREFIX + 'posts', JSON.stringify(posts), true);
+            savePosts(posts) {
+                localStorage.setItem(DB_POSTS, JSON.stringify(posts));
             }
 
-            async addPost(post) {
-                const posts = await this.getPosts();
+            addPost(post) {
+                const posts = this.getPosts();
                 posts.unshift(post);
-                await this.savePosts(posts);
+                this.savePosts(posts);
             }
 
-            async updatePost(postId, updates) {
-                const posts = await this.getPosts();
+            updatePost(postId, updates) {
+                const posts = this.getPosts();
                 const index = posts.findIndex(p => p.id === postId);
                 if (index !== -1) {
                     posts[index] = { ...posts[index], ...updates };
-                    await this.savePosts(posts);
+                    this.savePosts(posts);
+                    return true;
                 }
+                return false;
             }
 
-            async getUserLikes() {
-                const username = localStorage.getItem('current_user');
-                if (!username) return [];
-                try {
-                    const result = await window.storage.get(STORAGE_PREFIX + 'likes_' + username, false);
-                    return result ? JSON.parse(result.value) : [];
-                } catch {
-                    return [];
-                }
+            getUserLikes(username) {
+                return JSON.parse(localStorage.getItem(`likes_${username}`) || '[]');
             }
 
-            async addLike(postId) {
-                const username = localStorage.getItem('current_user');
-                const likes = await this.getUserLikes();
+            addUserLike(username, postId) {
+                const likes = this.getUserLikes(username);
                 if (!likes.includes(postId)) {
                     likes.push(postId);
-                    await window.storage.set(STORAGE_PREFIX + 'likes_' + username, JSON.stringify(likes), false);
+                    localStorage.setItem(`likes_${username}`, JSON.stringify(likes));
+                    return true;
                 }
+                return false;
+            }
+
+            hasLiked(username, postId) {
+                const likes = this.getUserLikes(username);
+                return likes.includes(postId);
             }
         }
 
-        const db = new ForumDB();
-        let currentUser = localStorage.getItem('current_user');
-
-        // ROUTER
-        class Router {
-            constructor() {
-                this.routes = {};
-                this.currentRoute = null;
-            }
-
-            register(path, component) {
-                this.routes[path] = component;
-            }
-
-            navigate(path) {
-                this.currentRoute = path;
-                const component = this.routes[path];
-                if (component) {
-                    document.getElementById('app').innerHTML = '';
-                    component();
-                }
-            }
-        }
-
-        const router = new Router();
+        const db = new Database();
+        let currentUser = localStorage.getItem(DB_CURRENT_USER);
 
         // COMPONENTS
         function Header() {
             return `
                 <header>
-                    <a href="#" onclick="router.navigate('/forum'); return false;" class="logo">
+                    <a href="#" onclick="navigateTo('forum'); return false;" class="logo">
                         <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" alt="Fanatic RP">
                         <span>FANATIC RP</span>
                     </a>
@@ -247,102 +226,110 @@
                         <div class="sidebar-item" onclick="window.open('https://discord.gg/uasS77WA', '_blank')"><i class="fab fa-discord"></i> Discord</div>
                         <div class="sidebar-item" onclick="window.open('https://www.youtube.com/@tormetitormeti2', '_blank')"><i class="fab fa-youtube"></i> YouTube</div>
                     </div>
+                    <div class="sidebar-section">
+                        <div class="sidebar-title">Web Development</div>
+                        <div style="padding: 10px 12px; font-size: 13px; color: rgba(255,255,255,0.7); background: rgba(231,76,60,0.04); border-radius: 6px; margin-bottom: 6px;"><i class="fas fa-code" style="color: var(--primary); margin-right: 8px;"></i> ზვიადი გეგიძე</div>
+                        <div style="padding: 10px 12px; font-size: 13px; color: rgba(255,255,255,0.7); background: rgba(231,76,60,0.04); border-radius: 6px;"><i class="fas fa-code" style="color: var(--primary); margin-right: 8px;"></i> ნიკა გეორგაძე</div>
+                    </div>
                 </aside>
             `;
         }
 
-        // LOGIN PAGE
-        async function LoginPage() {
-            document.getElementById('app').innerHTML = `
+        // PAGES
+        function LoginPage() {
+            const app = document.getElementById('app');
+            app.innerHTML = `
                 ${Header()}
                 <div class="auth-container">
                     <div class="auth-box">
                         <h1><i class="fas fa-sign-in-alt"></i> შესვლა</h1>
                         <p>შედით თქვენს ანგარიშში ფორუმზე წვდომისთვის</p>
+                        <div id="alert-container"></div>
                         <form id="login-form">
                             <div class="form-group">
                                 <label>მომხმარებლის სახელი</label>
-                                <input type="text" id="username" required>
+                                <input type="text" id="username" required autocomplete="username">
                             </div>
                             <div class="form-group">
                                 <label>პაროლი</label>
-                                <input type="password" id="password" required>
+                                <input type="password" id="password" required autocomplete="current-password">
                             </div>
-                            <button type="submit" class="btn-primary">შესვლა</button>
+                            <button type="submit" class="btn-primary" id="login-btn">შესვლა</button>
                         </form>
-                        <div class="auth-link">არ გაქვთ ანგარიში? <a href="#" onclick="router.navigate('/register'); return false;">რეგისტრაცია</a></div>
+                        <div class="auth-link">არ გაქვთ ანგარიში? <a onclick="navigateTo('register')">რეგისტრაცია</a></div>
                     </div>
                 </div>
             `;
 
-            document.getElementById('login-form').onsubmit = async (e) => {
+            document.getElementById('login-form').onsubmit = (e) => {
                 e.preventDefault();
                 const username = document.getElementById('username').value.trim();
                 const password = document.getElementById('password').value;
                 
-                const user = await db.findUser(username, password);
+                const user = db.findUser(username, password);
                 if (user) {
-                    localStorage.setItem('current_user', username);
+                    localStorage.setItem(DB_CURRENT_USER, username);
                     currentUser = username;
-                    router.navigate('/forum');
+                    navigateTo('forum');
                 } else {
-                    alert('არასწორი მომხმარებლის სახელი ან პაროლი');
+                    showAlert('არასწორი მომხმარებლის სახელი ან პაროლი', 'error');
                 }
             };
         }
 
-        // REGISTER PAGE
-        async function RegisterPage() {
-            document.getElementById('app').innerHTML = `
+        function RegisterPage() {
+            const app = document.getElementById('app');
+            app.innerHTML = `
                 ${Header()}
                 <div class="auth-container">
                     <div class="auth-box">
                         <h1><i class="fas fa-user-plus"></i> რეგისტრაცია</h1>
                         <p>შექმენით ახალი ანგარიში ფორუმზე</p>
+                        <div id="alert-container"></div>
                         <form id="register-form">
                             <div class="form-group">
                                 <label>მომხმარებლის სახელი</label>
-                                <input type="text" id="username" required>
+                                <input type="text" id="username" required autocomplete="username">
                             </div>
                             <div class="form-group">
                                 <label>ელ-ფოსტა</label>
-                                <input type="email" id="email" required>
+                                <input type="email" id="email" required autocomplete="email">
                             </div>
                             <div class="form-group">
                                 <label>პაროლი</label>
-                                <input type="password" id="password" required>
+                                <input type="password" id="password" required autocomplete="new-password">
                             </div>
-                            <button type="submit" class="btn-primary">რეგისტრაცია</button>
+                            <button type="submit" class="btn-primary" id="register-btn">რეგისტრაცია</button>
                         </form>
-                        <div class="auth-link">უკვე გაქვთ ანგარიში? <a href="#" onclick="router.navigate('/login'); return false;">შესვლა</a></div>
+                        <div class="auth-link">უკვე გაქვთ ანგარიში? <a onclick="navigateTo('login')">შესვლა</a></div>
                     </div>
                 </div>
             `;
 
-            document.getElementById('register-form').onsubmit = async (e) => {
+            document.getElementById('register-form').onsubmit = (e) => {
                 e.preventDefault();
                 const username = document.getElementById('username').value.trim();
                 const email = document.getElementById('email').value.trim();
                 const password = document.getElementById('password').value;
                 
-                if (await db.userExists(username)) {
-                    alert('ეს მომხმარებლის სახელი უკვე არსებობს');
+                if (db.userExists(username)) {
+                    showAlert('ეს მომხმარებლის სახელი უკვე არსებობს', 'error');
                     return;
                 }
 
-                await db.saveUser({ username, email, password, joined: new Date().toISOString() });
-                localStorage.setItem('current_user', username);
+                db.addUser({ username, email, password, joined: new Date().toISOString() });
+                localStorage.setItem(DB_CURRENT_USER, username);
                 currentUser = username;
-                router.navigate('/forum');
+                navigateTo('forum');
             };
         }
 
-        // FORUM PAGE
-        async function ForumPage() {
-            const posts = await db.getPosts();
-            const userLikes = await db.getUserLikes();
+        function ForumPage() {
+            const posts = db.getPosts();
+            const userLikes = currentUser ? db.getUserLikes(currentUser) : [];
 
-            document.getElementById('app').innerHTML = `
+            const app = document.getElementById('app');
+            app.innerHTML = `
                 ${Header()}
                 <div class="forum-wrapper">
                     ${Sidebar()}
@@ -391,13 +378,13 @@
                 </div>
             `;
 
-            document.getElementById('post-form').onsubmit = async (e) => {
+            document.getElementById('post-form').onsubmit = (e) => {
                 e.preventDefault();
                 const content = document.getElementById('post-content').value.trim();
                 
                 if (!content) return;
 
-                await db.addPost({
+                db.addPost({
                     id: Date.now(),
                     author: currentUser,
                     content: content,
@@ -405,45 +392,59 @@
                     likes: 0
                 });
 
-                router.navigate('/forum');
+                document.getElementById('post-content').value = '';
+                navigateTo('forum');
             };
         }
 
-        // LIKE POST
-        async function likePost(postId) {
-            const userLikes = await db.getUserLikes();
-            
-            if (userLikes.includes(postId)) {
+        // UTILS
+        function navigateTo(page) {
+            if (page === 'forum' && !currentUser) {
+                navigateTo('login');
+                return;
+            }
+
+            if (page === 'login') LoginPage();
+            else if (page === 'register') RegisterPage();
+            else if (page === 'forum') ForumPage();
+        }
+
+        function logout() {
+            localStorage.removeItem(DB_CURRENT_USER);
+            currentUser = null;
+            navigateTo('login');
+        }
+
+        function likePost(postId) {
+            if (!currentUser) return;
+
+            if (db.hasLiked(currentUser, postId)) {
                 alert('თქვენ უკვე მოიწონეთ ეს პოსტი');
                 return;
             }
 
-            const posts = await db.getPosts();
+            const posts = db.getPosts();
             const post = posts.find(p => p.id === postId);
             if (post) {
-                await db.updatePost(postId, { likes: (post.likes || 0) + 1 });
-                await db.addLike(postId);
-                router.navigate('/forum');
+                db.updatePost(postId, { likes: (post.likes || 0) + 1 });
+                db.addUserLike(currentUser, postId);
+                navigateTo('forum');
             }
         }
 
-        // LOGOUT
-        function logout() {
-            localStorage.removeItem('current_user');
-            currentUser = null;
-            router.navigate('/login');
+        function showAlert(message, type) {
+            const container = document.getElementById('alert-container');
+            if (container) {
+                container.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+                setTimeout(() => container.innerHTML = '', 3000);
+            }
         }
-
-        // REGISTER ROUTES
-        router.register('/login', LoginPage);
-        router.register('/register', RegisterPage);
-        router.register('/forum', ForumPage);
 
         // INIT
         if (currentUser) {
-            router.navigate('/forum');
+            navigateTo('forum');
         } else {
-            router.navigate('/login');
+            navigateTo('login');
         }
     </script>
 </body>
