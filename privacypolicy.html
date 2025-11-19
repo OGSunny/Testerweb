@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>კონფიდენციალურობის პოლიტიკა • Fanatic Role Play</title>
+    
+    <link rel="icon" href="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700;900&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #e74c3c;
+            --primary-light: #ff6b57;
+            --primary-dark: #c0392b;
+            --secondary: #2c3e50;
+            --accent: #3498db;
+            --dark: #0a0d1b;
+            --darker: #050609;
+            --glass: rgba(15, 20, 40, 0.85);
+            --glass-light: rgba(20, 28, 50, 0.6);
+            --border: rgba(231, 76, 60, 0.3);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --neon-glow: 0 0 10px #e74c3c, 0 0 20px #e74c3c, 0 0 30px #e74c3c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #000000;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -2; background: radial-gradient(ellipse at top, #1a1f3a 0%, #000000 50%); }
+        .glow-orbs { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.2; }
+        .orb-1 { width: 500px; height: 500px; background: var(--primary); top: -10%; left: 10%; animation: float 20s ease-in-out infinite; }
+        .orb-2 { width: 400px; height: 400px; background: var(--accent); top: 50%; right: 5%; animation: float 25s ease-in-out infinite reverse; }
+        @keyframes float { 0%,100% { transform: translate(0,0); } 33% { transform: translate(50px,-50px); } 66% { transform: translate(-30px,30px); } }
+
+        header { position: fixed; top: 0; left: 0; width: 100%; padding: 20px 5%; background: var(--glass); backdrop-filter: blur(30px); border-bottom: 1px solid var(--border); z-index: 1000; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
+        .logo { display: flex; align-items: center; gap: 16px; font-size: 26px; font-weight: 900; color: white; text-decoration: none; letter-spacing: 1px; text-shadow: var(--neon-glow); }
+        .logo img { width: 50px; height: 50px; border-radius: 50%; box-shadow: var(--neon-glow); transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); object-fit: cover; }
+        .logo:hover img { transform: scale(1.15) rotate(8deg); box-shadow: 0 0 40px rgba(231,76,60,1); }
+        .burger { display: flex; flex-direction: column; gap: 6px; cursor: pointer; z-index: 1001; }
+        .burger span { width: 28px; height: 2.5px; background: white; border-radius: 3px; transition: 0.5s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        .burger.active span:nth-child(1) { transform: rotate(45deg) translate(10px,10px); }
+        .burger.active span:nth-child(2) { opacity: 0; transform: translateX(15px); }
+        .burger.active span:nth-child(3) { transform: rotate(-45deg) translate(8px,-8px); }
+
+        .slide-menu { position: fixed; top: 0; right: -100%; width: 350px; height: 100vh; background: linear-gradient(135deg, rgba(10,13,27,0.98), rgba(20,28,50,0.95)); backdrop-filter: blur(30px); border-left: 1px solid var(--border); padding: 100px 30px 40px; transition: right 0.6s cubic-bezier(0.34,1.56,0.64,1); z-index: 999; box-shadow: -15px 0 60px rgba(0,0,0,0.7); overflow-y: auto; }
+        .slide-menu.active { right: 0; }
+        .menu-section-title { font-size: 10px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin: 28px 0 14px; font-weight: 700; letter-spacing: 1.5px; }
+        .menu-item { padding: 16px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 16px; font-weight: 600; color: white; cursor: pointer; transition: all 0.4s; display: flex; align-items: center; gap: 14px; border-radius: 10px; }
+        .menu-item i { font-size: 18px; color: var(--primary); width: 20px; }
+        .menu-item:hover { color: var(--primary); padding-left: 20px; background: rgba(231,76,60,0.1); box-shadow: var(--neon-glow); }
+        .social-icons { display: flex; gap: 12px; margin-top: 35px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; }
+        .social-icon { width: 44px; height: 44px; background: rgba(231,76,60,0.1); border: 1.5px solid rgba(231,76,60,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; transition: all 0.4s; text-decoration: none; }
+        .social-icon:hover { background: var(--primary); border-color: var(--primary); transform: translateY(-5px) scale(1.1); box-shadow: var(--neon-glow); }
+
+        .content-container { padding: 150px 5% 80px; max-width: 1000px; margin: 0 auto; position: relative; z-index: 2; }
+        .page-title { font-size: clamp(48px,8vw,70px); font-weight: 900; text-align: center; margin-bottom: 20px; background: linear-gradient(135deg,#e74c3c 0%,#ff8c7a 50%,var(--primary-light) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 2px; filter: drop-shadow(0 5px 20px rgba(231,76,60,0.4)); }
+        .last-updated { text-align: center; font-size: 14px; color: var(--text-secondary); margin-bottom: 50px; }
+
+        .content-box { background: var(--glass); backdrop-filter: blur(30px); border-radius: 25px; padding: 50px; border: 2px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,0.4), var(--neon-glow); }
+
+        .section { margin-bottom: 40px; }
+        .section h2 { font-size: 28px; color: var(--primary); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+        .section h2 i { font-size: 24px; }
+        .section h3 { font-size: 20px; color: var(--primary-light); margin: 25px 0 15px; }
+        .section p { font-size: 16px; line-height: 1.8; color: var(--text-secondary); margin-bottom: 15px; }
+        .section ul { margin-left: 30px; }
+        .section ul li { font-size: 16px; line-height: 1.8; color: var(--text-secondary); margin-bottom: 10px; }
+
+        .highlight-box { background: rgba(52,152,219,0.1); border-left: 4px solid var(--accent); padding: 20px; border-radius: 10px; margin: 25px 0; }
+        .highlight-box p { margin: 0; color: var(--text-primary); font-weight: 500; }
+
+        footer { background: linear-gradient(135deg,rgba(5,6,9,0.95),rgba(10,13,27,0.95)); backdrop-filter: blur(20px); padding: 60px 5% 40px; text-align: center; border-top: 2px solid var(--border); margin-top: 80px; }
+        footer p { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 15px; }
+        footer a { color: var(--primary); text-decoration: none; transition: all 0.3s; }
+        footer a:hover { color: var(--primary-light); text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            .content-box { padding: 35px 25px; }
+            .section h2 { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+    <div id="particles-js"></div>
+
+    <header>
+        <a href="index.html" class="logo">
+            <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" alt="Fanatic RP">
+            <span>FANATIC RP</span>
+        </a>
+        <div class="burger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
+    </header>
+
+    <div class="slide-menu">
+        <div class="menu-section-title">ნავიგაცია</div>
+        <div class="menu-item" onclick="navigate('index.html')"><i class="fas fa-home"></i> მთავარი</div>
+        <div class="menu-item" onclick="navigate('donation.html')"><i class="fas fa-shopping-cart"></i> დონაცია</div>
+        <div class="menu-item" onclick="navigate('forum.html')"><i class="fas fa-comments"></i> ფორუმი</div>
+
+        <div class="menu-section-title">ჩამოტვირთვა</div>
+        <div class="menu-item" onclick="downloadLauncher('pc')"><i class="fas fa-desktop"></i> PC ლაუნჩერი</div>
+        <div class="menu-item" onclick="downloadLauncher('mobile')"><i class="fas fa-mobile-alt"></i> Mobile ლაუნჩერი</div>
+
+        <div class="menu-section-title">სოციალური ქსელები</div>
+        <div class="social-icons">
+            <a href="https://discord.gg/uasS77WA" target="_blank" class="social-icon"><i class="fab fa-discord"></i></a>
+            <a href="https://www.youtube.com/@tormetitormeti2" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.tiktok.com/@fanaticroleplay777" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
+            <a href="https://www.facebook.com/groups/687009050835555/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+        </div>
+    </div>
+
+    <div class="content-container">
+        <h1 class="page-title">კონფიდენციალურობის პოლიტიკა</h1>
+        <p class="last-updated">ბოლო განახლება: 20 ნოემბერი, 2025</p>
+
+        <div class="content-box">
+            <div class="section">
+                <h2><i class="fas fa-shield-alt"></i> შესავალი</h2>
+                <p>Fanatic Role Play სერიოზულად უდგება თქვენი პირადი ინფორმაციის დაცვას. ეს კონფიდენციალურობის პოლიტიკა განმარტავს, თუ როგორ ვაგროვებთ, ვიყენებთ და ვიცავთ თქვენს მონაცემებს.</p>
+                
+                <div class="highlight-box">
+                    <p><i class="fas fa-info-circle"></i> სერვერის გამოყენებით თქვენ ეთანხმებით ამ კონფიდენციალურობის პოლიტიკას.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-database"></i> რა ინფორმაციას ვაგროვებთ</h2>
+                
+                <h3>1. რეგისტრაციის ინფორმაცია</h3>
+                <p>სერვერზე რეგისტრაციისას ჩვენ ვაგროვებთ:</p>
+                <ul>
+                    <li>თამაშის სახელს (ნიკნეიმს)</li>
+                    <li>IP მისამართს (უსაფრთხოების მიზნით)</li>
+                    <li>ელექტრონული ფოსტის მისამართს (თუ მითითებულია)</li>
+                    <li>პაროლს (დაშიფრული სახით)</li>
+                </ul>
+
+                <h3>2. დონაციის ინფორმაცია</h3>
+                <p>დონაციის განხორციელებისას ვაგროვებთ:</p>
+                <ul>
+                    <li>თამაშის სახელს</li>
+                    <li>საკონტაქტო ინფორმაციას (ტელეფონი/Discord)</li>
+                    <li>გადახდის მეთოდს</li>
+                    <li>ტრანზაქციის თანხას და თარიღს</li>
+                </ul>
+
+                <h3>3. თამაშის მონაცემები</h3>
+                <ul>
+                    <li>თამაშში აქტივობა და სტატისტიკა</li>
+                    <li>ჩეთ ლოგები (მოდერაციის მიზნით)</li>
+                    <li>ინვენტარი და პროგრესი</li>
+                    <li>ქონება და ფინანსები თამაშში</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-cogs"></i> როგორ ვიყენებთ თქვენს ინფორმაციას</h2>
+                <p>ჩვენ ვიყენებთ შეგროვებულ ინფორმაციას შემდეგი მიზნებისთვის:</p>
+                <ul>
+                    <li>სერვერის ფუნქციონირების უზრუნველსაყოფად</li>
+                    <li>თქვენი თამაშის პროგრესის შესანახად</li>
+                    <li>დონაციების დასამუშავებლად და შესაბამისი ბონუსების გასაცემად</li>
+                    <li>წესდებების დარღვევების გამოსავლენად</li>
+                    <li>სერვერის უსაფრთხოების უზრუნველსაყოფად</li>
+                    <li>თქვენთან დაკავშირებისთვის საჭირო შემთხვევებში</li>
+                    <li>სერვისის გასაუმჯობესებლად</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-lock"></i> ინფორმაციის დაცვა</h2>
+                <p>ჩვენ ვიყენებთ სხვადასხვა უსაფრთხოების ზომებს თქვენი მონაცემების დასაცავად:</p>
+                <ul>
+                    <li>პაროლები ინახება დაშიფრული სახით</li>
+                    <li>გადახდის ინფორმაცია არ ინახება ჩვენს სერვერებზე</li>
+                    <li>მონაცემთა ბაზა დაცულია უნებართვო წვდომისგან</li>
+                    <li>რეგულარული უსაფრთხოების აუდიტები</li>
+                    <li>SSL დაშიფვრა მონაცემთა გადაცემისას</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p><i class="fas fa-exclamation-triangle"></i> არასოდეს გაუზიაროთ თქვენი პაროლი ადმინისტრაციის წარმომადგენლებს. ადმინები არასოდეს მოგთხოვენ პაროლს.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-share-alt"></i> ინფორმაციის გაზიარება</h2>
+                <p>ჩვენ არ ვყიდით და არ ვაწოდებთ თქვენს პირად ინფორმაციას მესამე მხარეებს, გარდა:</p>
+                <ul>
+                    <li>კანონმდებლობით მოთხოვნილი შემთხვევებისა</li>
+                    <li>გადახდის სისტემების (როგორიცაა საბანკო სერვისები)</li>
+                    <li>სერვერის ჰოსტინგ პროვაიდერის</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-cookie-bite"></i> Cookies და ტექნოლოგიები</h2>
+                <p>ჩვენი ვებსაიტი იყენებს cookies-ს:</p>
+                <ul>
+                    <li>სესიის შესანარჩუნებლად</li>
+                    <li>თქვენი პრეფერენციების დასამახსოვრებლად</li>
+                    <li>ანალიტიკისთვის (ვიზიტორთა სტატისტიკა)</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-user-shield"></i> თქვენი უფლებები</h2>
+                <p>თქვენ გაქვთ უფლება:</p>
+                <ul>
+                    <li>მოითხოვოთ თქვენზე არსებული ინფორმაციის ასლი</li>
+                    <li>მოითხოვოთ თქვენი მონაცემების შესწორება</li>
+                    <li>მოითხოვოთ თქვენი ანგარიშის წაშლა</li>
+                    <li>უარი თქვათ მარკეტინგულ შეტყობინებებზე</li>
+                </ul>
+
+                <p>თქვენი უფლებების გამოსაყენებლად დაგვიკავშირდით ადმინისტრაციასთან Discord-ზე ან სოციალურ ქსელებში.</p>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-child"></i> ასაკობრივი შეზღუდვა</h2>
+                <p>ჩვენი სერვისი განკუთვნილია 13 წელზე უფროსი პირებისთვის. თუ თქვენ 13 წლამდე ასაკის ხართ, გთხოვთ, სერვისის გამოყენებამდე მიიღოთ მშობლების ნებართვა.</p>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-sync-alt"></i> ცვლილებები პოლიტიკაში</h2>
+                <p>ჩვენ ვიტოვებთ უფლებას შევცვალოთ ეს კონფიდენციალურობის პოლიტიკა ნებისმიერ დროს. ყველა ცვლილება გამოქვეყნდება ამ გვერდზე და ძალაშია დაუყოვნებლივ.</p>
+            </div>
+
+            <div class="section">
+                <h2><i class="fas fa-envelope"></i> დაგვიკავშირდით</h2>
+                <p>თუ გაქვთ შეკითხვები ამ კონფიდენციალურობის პოლიტიკასთან დაკავშირებით:</p>
+                <ul>
+                    <li>Discord: <a href="https://discord.gg/uasS77WA" style="color: var(--primary);">Fanatic RP Discord</a></li>
+                    <li>Facebook: Fanatic Role Play ოფიციალური გვერდი</li>
+                    <li>TikTok: @fanaticroleplay777</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Fanatic Role Play. ყველა უფლება დაცულია.</p>
+        <p><a href="agreement.html">წესები და პირობები</a> • <a href="privacypolicy.html">კონფიდენციალურობა</a></p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.querySelector('.burger').classList.toggle('active');
+            document.querySelector('.slide-menu').classList.toggle('active');
+        }
+
+        function navigate(page) { window.location.href = page; }
+        
+        function downloadLauncher(type) {
+            alert(type === 'pc' ? 'PC ლაუნჩერის ჩამოტვირთვა მალე...' : 'Mobile ლაუნჩერის ჩამოტვირთვა მალე...');
+        }
+
+        particlesJS('particles-js', {
+            particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: "#e74c3c" }, shape: { type: "circle" }, opacity: { value: 0.3, random: true }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#e74c3c", opacity: 0.2, width: 1 }, move: { enable: true, speed: 2, direction: "none", random: false, straight: false, out_mode: "out" } },
+            interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true } },
+            retina_detect: true
+        });
+    </script>
+</body>
+</html>
