@@ -1,0 +1,191 @@
+<!-- register.html -->
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>რეგისტრაცია • Fanatic Role Play</title>
+    
+    <link rel="icon" href="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700;900&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #e74c3c;
+            --primary-light: #ff6b57;
+            --primary-dark: #c0392b;
+            --glass: rgba(15, 20, 40, 0.9);
+            --glass-light: rgba(20, 28, 50, 0.7);
+            --border: rgba(231, 76, 60, 0.3);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --neon-glow: 0 0 10px #e74c3c, 0 0 20px #e74c3c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Montserrat', sans-serif; background: #0a0d1b; color: var(--text-primary); overflow-x: hidden; min-height: 100vh; }
+
+        /* HEADER */
+        header { position: fixed; top: 0; left: 0; width: 100%; padding: 15px 5%; background: rgba(10,13,27,0.98); border-bottom: 1px solid var(--border); z-index: 1000; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
+        .logo { display: flex; align-items: center; gap: 12px; font-size: 22px; font-weight: 800; color: white; text-decoration: none; letter-spacing: 1px; }
+        .logo img { width: 40px; height: 40px; border-radius: 50%; transition: transform 0.3s; }
+        .logo:hover img { transform: scale(1.1); }
+        .burger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
+        .burger span { width: 25px; height: 2px; background: white; border-radius: 2px; transition: 0.4s; }
+        .burger.active span:nth-child(1) { transform: rotate(45deg) translate(8px,8px); }
+        .burger.active span:nth-child(2) { opacity: 0; }
+        .burger.active span:nth-child(3) { transform: rotate(-45deg) translate(6px,-6px); }
+
+        .slide-menu { position: fixed; top: 0; right: -100%; width: 300px; height: 100vh; background: rgba(10,13,27,0.98); border-left: 1px solid var(--border); padding: 80px 25px 30px; transition: right 0.5s; z-index: 999; box-shadow: -10px 0 30px rgba(0,0,0,0.6); overflow-y: auto; }
+        .slide-menu.active { right: 0; }
+        .menu-section-title { font-size: 12px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin: 20px 0 10px; font-weight: 600; letter-spacing: 1px; }
+        .menu-item { padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 15px; font-weight: 500; color: white; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 10px; border-radius: 8px; }
+        .menu-item i { font-size: 16px; color: var(--primary); width: 18px; }
+        .menu-item:hover { color: var(--primary); padding-left: 15px; background: rgba(231,76,60,0.08); }
+        .social-icons { display: flex; gap: 10px; margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.06); flex-wrap: wrap; }
+        .social-icon { width: 40px; height: 40px; background: rgba(231,76,60,0.08); border: 1px solid rgba(231,76,60,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; transition: all 0.3s; text-decoration: none; }
+        .social-icon:hover { background: var(--primary); transform: translateY(-3px) scale(1.05); }
+        .team-member { padding: 10px 12px; font-size: 13px; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 8px; border-radius: 6px; background: rgba(231,76,60,0.04); margin-bottom: 6px; }
+        .team-member i { font-size: 14px; color: var(--primary); }
+
+        /* MAIN CONTENT */
+        main { padding: 100px 5% 50px; min-height: 100vh; position: relative; z-index: 2; }
+        
+        .forum-container { max-width: 1200px; margin: 0 auto; }
+        
+        .forum-header { text-align: center; margin-bottom: 40px; }
+        .forum-header h1 { font-size: clamp(32px,6vw,50px); font-weight: 800; color: var(--primary); margin-bottom: 15px; }
+        .forum-header p { font-size: clamp(14px,2.5vw,18px); color: var(--text-secondary); }
+
+        /* AUTH SECTION */
+        .auth-section { max-width: 400px; margin: 0 auto; }
+        .auth-card { background: rgba(20,28,50,0.9); border: 1px solid var(--border); border-radius: 15px; padding: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.4); }
+        .auth-card h2 { font-size: 24px; margin-bottom: 8px; color: var(--primary); }
+        .auth-card p { color: var(--text-secondary); margin-bottom: 20px; font-size: 13px; }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+        .form-group input { width: 100%; padding: 12px 15px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-size: 14px; font-family: 'Montserrat', sans-serif; transition: all 0.3s; }
+        .form-group input:focus { outline: none; border-color: var(--primary); background: rgba(0,0,0,0.5); }
+        
+        .submit-btn { width: 100%; padding: 14px; background: var(--primary); border: none; border-radius: 8px; color: white; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 0.5px; }
+        .submit-btn:hover { background: var(--primary-light); transform: translateY(-2px); }
+
+        .auth-link { text-align: center; margin-top: 20px; font-size: 13px; color: var(--text-secondary); }
+        .auth-link a { color: var(--primary); text-decoration: none; font-weight: 600; }
+        .auth-link a:hover { text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            main { padding: 90px 5% 40px; }
+            .slide-menu { width: 80%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">
+            <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" alt="Fanatic RP">
+            <span>FANATIC RP</span>
+        </a>
+        <div class="burger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
+    </header>
+
+    <div class="slide-menu">
+        <div class="menu-section-title">ნავიგაცია</div>
+        <div class="menu-item" onclick="navigate('index.html')"><i class="fas fa-home"></i> მთავარი</div>
+        <div class="menu-item" onclick="navigate('donation.html')"><i class="fas fa-shopping-cart"></i> მაღაზია</div>
+        <div class="menu-item" onclick="navigate('forum.html')"><i class="fas fa-comments"></i> ფორუმი</div>
+
+        <div class="menu-section-title">ჩამოტვირთვა</div>
+        <div class="menu-item" onclick="downloadLauncher('pc')"><i class="fas fa-desktop"></i> PC ლაუნჩერი</div>
+        <div class="menu-item" onclick="downloadLauncher('mobile')"><i class="fas fa-mobile-alt"></i> Mobile ლაუნჩერი</div>
+
+        <div class="menu-section-title">Web Development Team</div>
+        <div class="team-member"><i class="fas fa-code"></i> ზვიადი გეგიძე</div>
+        <div class="team-member"><i class="fas fa-code"></i> ნიკა გეორგაძე</div>
+
+        <div class="menu-section-title">სოციალური ქსელები</div>
+        <div class="social-icons">
+            <a href="https://discord.gg/uasS77WA" target="_blank" class="social-icon"><i class="fab fa-discord"></i></a>
+            <a href="https://www.youtube.com/@tormetitormeti2" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.tiktok.com/@fanaticroleplay777" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
+            <a href="https://www.facebook.com/groups/687009050835555/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+        </div>
+    </div>
+
+    <main>
+        <div class="forum-container">
+            <div class="forum-header">
+                <h1>რეგისტრაცია</h1>
+                <p>შექმენით ახალი ანგარიში ფორუმზე</p>
+            </div>
+
+            <div class="auth-section">
+                <div class="auth-card">
+                    <h2><i class="fas fa-user-plus"></i> რეგისტრაცია</h2>
+                    <p>შეიყვანეთ თქვენი მონაცემები</p>
+                    <form id="register-form" onsubmit="handleRegister(event)">
+                        <div class="form-group">
+                            <label>მომხმარებლის სახელი</label>
+                            <input type="text" id="register-username" required>
+                        </div>
+                        <div class="form-group">
+                            <label>ელ-ფოსტა</label>
+                            <input type="email" id="register-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>პაროლი</label>
+                            <input type="password" id="register-password" required>
+                        </div>
+                        <button type="submit" class="submit-btn">რეგისტრაცია</button>
+                    </form>
+                    <div class="auth-link">უკვე გაქვთ ანგარიში? <a href="login.html">შესვლა</a></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Storage keys
+        const USERS_KEY = 'fanatic_forum_users';
+        const CURRENT_USER_KEY = 'fanatic_current_user';
+
+        // Get data
+        let users = JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
+
+        function toggleMenu() {
+            document.querySelector('.burger').classList.toggle('active');
+            document.querySelector('.slide-menu').classList.toggle('active');
+        }
+
+        function navigate(page) { window.location.href = page; }
+        function downloadLauncher(type) {
+            alert(type === 'pc' ? 'PC ლაუნჩერის ჩამოტვირთვა მალე...' : 'Mobile ლაუნჩერის ჩამოტვირთვა მალე...');
+        }
+
+        // Handle Register
+        function handleRegister(e) {
+            e.preventDefault();
+            const username = document.getElementById('register-username').value.trim();
+            const email = document.getElementById('register-email').value.trim();
+            const password = document.getElementById('register-password').value;
+
+            if (users.find(u => u.username === username)) {
+                alert('ეს მომხმარებლის სახელი უკვე არსებობს');
+                return;
+            }
+
+            users.push({ username, email, password });
+            localStorage.setItem(USERS_KEY, JSON.stringify(users));
+            
+            localStorage.setItem(CURRENT_USER_KEY, username);
+            window.location.href = 'forum.html';
+        }
+    </script>
+</body>
+</html>
