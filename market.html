@@ -1,0 +1,90 @@
+<!-- MARKET.HTML - Save this as market.html -->
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>მაღაზია - Fanatic RP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Same styles as main page */
+        :root {
+            --primary: #e74c3c;
+            --glass: rgba(15, 20, 40, 0.7);
+            --border: rgba(231, 76, 60, 0.25);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Noto Sans Georgian', sans-serif;
+            background: linear-gradient(135deg, #0a0d1b 0%, #1a1f3a 100%);
+            color: #fff;
+            padding: 120px 8% 60px;
+        }
+        h1 {
+            font-size: 56px;
+            text-align: center;
+            margin-bottom: 60px;
+            background: linear-gradient(120deg, #e74c3c, #ff8c7a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        .product {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: 0.3s;
+        }
+        .product:hover { transform: translateY(-10px); box-shadow: 0 20px 50px rgba(231,76,60,0.3); }
+        .product h3 { font-size: 24px; margin: 20px 0 10px; }
+        .product p { opacity: 0.8; margin-bottom: 20px; }
+        .product .price { font-size: 28px; color: var(--primary); font-weight: 900; margin-bottom: 20px; }
+        .buy-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+        .buy-btn:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(231,76,60,0.5); }
+    </style>
+</head>
+<body>
+    <h1><i class="fas fa-shopping-cart"></i> მაღაზია</h1>
+    <div class="products">
+        <div class="product">
+            <i class="fas fa-gem" style="font-size: 50px; color: var(--primary);"></i>
+            <h3>VIP პაკეტი</h3>
+            <p>მიიღე ექსკლუზიური შესაძლებლობები</p>
+            <div class="price">29.99₾</div>
+            <button class="buy-btn">შეძენა</button>
+        </div>
+        <div class="product">
+            <i class="fas fa-car" style="font-size: 50px; color: var(--primary);"></i>
+            <h3>პრემიუმ მანქანა</h3>
+            <p>უნიკალური ავტომობილი</p>
+            <div class="price">49.99₾</div>
+            <button class="buy-btn">შეძენა</button>
+        </div>
+        <div class="product">
+            <i class="fas fa-coins" style="font-size: 50px; color: var(--primary);"></i>
+            <h3>1000 კრედიტი</h3>
+            <p>თამაშში გამოსაყენებელი ვალუტა</p>
+            <div class="price">9.99₾</div>
+            <button class="buy-btn">შეძენა</button>
+        </div>
+    </div>
+</body>
+</html>
