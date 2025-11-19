@@ -37,33 +37,33 @@
             align-items: center;
             justify-content: center;
             z-index: 9999;
-            transition: opacity 1.2s ease, visibility 1.2s ease;
+            transition: opacity 1.2s ease-out, visibility 1.2s ease-out;
         }
 
         #loader.hidden { opacity: 0; visibility: hidden; }
 
         .loader-logo {
-            width: 180px;
+            width: 200px;
             animation: float 3.5s ease-in-out infinite;
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-30px); }
+            50% { transform: translateY(-35px); }
         }
 
         .loader-dots {
             display: flex;
-            gap: 12px;
-            margin-top: 30px;
+            gap: 15px;
+            margin-top: 40px;
         }
 
         .dot {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             background: var(--primary);
             border-radius: 50%;
-            animation: pulse 1.4s ease-in-out infinite both;
+            animation: pulse 1.6s ease-in-out infinite both;
         }
 
         .dot:nth-child(1) { animation-delay: 0s; }
@@ -72,11 +72,11 @@
         .dot:nth-child(4) { animation-delay: 0.6s; }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(0.6); opacity: 0.4; }
-            50% { transform: scale(1); opacity: 1; }
+            0%, 100% { transform: scale(0.5); opacity: 0.4; }
+            50% { transform: scale(1.1); opacity: 1; }
         }
 
-        /* ======== MAIN CONTENT ======== */
+        /* ======== MAIN ======== */
         #particles-js {
             position: fixed;
             width: 100%; 
@@ -150,6 +150,15 @@
 
         .slide-menu.active { right: 0; }
 
+        .menu-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            margin: 25px 0 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
         .menu-item {
             padding: 14px 0;
             border-bottom: 1px solid rgba(255,255,255,0.08);
@@ -158,13 +167,62 @@
             color: white;
             cursor: pointer;
             transition: 0.3s;
+            opacity: 0;
+            transform: translateX(30px);
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
+        .menu-item i { font-size: 16px; color: var(--primary); width: 20px; }
+
+        .slide-menu.active .menu-item {
+            animation: slideIn 0.5s forwards;
+        }
+
+        .slide-menu.active .menu-item:nth-child(1) { animation-delay: 0.05s; }
+        .slide-menu.active .menu-item:nth-child(2) { animation-delay: 0.1s; }
+        .slide-menu.active .menu-item:nth-child(3) { animation-delay: 0.15s; }
+        .slide-menu.active .menu-item:nth-child(4) { animation-delay: 0.2s; }
+        .slide-menu.active .menu-item:nth-child(5) { animation-delay: 0.25s; }
+        .slide-menu.active .menu-item:nth-child(6) { animation-delay: 0.3s; }
+
+        @keyframes slideIn {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
         .menu-item:hover { color: var(--primary); padding-left: 10px; }
 
+        .social-icons {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(231, 76, 60, 0.1);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* HERO */
         .hero {
             height: 100vh;
             display: flex;
@@ -176,27 +234,27 @@
             position: relative;
         }
 
-        /* Top floating logo (small one) */
+        /* Top small logo watermark */
         .top-watermark {
             position: absolute;
-            top: 18%;
+            top: 16%;
             left: 50%;
             transform: translateX(-50%);
-            width: 220px;
-            opacity: 0.12;
+            width: 240px;
+            opacity: 0.11;
             z-index: 1;
             pointer-events: none;
         }
 
-        /* Big background logo in the center */
+        /* Big background logo */
         .hero::before {
             content: '';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 800px;
-            height: 800px;
+            width: 900px;
+            height: 900px;
             background: url('https://i.imgur.com/ZjTVInJ.png') center/contain no-repeat;
             opacity: 0.09;
             z-index: 0;
@@ -244,6 +302,93 @@
             box-shadow: 0 25px 60px rgba(231,76,60,0.8);
         }
 
+        .ip-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.8s;
+        }
+
+        .ip-btn:hover::before { left: 100%; }
+
+        /* SECTIONS */
+        section { padding: 80px 8% 80px; }
+
+        .title {
+            font-size: 52px;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 60px;
+            background: linear-gradient(120deg, #e74c3c, #ff8c7a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 35px;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            padding: 45px 30px;
+            text-align: center;
+            transition: 0.4s;
+        }
+
+        .card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 60px rgba(231,76,60,0.3);
+        }
+
+        .card i {
+            font-size: 60px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .about-section {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 55px 45px;
+            margin: 0 auto;
+            max-width: 1200px;
+            border: 1px solid var(--border);
+        }
+
+        .about-section h2 {
+            font-size: 52px;
+            text-align: center;
+            margin-bottom: 25px;
+            background: linear-gradient(120deg, #e74c3c, #ff8c7a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        footer {
+            background: #080a16;
+            padding: 60px 8% 40px;
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 15px;
+            color: #666;
+        }
+
         .toast {
             position: fixed;
             bottom: 30px;
@@ -267,9 +412,10 @@
             .hero h1 { font-size: 50px; }
             .hero p { font-size: 20px; }
             .ip-btn { font-size: 22px; padding: 18px 50px; }
-            .top-watermark { width: 140px; top: 22%; }
-            .hero::before { width: 500px; height: 500px; opacity: 0.07; }
-            .loader-logo { width: 140px; }
+            .title { font-size: 38px; }
+            .top-watermark { width: 150px; top: 20%; opacity: 0.09; }
+            .hero::before { width: 500px; height: 500px; }
+            .loader-logo { width: 150px; }
         }
     </style>
 </head>
@@ -326,11 +472,42 @@
         </div>
     </section>
 
+    <section id="how">
+        <h2 class="title">როგორ დავიწყოთ თამაში?</h2>
+        <div class="cards">
+            <div class="card">
+                <i class="fas fa-download"></i>
+                <h3>ლაუნჩერის გადმოწერა</h3>
+                <p>ჩამოტვირთე ოფიციალური ლაუნჩერი PC-ზე ან მობილურზე</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-cogs"></i>
+                <h3>ავტომატური ინსტალაცია</h3>
+                <p>ყველა საჭირო ფაილი ავტომატურად დაინსტალირდება</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-play-circle"></i>
+                <h3>შესვლა სერვერზე</h3>
+                <p>შეიყვანე სახელი და დაიწყე თამაშობა!</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="about-section">
+            <h2>ჩვენს შესახებ</h2>
+            <p>Fanatic ეს არის საქართველოს №1 SA-MP პროექტი რომელიც შეიქმნა 2025 წელს. მხოლოდ ჩვენთან შეძლებთ ორიგინალურად ჩაეფლოთ ვირტუალურ სამყაროში და მიიღოთ მაქსიმალური სიამოვნება თამაშისგან!</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 Fanatic Role Play • ყველა უფლება დაცულია</p>
+    </footer>
+
     <div class="toast" id="toast">✓ IP დაკოპირდა: 185.189.255.97:2561</div>
 
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script>
-        // Particles
         particlesJS("particles-js", {
             particles: {
                 number: { value: 80 },
@@ -344,11 +521,10 @@
             interactivity: { events: { onhover: { enable: true, mode: "repulse" } } }
         });
 
-        // Loading screen hide after everything loads
         window.addEventListener("load", () => {
             setTimeout(() => {
                 document.getElementById("loader").classList.add("hidden");
-            }, 1500);
+            }, 1800);
         });
 
         function toggleMenu() {
