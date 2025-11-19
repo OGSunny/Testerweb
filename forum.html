@@ -1,117 +1,255 @@
+<!-- forum.html -->
 <!DOCTYPE html>
 <html lang="ka">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ფორუმი • Fanatic Role Play</title>
-    <link rel="icon" href="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png">
+    
+    <link rel="icon" href="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700;900&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
     <style>
-        :root { --primary: #e74c3c; --primary-hover: #c0392b; --bg: #f8f9fa; --card: #fff; --border: #dee2e6; --text: #212529; --text-light: #6c757d; }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Roboto',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
-        a { color:var(--primary); text-decoration:none; }
-        a:hover { color:var(--primary-hover); }
-        .container { max-width:1200px; margin:0 auto; padding:0 15px; }
-        .top-bar { background:var(--primary); color:#fff; padding:10px 0; font-size:14px; text-align:center; }
-        .top-bar a { color:#fff; margin:0 15px; font-weight:500; }
-        header { background:#fff; border-bottom:1px solid var(--border); padding:15px 0; position:sticky; top:0; z-index:100; box-shadow:0 2px 10px rgba(0,0,0,0.1); }
-        .header-inner { display:flex; justify-content:space-between; align-items:center; }
-        .logo img { height:50px; }
-        .logo span { font-size:26px; font-weight:700; margin-left:12px; color:var(--primary); }
-        .nav a { margin-left:25px; font-weight:500; }
-        .hero { background:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('https://via.placeholder.com/1920x400/111/eee?text=Fanatic+Role+Play'); background-size:cover; color:#fff; text-align:center; padding:100px 20px; }
-        .hero h1 { font-size:48px; margin-bottom:15px; }
-        main { padding:40px 0; }
-        .category { margin-bottom:40px; }
-        .category h3 { background:var(--primary); color:#fff; padding:15px 20px; font-size:18px; font-weight:700; }
-        .forums-table { border:1px solid var(--border); background:var(--card); }
-        .forum-row { display:flex; align-items:center; padding:18px 20px; border-bottom:1px solid var(--border); }
-        .forum-row:last-child { border-bottom:none; }
-        .forum-icon { width:60px; text-align:center; font-size:28px; color:var(--primary); }
-        .forum-info { flex:1; }
-        .forum-info h4 a { font-size:17px; font-weight:600; }
-        .forum-info p { margin:5px 0 0; font-size:14px; color:var(--text-light); }
-        .stats { width:120px; text-align:center; font-size:14px; color:var(--text-light); }
-        .last-post { width:220px; font-size:13px; color:var(--text-light); }
-        footer { background:#2c2c2c; color:#ccc; padding:40px 0 20px; margin-top:60px; text-align:center; }
-        @media (max-width:768px) { .forum-row { flex-direction:column; text-align:center; } .stats,.last-post { width:100%; margin-top:10px; } }
+        :root {
+            --primary: #e74c3c;
+            --primary-light: #ff6b57;
+            --primary-dark: #c0392b;
+            --glass: rgba(15, 20, 40, 0.9);
+            --glass-light: rgba(20, 28, 50, 0.7);
+            --border: rgba(231, 76, 60, 0.3);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --neon-glow: 0 0 10px #e74c3c, 0 0 20px #e74c3c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Montserrat', sans-serif; background: #0a0d1b; color: var(--text-primary); overflow-x: hidden; min-height: 100vh; }
+
+        /* HEADER */
+        header { position: fixed; top: 0; left: 0; width: 100%; padding: 15px 5%; background: rgba(10,13,27,0.98); border-bottom: 1px solid var(--border); z-index: 1000; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
+        .logo { display: flex; align-items: center; gap: 12px; font-size: 22px; font-weight: 800; color: white; text-decoration: none; letter-spacing: 1px; }
+        .logo img { width: 40px; height: 40px; border-radius: 50%; transition: transform 0.3s; }
+        .logo:hover img { transform: scale(1.1); }
+        .burger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
+        .burger span { width: 25px; height: 2px; background: white; border-radius: 2px; transition: 0.4s; }
+        .burger.active span:nth-child(1) { transform: rotate(45deg) translate(8px,8px); }
+        .burger.active span:nth-child(2) { opacity: 0; }
+        .burger.active span:nth-child(3) { transform: rotate(-45deg) translate(6px,-6px); }
+
+        .slide-menu { position: fixed; top: 0; right: -100%; width: 300px; height: 100vh; background: rgba(10,13,27,0.98); border-left: 1px solid var(--border); padding: 80px 25px 30px; transition: right 0.5s; z-index: 999; box-shadow: -10px 0 30px rgba(0,0,0,0.6); overflow-y: auto; }
+        .slide-menu.active { right: 0; }
+        .menu-section-title { font-size: 12px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin: 20px 0 10px; font-weight: 600; letter-spacing: 1px; }
+        .menu-item { padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 15px; font-weight: 500; color: white; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 10px; border-radius: 8px; }
+        .menu-item i { font-size: 16px; color: var(--primary); width: 18px; }
+        .menu-item:hover { color: var(--primary); padding-left: 15px; background: rgba(231,76,60,0.08); }
+        .social-icons { display: flex; gap: 10px; margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.06); flex-wrap: wrap; }
+        .social-icon { width: 40px; height: 40px; background: rgba(231,76,60,0.08); border: 1px solid rgba(231,76,60,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; transition: all 0.3s; text-decoration: none; }
+        .social-icon:hover { background: var(--primary); transform: translateY(-3px) scale(1.05); }
+        .team-member { padding: 10px 12px; font-size: 13px; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 8px; border-radius: 6px; background: rgba(231,76,60,0.04); margin-bottom: 6px; }
+        .team-member i { font-size: 14px; color: var(--primary); }
+
+        /* MAIN CONTENT */
+        main { padding: 100px 5% 50px; min-height: 100vh; position: relative; z-index: 2; }
+        
+        .forum-container { max-width: 1200px; margin: 0 auto; }
+        
+        .forum-header { text-align: center; margin-bottom: 40px; }
+        .forum-header h1 { font-size: clamp(32px,6vw,50px); font-weight: 800; color: var(--primary); margin-bottom: 15px; }
+        .forum-header p { font-size: clamp(14px,2.5vw,18px); color: var(--text-secondary); }
+
+        /* FORUM POSTS */
+        .user-info { background: rgba(231,76,60,0.08); padding: 12px 15px; border-radius: 8px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); }
+        .user-info span { font-weight: 500; }
+        .logout-btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); padding: 6px 15px; border-radius: 6px; cursor: pointer; transition: all 0.3s; font-size: 13px; }
+        .logout-btn:hover { background: var(--primary); border-color: var(--primary); }
+
+        .post-form { background: rgba(20,28,50,0.9); border: 1px solid var(--border); border-radius: 15px; padding: 25px; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.4); }
+        .post-form h3 { font-size: 20px; margin-bottom: 15px; color: var(--primary); }
+        .post-form textarea { width: 100%; min-height: 100px; padding: 12px 15px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-size: 14px; font-family: 'Montserrat', sans-serif; resize: vertical; }
+        .post-form textarea:focus { outline: none; border-color: var(--primary); }
+        .submit-btn { width: 100%; padding: 14px; background: var(--primary); border: none; border-radius: 8px; color: white; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 15px; }
+        .submit-btn:hover { background: var(--primary-light); transform: translateY(-2px); }
+
+        .posts-list { display: flex; flex-direction: column; gap: 20px; }
+        .post-item { background: rgba(20,28,50,0.9); border: 1px solid var(--border); border-radius: 15px; padding: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.4); transition: all 0.3s; }
+        .post-item:hover { transform: translateY(-3px); border-color: var(--primary); }
+        .post-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .post-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 600; }
+        .post-info h4 { font-size: 16px; margin-bottom: 3px; }
+        .post-info span { font-size: 12px; color: rgba(255,255,255,0.5); }
+        .post-content { color: var(--text-secondary); line-height: 1.6; font-size: 14px; margin-bottom: 12px; }
+        .post-actions { display: flex; gap: 15px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .post-action { background: rgba(231,76,60,0.08); border: 1px solid rgba(231,76,60,0.2); padding: 6px 12px; border-radius: 6px; font-size: 13px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 6px; }
+        .post-action:hover { background: var(--primary); border-color: var(--primary); transform: translateY(-1px); }
+        .post-action i { font-size: 13px; }
+
+        @media (max-width: 768px) {
+            main { padding: 90px 5% 40px; }
+            .slide-menu { width: 80%; }
+        }
     </style>
 </head>
 <body>
-    <div class="top-bar">
-        <div class="container">
-            <a href="login.html">შესვლა</a> | <a href="register.html">რეგისტრაცია</a>
-        </div>
-    </div>
 
     <header>
-        <div class="container header-inner">
-            <a href="index.html" class="logo">
-                <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" alt="Fanatic RP">
-                <span>FANATIC RP</span>
-            </a>
-            <nav class="nav">
-                <a href="index.html">მთავარი</a>
-                <a href="#">წესები</a>
-                <a href="forum.html">ფორუმი</a>
-            </nav>
+        <a href="index.html" class="logo">
+            <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" alt="Fanatic RP">
+            <span>FANATIC RP</span>
+        </a>
+        <div class="burger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
         </div>
     </header>
 
-    <div class="hero">
-        <h1>ფორუმი • Fanatic Role Play</h1>
-        <p>შეუერთდით საზოგადოებას და იყავით ყოველთვის ინფორმირებული</p>
-    </div>
+    <div class="slide-menu">
+        <div class="menu-section-title">ნავიგაცია</div>
+        <div class="menu-item" onclick="navigate('index.html')"><i class="fas fa-home"></i> მთავარი</div>
+        <div class="menu-item" onclick="navigate('donation.html')"><i class="fas fa-shopping-cart"></i> მაღაზია</div>
+        <div class="menu-item" onclick="navigate('forum.html')"><i class="fas fa-comments"></i> ფორუმი</div>
 
-    <div class="container">
-        <main>
-            <div class="category">
-                <h3><i class="fas fa-bullhorn"></i> სიახლეები და განცხადებები</h3>
-                <div class="forums-table">
-                    <div class="forum-row">
-                        <div class="forum-icon"><i class="fas fa-bell"></i></div>
-                        <div class="forum-info">
-                            <h4><a href="forum.html">სერვერის განახლებები</a></h4>
-                            <p>ახალი ფუნქციები, პაჩები და მნიშვნელოვანი ცვლილებები</p>
-                        </div>
-                        <div class="stats">89 თემა<br>512 პოსტი</div>
-                        <div class="last-post">ბოლო: v2.4 განახლება<br>ადმინი • 2 სთ წინ</div>
-                    </div>
-                </div>
-            </div>
+        <div class="menu-section-title">ჩამოტვირთვა</div>
+        <div class="menu-item" onclick="downloadLauncher('pc')"><i class="fas fa-desktop"></i> PC ლაუნჩერი</div>
+        <div class="menu-item" onclick="downloadLauncher('mobile')"><i class="fas fa-mobile-alt"></i> Mobile ლაუნჩერი</div>
 
-            <div class="category">
-                <h3><i class="fas fa-comments"></i> ზოგადი განყოფილება</h3>
-                <div class="forums-table">
-                    <div class="forum-row">
-                        <div class="forum-icon"><i class="fas fa-comment-dots"></i></div>
-                        <div class="forum-info">
-                            <h4><a href="forum.html">ზოგადი საუბრები</a></h4>
-                            <p>თავისუფალი თემები, მემები, ფოტოები</p>
-                        </div>
-                        <div class="stats">342 თემა<br>4850 პოსტი</div>
-                        <div class="last-post">ბოლო: დღეს რა გაქვთ სასაცილო?<br>Player123 • 15 წთ წინ</div>
-                    </div>
-                    <div class="forum-row">
-                        <div class="forum-icon"><i class="fas fa-gamepad"></i></div>
-                        <div class="forum-info">
-                            <h4><a href="forum.html">თამაშის დისკუსია</a></h4>
-                            <p>ფრაქციები, როლები, ისტორიები</p>
-                        </div>
-                        <div class="stats">156 თემა<br>2890 პოსტი</div>
-                        <div class="last-post">ბოლო: საუკეთესო RP მომენტი<br>Gamer777 • 1 სთ წინ</div>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
+        <div class="menu-section-title">Web Development Team</div>
+        <div class="team-member"><i class="fas fa-code"></i> ზვიადი გეგიძე</div>
+        <div class="team-member"><i class="fas fa-code"></i> ნიკა გეორგაძე</div>
 
-    <footer>
-        <div class="container">
-            <p>© 2025 Fanatic Role Play • ყველა უფლება დაცულია</p>
+        <div class="menu-section-title">სოციალური ქსელები</div>
+        <div class="social-icons">
+            <a href="https://discord.gg/uasS77WA" target="_blank" class="social-icon"><i class="fab fa-discord"></i></a>
+            <a href="https://www.youtube.com/@tormetitormeti2" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.tiktok.com/@fanaticroleplay777" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
+            <a href="https://www.facebook.com/groups/687009050835555/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
         </div>
-    </footer>
+    </div>
+
+    <main>
+        <div class="forum-container">
+            <div class="forum-header">
+                <h1>ფორუმი</h1>
+                <p>შეუერთდით დისკუსიას და იკავშირეთ საზოგადოებასთან</p>
+            </div>
+
+            <div id="forum-posts">
+                <div class="user-info">
+                    <span>მოგესალმებით, <strong id="current-user"></strong>!</span>
+                    <button class="logout-btn" onclick="handleLogout()">გასვლა</button>
+                </div>
+
+                <div class="post-form">
+                    <h3>დაწერეთ პოსტი</h3>
+                    <form onsubmit="handleNewPost(event)">
+                        <div class="form-group">
+                            <textarea id="post-content" placeholder="რას ფიქრობთ?" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">გამოქვეყნება</button>
+                    </form>
+                </div>
+
+                <div class="posts-list" id="posts-container"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Storage keys
+        const USERS_KEY = 'fanatic_forum_users';
+        const POSTS_KEY = 'fanatic_forum_posts';
+        const CURRENT_USER_KEY = 'fanatic_current_user';
+
+        // Get data from memory
+        let users = JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
+        let posts = JSON.parse(localStorage.getItem(POSTS_KEY) || '[]');
+        let currentUser = localStorage.getItem(CURRENT_USER_KEY);
+
+        // Check if user is logged in
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        } else {
+            document.getElementById('current-user').textContent = currentUser;
+            renderPosts();
+        }
+
+        function toggleMenu() {
+            document.querySelector('.burger').classList.toggle('active');
+            document.querySelector('.slide-menu').classList.toggle('active');
+        }
+
+        function navigate(page) { window.location.href = page; }
+        function downloadLauncher(type) {
+            alert(type === 'pc' ? 'PC ლაუნჩერის ჩამოტვირთვა მალე...' : 'Mobile ლაუნჩერის ჩამოტვირთვა მალე...');
+        }
+
+        // Handle Logout
+        function handleLogout() {
+            localStorage.removeItem(CURRENT_USER_KEY);
+            window.location.href = 'login.html';
+        }
+
+        // Handle New Post
+        function handleNewPost(e) {
+            e.preventDefault();
+            const content = document.getElementById('post-content').value.trim();
+            
+            if (!content) return;
+
+            const newPost = {
+                id: Date.now(),
+                author: currentUser,
+                content: content,
+                timestamp: new Date().toLocaleString('ka-GE'),
+                likes: 0
+            };
+
+            posts.unshift(newPost);
+            localStorage.setItem(POSTS_KEY, JSON.stringify(posts));
+            document.getElementById('post-content').value = '';
+            renderPosts();
+        }
+
+        // Render Posts
+        function renderPosts() {
+            const container = document.getElementById('posts-container');
+            
+            if (posts.length === 0) {
+                container.innerHTML = '<div class="post-item"><p style="text-align:center;color:rgba(255,255,255,0.5)">ჯერ არ არის პოსტები. იყავით პირველი!</p></div>';
+                return;
+            }
+
+            container.innerHTML = posts.map(post => `
+                <div class="post-item">
+                    <div class="post-header">
+                        <div class="post-avatar">${post.author.charAt(0).toUpperCase()}</div>
+                        <div class="post-info">
+                            <h4>${post.author}</h4>
+                            <span>${post.timestamp}</span>
+                        </div>
+                    </div>
+                    <div class="post-content">${post.content}</div>
+                    <div class="post-actions">
+                        <div class="post-action" onclick="likePost(${post.id})">
+                            <i class="fas fa-heart"></i> ${post.likes} მოწონება
+                        </div>
+                        <div class="post-action">
+                            <i class="fas fa-comment"></i> კომენტარი
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Like Post
+        function likePost(postId) {
+            const post = posts.find(p => p.id === postId);
+            if (post) {
+                post.likes++;
+                localStorage.setItem(POSTS_KEY, JSON.stringify(posts));
+                renderPosts();
+            }
+        }
+    </script>
 </body>
 </html>
