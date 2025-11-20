@@ -9,8 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <style>
         :root {
@@ -26,273 +24,633 @@
             --border: rgba(231, 76, 60, 0.3);
             --text-primary: #ffffff;
             --text-secondary: rgba(255, 255, 255, 0.8);
-            --neon-glow: 0 0 20px rgba(231,76,60,0.6), 0 0 40px rgba(231,76,60,0.3);
-            --christmas-gold: #d4af37;
-            --christmas-deepred: #9b1d21;
+            --neon-glow: 0 0 10px #e74c3c, 0 0 20px #e74c3c, 0 0 30px #e74c3c;
+            --christmas-green: #0f7d3f;
+            --christmas-red: #c41e3a;
+            --christmas-gold: #ffd700;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
+
         body {
             font-family: 'Montserrat', sans-serif;
-            background: #000;
+            background: #000000;
             color: var(--text-primary);
             overflow-x: hidden;
             min-height: 100vh;
-            background: radial-gradient(ellipse at top, #1a1f3a 0%, #000000 70%);
         }
 
-        /* === REALISTIC FALLING SNOW === */
+        /* REALISTIC SNOW EFFECT */
         .snow-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+            overflow: hidden;
         }
+        
         .snowflake {
-            position: absolute; color: #fff; font-size: 1.2em; opacity: 0.9;
-            text-shadow: 0 0 8px rgba(255,255,255,0.6); pointer-events: none;
-            animation: fall linear infinite;
-        }
-        @keyframes fall {
-            to { transform: translateY(100vh) translateX(var(--drift)); opacity: 0; }
-        }
-
-        /* === SUBTLE CHRISTMAS BOKEH ORBS (red/gold) === */
-        .christmas-bokeh {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 1; opacity: 0.4; filter: blur(100px);
-        }
-        .bokeh { position: absolute; border-radius: 50%; }
-        .bokeh-1 { width: 600px; height: 600px; background: var(--primary); top: -10%; left: 10%; opacity: 0.3; }
-        .bokeh-2 { width: 500px; height: 500px; background: var(--christmas-gold); top: 60%; right: 10%; opacity: 0.25; animation: float 25s infinite; }
-        .bokeh-3 { width: 400px; height: 400px; background: var(--primary-dark); bottom: -5%; left: 40%; opacity: 0.3; }
-
-        /* === PROFESSIONAL GARLAND WITH WARM LIGHTS === */
-        .garland {
-            position: fixed; top: 0; left: 0; width: 100%; height: 90px; pointer-events: none; z-index: 100;
-        }
-        .garland-line {
-            position: absolute; top: 35px; width: 100%; height: 4px;
-            background: linear-gradient(90deg, #1a3c34 0%, #2d5016 50%, #1a3c34 100%);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.8);
-        }
-        .light {
-            position: absolute; top: 22px; width: 16px; height: 24px;
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            background: var(--color);
-            box-shadow: 0 0 30px var(--color), 0 0 60px var(--color);
-            animation: twinkle 4s infinite;
-        }
-        .light::before {
-            content: ''; position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
-            width: 7px; height: 12px; background: #333; border-radius: 4px;
-        }
-        @keyframes twinkle {
-            0%,100% { opacity: 0.7; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.2); }
+            position: absolute;
+            top: -10px;
+            color: #ffffff;
+            font-size: 1.5em;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            opacity: 0.9;
+            animation: snowfall linear infinite;
+            filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.6));
         }
 
-        /* === REALISTIC HANGING ORNAMENTS === */
-        .ornaments { position: fixed; top: 90px; width: 100%; pointer-events: none; z-index: 99; }
+        @keyframes snowfall {
+            to {
+                transform: translateY(100vh) translateX(var(--drift)) rotate(var(--rotation));
+                opacity: 0;
+            }
+        }
+
+        /* CHRISTMAS LIGHT GARLAND */
+        .christmas-lights {
+            position: fixed;
+            top: 85px;
+            left: 0;
+            right: 0;
+            height: 50px;
+            pointer-events: none;
+            z-index: 9999;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+        }
+        
+        .light-string {
+            display: flex;
+            gap: 30px;
+            width: 100%;
+            justify-content: space-around;
+            padding: 0 20px;
+        }
+        
+        .light-bulb {
+            width: 14px;
+            height: 20px;
+            border-radius: 50% 50% 45% 45%;
+            position: relative;
+            animation: bulbGlow 1.5s ease-in-out infinite;
+            filter: blur(0.5px);
+        }
+        
+        .light-bulb::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 10px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+        }
+        
+        .light-bulb::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 5px;
+            background: #333;
+            border-radius: 50% 50% 0 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+        
+        .light-bulb.red { background: linear-gradient(135deg, #ff6666, #cc0000); box-shadow: 0 0 25px #ff0000, 0 0 40px rgba(255,0,0,0.6); }
+        .light-bulb.green { background: linear-gradient(135deg, #66ff66, #00cc00); box-shadow: 0 0 25px #00ff00, 0 0 40px rgba(0,255,0,0.6); animation-delay: 0.3s; }
+        .light-bulb.blue { background: linear-gradient(135deg, #66ccff, #0066cc); box-shadow: 0 0 25px #0099ff, 0 0 40px rgba(0,153,255,0.6); animation-delay: 0.6s; }
+        .light-bulb.yellow { background: linear-gradient(135deg, #ffff66, #ffcc00); box-shadow: 0 0 25px #ffff00, 0 0 40px rgba(255,255,0,0.6); animation-delay: 0.9s; }
+        .light-bulb.gold { background: linear-gradient(135deg, #ffd966, #cc9900); box-shadow: 0 0 25px #ffd700, 0 0 40px rgba(255,215,0,0.6); animation-delay: 1.2s; }
+        .light-bulb.purple { background: linear-gradient(135deg, #cc66ff, #9900cc); box-shadow: 0 0 25px #cc00ff, 0 0 40px rgba(204,0,255,0.6); animation-delay: 1.5s; }
+        
+        @keyframes bulbGlow {
+            0%, 100% { opacity: 1; filter: blur(0.5px) brightness(1); }
+            50% { opacity: 0.6; filter: blur(1px) brightness(1.8); }
+        }
+        
+        /* HANGING ORNAMENTS */
         .ornament {
-            position: absolute; width: 70px; height: 90px;
-            animation: sway 8s ease-in-out infinite;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            animation: ornamentSwing 4s ease-in-out infinite;
             transform-origin: top center;
         }
-        .ornament::before {
-            content: ''; position: absolute; top: -50px; left: 50%; transform: translateX(-50%);
-            width: 2px; height: 60px; background: linear-gradient(to bottom, #ccc, transparent);
-            box-shadow: 0 0 5px rgba(255,255,255,0.2);
+        
+        .ornament-string {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+            margin: 0 auto;
         }
-        .ball {
-            width: 70px; height: 70px; border-radius: 50%;
-            background: radial-gradient(circle at 25% 25%, #fff 10%, var(--color) 70%);
-            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.5), inset 10px 10px 20px rgba(255,255,255,0.2), 0 20px 40px rgba(0,0,0,0.7);
+        
+        .ornament-ball {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
             position: relative;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), transparent 70%);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4), inset 0 -5px 10px rgba(0,0,0,0.2);
+            margin: 0 auto;
         }
-        .ball::after {
-            content: ''; position: absolute; top: 10px; left: 15px;
-            width: 25px; height: 40px; background: linear-gradient(135deg, rgba(255,255,255,0.7), transparent);
-            border-radius: 50%; filter: blur(6px);
+        
+        .ornament-ball::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 8px;
+            background: linear-gradient(135deg, #d4af37, #aa8822);
+            border-radius: 50% 50% 0 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
-        @keyframes sway { 0%,100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
+        
+        .ornament-ball.red { background-color: #cc0000; }
+        .ornament-ball.gold { background-color: #ffd700; }
+        .ornament-ball.blue { background-color: #0066cc; }
+        .ornament-ball.silver { background-color: #c0c0c0; }
+        
+        @keyframes ornamentSwing {
+            0%, 100% { transform: rotate(-8deg); }
+            50% { transform: rotate(8deg); }
+        }
+        
+        /* CANDY CANES */
+        .candy-cane {
+            position: fixed;
+            width: 50px;
+            height: 80px;
+            pointer-events: none;
+            z-index: 9999;
+            animation: candyRotate 8s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.5));
+        }
+        
+        .candy-cane svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        @keyframes candyRotate {
+            0%, 100% { transform: rotate(-15deg); }
+            50% { transform: rotate(15deg); }
+        }
+        
+        /* CHRISTMAS WREATHS */
+        .wreath {
+            position: fixed;
+            width: 70px;
+            height: 70px;
+            border: 10px solid var(--christmas-green);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 0 30px rgba(15, 125, 63, 0.7), inset 0 0 20px rgba(0,0,0,0.3);
+            background: radial-gradient(circle, rgba(15, 125, 63, 0.3), transparent);
+        }
+        
+        .wreath::before {
+            content: '🎀';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 28px;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
+        }
+        
+        .wreath::after {
+            content: '';
+            position: absolute;
+            top: 15%;
+            left: 15%;
+            width: 70%;
+            height: 70%;
+            border: 3px dotted rgba(255, 0, 0, 0.4);
+            border-radius: 50%;
+        }
 
-        /* === GOLDEN BELLS & GIFTS (subtle) === */
-        .bells, .gifts { position: fixed; pointer-events: none; z-index: 90; }
-        .bells { top: 80px; right: 5%; animation: bell-swing 6s infinite; }
-        .bell { display: inline-block; width: 60px; height: 70px; margin: 0 10px; }
-        .bell-body { width: 100%; height: 60px; background: linear-gradient(135deg, #fadb5d, #b8860b); border-radius: 0 0 50% 50%; box-shadow: inset -10px -10px 20px rgba(0,0,0,0.4); }
-        .gifts { bottom: 30px; }
-        .gift { position: absolute; width: 80px; height: 80px; animation: float 7s infinite; }
-        .gift .box { width: 100%; height: 70%; background: var(--box); border-radius: 8px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
-        .gift .lid { width: 110%; height: 35%; background: var(--lid); position: absolute; top: -12px; left: -5%; border-radius: 8px; }
-        .ribbon-v, .ribbon-h { background: var(--christmas-gold); position: absolute; }
-        .ribbon-v { top: 0; left: 50%; transform: translateX(-50%); width: 16px; height: 100%; }
-        .ribbon-h { top: 50%; left: 0; transform: translateY(-50%); width: 100%; height: 16px; }
-        @keyframes float { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-20px) rotate(2deg); } }
+        /* HOLLY DECORATIONS */
+        .holly {
+            position: fixed;
+            font-size: 40px;
+            pointer-events: none;
+            z-index: 9999;
+            filter: drop-shadow(0 0 10px rgba(0,255,0,0.5));
+            animation: hollyBounce 3s ease-in-out infinite;
+        }
+        
+        @keyframes hollyBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
 
-        /* === YOUR ORIGINAL STYLES (unchanged) === */
-        #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; }
-        #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 1.5s; }
-        #loader.hidden { opacity: 0; visibility: hidden; }
-        header { position: fixed; top: 0; width: 100%; padding: 20px 5%; background: var(--glass); backdrop-filter: blur(30px); border-bottom: 1px solid var(--border); z-index: 1000; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
-        .logo img { width: 60px; height: 60px; border-radius: 50%; border: 3px solid var(--primary); box-shadow: var(--neon-glow); }
-        .hero h1 { font-size: clamp(50px,10vw,100px); font-weight: 900; background: linear-gradient(135deg,#fff,var(--primary-light),var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .ip-btn { padding: 24px 80px; background: linear-gradient(135deg,var(--primary),var(--primary-dark)); border: none; border-radius: 60px; color: white; font-size: 28px; box-shadow: var(--neon-glow); cursor: pointer; }
-        .ip-btn:hover { transform: translateY(-10px); box-shadow: 0 20px 60px rgba(231,76,60,0.8); }
-        .card { background: var(--glass); backdrop-filter: blur(25px); border: 2px solid var(--border); border-radius: 25px; padding: 50px; text-align: center; transition: all 0.6s; }
-        .card:hover { transform: translateY(-20px); border-color: var(--primary); box-shadow: var(--neon-glow); }
-        .toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: var(--primary); padding: 20px 60px; border-radius: 50px; transition: bottom 0.5s; z-index: 10000; }
+        /* LOADER */
+        #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at center, #0a0d1b 0%, #000000 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 99999; transition: opacity 1s ease-out, visibility 1s ease-out; }
+        #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .loader-container { position: relative; width: 200px; height: 200px; display: flex; align-items: center; justify-content: center; }
+        .loader-logo { width: 160px; height: 160px; object-fit: contain; border-radius: 50%; filter: drop-shadow(var(--neon-glow)); animation: logoFloat 4s cubic-bezier(0.43, 0.13, 0.23, 0.96) infinite; }
+        .loader-ring { position: absolute; width: 220px; height: 220px; border: 3px solid transparent; border-top: 3px solid var(--primary); border-right: 3px solid var(--primary-light); border-radius: 50%; animation: spin 3s linear infinite; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: var(--neon-glow); }
+        .loader-dots { display: flex; gap: 12px; margin-top: 60px; }
+        .dot { width: 14px; height: 14px; background: var(--primary); border-radius: 50%; box-shadow: var(--neon-glow); animation: dotPulse 1.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; }
+        .dot:nth-child(2) { animation-delay: 0.15s; }
+        .dot:nth-child(3) { animation-delay: 0.3s; }
+        .loader-text { margin-top: 30px; font-size: 14px; font-weight: 600; letter-spacing: 2px; color: var(--primary); text-transform: uppercase; animation: textGlow 2s ease-in-out infinite; text-shadow: var(--neon-glow); }
+
+        @keyframes logoFloat { 0%,100% { transform: translateY(0) scale(1); } 25% { transform: translateY(-25px) scale(1.05); } 50% { transform: translateY(-40px) scale(1.08); } 75% { transform: translateY(-20px) scale(1.05); } }
+        @keyframes spin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes dotPulse { 0%,100% { transform: scale(0.4); opacity: 0.3; } 50% { transform: scale(1); opacity: 1; } }
+        @keyframes textGlow { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+        /* BACKGROUND */
+        #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -2; background: radial-gradient(ellipse at top, #1a1f3a 0%, #000000 50%); }
+        .glow-orbs { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.2; }
+        .orb-1 { width: 500px; height: 500px; background: var(--primary); top: -10%; left: 10%; animation: float 20s ease-in-out infinite; }
+        .orb-2 { width: 400px; height: 400px; background: var(--accent); top: 50%; right: 5%; animation: float 25s ease-in-out infinite reverse; }
+        .orb-3 { width: 450px; height: 450px; background: #9b59b6; bottom: 10%; left: 40%; animation: float 30s ease-in-out infinite; }
+        @keyframes float { 0%,100% { transform: translate(0,0); } 33% { transform: translate(50px,-50px); } 66% { transform: translate(-30px,30px); } }
+
+        /* HEADER */
+        header { position: fixed; top: 0; left: 0; width: 100%; padding: 20px 5%; background: var(--glass); backdrop-filter: blur(30px); border-bottom: 1px solid var(--border); z-index: 10000; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
+        
+        .logo { display: flex; align-items: center; gap: 16px; font-size: 26px; font-weight: 900; color: white; text-decoration: none; letter-spacing: 1px; position: relative; padding: 10px 20px; background: linear-gradient(135deg, rgba(193, 30, 58, 0.15), rgba(15, 125, 63, 0.15)); border-radius: 50px; border: 2px solid transparent; background-clip: padding-box; }
+        
+        .logo::before {
+            content: '🎄';
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 28px;
+            animation: sway 3s ease-in-out infinite;
+        }
+        
+        .logo::after {
+            content: '🎅';
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 28px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes sway {
+            0%, 100% { transform: translateY(-50%) rotate(-5deg); }
+            50% { transform: translateY(-50%) rotate(5deg); }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(-50%); }
+            50% { transform: translateY(-60%); }
+        }
+        
+        .logo img { width: 50px; height: 50px; border-radius: 50%; transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); object-fit: cover; border: 3px solid var(--christmas-gold); box-shadow: 0 0 15px rgba(255, 215, 0, 0.5); }
+        .logo:hover img { transform: scale(1.15) rotate(360deg); box-shadow: 0 0 25px rgba(255, 215, 0, 0.8); }
+        
+        .burger { display: flex; flex-direction: column; gap: 6px; cursor: pointer; z-index: 10001; }
+        .burger span { width: 28px; height: 2.5px; background: white; border-radius: 3px; transition: 0.5s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        .burger.active span:nth-child(1) { transform: rotate(45deg) translate(10px,10px); }
+        .burger.active span:nth-child(2) { opacity: 0; transform: translateX(15px); }
+        .burger.active span:nth-child(3) { transform: rotate(-45deg) translate(8px,-8px); }
+
+        .slide-menu { position: fixed; top: 0; right: -100%; width: 350px; height: 100vh; background: linear-gradient(135deg, rgba(10,13,27,0.98), rgba(20,28,50,0.95)); backdrop-filter: blur(30px); border-left: 1px solid var(--border); padding: 100px 30px 40px; transition: right 0.6s cubic-bezier(0.34,1.56,0.64,1); z-index: 9999; box-shadow: -15px 0 60px rgba(0,0,0,0.7); overflow-y: auto; }
+        .slide-menu.active { right: 0; }
+        .menu-section-title { font-size: 10px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin: 28px 0 14px; font-weight: 700; letter-spacing: 1.5px; }
+        .menu-item { padding: 16px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 16px; font-weight: 600; color: white; cursor: pointer; transition: all 0.4s; display: flex; align-items: center; gap: 14px; border-radius: 10px; }
+        .menu-item i { font-size: 18px; color: var(--primary); width: 20px; }
+        .menu-item:hover { color: var(--primary); padding-left: 20px; background: rgba(231,76,60,0.1); box-shadow: var(--neon-glow); }
+        .social-icons { display: flex; gap: 12px; margin-top: 35px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; }
+        .social-icon { width: 44px; height: 44px; background: rgba(231,76,60,0.1); border: 1.5px solid rgba(231,76,60,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; transition: all 0.4s; text-decoration: none; }
+        .social-icon:hover { background: var(--primary); border-color: var(--primary); transform: translateY(-5px) scale(1.1); box-shadow: var(--neon-glow); }
+        .team-member { padding: 12px 14px; font-size: 14px; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 10px; border-radius: 8px; background: rgba(231,76,60,0.05); margin-bottom: 8px; }
+        .team-member i { font-size: 16px; color: var(--primary); }
+
+        /* HERO */
+        .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 140px 5% 60px; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%); z-index: 2; }
+        .hero-content { position: relative; z-index: 3; background: rgba(10, 13, 27, 0.35); backdrop-filter: blur(20px); padding: 60px 40px; border-radius: 30px; border: 1px solid rgba(231, 76, 60, 0.15); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; align-items: center; gap: 28px; max-width: 90%; transition: all 0.6s ease; }
+        .hero-content:hover { background: rgba(10, 13, 27, 0.45); border-color: rgba(231, 76, 60, 0.25); }
+        .hero h1 { font-size: clamp(48px,10vw,90px); font-weight: 900; background: linear-gradient(135deg,#ffffff 0%,var(--primary-light) 40%,var(--primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 4px; line-height: 1.2; filter: drop-shadow(0 10px 30px rgba(231,76,60,0.5)); animation: neonPulse 3s ease-in-out infinite; }
+        .hero-subtitle { font-size: clamp(18px,4vw,26px); color: rgba(255, 255, 255, 0.85); font-weight: 500; letter-spacing: 2px; }
+        .ip-btn { padding: 24px 70px; font-size: clamp(20px,3vw,30px); font-weight: 800; background: linear-gradient(135deg,var(--primary),var(--primary-light),var(--primary-dark)); color: white; border: 3px solid rgba(255,255,255,0.3); border-radius: 60px; cursor: pointer; transition: all 0.5s cubic-bezier(0.34,1.56,0.64,1); position: relative; overflow: hidden; letter-spacing: 2px; box-shadow: 0 15px 50px rgba(231,76,60,0.5); font-family: 'Space Mono', monospace; border: none; }
+        .ip-btn:before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent); transition: left 0.8s; }
+        .ip-btn:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 30px 80px rgba(231,76,60,1); }
+        .ip-btn:hover:before { left: 100%; }
+        @keyframes neonPulse { 0%,100% { filter: drop-shadow(0 10px 30px rgba(231,76,60,0.5)); } 50% { filter: drop-shadow(0 10px 50px rgba(231,76,60,0.9)); } }
+
+        /* SECTIONS */
+        section { padding: clamp(60px,8vw,80px) 5%; position: relative; z-index: 2; }
+        section#features { padding-top: clamp(40px,6vw,60px); }
+        .title { font-size: clamp(40px,8vw,70px); font-weight: 900; text-align: center; margin-bottom: clamp(40px,6vw,60px); background: linear-gradient(135deg,#e74c3c 0%,#ff8c7a 50%,var(--primary-light) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 2px; filter: drop-shadow(0 5px 20px rgba(231,76,60,0.4)); }
+        .cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(300px,1fr)); gap: clamp(30px,5vw,50px); max-width: 1400px; margin: 0 auto; }
+        .card { background: var(--glass); backdrop-filter: blur(25px); border: 2px solid var(--border); border-radius: 25px; padding: clamp(40px,6vw,60px); text-align: center; transition: all 0.6s cubic-bezier(0.34,1.56,0.64,1); position: relative; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .card:hover { transform: translateY(-20px) scale(1.03); border-color: var(--primary); box-shadow: 0 30px 70px rgba(231,76,60,0.4), var(--neon-glow); }
+        .card i { font-size: clamp(50px,10vw,80px); color: var(--primary); margin-bottom: 30px; filter: drop-shadow(var(--neon-glow)); transition: all 0.6s; }
+        .card:hover i { transform: scale(1.3) rotate(-15deg); }
+        .card h3 { font-size: clamp(22px,4vw,28px); margin-bottom: 16px; font-weight: 700; }
+        .card p { font-size: clamp(15px,2.5vw,18px); color: var(--text-secondary); line-height: 1.7; }
+
+        .about-section { background: var(--glass); backdrop-filter: blur(30px); border-radius: 30px; padding: clamp(50px,10vw,80px); margin: 0 auto; max-width: 1200px; border: 2px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,0.4), var(--neon-glow); }
+        .about-section h2 { font-size: clamp(36px,8vw,60px); text-align: center; margin-bottom: 35px; background: linear-gradient(135deg,#e74c3c 0%,#ff8c7a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .about-section p { font-size: clamp(16px,3vw,20px); line-height: 1.9; color: var(--text-secondary); text-align: center; }
+
+        footer { background: linear-gradient(135deg,rgba(5,6,9,0.95),rgba(10,13,27,0.95)); backdrop-filter: blur(20px); padding: clamp(60px,10vw,90px) 5% clamp(40px,6vw,60px); text-align: center; border-top: 2px solid var(--border); }
+        footer p { font-size: clamp(14px,2vw,16px); color: rgba(255,255,255,0.5); font-weight: 500; }
+
+        .toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg,var(--primary),var(--primary-light)); color: white; padding: 20px 50px; border-radius: 50px; font-weight: 700; font-size: 16px; box-shadow: var(--neon-glow); z-index: 100000; transition: bottom 0.5s cubic-bezier(0.34,1.56,0.64,1); border: 2px solid rgba(255,255,255,0.3); }
         .toast.show { bottom: 50px; }
 
         @media (max-width: 768px) {
-            .ornament, .bell, .gift { transform: scale(0.7); }
-            .light { width: 12px; height: 18px; }
+            .hero { padding: 120px 5%40px; }
+            .hero-content { padding: 40px 25px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Realistic Christmas Elements (dark theme friendly) -->
-    <div class="christmas-bokeh">
-        <div class="bokeh bokeh-1"></div>
-        <div class="bokeh bokeh-2"></div>
-        <div class="bokeh bokeh-3"></div>
-    </div>
-    <div class="snow-container" id="snow"></div>
-    <div class="garland"><div class="garland-line"></div></div>
-    <div class="ornaments" id="ornaments"></div>
-    <div class="bells"><div class="bell"><div class="bell-body"></div></div><div class="bell"><div class="bell-body"></div></div></div>
-    <div class="gifts">
-        <div class="gift" style="left:8%;"><div class="lid" style="background:#9b1d21;"></div><div class="box" style="background:#e74c3c;"></div><div class="ribbon-v"></div><div class="ribbon-h"></div></div>
-        <div class="gift" style="right:8%; animation-delay:1s;"><div class="lid" style="background:#e74c3c;"></div><div class="box" style="background:#9b1d21;"></div><div class="ribbon-v"></div><div class="ribbon-h"></div></div>
+    <!-- SNOW CONTAINER -->
+    <div class="snow-container" id="snowContainer"></div>
+
+    <!-- CHRISTMAS LIGHTS GARLAND -->
+    <div class="christmas-lights">
+        <div class="light-string">
+            <div class="light-bulb red"></div>
+            <div class="light-bulb green"></div>
+            <div class="light-bulb blue"></div>
+            <div class="light-bulb yellow"></div>
+            <div class="light-bulb gold"></div>
+            <div class="light-bulb purple"></div>
+            <div class="light-bulb red"></div>
+            <div class="light-bulb green"></div>
+            <div class="light-bulb blue"></div>
+            <div class="light-bulb yellow"></div>
+            <div class="light-bulb gold"></div>
+            <div class="light-bulb purple"></div>
+            <div class="light-bulb red"></div>
+            <div class="light-bulb green"></div>
+            <div class="light-bulb blue"></div>
+            <div class="light-bulb yellow"></div>
+        </div>
     </div>
 
+    <!-- HANGING ORNAMENTS -->
+    <div class="ornament" style="left: 15%; top: 140px; animation-delay: 0s;">
+        <div class="ornament-string"></div>
+        <div class="ornament-ball red"></div>
+    </div>
+    <div class="ornament" style="left: 30%; top: 140px; animation-delay: 0.5s;">
+        <div class="ornament-string"></div>
+        <div class="ornament-ball gold"></div>
+    </div>
+    <div class="ornament" style="left: 50%; top: 140px; animation-delay: 1s;">
+        <div class="ornament-string"></div>
+        <div class="ornament-ball blue"></div>
+    </div>
+    <div class="ornament" style="left: 70%; top: 140px; animation-delay: 1.5s;">
+        <div class="ornament-string"></div>
+        <div class="ornament-ball silver"></div>
+    </div>
+    <div class="ornament" style="left: 85%; top: 140px; animation-delay: 2s;">
+        <div class="ornament-string"></div>
+        <div class="ornament-ball red"></div>
+    </div>
+
+    <!-- CANDY CANES -->
+    <div class="candy-cane" style="left: 5%; top: 150px;">
+        <svg viewBox="0 0 100 150">
+            <defs>
+                <pattern id="candyStripe" patternUnits="userSpaceOnUse" width="20" height="20" patternTransform="rotate(45)">
+                    <rect width="10" height="20" fill="#ffffff"/>
+                    <rect x="10" width="10" height="20" fill="#e74c3c"/>
+                </pattern>
+            </defs>
+            <path d="M 50 30 Q 30 30 30 50 Q 30 70 50 70 L 50 140" 
+                  stroke="url(#candyStripe)" 
+                  stroke-width="15" 
+                  fill="none" 
+                  stroke-linecap="round"/>
+        </svg>
+    </div>
+    <div class="candy-cane" style="right: 5%; top: 150px; transform: scaleX(-1);">
+        <svg viewBox="0 0 100 150">
+            <defs>
+                <pattern id="candyStripe2" patternUnits="userSpaceOnUse" width="20" height="20" patternTransform="rotate(45)">
+                    <rect width="10" height="20" fill="#ffffff"/>
+                    <rect x="10" width="10" height="20" fill="#e74c3c"/>
+                </pattern>
+            </defs>
+            <path d="M 50 30 Q 30 30 30 50 Q 30 70 50 70 L 50 140" 
+                  stroke="url(#candyStripe2)" 
+                  stroke-width="15" 
+                  fill="none" 
+                  stroke-linecap="round"/>
+        </svg>
+    </div>
+
+    <!-- CHRISTMAS WREATHS -->
+    <div class="wreath" style="left: 10%; top: 200px;"></div>
+    <div class="wreath" style="right: 10%; top: 200px;"></div>
+
+    <!-- HOLLY DECORATIONS -->
+    <div class="holly" style="left: 20%; top: 160px;">🌿</div>
+    <div class="holly" style="right: 20%; top: 160px;">🌿</div>
+    <div class="holly" style="left: 40%; top: 180px;">🌿</div>
+    <div class="holly" style="right: 40%; top: 180px;">🌿</div>
+
+    <!-- GLOW ORBS -->
+    <div class="glow-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
     <div id="particles-js"></div>
 
-    <!-- Your original content (100% unchanged structure) -->
+    <!-- LOADER -->
     <div id="loader">
-        <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" width="180" style="border-radius:50%; border:4px solid var(--primary); box-shadow:var(--neon-glow);">
-        <p style="color:var(--primary); margin-top:30px; font-size:20px;">იტვირთება...</p>
+        <div class="loader-container">
+            <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" alt="Logo" class="loader-logo">
+            <div class="loader-ring"></div>
+        </div>
+        <div class="loader-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+        <div class="loader-text">იტვირთება...</div>
     </div>
 
     <header>
-        <a href="#" class="logo">
+        <a href="index.html" class="logo">
+            <div class="logo-decoration lights"></div>
             <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" alt="Fanatic RP">
             <span>FANATIC RP</span>
         </a>
-        <div class="burger" onclick="this.classList.toggle('active'); document.querySelector('.slide-menu').classList.toggle('active')">
+        <div class="burger" onclick="toggleMenu()">
             <span></span><span></span><span></span>
         </div>
     </header>
 
+    <!-- SLIDE MENU -->
     <div class="slide-menu">
         <div class="menu-section-title">ნავიგაცია</div>
-        <div class="menu-item" onclick="location.href='index.html'"><i class="fas fa-home"></i> მთავარი</div>
-        <div class="menu-item" onclick="location.href='donation.html'"><i class="fas fa-shopping-cart"></i> მაღაზია</div>
+        <div class="menu-item" onclick="navigate('index.html')"><i class="fas fa-home"></i> მთავარი</div>
+        <div class="menu-item" onclick="navigate('donation.html')"><i class="fas fa-shopping-cart"></i> მაღაზია</div>
         <div class="menu-item" onclick="alert('მალე გაიხსნება...')"><i class="fas fa-comments"></i> ფორუმი</div>
+
         <div class="menu-section-title">ჩამოტვირთვა</div>
-        <div class="menu-item" onclick="alert('PC ლაუნჩერი მალე...')"><i class="fas fa-desktop"></i> PC ლაუნჩერი</div>
-        <div class="menu-item" onclick="alert('Mobile ლაუნჩერი მალე...')"><i class="fas fa-mobile-alt"></i> Mobile ლაუნჩერი</div>
+        <div class="menu-item" onclick="downloadLauncher('pc')"><i class="fas fa-desktop"></i> PC ლაუნჩერი</div>
+        <div class="menu-item" onclick="downloadLauncher('mobile')"><i class="fas fa-mobile-alt"></i> Mobile ლაუნჩერი</div>
+
         <div class="menu-section-title">Web Development Team</div>
-        <div class="menu-item"><i class="fas fa-code"></i> ზვიადი გეგიძე</div>
-        <div class="menu-item"><i class="fas fa-code"></i> ნიკა გეორგაძე</div>
+        <div class="team-member"><i class="fas fa-code"></i> ზვიადი გეგიძე</div>
+        <div class="team-member"><i class="fas fa-code"></i> ნიკა გეორგაძე</div>
+
         <div class="menu-section-title">სოციალური ქსელები</div>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;">
-            <a href="https://discord.gg/uasS77WA" target="_blank" style="width:44px;height:44px;background:rgba(231,76,60,0.2);border:1.5px solid rgba(231,76,60,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;text-decoration:none;transition:all 0.4s;" onmouseover="this.style.background='var(--primary)';this.style.transform='scale(1.2)'" onmouseout="this.style.background='rgba(231,76,60,0.2)';this.style.transform='none'"><i class="fab fa-discord"></i></a>
-            <a href="https://www.youtube.com/@tormetitormeti2" target="_blank" style="width:44px;height:44px;background:rgba(231,76,60,0.2);border:1.5px solid rgba(231,76,60,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;text-decoration:none;transition:all 0.4s;" onmouseover="this.style.background='var(--primary)';this.style.transform='scale(1.2)'" onmouseout="this.style.background='rgba(231,76,60,0.2)';this.style.transform='none'"><i class="fab fa-youtube"></i></a>
-            <a href="https://www.tiktok.com/@fanaticroleplay777" target="_blank" style="width:44px;height:44px;background:rgba(231,76,60,0.2);border:1.5px solid rgba(231,76,60,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;text-decoration:none;transition:all 0.4s;" onmouseover="this.style.background='var(--primary)';this.style.transform='scale(1.2)'" onmouseout="this.style.background='rgba(231,76,60,0.2)';this.style.transform='none'"><i class="fab fa-tiktok"></i></a>
-            <a href="https://www.facebook.com/groups/687009050835555/" target="_blank" style="width:44px;height:44px;background:rgba(231,76,60,0.2);border:1.5px solid rgba(231,76,60,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;text-decoration:none;transition:all 0.4s;" onmouseover="this.style.background='var(--primary)';this.style.transform='scale(1.2)'" onmouseout="this.style.background='rgba(231,76,60,0.2)';this.style.transform='none'"><i class="fab fa-facebook-f"></i></a>
+        <div class="social-icons">
+            <a href="https://discord.gg/uasS77WA" target="_blank" class="social-icon"><i class="fab fa-discord"></i></a>
+            <a href="https://www.youtube.com/@tormetitormeti2" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.tiktok.com/@fanaticroleplay777" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
+            <a href="https://www.facebook.com/groups/687009050835555/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
         </div>
     </div>
 
-    <section class="hero">
-        <div style="background:rgba(10,13,27,0.5);backdrop-filter:blur(20px);padding:60px;border-radius:30px;border:2px solid var(--border);max-width:90%;">
+    <section class="hero" id="home">
+        <div class="hero-content">
             <h1>FANATIC ROLE PLAY</h1>
-            <p style="font-size:22px;margin:20px 0;color:var(--text-secondary);">ერთ-ერთი საუკეთესო SA-MP სერვერი საქართველოში • 2025</p>
+            <p class="hero-subtitle">ერთ-ერთი საუკეთესო SA-MP სერვერი საქართველოში • 2025</p>
             <button class="ip-btn" onclick="copyIP()">185.189.255.97:2561</button>
         </div>
     </section>
 
     <section id="features">
-        <h2 style="font-size:clamp(40px,8vw,70px);text-align:center;margin-bottom:60px;background:linear-gradient(135deg,var(--primary),var(--primary-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">რატომ ჩვენ?</h2>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px;max-width:1400px;margin:0 auto;padding:0 5%;">
-            <div class="card"><i class="fas fa-rocket" style="font-size:70px;color:var(--primary);"></i><h3>უნიკალური სისტემები</h3><p>განსხვავებული და ინოვაციური თამაშის სისტემები, რომლებიც არსად ვერ იხილავთ.</p></div>
-            <div class="card"><i class="fas fa-crown" style="font-size:70px;color:var(--primary);"></i><h3>პროფესიონალი გუნდი</h3><p>ჩვენი გუნდი მუდმივად მზადაა თქვენი დახმარებისთვის 24/7 რეჟიმში.</p></div>
-            <div class="card"><i class="fas fa-fire" style="font-size:70px;color:var(--primary);"></i><h3>24/7 აქტიური</h3><p>სერვერი მუშაობს მთელი დღე-ღამის განმავლობაში სტაბილურად.</p></div>
+        <h2 class="title">რატომ ჩვენ?</h2>
+        <div class="cards">
+            <div class="card"><i class="fas fa-rocket"></i><h3>უნიკალური სისტემები</h3><p>განსხვავებული და ინოვაციური თამაშის სისტემები, რომლებიც არსად ვერ იხილავთ.</p></div>
+            <div class="card"><i class="fas fa-crown"></i><h3>პროფესიონალი გუნდი</h3><p>ჩვენი გუნდი მუდმივად მზადაა თქვენი დახმარებისთვის 24/7 რეჟიმში.</p></div>
+            <div class="card"><i class="fas fa-fire"></i><h3>24/7 აქტიური</h3><p>სერვერი მუშაობს მთელი დღე-ღამის განმავლობაში სტაბილურად.</p></div>
         </div>
     </section>
 
-    <section id="about" style="padding:80px 5%;">
-        <div style="background:var(--glass);backdrop-filter:blur(30px);border-radius:30px;padding:70px;max-width:1200px;margin:0 auto;border:2px solid var(--border);text-align:center;">
-            <h2 style="font-size:clamp(40px,8vw,70px);margin-bottom:40px;background:linear-gradient(135deg,var(--primary),var(--primary-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">ჩვენს შესახებ</h2>
-            <p style="font-size:18px;line-height:1.9;color:var(--text-secondary);">Fanatic Role Play არის საქართველოს ერთ-ერთი საუკეთესო SA-MP სერვერი, რომელიც გთავაზობთ უნიკალურ როლურ გამოცდილებას. ჩვენ ვქმნით საუკეთესო გარემოს მოთამაშეებისთვის, სადაც თქვენ შეგიძლიათ იყოთ ნებისმიერი ვინც გინდათ — პოლიციელი, ბიზნესმენი, კრიმინალი ან უბრალოდ მშვიდი მოქალაქე. შემოგვიერთდით და გახდით ნაწილი ჩვენი დიდი ოჯახისა!</p>
+    <section id="about">
+        <div class="about-section">
+            <h2>ჩვენს შესახებ</h2>
+            <p>Fanatic Role Play არის საქართველოს ერთ-ერთი საუკეთესო SA-MP სერვერი, რომელიც გთავაზობთ უნიკალურ როლურ გამოცდილებას. ჩვენ ვქმნით საუკეთესო გარემოს მოთამაშეებისთვის, სადაც თქვენ შეგიძლიათ იყოთ ნებისმიერი ვინც გინდათ — პოლიციელი, ბიზნესმენი, კრიმინალი ან უბრალოდ მშვიდი მოქალაქე. შემოგვიერთდით და გახდით ნაწილი ჩვენი დიდი ოჯახისა!</p>
         </div>
     </section>
 
-    <footer style="padding:80px 5% 40px;text-align:center;color:rgba(255,255,255,0.5);">
+    <footer>
         <p>&copy; 2025 Fanatic Role Play. ყველა უფლება დაცულია.</p>
     </footer>
 
     <div id="toast" class="toast">IP დაკოპირებული!</div>
 
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
     <script>
-        // Realistic Snow
-        function createSnow() {
-            const container = document.getElementById('snow');
-            for(let i = 0; i < 120; i++) {
-                const flake = document.createElement('div');
-                flake.classList.add('snowflake');
-                flake.textContent = '❄';
-                flake.style.left = Math.random() * 100 + 'vw';
-                flake.style.animationDuration = 10 + Math.random() * 10 + 's';
-                flake.style.animationDelay = Math.random() * 5 + 's';
-                flake.style.setProperty('--drift', (Math.random() - 0.5) * 300 + 'px');
-                flake.style.fontSize = 0.8 + Math.random() * 1.2 + 'em';
-                container.appendChild(flake);
+        // Enhanced Snow Effect with realistic physics
+        function createSnowflakes() {
+            const snowContainer = document.getElementById('snowContainer');
+            const snowflakeCount = 60;
+            
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.textContent = '❄';
+                
+                const left = Math.random() * window.innerWidth;
+                const delay = Math.random() * 5;
+                const duration = 8 + Math.random() * 8;
+                const drift = (Math.random() - 0.5) * 300;
+                const rotation = Math.random() * 360;
+                
+                snowflake.style.left = left + 'px';
+                snowflake.style.animationDelay = delay + 's';
+                snowflake.style.animationDuration = duration + 's';
+                snowflake.style.setProperty('--drift', drift + 'px');
+                snowflake.style.setProperty('--rotation', rotation + 'deg');
+                snowflake.style.fontSize = (0.5 + Math.random() * 1.5) + 'em';
+                
+                snowContainer.appendChild(snowflake);
+                
+                setTimeout(() => {
+                    snowflake.remove();
+                    createSnowflake();
+                }, (duration + delay) * 1000);
             }
         }
-
-        // Fairy Lights
-        function createLights() {
-            const colors = ['#e74c3c', '#d4af37', '#ff6b57', '#c0392b'];
-            for(let i = 0; i < 40; i++) {
-                const light = document.createElement('div');
-                light.className = 'light';
-                light.style.left = 1 + i * 2.5 + '%';
-                light.style.setProperty('--color', colors[Math.floor(Math.random() * colors.length)]);
-                light.style.animationDelay = Math.random() * 3 + 's';
-                document.querySelector('.garland').appendChild(light);
-            }
+        
+        function createSnowflake() {
+            const snowContainer = document.getElementById('snowContainer');
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.textContent = '❄';
+            
+            const left = Math.random() * window.innerWidth;
+            const delay = 0;
+            const duration = 8 + Math.random() * 8;
+            const drift = (Math.random() - 0.5) * 300;
+            const rotation = Math.random() * 360;
+            
+            snowflake.style.left = left + 'px';
+            snowflake.style.animationDelay = delay + 's';
+            snowflake.style.animationDuration = duration + 's';
+            snowflake.style.setProperty('--drift', drift + 'px');
+            snowflake.style.setProperty('--rotation', rotation + 'deg');
+            snowflake.style.fontSize = (0.5 + Math.random() * 1.5) + 'em';
+            
+            snowContainer.appendChild(snowflake);
+            
+            setTimeout(() => {
+                snowflake.remove();
+                createSnowflake();
+            }, duration * 1000);
         }
+        
+        createSnowflakes();
 
-        // Hanging Ornaments
-        function createOrnaments() {
-            const colors = ['#e74c3c', '#d4af37', '#c0392b', '#ff6b57'];
-            const positions = ['10%', '28%', '46%', '68%', '86%'];
-            positions.forEach((pos, i) => {
-                const orn = document.createElement('div');
-                orn.className = 'ornament';
-                orn.style.left = pos;
-                orn.style.animationDelay = i * 0.8 + 's';
-                orn.innerHTML = `<div class="ball" style="--color:${colors[i]}"></div>`;
-                document.getElementById('ornaments').appendChild(orn);
-            });
+        function toggleMenu() {
+            document.querySelector('.burger').classList.toggle('active');
+            document.querySelector('.slide-menu').classList.toggle('active');
         }
 
         function copyIP() {
-            navigator.clipboard.writeText('185.189.255.97:2561');
-            document.getElementById('toast').classList.add('show');
-            setTimeout(() => document.getElementById('toast').classList.remove('show'), 3000);
+            navigator.clipboard.writeText('185.189.255.97:2561').then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 3000);
+            });
         }
 
-        window.onload = () => {
-            setTimeout(() => document.getElementById('loader').classList.add('hidden'), 2000);
-            createSnow(); createLights(); createOrnaments();
+        function navigate(page) { window.location.href = page; }
+        function downloadLauncher(type) {
+            alert(type === 'pc' ? 'PC ლაუნჩერის ჩამოტვირთვა მალე...' : 'Mobile ლაუნჩერის ჩამოტვირთვა მალე...');
+        }
 
-            particlesJS('particles-js', { particles: { number: { value: 80 }, color: { value: "#e74c3c" }, opacity: { value: 0.3, random: true }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#e74c3c", opacity: 0.2, width: 1 }, move: { speed: 2 } }, interactivity: { events: { onhover: { enable: true, mode: "repulse" } } } });
+        window.addEventListener('load', () => setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1500));
 
-            gsap.registerPlugin(ScrollTrigger);
-            gsap.utils.toArray('.card').forEach(card => gsap.from(card, { y: 100, opacity: 0, duration: 1, scrollTrigger: { trigger: card, start: "top 80%" } }));
-        };
+        particlesJS('particles-js', {
+            particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: "#e74c3c" }, shape: { type: "circle" }, opacity: { value: 0.3, random: true }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#e74c3c", opacity: 0.2, width: 1 }, move: { enable: true, speed: 2, direction: "none", random: false, straight: false, out_mode: "out" } },
+            interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true } },
+            retina_detect: true
+        });
+
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.utils.toArray('.title, .about-section, footer').forEach(el => gsap.to(el, { opacity: 1, y: 0, duration: 0.8, scrollTrigger: { trigger: el, start: 'top 80%' } }));
+        gsap.to('.orb-1', { y: 300, scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom top', scrub: 1 } });
+        gsap.to('.orb-2', { y: -200, scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom top', scrub: 1 } });
+        gsap.fromTo('.ip-btn', { boxShadow: '0 15px 50px rgba(231,76,60,0.6)' }, { boxShadow: '0 15px 50px rgba(231,76,60,0.8), 0 0 30px rgba(231,76,60,0.4)', duration: 1.5, repeat: -1, yoyo: true });
     </script>
 </body>
 </html>
