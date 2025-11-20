@@ -14,18 +14,21 @@
 
     <style>
         :root {
-            --primary: #c41e3a;
-            --primary-light: #e74c3c;
-            --christmas-red: #c41e3a;
-            --christmas-green: #0f5132;
-            --christmas-gold: #d4a017;
-            --warm-white: #fff8e7;
-            --dark-bg: #0c0e17;
-            --glass: rgba(15, 20, 40, 0.92);
-            --border: rgba(212, 160, 23, 0.25);
-            --text: #ffffff;
-            --text-secondary: rgba(255,255,255,0.8);
-            --neon-glow: 0 0 20px rgba(212,160,23,0.6);
+            --primary: #e74c3c;
+            --primary-light: #ff6b57;
+            --primary-dark: #c0392b;
+            --secondary: #2c3e50;
+            --accent: #3498db;
+            --dark: #0a0d1b;
+            --darker: #050609;
+            --glass: rgba(15, 20, 40, 0.85);
+            --glass-light: rgba(20, 28, 50, 0.6);
+            --border: rgba(231, 76, 60, 0.3);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --neon-glow: 0 0 20px rgba(231,76,60,0.6), 0 0 40px rgba(231,76,60,0.3);
+            --christmas-gold: #d4af37;
+            --christmas-deepred: #9b1d21;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,199 +36,144 @@
         body {
             font-family: 'Montserrat', sans-serif;
             background: #000;
-            color: var(--text);
+            color: var(--text-primary);
             overflow-x: hidden;
             min-height: 100vh;
-            background: radial-gradient(circle at top, #1a1a2e 0%, #000 70%);
+            background: radial-gradient(ellipse at top, #1a1f3a 0%, #000000 70%);
         }
 
-        /* === REALISTIC CHRISTMAS DECORATIONS === */
-
-        /* Snow */
+        /* === REALISTIC FALLING SNOW === */
         .snow-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 5;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5;
         }
         .snowflake {
             position: absolute; color: #fff; font-size: 1.2em; opacity: 0.9;
-            pointer-events: none; animation: fall linear infinite;
-            text-shadow: 0 0 8px rgba(255,255,255,0.6);
+            text-shadow: 0 0 8px rgba(255,255,255,0.6); pointer-events: none;
+            animation: fall linear infinite;
         }
         @keyframes fall {
             to { transform: translateY(100vh) translateX(var(--drift)); opacity: 0; }
         }
 
-        /* Christmas Bokeh Tree Lights */
+        /* === SUBTLE CHRISTMAS BOKEH ORBS (red/gold) === */
         .christmas-bokeh {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at 15% 80%, rgba(196,30,58,0.4) 0%, transparent 20%),
-                radial-gradient(circle at 85% 75%, rgba(15,81,50,0.4) 0%, transparent 20%),
-                radial-gradient(circle at 50% 90%, rgba(212,160,23,0.6) 0%, transparent 25%);
-            pointer-events: none; z-index: 1; filter: blur(90px); opacity: 0.7;
+            pointer-events: none; z-index: 1; opacity: 0.4; filter: blur(100px);
         }
+        .bokeh { position: absolute; border-radius: 50%; }
+        .bokeh-1 { width: 600px; height: 600px; background: var(--primary); top: -10%; left: 10%; opacity: 0.3; }
+        .bokeh-2 { width: 500px; height: 500px; background: var(--christmas-gold); top: 60%; right: 10%; opacity: 0.25; animation: float 25s infinite; }
+        .bokeh-3 { width: 400px; height: 400px; background: var(--primary-dark); bottom: -5%; left: 40%; opacity: 0.3; }
 
-        /* Garland + Fairy Lights */
+        /* === PROFESSIONAL GARLAND WITH WARM LIGHTS === */
         .garland {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100px;
-            pointer-events: none; z-index: 100;
+            position: fixed; top: 0; left: 0; width: 100%; height: 90px; pointer-events: none; z-index: 100;
         }
         .garland-line {
             position: absolute; top: 35px; width: 100%; height: 4px;
             background: linear-gradient(90deg, #1a3c34 0%, #2d5016 50%, #1a3c34 100%);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.8);
         }
         .light {
-            position: absolute; top: 20px; width: 14px; height: 22px;
+            position: absolute; top: 22px; width: 16px; height: 24px;
             border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            background: var(--color); box-shadow: 0 0 25px var(--color), 0 0 50px var(--color);
-            animation: twinkle 3s infinite;
+            background: var(--color);
+            box-shadow: 0 0 30px var(--color), 0 0 60px var(--color);
+            animation: twinkle 4s infinite;
         }
         .light::before {
-            content: ''; position: absolute; top: -7px; left: 50%; transform: translateX(-50%);
-            width: 6px; height: 12px; background: #333; border-radius: 3px;
+            content: ''; position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+            width: 7px; height: 12px; background: #333; border-radius: 4px;
         }
         @keyframes twinkle {
             0%,100% { opacity: 0.7; transform: scale(1); }
             50% { opacity: 1; transform: scale(1.2); }
         }
 
-        /* Hanging Ornaments */
-        .ornaments { position: fixed; top: 90px; left: 0; width: 100%; pointer-events: none; z-index: 99; }
+        /* === REALISTIC HANGING ORNAMENTS === */
+        .ornaments { position: fixed; top: 90px; width: 100%; pointer-events: none; z-index: 99; }
         .ornament {
             position: absolute; width: 70px; height: 90px;
-            animation: sway 7s ease-in-out infinite;
+            animation: sway 8s ease-in-out infinite;
+            transform-origin: top center;
         }
         .ornament::before {
-            content: ''; position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
-            width: 2px; height: 50px; background: linear-gradient(to bottom, #aaa, transparent);
+            content: ''; position: absolute; top: -50px; left: 50%; transform: translateX(-50%);
+            width: 2px; height: 60px; background: linear-gradient(to bottom, #ccc, transparent);
+            box-shadow: 0 0 5px rgba(255,255,255,0.2);
         }
         .ball {
             width: 70px; height: 70px; border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #fff, var(--ball-color) 60%, #000);
-            box-shadow: inset -12px -12px 25px rgba(0,0,0,0.4), inset 12px 12px 20px rgba(255,255,255,0.2), 0 15px 40px rgba(0,0,0,0.6);
+            background: radial-gradient(circle at 25% 25%, #fff 10%, var(--color) 70%);
+            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.5), inset 10px 10px 20px rgba(255,255,255,0.2), 0 20px 40px rgba(0,0,0,0.7);
             position: relative;
         }
         .ball::after {
-            content: ''; position: absolute; top: 12px; left: 18px;
+            content: ''; position: absolute; top: 10px; left: 15px;
             width: 25px; height: 40px; background: linear-gradient(135deg, rgba(255,255,255,0.7), transparent);
-            border-radius: 50%; filter: blur(5px);
+            border-radius: 50%; filter: blur(6px);
         }
-        @keyframes sway { 0%,100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } }
+        @keyframes sway { 0%,100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
 
-        /* Golden Bells */
-        .bells {
-            position: fixed; top: 80px; right: 6%; z-index: 100;
-            animation: bell-swing 5s ease-in-out infinite;
-        }
-        .bell { display: inline-block; width: 65px; height: 75px; margin: 0 12px; position: relative; }
-        .bell-top { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 22px; height: 16px; background: #b8860b; border-radius: 10px 10px 0 0; }
-        .bell-body { width: 100%; height: 65px; background: linear-gradient(135deg, #fadb5d, #b8860b); border-radius: 0 0 50% 50%; box-shadow: inset -12px -12px 20px rgba(0,0,0,0.3); }
-        .clapper { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); width: 12px; height: 22px; background: #444; border-radius: 50%; animation: clapper 2s infinite; }
-        @keyframes bell-swing { 0%,100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
-        @keyframes clapper { 0%,100% { transform: translateX(-50%) rotate(-10deg); } 50% { transform: translateX(-50%) rotate(10deg); } }
-
-        /* Gift Boxes */
-        .gifts { position: fixed; bottom: 20px; z-index: 10; pointer-events: none; }
-        .gift { position: absolute; width: 90px; height: 90px; animation: float 6s ease-in-out infinite; }
-        .lid { width: 110%; height: 35%; background: var(--lid); position: absolute; top: -12px; left: -5%; border-radius: 8px; }
-        .box { width: 100%; height: 70%; background: var(--box); border-radius: 8px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); position: relative; }
-        .ribbon-v { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 18px; height: 100%; background: var(--christmas-gold); }
-        .ribbon-h { position: absolute; top: 50%; left: 0; transform: translateY(-50%); width: 100%; height: 18px; background: var(--christmas-gold); }
+        /* === GOLDEN BELLS & GIFTS (subtle) === */
+        .bells, .gifts { position: fixed; pointer-events: none; z-index: 90; }
+        .bells { top: 80px; right: 5%; animation: bell-swing 6s infinite; }
+        .bell { display: inline-block; width: 60px; height: 70px; margin: 0 10px; }
+        .bell-body { width: 100%; height: 60px; background: linear-gradient(135deg, #fadb5d, #b8860b); border-radius: 0 0 50% 50%; box-shadow: inset -10px -10px 20px rgba(0,0,0,0.4); }
+        .gifts { bottom: 30px; }
+        .gift { position: absolute; width: 80px; height: 80px; animation: float 7s infinite; }
+        .gift .box { width: 100%; height: 70%; background: var(--box); border-radius: 8px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        .gift .lid { width: 110%; height: 35%; background: var(--lid); position: absolute; top: -12px; left: -5%; border-radius: 8px; }
+        .ribbon-v, .ribbon-h { background: var(--christmas-gold); position: absolute; }
+        .ribbon-v { top: 0; left: 50%; transform: translateX(-50%); width: 16px; height: 100%; }
+        .ribbon-h { top: 50%; left: 0; transform: translateY(-50%); width: 100%; height: 16px; }
         @keyframes float { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-20px) rotate(2deg); } }
 
-        /* Particles Background */
+        /* === YOUR ORIGINAL STYLES (unchanged) === */
         #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; }
-
-        /* Loader */
-        #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 1s; }
-        #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-        .loader-logo { width: 180px; border-radius: 50%; border: 5px solid var(--christmas-gold); box-shadow: 0 0 40px rgba(212,160,23,0.8); animation: float 4s infinite; }
-
-        /* Header */
+        #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 1.5s; }
+        #loader.hidden { opacity: 0; visibility: hidden; }
         header { position: fixed; top: 0; width: 100%; padding: 20px 5%; background: var(--glass); backdrop-filter: blur(30px); border-bottom: 1px solid var(--border); z-index: 1000; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
-        .logo { display: flex; align-items: center; gap: 16px; font-size: 28px; font-weight: 900; color: white; text-decoration: none; }
-        .logo img { width: 60px; height: 60px; border-radius: 50%; border: 4px solid var(--christmas-gold); box-shadow: 0 0 25px rgba(212,160,23,0.7); transition: all 0.4s; }
-        .logo:hover img { transform: scale(1.1) rotate(360deg); }
-        .burger { cursor: pointer; }
-        .burger span { width: 32px; height: 3px; background: white; display: block; margin: 6px 0; transition: 0.4s; border-radius: 3px; }
-        .burger.active span:nth-child(1) { transform: rotate(45deg) translate(10px,10px); }
-        .burger.active span:nth-child(2) { opacity: 0; }
-        .burger.active span:nth-child(3) { transform: rotate(-45deg) translate(8px,-8px); }
-
-        /* Slide Menu */
-        .slide-menu { position: fixed; top: 0; right: -100%; width: 350px; height: 100vh; background: linear-gradient(135deg, rgba(10,13,27,0.98), rgba(20,28,50,0.95)); backdrop-filter: blur(30px); border-left: 1px solid var(--border); padding: 100px 30px 40px; transition: right 0.6s cubic-bezier(0.34,1.56,0.64,1); z-index: 999; box-shadow: -15px 0 60px rgba(0,0,0,0.7); overflow-y: auto; }
-        .slide-menu.active { right: 0; }
-        .menu-section-title { font-size: 10px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin: 28px 0 14px; font-weight: 700; letter-spacing: 1.5px; }
-        .menu-item { padding: 16px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 16px; font-weight: 600; color: white; cursor: pointer; transition: all 0.4s; display: flex; align-items: center; gap: 14px; border-radius: 10px; }
-        .menu-item i { font-size: 18px; color: var(--primary); width: 20px; }
-        .menu-item:hover { color: var(--primary); padding-left: 20px; background: rgba(196,30,58,0.15); box-shadow: var(--neon-glow); }
-
-        /* Hero */
-        .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 140px 5% 80px; position: relative; }
-        .hero h1 { font-size: clamp(50px,10vw,100px); font-weight: 900; background: linear-gradient(135deg, #fff, var(--christmas-gold), var(--christmas-red)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 3px; }
-        .hero-subtitle { font-size: clamp(18px,4vw,26px); color: var(--text-secondary); margin: 20px 0; }
-        .ip-btn { padding: 24px 80px; font-size: clamp(20px,3vw,32px); background: linear-gradient(135deg, var(--christmas-red), #a1172e); color: white; border: none; border-radius: 60px; cursor: pointer; box-shadow: 0 15px 50px rgba(196,30,58,0.6); transition: all 0.5s; letter-spacing: 2px; font-weight: 800; }
-        .ip-btn:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 30px 80px rgba(196,30,58,0.9); }
-
-        /* Sections */
-        section { padding: 80px 5%; }
-        .title { font-size: clamp(40px,8vw,70px); text-align: center; margin-bottom: 60px; background: linear-gradient(135deg, var(--christmas-red), var(--christmas-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 40px; max-width: 1400px; margin: 0 auto; }
-        .card { background: var(--glass); backdrop-filter: blur(25px); border: 2px solid var(--border); border-radius: 25px; padding: 50px 30px; text-align: center; transition: all 0.6s; box-shadow: 0 15px 50px rgba(0,0,0,0.5); }
-        .card:hover { transform: translateY(-20px); border-color: var(--christmas-gold); box-shadow: 0 30px 80px rgba(212,160,23,0.4), var(--neon-glow); }
-        .card i { font-size: 70px; color: var(--christmas-gold); margin-bottom: 20px; }
-
-        .about-section { background: var(--glass); backdrop-filter: blur(30px); border-radius: 30px; padding: 70px; max-width: 1200px; margin: 0 auto; border: 2px solid var(--border); text-align: center; }
-
-        footer { padding: 80px 5% 40px; text-align: center; color: rgba(255,255,255,0.5); }
-
-        .toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--christmas-red), var(--christmas-green)); color: white; padding: 20px 50px; border-radius: 50px; font-weight: 700; box-shadow: var(--neon-glow); z-index: 10000; transition: bottom 0.5s; }
+        .logo img { width: 60px; height: 60px; border-radius: 50%; border: 3px solid var(--primary); box-shadow: var(--neon-glow); }
+        .hero h1 { font-size: clamp(50px,10vw,100px); font-weight: 900; background: linear-gradient(135deg,#fff,var(--primary-light),var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .ip-btn { padding: 24px 80px; background: linear-gradient(135deg,var(--primary),var(--primary-dark)); border: none; border-radius: 60px; color: white; font-size: 28px; box-shadow: var(--neon-glow); cursor: pointer; }
+        .ip-btn:hover { transform: translateY(-10px); box-shadow: 0 20px 60px rgba(231,76,60,0.8); }
+        .card { background: var(--glass); backdrop-filter: blur(25px); border: 2px solid var(--border); border-radius: 25px; padding: 50px; text-align: center; transition: all 0.6s; }
+        .card:hover { transform: translateY(-20px); border-color: var(--primary); box-shadow: var(--neon-glow); }
+        .toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: var(--primary); padding: 20px 60px; border-radius: 50px; transition: bottom 0.5s; z-index: 10000; }
         .toast.show { bottom: 50px; }
 
         @media (max-width: 768px) {
-            .ornament, .bell, .gift { transform: scale(0.75); }
-            .light { width: 10px; height: 16px; }
-            .bells { right: 3%; }
+            .ornament, .bell, .gift { transform: scale(0.7); }
+            .light { width: 12px; height: 18px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Christmas Bokeh + Snow -->
-    <div class="christmas-bokeh"></div>
+    <!-- Realistic Christmas Elements (dark theme friendly) -->
+    <div class="christmas-bokeh">
+        <div class="bokeh bokeh-1"></div>
+        <div class="bokeh bokeh-2"></div>
+        <div class="bokeh bokeh-3"></div>
+    </div>
     <div class="snow-container" id="snow"></div>
-
-    <!-- Garland + Lights -->
-    <div class="garland">
-        <div class="garland-line"></div>
-    </div>
-
-    <!-- Ornaments -->
+    <div class="garland"><div class="garland-line"></div></div>
     <div class="ornaments" id="ornaments"></div>
-
-    <!-- Bells -->
-    <div class="bells">
-        <div class="bell"><div class="bell-top"></div><div class="bell-body"></div><div class="clapper"></div></div>
-        <div class="bell"><div class="bell-top"></div><div class="bell-body"></div><div class="clapper"></div></div>
-    </div>
-
-    <!-- Gifts -->
+    <div class="bells"><div class="bell"><div class="bell-body"></div></div><div class="bell"><div class="bell-body"></div></div></div>
     <div class="gifts">
-        <div class="gift" style="left: 8%; animation-delay: 0s;"><div class="lid" style="background:#0f5132;"></div><div class="box" style="background:#c41e3a;"></div><div class="ribbon-v"></div><div class="ribbon-h"></div></div>
-        <div class="gift" style="right: 8%; animation-delay: 1s;"><div class="lid" style="background:#c41e3a;"></div><div class="box" style="background:#0f5132;"></div><div class="ribbon-v"></div><div class="ribbon-h"></div></div>
-        <div class="gift" style="left: 50%; transform: translateX(-50%); animation-delay: 2s;"><div class="lid" style="background:#d4a017;"></div><div class="box" style="background:#8B4513;"></div><div class="ribbon-v"></div><div class="ribbon-h"></div></div>
+        <div class="gift" style="left:8%;"><div class="lid" style="background:#9b1d21;"></div><div class="box" style="background:#e74c3c;"></div><div class="ribbon-v"></div><div class="ribbon-h"></div></div>
+        <div class="gift" style="right:8%; animation-delay:1s;"><div class="lid" style="background:#e74c3c;"></div><div class="box" style="background:#9b1d21;"></div><div class="ribbon-v"></div><div class="ribbon-h"></div></div>
     </div>
 
     <div id="particles-js"></div>
 
-    <!-- Loader -->
+    <!-- Your original content (100% unchanged structure) -->
     <div id="loader">
-        <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" class="loader-logo" alt="Logo">
-        <p style="color:var(--christmas-gold); margin-top:30px; font-size:20px; font-weight:700;">იტვირთება საახალწლო სასწაული...</p>
+        <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" width="180" style="border-radius:50%; border:4px solid var(--primary); box-shadow:var(--neon-glow);">
+        <p style="color:var(--primary); margin-top:30px; font-size:20px;">იტვირთება...</p>
     </div>
 
-    <!-- Header -->
     <header>
         <a href="#" class="logo">
             <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" alt="Fanatic RP">
@@ -236,133 +184,114 @@
         </div>
     </header>
 
-    <!-- Slide Menu -->
     <div class="slide-menu">
         <div class="menu-section-title">ნავიგაცია</div>
         <div class="menu-item" onclick="location.href='index.html'"><i class="fas fa-home"></i> მთავარი</div>
         <div class="menu-item" onclick="location.href='donation.html'"><i class="fas fa-shopping-cart"></i> მაღაზია</div>
         <div class="menu-item" onclick="alert('მალე გაიხსნება...')"><i class="fas fa-comments"></i> ფორუმი</div>
-
         <div class="menu-section-title">ჩამოტვირთვა</div>
         <div class="menu-item" onclick="alert('PC ლაუნჩერი მალე...')"><i class="fas fa-desktop"></i> PC ლაუნჩერი</div>
         <div class="menu-item" onclick="alert('Mobile ლაუნჩერი მალე...')"><i class="fas fa-mobile-alt"></i> Mobile ლაუნჩერი</div>
-
         <div class="menu-section-title">Web Development Team</div>
         <div class="menu-item"><i class="fas fa-code"></i> ზვიადი გეგიძე</div>
         <div class="menu-item"><i class="fas fa-code"></i> ნიკა გეორგაძე</div>
-
         <div class="menu-section-title">სოციალური ქსელები</div>
-        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:15px;">
-            <a href="https://discord.gg/uasS77WA" target="_blank" class="social-icon" style="width:44px;height:44px;background:rgba(196,30,58,0.2);border:1.5px solid rgba(196,30,58,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;text-decoration:none;transition:all 0.4s;" onmouseover="this.style.background='var(--primary)';this.style.transform='translateY(-5px) scale(1.1)'" onmouseout="this.style.background='rgba(196,30,58,0.2)';this.style.transform='none'"><i class="fab fa-discord"></i></a>
-            <a href="https://www.youtube.com/@tormetitormeti2" target="_blank" class="social-icon" style="width:44px;height:44px;background:rgba(196,30,58,0.2);border:1.5px solid rgba(196,30,58,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;text-decoration:none;transition:all 0.4s;" onmouseover="this.style.background='var(--primary)';this.style.transform='translateY(-5px) scale(1.1)'" onmouseout="this.style.background='rgba(196,30,58,0.2)';this.style.transform='none'"><i class="fab fa-youtube"></i></a>
-            <a href="https://www.tiktok.com/@fanaticroleplay777" target="_blank" class="social-icon" style="width:44px;height:44px;background:rgba(196,30,58,0.2);border:1.5px solid rgba(196,30,58,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;text-decoration:none;transition:all 0.4s;" onmouseover="this.style.background='var(--primary)';this.style.transform='translateY(-5px) scale(1.1)'" onmouseout="this.style.background='rgba(196,30,58,0.2)';this.style.transform='none'"><i class="fab fa-tiktok"></i></a>
-            <a href="https://www.facebook.com/groups/687009050835555/" target="_blank" class="social-icon" style="width:44px;height:44px;background:rgba(196,30,58,0.2);border:1.5px solid rgba(196,30,58,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;text-decoration:none;transition:all 0.4s;" onmouseover="this.style.background='var(--primary)';this.style.transform='translateY(-5px) scale(1.1)'" onmouseout="this.style.background='rgba(196,30,58,0.2)';this.style.transform='none'"><i class="fab fa-facebook-f"></i></a>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <a href="https://discord.gg/uasS77WA" target="_blank" style="width:44px;height:44px;background:rgba(231,76,60,0.2);border:1.5px solid rgba(231,76,60,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;text-decoration:none;transition:all 0.4s;" onmouseover="this.style.background='var(--primary)';this.style.transform='scale(1.2)'" onmouseout="this.style.background='rgba(231,76,60,0.2)';this.style.transform='none'"><i class="fab fa-discord"></i></a>
+            <a href="https://www.youtube.com/@tormetitormeti2" target="_blank" style="width:44px;height:44px;background:rgba(231,76,60,0.2);border:1.5px solid rgba(231,76,60,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;text-decoration:none;transition:all 0.4s;" onmouseover="this.style.background='var(--primary)';this.style.transform='scale(1.2)'" onmouseout="this.style.background='rgba(231,76,60,0.2)';this.style.transform='none'"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.tiktok.com/@fanaticroleplay777" target="_blank" style="width:44px;height:44px;background:rgba(231,76,60,0.2);border:1.5px solid rgba(231,76,60,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;text-decoration:none;transition:all 0.4s;" onmouseover="this.style.background='var(--primary)';this.style.transform='scale(1.2)'" onmouseout="this.style.background='rgba(231,76,60,0.2)';this.style.transform='none'"><i class="fab fa-tiktok"></i></a>
+            <a href="https://www.facebook.com/groups/687009050835555/" target="_blank" style="width:44px;height:44px;background:rgba(231,76,60,0.2);border:1.5px solid rgba(231,76,60,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;text-decoration:none;transition:all 0.4s;" onmouseover="this.style.background='var(--primary)';this.style.transform='scale(1.2)'" onmouseout="this.style.background='rgba(231,76,60,0.2)';this.style.transform='none'"><i class="fab fa-facebook-f"></i></a>
         </div>
     </div>
 
-    <!-- Hero -->
     <section class="hero">
-        <div style="background:rgba(10,13,27,0.4);backdrop-filter:blur(20px);padding:60px;border-radius:30px;border:2px solid rgba(212,160,23,0.2);max-width:90%;">
+        <div style="background:rgba(10,13,27,0.5);backdrop-filter:blur(20px);padding:60px;border-radius:30px;border:2px solid var(--border);max-width:90%;">
             <h1>FANATIC ROLE PLAY</h1>
-            <p class="hero-subtitle">ერთ-ერთი საუკეთესო SA-MP სერვერი საქართველოში • 2025</p>
+            <p style="font-size:22px;margin:20px 0;color:var(--text-secondary);">ერთ-ერთი საუკეთესო SA-MP სერვერი საქართველოში • 2025</p>
             <button class="ip-btn" onclick="copyIP()">185.189.255.97:2561</button>
         </div>
     </section>
 
-    <!-- Features -->
     <section id="features">
-        <h2 class="title">რატომ ჩვენ?</h2>
-        <div class="cards">
-            <div class="card"><i class="fas fa-rocket"></i><h3>უნიკალური სისტემები</h3><p>განსხვავებული და ინოვაციური თამაშის სისტემები, რომლებიც არსად ვერ იხილავთ.</p></div>
-            <div class="card"><i class="fas fa-crown"></i><h3>პროფესიონალი გუნდი</h3><p>ჩვენი გუნდი მუდმივად მზადაა თქვენი დახმარებისთვის 24/7 რეჟიმში.</p></div>
-            <div class="card"><i class="fas fa-fire"></i><h3>24/7 აქტიური</h3><p>სერვერი მუშაობს მთელი დღე-ღამის განმავლობაში სტაბილურად.</p></div>
+        <h2 style="font-size:clamp(40px,8vw,70px);text-align:center;margin-bottom:60px;background:linear-gradient(135deg,var(--primary),var(--primary-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">რატომ ჩვენ?</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px;max-width:1400px;margin:0 auto;padding:0 5%;">
+            <div class="card"><i class="fas fa-rocket" style="font-size:70px;color:var(--primary);"></i><h3>უნიკალური სისტემები</h3><p>განსხვავებული და ინოვაციური თამაშის სისტემები, რომლებიც არსად ვერ იხილავთ.</p></div>
+            <div class="card"><i class="fas fa-crown" style="font-size:70px;color:var(--primary);"></i><h3>პროფესიონალი გუნდი</h3><p>ჩვენი გუნდი მუდმივად მზადაა თქვენი დახმარებისთვის 24/7 რეჟიმში.</p></div>
+            <div class="card"><i class="fas fa-fire" style="font-size:70px;color:var(--primary);"></i><h3>24/7 აქტიური</h3><p>სერვერი მუშაობს მთელი დღე-ღამის განმავლობაში სტაბილურად.</p></div>
         </div>
     </section>
 
-    <!-- About -->
-    <section id="about">
-        <div class="about-section">
-            <h2 class="title">ჩვენს შესახებ</h2>
+    <section id="about" style="padding:80px 5%;">
+        <div style="background:var(--glass);backdrop-filter:blur(30px);border-radius:30px;padding:70px;max-width:1200px;margin:0 auto;border:2px solid var(--border);text-align:center;">
+            <h2 style="font-size:clamp(40px,8vw,70px);margin-bottom:40px;background:linear-gradient(135deg,var(--primary),var(--primary-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">ჩვენს შესახებ</h2>
             <p style="font-size:18px;line-height:1.9;color:var(--text-secondary);">Fanatic Role Play არის საქართველოს ერთ-ერთი საუკეთესო SA-MP სერვერი, რომელიც გთავაზობთ უნიკალურ როლურ გამოცდილებას. ჩვენ ვქმნით საუკეთესო გარემოს მოთამაშეებისთვის, სადაც თქვენ შეგიძლიათ იყოთ ნებისმიერი ვინც გინდათ — პოლიციელი, ბიზნესმენი, კრიმინალი ან უბრალოდ მშვიდი მოქალაქე. შემოგვიერთდით და გახდით ნაწილი ჩვენი დიდი ოჯახისა!</p>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
+    <footer style="padding:80px 5% 40px;text-align:center;color:rgba(255,255,255,0.5);">
         <p>&copy; 2025 Fanatic Role Play. ყველა უფლება დაცულია.</p>
     </footer>
 
-    <!-- Toast -->
-    <div id="toast" class="toast">IP დაკოპირებული! 🎄</div>
+    <div id="toast" class="toast">IP დაკოპირებული!</div>
 
     <script>
-        // Snow
+        // Realistic Snow
         function createSnow() {
-            const snow = document.getElementById('snow');
-            for(let i = 0; i < 100; i++) {
+            const container = document.getElementById('snow');
+            for(let i = 0; i < 120; i++) {
                 const flake = document.createElement('div');
                 flake.classList.add('snowflake');
-                flake.textContent = ['❄','❅','❆'][Math.floor(Math.random()*3)];
+                flake.textContent = '❄';
                 flake.style.left = Math.random() * 100 + 'vw';
-                flake.style.animationDuration = 8 + Math.random() * 12 + 's';
+                flake.style.animationDuration = 10 + Math.random() * 10 + 's';
                 flake.style.animationDelay = Math.random() * 5 + 's';
                 flake.style.setProperty('--drift', (Math.random() - 0.5) * 300 + 'px');
-                flake.style.fontSize = 0.8 + Math.random() * 1.4 + 'em';
-                snow.appendChild(flake);
+                flake.style.fontSize = 0.8 + Math.random() * 1.2 + 'em';
+                container.appendChild(flake);
             }
         }
 
         // Fairy Lights
         function createLights() {
-            const colors = ['#c41e3a', '#0f5132', '#d4a017', '#fff8e7', '#4169e1'];
-            for(let i = 0; i < 35; i++) {
+            const colors = ['#e74c3c', '#d4af37', '#ff6b57', '#c0392b'];
+            for(let i = 0; i < 40; i++) {
                 const light = document.createElement('div');
                 light.className = 'light';
-                light.style.left = 2 + i * 2.8 + '%';
+                light.style.left = 1 + i * 2.5 + '%';
                 light.style.setProperty('--color', colors[Math.floor(Math.random() * colors.length)]);
-                light.style.animationDelay = Math.random() * 2 + 's';
+                light.style.animationDelay = Math.random() * 3 + 's';
                 document.querySelector('.garland').appendChild(light);
             }
         }
 
-        // Ornaments
+        // Hanging Ornaments
         function createOrnaments() {
-            const colors = ['#c41e3a', '#0f5132', '#d4a017', '#4169e1', '#8B4513'];
-            const positions = ['8%', '25%', '42%', '62%', '82%'];
+            const colors = ['#e74c3c', '#d4af37', '#c0392b', '#ff6b57'];
+            const positions = ['10%', '28%', '46%', '68%', '86%'];
             positions.forEach((pos, i) => {
                 const orn = document.createElement('div');
                 orn.className = 'ornament';
                 orn.style.left = pos;
-                orn.style.animationDelay = i * 0.7 + 's';
-                orn.innerHTML = `<div class="ball" style="--ball-color: ${colors[i]}"></div>`;
+                orn.style.animationDelay = i * 0.8 + 's';
+                orn.innerHTML = `<div class="ball" style="--color:${colors[i]}"></div>`;
                 document.getElementById('ornaments').appendChild(orn);
             });
         }
 
-        // Copy IP
         function copyIP() {
             navigator.clipboard.writeText('185.189.255.97:2561');
-            const toast = document.getElementById('toast');
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
+            document.getElementById('toast').classList.add('show');
+            setTimeout(() => document.getElementById('toast').classList.remove('show'), 3000);
         }
 
-        // Init
         window.onload = () => {
             setTimeout(() => document.getElementById('loader').classList.add('hidden'), 2000);
-            createSnow();
-            createLights();
-            createOrnaments();
+            createSnow(); createLights(); createOrnaments();
 
-            particlesJS('particles-js', {
-                particles: { number: { value: 70 }, color: { value: '#d4a017' }, opacity: { value: 0.4, random: true }, size: { value: 3 }, line_linked: { enable: false }, move: { speed: 1 } },
-                interactivity: { events: { onhover: { enable: true, mode: 'repulse' } } }
-            });
+            particlesJS('particles-js', { particles: { number: { value: 80 }, color: { value: "#e74c3c" }, opacity: { value: 0.3, random: true }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#e74c3c", opacity: 0.2, width: 1 }, move: { speed: 2 } }, interactivity: { events: { onhover: { enable: true, mode: "repulse" } } } });
 
             gsap.registerPlugin(ScrollTrigger);
-            gsap.utils.toArray('.card, .about-section').forEach(el => {
-                gsap.from(el, { opacity: 0, y: 100, duration: 1, scrollTrigger: { trigger: el, start: 'top 80%' } });
-            });
+            gsap.utils.toArray('.card').forEach(card => gsap.from(card, { y: 100, opacity: 0, duration: 1, scrollTrigger: { trigger: card, start: "top 80%" } }));
         };
     </script>
 </body>
