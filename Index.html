@@ -319,3 +319,38 @@
         }
         
         createSnowflakes();
+
+        function toggleMenu() {
+            document.querySelector('.burger').classList.toggle('active');
+            document.querySelector('.slide-menu').classList.toggle('active');
+        }
+
+        function copyIP() {
+            navigator.clipboard.writeText('185.189.255.97:2561').then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 3000);
+            });
+        }
+
+        function navigate(page) { window.location.href = page; }
+        function downloadLauncher(type) {
+            alert(type === 'pc' ? 'PC ლაუნჩერის ჩამოტვირთვა მალე...' : 'Mobile ლაუნჩერის ჩამოტვირთვა მალე...');
+        }
+
+        window.addEventListener('load', () => setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1500));
+
+        particlesJS('particles-js', {
+            particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: "#e74c3c" }, shape: { type: "circle" }, opacity: { value: 0.3, random: true }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#e74c3c", opacity: 0.2, width: 1 }, move: { enable: true, speed: 2, direction: "none", random: false, straight: false, out_mode: "out" } },
+            interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true } },
+            retina_detect: true
+        });
+
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.utils.toArray('.title, .about-section, footer').forEach(el => gsap.to(el, { opacity: 1, y: 0, duration: 0.8, scrollTrigger: { trigger: el, start: 'top 80%' } }));
+        gsap.to('.orb-1', { y: 300, scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom top', scrub: 1 } });
+        gsap.to('.orb-2', { y: -200, scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom top', scrub: 1 } });
+        gsap.fromTo('.ip-btn', { boxShadow: '0 15px 50px rgba(231,76,60,0.6)' }, { boxShadow: '0 15px 50px rgba(231,76,60,0.8), 0 0 30px rgba(231,76,60,0.4)', duration: 1.5, repeat: -1, yoyo: true });
+    </script>
+</body>
+</html>
