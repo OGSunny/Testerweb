@@ -9,719 +9,267 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <style>
         :root {
-            --primary: #e74c3c;
-            --primary-light: #ff6b57;
-            --primary-dark: #c0392b;
-            --secondary: #2c3e50;
-            --accent: #3498db;
-            --dark: #0a0d1b;
-            --darker: #050609;
-            --glass: rgba(15, 20, 40, 0.85);
-            --glass-light: rgba(20, 28, 50, 0.6);
-            --border: rgba(231, 76, 60, 0.3);
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.8);
-            --neon-glow: 0 0 10px #e74c3c, 0 0 20px #e74c3c, 0 0 30px #e74c3c;
-            --christmas-green: #0f7d3f;
+            --primary: #c41e3a;
+            --primary-light: #e74c3c;
             --christmas-red: #c41e3a;
-            --christmas-gold: #ffd700;
+            --christmas-green: #0f5132;
+            --christmas-gold: #d4a017;
+            --warm-white: #fff8e7;
+            --dark-bg: #0c0e17;
+            --glass: rgba(15, 20, 40, 0.92);
+            --border: rgba(212, 160, 23, 0.25);
+            --text: #ffffff;
+            --text-secondary: rgba(255,255,255,0.8);
+            --neon-glow: 0 0 20px rgba(212,160,23,0.6);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-
         body {
             font-family: 'Montserrat', sans-serif;
-            background: #000000;
-            color: var(--text-primary);
+            background: #000;
+            color: var(--text);
             overflow-x: hidden;
             min-height: 100vh;
+            background: radial-gradient(circle at top, #1a1a2e 0%, #000 70%);
         }
 
-        /* SNOW EFFECT */
+        /* === REALISTIC CHRISTMAS DECORATIONS === */
+
+        /* Snow */
         .snow-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            overflow: hidden;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 5;
         }
-        
         .snowflake {
-            position: absolute;
-            top: -10px;
-            color: #ffffff;
-            font-size: 1.5em;
-            font-weight: bold;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-            opacity: 0.8;
-            animation: snowfall linear infinite;
-            filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+            position: absolute; color: #fff; font-size: 1.2em; opacity: 0.9;
+            pointer-events: none; animation: fall linear infinite;
+            text-shadow: 0 0 8px rgba(255,255,255,0.6);
+        }
+        @keyframes fall {
+            to { transform: translateY(100vh) translateX(var(--drift)); opacity: 0; }
         }
 
-        @keyframes snowfall {
-            to {
-                transform: translateY(100vh) translateX(var(--drift));
-                opacity: 0;
-            }
+        /* Christmas Bokeh Tree Lights */
+        .christmas-bokeh {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 15% 80%, rgba(196,30,58,0.4) 0%, transparent 20%),
+                radial-gradient(circle at 85% 75%, rgba(15,81,50,0.4) 0%, transparent 20%),
+                radial-gradient(circle at 50% 90%, rgba(212,160,23,0.6) 0%, transparent 25%);
+            pointer-events: none; z-index: 1; filter: blur(90px); opacity: 0.7;
         }
 
-        /* CHRISTMAS GARLAND */
-        .christmas-garland {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 80px;
-            z-index: 1001;
-            pointer-events: none;
-            overflow: hidden;
+        /* Garland + Fairy Lights */
+        .garland {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100px;
+            pointer-events: none; z-index: 100;
         }
-        
-        .garland-string {
-            position: absolute;
-            top: 10px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent 0%, #2d5016 10%, #2d5016 90%, transparent 100%);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        .garland-line {
+            position: absolute; top: 35px; width: 100%; height: 4px;
+            background: linear-gradient(90deg, #1a3c34 0%, #2d5016 50%, #1a3c34 100%);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
         }
-        
-        .garland-light {
-            position: absolute;
-            top: 13px;
-            width: 12px;
-            height: 18px;
-            border-radius: 0 0 50% 50%;
-            animation: garlandTwinkle 2s ease-in-out infinite;
+        .light {
+            position: absolute; top: 20px; width: 14px; height: 22px;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            background: var(--color); box-shadow: 0 0 25px var(--color), 0 0 50px var(--color);
+            animation: twinkle 3s infinite;
         }
-        
-        .garland-light::before {
-            content: '';
-            position: absolute;
-            top: -4px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 6px;
-            height: 6px;
-            background: #1a1a1a;
-            border-radius: 2px;
+        .light::before {
+            content: ''; position: absolute; top: -7px; left: 50%; transform: translateX(-50%);
+            width: 6px; height: 12px; background: #333; border-radius: 3px;
         }
-        
-        .garland-light::after {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: inherit;
-            filter: blur(4px);
-            opacity: 0.6;
+        @keyframes twinkle {
+            0%,100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
         }
-        
-        @keyframes garlandTwinkle {
-            0%, 100% { opacity: 1; transform: translateY(0); }
-            50% { opacity: 0.4; transform: translateY(2px); }
-        }
-        
-        /* HANGING ORNAMENTS */
-        .ornament-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 999;
-            overflow: hidden;
-        }
-        
+
+        /* Hanging Ornaments */
+        .ornaments { position: fixed; top: 90px; left: 0; width: 100%; pointer-events: none; z-index: 99; }
         .ornament {
-            position: absolute;
-            width: 40px;
-            height: 50px;
-            animation: ornamentSwing 4s ease-in-out infinite;
-            transform-origin: top center;
+            position: absolute; width: 70px; height: 90px;
+            animation: sway 7s ease-in-out infinite;
         }
-        
-        .ornament-string {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 1px;
-            height: 20px;
-            background: linear-gradient(to bottom, #d4af37, transparent);
+        .ornament::before {
+            content: ''; position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
+            width: 2px; height: 50px; background: linear-gradient(to bottom, #aaa, transparent);
         }
-        
-        .ornament-ball {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--ornament-color) 0%, var(--ornament-color-dark) 100%);
-            box-shadow: 
-                inset -5px -5px 15px rgba(0,0,0,0.3),
-                inset 5px 5px 10px rgba(255,255,255,0.3),
-                0 5px 15px rgba(0,0,0,0.4);
-        }
-        
-        .ornament-ball::before {
-            content: '';
-            position: absolute;
-            top: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 12px;
-            height: 12px;
-            background: radial-gradient(circle, #d4af37, #8b7355);
-            border-radius: 50% 50% 0 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .ornament-ball::after {
-            content: '';
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            width: 12px;
-            height: 12px;
-            background: rgba(255,255,255,0.6);
-            border-radius: 50%;
-            filter: blur(2px);
-        }
-        
-        @keyframes ornamentSwing {
-            0%, 100% { transform: rotate(-5deg); }
-            50% { transform: rotate(5deg); }
-        }
-        
-        /* BELLS */
-        .bells-container {
-            position: fixed;
-            top: 60px;
-            right: 5%;
-            z-index: 1000;
-            pointer-events: none;
-            animation: bellsSwing 3s ease-in-out infinite;
-            transform-origin: top center;
-        }
-        
-        .bell {
+        .ball {
+            width: 70px; height: 70px; border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #fff, var(--ball-color) 60%, #000);
+            box-shadow: inset -12px -12px 25px rgba(0,0,0,0.4), inset 12px 12px 20px rgba(255,255,255,0.2), 0 15px 40px rgba(0,0,0,0.6);
             position: relative;
-            width: 50px;
-            height: 60px;
-            margin: 10px;
-            display: inline-block;
         }
-        
-        .bell-body {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #ffd700 0%, #daa520 100%);
-            border-radius: 0 0 50% 50%;
-            box-shadow: 
-                inset -3px -3px 8px rgba(0,0,0,0.3),
-                inset 3px 3px 8px rgba(255,255,255,0.3),
-                0 5px 15px rgba(0,0,0,0.4);
+        .ball::after {
+            content: ''; position: absolute; top: 12px; left: 18px;
+            width: 25px; height: 40px; background: linear-gradient(135deg, rgba(255,255,255,0.7), transparent);
+            border-radius: 50%; filter: blur(5px);
         }
-        
-        .bell-body::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 15px;
-            height: 15px;
-            background: #8b7355;
-            border-radius: 50% 50% 0 0;
-        }
-        
-        .bell-clapper {
-            position: absolute;
-            bottom: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 8px;
-            height: 15px;
-            background: #4a4a4a;
-            border-radius: 0 0 50% 50%;
-            animation: bellClapperSwing 3s ease-in-out infinite;
-        }
-        
-        @keyframes bellsSwing {
-            0%, 100% { transform: rotate(-3deg); }
-            50% { transform: rotate(3deg); }
-        }
-        
-        @keyframes bellClapperSwing {
-            0%, 100% { transform: translateX(-50%) rotate(-5deg); }
-            50% { transform: translateX(-50%) rotate(5deg); }
-        }
-        
-        /* GIFT BOXES */
-        .gift-box {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            animation: giftFloat 4s ease-in-out infinite;
-        }
-        
-        .gift-box-body {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 75%;
-            background: linear-gradient(135deg, var(--gift-color) 0%, var(--gift-color-dark) 100%);
-            border-radius: 5px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-        }
-        
-        .gift-box-lid {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            height: 30%;
-            background: linear-gradient(135deg, var(--gift-lid-color) 0%, var(--gift-lid-color-dark) 100%);
-            border-radius: 5px 5px 0 0;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-        
-        .gift-ribbon-v {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 10px;
-            height: 100%;
-            background: #d4af37;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
-        }
-        
-        .gift-ribbon-h {
-            position: absolute;
-            top: 25%;
-            left: 0;
-            width: 100%;
-            height: 10px;
-            background: #d4af37;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
-        }
-        
-        .gift-bow {
-            position: absolute;
-            top: 15%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 30px;
-            height: 20px;
-        }
-        
-        .gift-bow::before,
-        .gift-bow::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            width: 15px;
-            height: 20px;
-            background: #ff6b6b;
-            border-radius: 50% 50% 50% 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
-        
-        .gift-bow::before {
-            left: 0;
-            transform: rotate(-45deg);
-        }
-        
-        .gift-bow::after {
-            right: 0;
-            transform: rotate(45deg) scaleX(-1);
-        }
-        
-        @keyframes giftFloat {
-            0%, 100% { transform: translateY(0) rotate(-2deg); }
-            50% { transform: translateY(-10px) rotate(2deg); }
-        }
+        @keyframes sway { 0%,100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } }
 
-        /* LOADER */
-        #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at center, #0a0d1b 0%, #000000 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 1s ease-out, visibility 1s ease-out; }
+        /* Golden Bells */
+        .bells {
+            position: fixed; top: 80px; right: 6%; z-index: 100;
+            animation: bell-swing 5s ease-in-out infinite;
+        }
+        .bell { display: inline-block; width: 65px; height: 75px; margin: 0 12px; position: relative; }
+        .bell-top { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 22px; height: 16px; background: #b8860b; border-radius: 10px 10px 0 0; }
+        .bell-body { width: 100%; height: 65px; background: linear-gradient(135deg, #fadb5d, #b8860b); border-radius: 0 0 50% 50%; box-shadow: inset -12px -12px 20px rgba(0,0,0,0.3); }
+        .clapper { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); width: 12px; height: 22px; background: #444; border-radius: 50%; animation: clapper 2s infinite; }
+        @keyframes bell-swing { 0%,100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+        @keyframes clapper { 0%,100% { transform: translateX(-50%) rotate(-10deg); } 50% { transform: translateX(-50%) rotate(10deg); } }
+
+        /* Gift Boxes */
+        .gifts { position: fixed; bottom: 20px; z-index: 10; pointer-events: none; }
+        .gift { position: absolute; width: 90px; height: 90px; animation: float 6s ease-in-out infinite; }
+        .lid { width: 110%; height: 35%; background: var(--lid); position: absolute; top: -12px; left: -5%; border-radius: 8px; }
+        .box { width: 100%; height: 70%; background: var(--box); border-radius: 8px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); position: relative; }
+        .ribbon-v { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 18px; height: 100%; background: var(--christmas-gold); }
+        .ribbon-h { position: absolute; top: 50%; left: 0; transform: translateY(-50%); width: 100%; height: 18px; background: var(--christmas-gold); }
+        @keyframes float { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-20px) rotate(2deg); } }
+
+        /* Particles Background */
+        #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; }
+
+        /* Loader */
+        #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 1s; }
         #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-        .loader-container { position: relative; width: 200px; height: 200px; display: flex; align-items: center; justify-content: center; }
-        .loader-logo { width: 160px; height: 160px; object-fit: contain; border-radius: 50%; filter: drop-shadow(var(--neon-glow)); animation: logoFloat 4s cubic-bezier(0.43, 0.13, 0.23, 0.96) infinite; }
-        .loader-ring { position: absolute; width: 220px; height: 220px; border: 3px solid transparent; border-top: 3px solid var(--primary); border-right: 3px solid var(--primary-light); border-radius: 50%; animation: spin 3s linear infinite; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: var(--neon-glow); }
-        .loader-dots { display: flex; gap: 12px; margin-top: 60px; }
-        .dot { width: 14px; height: 14px; background: var(--primary); border-radius: 50%; box-shadow: var(--neon-glow); animation: dotPulse 1.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; }
-        .dot:nth-child(2) { animation-delay: 0.15s; }
-        .dot:nth-child(3) { animation-delay: 0.3s; }
-        .loader-text { margin-top: 30px; font-size: 14px; font-weight: 600; letter-spacing: 2px; color: var(--primary); text-transform: uppercase; animation: textGlow 2s ease-in-out infinite; text-shadow: var(--neon-glow); }
+        .loader-logo { width: 180px; border-radius: 50%; border: 5px solid var(--christmas-gold); box-shadow: 0 0 40px rgba(212,160,23,0.8); animation: float 4s infinite; }
 
-        @keyframes logoFloat { 0%,100% { transform: translateY(0) scale(1); } 25% { transform: translateY(-25px) scale(1.05); } 50% { transform: translateY(-40px) scale(1.08); } 75% { transform: translateY(-20px) scale(1.05); } }
-        @keyframes spin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
-        @keyframes dotPulse { 0%,100% { transform: scale(0.4); opacity: 0.3; } 50% { transform: scale(1); opacity: 1; } }
-        @keyframes textGlow { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
-
-        /* BACKGROUND */
-        #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -2; background: radial-gradient(ellipse at top, #1a1f3a 0%, #000000 50%); }
-        .glow-orbs { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; overflow: hidden; pointer-events: none; }
-        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.2; }
-        .orb-1 { width: 500px; height: 500px; background: var(--primary); top: -10%; left: 10%; animation: float 20s ease-in-out infinite; }
-        .orb-2 { width: 400px; height: 400px; background: var(--accent); top: 50%; right: 5%; animation: float 25s ease-in-out infinite reverse; }
-        .orb-3 { width: 450px; height: 450px; background: #9b59b6; bottom: 10%; left: 40%; animation: float 30s ease-in-out infinite; }
-        @keyframes float { 0%,100% { transform: translate(0,0); } 33% { transform: translate(50px,-50px); } 66% { transform: translate(-30px,30px); } }
-
-        /* HEADER */
-        header { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            padding: 20px 5%; 
-            background: var(--glass); 
-            backdrop-filter: blur(30px); 
-            border-bottom: 1px solid var(--border); 
-            z-index: 1000; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6); 
-        }
-        
-        .logo { 
-            display: flex; 
-            align-items: center; 
-            gap: 16px; 
-            font-size: 26px; 
-            font-weight: 900; 
-            color: white; 
-            text-decoration: none; 
-            letter-spacing: 1px; 
-            position: relative;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, rgba(193, 30, 58, 0.15), rgba(15, 125, 63, 0.15));
-            border-radius: 50px;
-            border: 2px solid transparent;
-            background-clip: padding-box;
-        }
-        
-        .logo::before {
-            content: '🎄';
-            position: absolute;
-            left: -15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 28px;
-            animation: sway 3s ease-in-out infinite;
-        }
-        
-        .logo::after {
-            content: '🎅';
-            position: absolute;
-            right: -15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 28px;
-            animation: bounce 2s ease-in-out infinite;
-        }
-        
-        @keyframes sway {
-            0%, 100% { transform: translateY(-50%) rotate(-5deg); }
-            50% { transform: translateY(-50%) rotate(5deg); }
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(-50%); }
-            50% { transform: translateY(-60%); }
-        }
-        
-        .logo-decoration {
-            position: absolute;
-            pointer-events: none;
-        }
-        
-        .logo-decoration.lights {
-            top: -8px;
-            left: 0;
-            right: 0;
-            height: 6px;
-            background: linear-gradient(90deg, 
-                var(--christmas-red) 0%, 
-                var(--christmas-gold) 20%, 
-                var(--christmas-green) 40%, 
-                var(--christmas-red) 60%, 
-                var(--christmas-gold) 80%, 
-                var(--christmas-green) 100%);
-            border-radius: 50px;
-            animation: lightsPulse 2s ease-in-out infinite;
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
-        }
-        
-        @keyframes lightsPulse {
-            0%, 100% { opacity: 1; box-shadow: 0 0 10px rgba(255, 215, 0, 0.6); }
-            50% { opacity: 0.6; box-shadow: 0 0 20px rgba(255, 215, 0, 0.9); }
-        }
-        
-        .logo img { 
-            width: 50px; 
-            height: 50px; 
-            border-radius: 50%; 
-            transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); 
-            object-fit: cover; 
-            border: 3px solid var(--christmas-gold);
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-        }
-        
-        .logo:hover img { 
-            transform: scale(1.15) rotate(360deg); 
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
-        }
-        
-        .burger { display: flex; flex-direction: column; gap: 6px; cursor: pointer; z-index: 1001; }
-        .burger span { width: 28px; height: 2.5px; background: white; border-radius: 3px; transition: 0.5s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        /* Header */
+        header { position: fixed; top: 0; width: 100%; padding: 20px 5%; background: var(--glass); backdrop-filter: blur(30px); border-bottom: 1px solid var(--border); z-index: 1000; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
+        .logo { display: flex; align-items: center; gap: 16px; font-size: 28px; font-weight: 900; color: white; text-decoration: none; }
+        .logo img { width: 60px; height: 60px; border-radius: 50%; border: 4px solid var(--christmas-gold); box-shadow: 0 0 25px rgba(212,160,23,0.7); transition: all 0.4s; }
+        .logo:hover img { transform: scale(1.1) rotate(360deg); }
+        .burger { cursor: pointer; }
+        .burger span { width: 32px; height: 3px; background: white; display: block; margin: 6px 0; transition: 0.4s; border-radius: 3px; }
         .burger.active span:nth-child(1) { transform: rotate(45deg) translate(10px,10px); }
-        .burger.active span:nth-child(2) { opacity: 0; transform: translateX(15px); }
+        .burger.active span:nth-child(2) { opacity: 0; }
         .burger.active span:nth-child(3) { transform: rotate(-45deg) translate(8px,-8px); }
 
+        /* Slide Menu */
         .slide-menu { position: fixed; top: 0; right: -100%; width: 350px; height: 100vh; background: linear-gradient(135deg, rgba(10,13,27,0.98), rgba(20,28,50,0.95)); backdrop-filter: blur(30px); border-left: 1px solid var(--border); padding: 100px 30px 40px; transition: right 0.6s cubic-bezier(0.34,1.56,0.64,1); z-index: 999; box-shadow: -15px 0 60px rgba(0,0,0,0.7); overflow-y: auto; }
         .slide-menu.active { right: 0; }
         .menu-section-title { font-size: 10px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin: 28px 0 14px; font-weight: 700; letter-spacing: 1.5px; }
         .menu-item { padding: 16px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 16px; font-weight: 600; color: white; cursor: pointer; transition: all 0.4s; display: flex; align-items: center; gap: 14px; border-radius: 10px; }
         .menu-item i { font-size: 18px; color: var(--primary); width: 20px; }
-        .menu-item:hover { color: var(--primary); padding-left: 20px; background: rgba(231,76,60,0.1); box-shadow: var(--neon-glow); }
-        .social-icons { display: flex; gap: 12px; margin-top: 35px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; }
-        .social-icon { width: 44px; height: 44px; background: rgba(231,76,60,0.1); border: 1.5px solid rgba(231,76,60,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; transition: all 0.4s; text-decoration: none; }
-        .social-icon:hover { background: var(--primary); border-color: var(--primary); transform: translateY(-5px) scale(1.1); box-shadow: var(--neon-glow); }
+        .menu-item:hover { color: var(--primary); padding-left: 20px; background: rgba(196,30,58,0.15); box-shadow: var(--neon-glow); }
 
-        .team-member { padding: 12px 14px; font-size: 14px; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 10px; border-radius: 8px; background: rgba(231,76,60,0.05); margin-bottom: 8px; }
-        .team-member i { font-size: 16px; color: var(--primary); }
+        /* Hero */
+        .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 140px 5% 80px; position: relative; }
+        .hero h1 { font-size: clamp(50px,10vw,100px); font-weight: 900; background: linear-gradient(135deg, #fff, var(--christmas-gold), var(--christmas-red)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 3px; }
+        .hero-subtitle { font-size: clamp(18px,4vw,26px); color: var(--text-secondary); margin: 20px 0; }
+        .ip-btn { padding: 24px 80px; font-size: clamp(20px,3vw,32px); background: linear-gradient(135deg, var(--christmas-red), #a1172e); color: white; border: none; border-radius: 60px; cursor: pointer; box-shadow: 0 15px 50px rgba(196,30,58,0.6); transition: all 0.5s; letter-spacing: 2px; font-weight: 800; }
+        .ip-btn:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 30px 80px rgba(196,30,58,0.9); }
 
-        /* HERO */
-        .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 140px 5% 60px; position: relative; overflow: hidden; }
-        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%); z-index: 2; }
-        .hero-content { position: relative; z-index: 3; background: rgba(10, 13, 27, 0.35); backdrop-filter: blur(20px); padding: 60px 40px; border-radius: 30px; border: 1px solid rgba(231, 76, 60, 0.15); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; align-items: center; gap: 28px; max-width: 90%; transition: all 0.6s ease; }
-        .hero-content:hover { background: rgba(10, 13, 27, 0.45); border-color: rgba(231, 76, 60, 0.25); }
-        .hero h1 { font-size: clamp(48px,10vw,90px); font-weight: 900; background: linear-gradient(135deg,#ffffff 0%,var(--primary-light) 40%,var(--primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 4px; line-height: 1.2; filter: drop-shadow(0 10px 30px rgba(231,76,60,0.5)); animation: neonPulse 3s ease-in-out infinite; }
-        .hero-subtitle { font-size: clamp(18px,4vw,26px); color: rgba(255, 255, 255, 0.85); font-weight: 500; letter-spacing: 2px; }
-        .ip-btn { padding: 24px 70px; font-size: clamp(20px,3vw,30px); font-weight: 800; background: linear-gradient(135deg,var(--primary),var(--primary-light),var(--primary-dark)); color: white; border: 3px solid rgba(255,255,255,0.3); border-radius: 60px; cursor: pointer; transition: all 0.5s cubic-bezier(0.34,1.56,0.64,1); position: relative; overflow: hidden; letter-spacing: 2px; box-shadow: 0 15px 50px rgba(231,76,60,0.5); font-family: 'Space Mono', monospace; border: none; }
-        .ip-btn:before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent); transition: left 0.8s; }
-        .ip-btn:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 30px 80px rgba(231,76,60,1); }
-        .ip-btn:hover:before { left: 100%; }
-        @keyframes neonPulse { 0%,100% { filter: drop-shadow(0 10px 30px rgba(231,76,60,0.5)); } 50% { filter: drop-shadow(0 10px 50px rgba(231,76,60,0.9)); } }
+        /* Sections */
+        section { padding: 80px 5%; }
+        .title { font-size: clamp(40px,8vw,70px); text-align: center; margin-bottom: 60px; background: linear-gradient(135deg, var(--christmas-red), var(--christmas-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 40px; max-width: 1400px; margin: 0 auto; }
+        .card { background: var(--glass); backdrop-filter: blur(25px); border: 2px solid var(--border); border-radius: 25px; padding: 50px 30px; text-align: center; transition: all 0.6s; box-shadow: 0 15px 50px rgba(0,0,0,0.5); }
+        .card:hover { transform: translateY(-20px); border-color: var(--christmas-gold); box-shadow: 0 30px 80px rgba(212,160,23,0.4), var(--neon-glow); }
+        .card i { font-size: 70px; color: var(--christmas-gold); margin-bottom: 20px; }
 
-        /* SECTIONS */
-        section { padding: clamp(60px,8vw,80px) 5%; position: relative; z-index: 2; }
-        section#features { padding-top: clamp(40px,6vw,60px); }
-        .title { font-size: clamp(40px,8vw,70px); font-weight: 900; text-align: center; margin-bottom: clamp(40px,6vw,60px); background: linear-gradient(135deg,#e74c3c 0%,#ff8c7a 50%,var(--primary-light) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 2px; filter: drop-shadow(0 5px 20px rgba(231,76,60,0.4)); }
-        .cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(300px,1fr)); gap: clamp(30px,5vw,50px); max-width: 1400px; margin: 0 auto; }
-        .card { background: var(--glass); backdrop-filter: blur(25px); border: 2px solid var(--border); border-radius: 25px; padding: clamp(40px,6vw,60px); text-align: center; transition: all 0.6s cubic-bezier(0.34,1.56,0.64,1); position: relative; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-        .card:hover { transform: translateY(-20px) scale(1.03); border-color: var(--primary); box-shadow: 0 30px 70px rgba(231,76,60,0.4), var(--neon-glow); }
-        .card i { font-size: clamp(50px,10vw,80px); color: var(--primary); margin-bottom: 30px; filter: drop-shadow(var(--neon-glow)); transition: all 0.6s; }
-        .card:hover i { transform: scale(1.3) rotate(-15deg); }
-        .card h3 { font-size: clamp(22px,4vw,28px); margin-bottom: 16px; font-weight: 700; }
-        .card p { font-size: clamp(15px,2.5vw,18px); color: var(--text-secondary); line-height: 1.7; }
+        .about-section { background: var(--glass); backdrop-filter: blur(30px); border-radius: 30px; padding: 70px; max-width: 1200px; margin: 0 auto; border: 2px solid var(--border); text-align: center; }
 
-        .about-section { background: var(--glass); backdrop-filter: blur(30px); border-radius: 30px; padding: clamp(50px,10vw,80px); margin: 0 auto; max-width: 1200px; border: 2px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,0.4), var(--neon-glow); }
-        .about-section h2 { font-size: clamp(36px,8vw,60px); text-align: center; margin-bottom: 35px; background: linear-gradient(135deg,#e74c3c 0%,#ff8c7a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .about-section p { font-size: clamp(16px,3vw,20px); line-height: 1.9; color: var(--text-secondary); text-align: center; }
+        footer { padding: 80px 5% 40px; text-align: center; color: rgba(255,255,255,0.5); }
 
-        footer { background: linear-gradient(135deg,rgba(5,6,9,0.95),rgba(10,13,27,0.95)); backdrop-filter: blur(20px); padding: clamp(60px,10vw,90px) 5% clamp(40px,6vw,60px); text-align: center; border-top: 2px solid var(--border); }
-        footer p { font-size: clamp(14px,2vw,16px); color: rgba(255,255,255,0.5); font-weight: 500; }
-
-        .toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg,var(--primary),var(--primary-light)); color: white; padding: 20px 50px; border-radius: 50px; font-weight: 700; font-size: 16px; box-shadow: var(--neon-glow); z-index: 10000; transition: bottom 0.5s cubic-bezier(0.34,1.56,0.64,1); border: 2px solid rgba(255,255,255,0.3); }
+        .toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--christmas-red), var(--christmas-green)); color: white; padding: 20px 50px; border-radius: 50px; font-weight: 700; box-shadow: var(--neon-glow); z-index: 10000; transition: bottom 0.5s; }
         .toast.show { bottom: 50px; }
 
         @media (max-width: 768px) {
-            .hero { padding: 120px 5% 40px; }
-            .hero-content { padding: 50px 30px; gap: 28px; }
-            .ip-btn { padding: 20px 50px; }
-            section { padding: clamp(40px,6vw,60px) 5%; }
-            section#features { padding-top: clamp(30px,5vw,40px); }
-            .logo::before { left: -10px; font-size: 20px; }
-            .logo::after { right: -10px; font-size: 20px; }
-            .ornament { width: 30px; height: 40px; }
-            .ornament-ball { width: 30px; height: 30px; }
-            .gift-box { width: 45px; height: 45px; }
-            .bells-container { right: 2%; top: 70px; }
-            .bell { width: 35px; height: 45px; }
-            .bell-body { width: 35px; height: 35px; }
-        }
-        @media (max-width: 480px) {
-            .logo { font-size: 20px; padding: 8px 15px; }
-            .logo img { width: 40px; height: 40px; }
-            .ip-btn { padding: 18px 40px; }
-            .slide-menu { width: 90%; }
-            .logo::before { left: -8px; font-size: 18px; }
-            .logo::after { right: -8px; font-size: 18px; }
-            .christmas-garland { height: 60px; }
-            .garland-light { width: 10px; height: 15px; }
-            .ornament { display: none; }
-            .bells-container { display: none; }
-            .gift-box { width: 40px; height: 40px; }
+            .ornament, .bell, .gift { transform: scale(0.75); }
+            .light { width: 10px; height: 16px; }
+            .bells { right: 3%; }
         }
     </style>
 </head>
 <body>
 
-    <!-- CHRISTMAS GARLAND -->
-    <div class="christmas-garland">
-        <div class="garland-string"></div>
-        <div class="garland-light" style="left: 5%; background: #c41e3a; animation-delay: 0s;"></div>
-        <div class="garland-light" style="left: 12%; background: #ffd700; animation-delay: 0.2s;"></div>
-        <div class="garland-light" style="left: 19%; background: #0f7d3f; animation-delay: 0.4s;"></div>
-        <div class="garland-light" style="left: 26%; background: #c41e3a; animation-delay: 0.6s;"></div>
-        <div class="garland-light" style="left: 33%; background: #ffd700; animation-delay: 0.8s;"></div>
-        <div class="garland-light" style="left: 40%; background: #0f7d3f; animation-delay: 1s;"></div>
-        <div class="garland-light" style="left: 47%; background: #c41e3a; animation-delay: 1.2s;"></div>
-        <div class="garland-light" style="left: 54%; background: #ffd700; animation-delay: 1.4s;"></div>
-        <div class="garland-light" style="left: 61%; background: #0f7d3f; animation-delay: 1.6s;"></div>
-        <div class="garland-light" style="left: 68%; background: #c41e3a; animation-delay: 0.3s;"></div>
-        <div class="garland-light" style="left: 75%; background: #ffd700; animation-delay: 0.5s;"></div>
-        <div class="garland-light" style="left: 82%; background: #0f7d3f; animation-delay: 0.7s;"></div>
-        <div class="garland-light" style="left: 89%; background: #c41e3a; animation-delay: 0.9s;"></div>
-        <div class="garland-light" style="left: 96%; background: #ffd700; animation-delay: 1.1s;"></div>
+    <!-- Christmas Bokeh + Snow -->
+    <div class="christmas-bokeh"></div>
+    <div class="snow-container" id="snow"></div>
+
+    <!-- Garland + Lights -->
+    <div class="garland">
+        <div class="garland-line"></div>
     </div>
 
-    <!-- HANGING ORNAMENTS -->
-    <div class="ornament-container">
-        <div class="ornament" style="left: 8%; top: 80px; --ornament-color: #c41e3a; --ornament-color-dark: #8b0000; animation-delay: 0s;">
-            <div class="ornament-string"></div>
-            <div class="ornament-ball"></div>
-        </div>
-        <div class="ornament" style="left: 25%; top: 80px; --ornament-color: #0f7d3f; --ornament-color-dark: #0a5a2e; animation-delay: 1s;">
-            <div class="ornament-string"></div>
-            <div class="ornament-ball"></div>
-        </div>
-        <div class="ornament" style="left: 45%; top: 80px; --ornament-color: #ffd700; --ornament-color-dark: #daa520; animation-delay: 2s;">
-            <div class="ornament-string"></div>
-            <div class="ornament-ball"></div>
-        </div>
-        <div class="ornament" style="right: 25%; top: 80px; --ornament-color: #4169e1; --ornament-color-dark: #1e3a8a; animation-delay: 1.5s;">
-            <div class="ornament-string"></div>
-            <div class="ornament-ball"></div>
-        </div>
-        <div class="ornament" style="right: 8%; top: 80px; --ornament-color: #9370db; --ornament-color-dark: #663399; animation-delay: 0.5s;">
-            <div class="ornament-string"></div>
-            <div class="ornament-ball"></div>
-        </div>
+    <!-- Ornaments -->
+    <div class="ornaments" id="ornaments"></div>
+
+    <!-- Bells -->
+    <div class="bells">
+        <div class="bell"><div class="bell-top"></div><div class="bell-body"></div><div class="clapper"></div></div>
+        <div class="bell"><div class="bell-top"></div><div class="bell-body"></div><div class="clapper"></div></div>
     </div>
 
-    <!-- BELLS -->
-    <div class="bells-container">
-        <div class="bell">
-            <div class="bell-body"></div>
-            <div class="bell-clapper"></div>
-        </div>
-        <div class="bell">
-            <div class="bell-body"></div>
-            <div class="bell-clapper"></div>
-        </div>
+    <!-- Gifts -->
+    <div class="gifts">
+        <div class="gift" style="left: 8%; animation-delay: 0s;"><div class="lid" style="background:#0f5132;"></div><div class="box" style="background:#c41e3a;"></div><div class="ribbon-v"></div><div class="ribbon-h"></div></div>
+        <div class="gift" style="right: 8%; animation-delay: 1s;"><div class="lid" style="background:#c41e3a;"></div><div class="box" style="background:#0f5132;"></div><div class="ribbon-v"></div><div class="ribbon-h"></div></div>
+        <div class="gift" style="left: 50%; transform: translateX(-50%); animation-delay: 2s;"><div class="lid" style="background:#d4a017;"></div><div class="box" style="background:#8B4513;"></div><div class="ribbon-v"></div><div class="ribbon-h"></div></div>
     </div>
 
-    <!-- GIFT BOXES -->
-    <div class="ornament-container">
-        <div class="gift-box" style="left: 5%; bottom: 5%; --gift-color: #c41e3a; --gift-color-dark: #8b0000; --gift-lid-color: #0f7d3f; --gift-lid-color-dark: #0a5a2e; animation-delay: 0s;">
-            <div class="gift-box-lid"></div>
-            <div class="gift-box-body"></div>
-            <div class="gift-ribbon-v"></div>
-            <div class="gift-ribbon-h"></div>
-            <div class="gift-bow"></div>
-        </div>
-        <div class="gift-box" style="right: 5%; bottom: 5%; --gift-color: #0f7d3f; --gift-color-dark: #0a5a2e; --gift-lid-color: #c41e3a; --gift-lid-color-dark: #8b0000; animation-delay: 1s;">
-            <div class="gift-box-lid"></div>
-            <div class="gift-box-body"></div>
-            <div class="gift-ribbon-v"></div>
-            <div class="gift-ribbon-h"></div>
-            <div class="gift-bow"></div>
-        </div>
-        <div class="gift-box" style="left: 50%; transform: translateX(-50%); bottom: 8%; --gift-color: #ffd700; --gift-color-dark: #daa520; --gift-lid-color: #c41e3a; --gift-lid-color-dark: #8b0000; animation-delay: 2s;">
-            <div class="gift-box-lid"></div>
-            <div class="gift-box-body"></div>
-            <div class="gift-ribbon-v"></div>
-            <div class="gift-ribbon-h"></div>
-            <div class="gift-bow"></div>
-        </div>
-    </div>
-
-    <div class="snow-container" id="snowContainer"></div>
-
-    <div class="glow-orbs">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
     <div id="particles-js"></div>
 
-    <!-- LOADER -->
+    <!-- Loader -->
     <div id="loader">
-        <div class="loader-container">
-            <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" alt="Logo" class="loader-logo">
-            <div class="loader-ring"></div>
-        </div>
-        <div class="loader-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-        <div class="loader-text">იტვირთება...</div>
+        <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" class="loader-logo" alt="Logo">
+        <p style="color:var(--christmas-gold); margin-top:30px; font-size:20px; font-weight:700;">იტვირთება საახალწლო სასწაული...</p>
     </div>
 
+    <!-- Header -->
     <header>
-        <a href="index.html" class="logo">
-            <div class="logo-decoration lights"></div>
+        <a href="#" class="logo">
             <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" alt="Fanatic RP">
             <span>FANATIC RP</span>
         </a>
-        <div class="burger" onclick="toggleMenu()">
+        <div class="burger" onclick="this.classList.toggle('active'); document.querySelector('.slide-menu').classList.toggle('active')">
             <span></span><span></span><span></span>
         </div>
     </header>
 
-    <!-- SLIDE MENU WITH NEW ITEMS -->
+    <!-- Slide Menu -->
     <div class="slide-menu">
         <div class="menu-section-title">ნავიგაცია</div>
-        <div class="menu-item" onclick="navigate('index.html')"><i class="fas fa-home"></i> მთავარი</div>
-        <div class="menu-item" onclick="navigate('donation.html')"><i class="fas fa-shopping-cart"></i> მაღაზია</div>
+        <div class="menu-item" onclick="location.href='index.html'"><i class="fas fa-home"></i> მთავარი</div>
+        <div class="menu-item" onclick="location.href='donation.html'"><i class="fas fa-shopping-cart"></i> მაღაზია</div>
         <div class="menu-item" onclick="alert('მალე გაიხსნება...')"><i class="fas fa-comments"></i> ფორუმი</div>
 
         <div class="menu-section-title">ჩამოტვირთვა</div>
-        <div class="menu-item" onclick="downloadLauncher('pc')"><i class="fas fa-desktop"></i> PC ლაუნჩერი</div>
-        <div class="menu-item" onclick="downloadLauncher('mobile')"><i class="fas fa-mobile-alt"></i> Mobile ლაუნჩერი</div>
+        <div class="menu-item" onclick="alert('PC ლაუნჩერი მალე...')"><i class="fas fa-desktop"></i> PC ლაუნჩერი</div>
+        <div class="menu-item" onclick="alert('Mobile ლაუნჩერი მალე...')"><i class="fas fa-mobile-alt"></i> Mobile ლაუნჩერი</div>
 
         <div class="menu-section-title">Web Development Team</div>
-        <div class="team-member"><i class="fas fa-code"></i> ზვიადი გეგიძე</div>
-        <div class="team-member"><i class="fas fa-code"></i> ნიკა გეორგაძე</div>
+        <div class="menu-item"><i class="fas fa-code"></i> ზვიადი გეგიძე</div>
+        <div class="menu-item"><i class="fas fa-code"></i> ნიკა გეორგაძე</div>
 
         <div class="menu-section-title">სოციალური ქსელები</div>
-        <div class="social-icons">
-            <a href="https://discord.gg/uasS77WA" target="_blank" class="social-icon"><i class="fab fa-discord"></i></a>
-            <a href="https://www.youtube.com/@tormetitormeti2" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
-            <a href="https://www.tiktok.com/@fanaticroleplay777" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
-            <a href="https://www.facebook.com/groups/687009050835555/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:15px;">
+            <a href="https://discord.gg/uasS77WA" target="_blank" class="social-icon" style="width:44px;height:44px;background:rgba(196,30,58,0.2);border:1.5px solid rgba(196,30,58,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;text-decoration:none;transition:all 0.4s;" onmouseover="this.style.background='var(--primary)';this.style.transform='translateY(-5px) scale(1.1)'" onmouseout="this.style.background='rgba(196,30,58,0.2)';this.style.transform='none'"><i class="fab fa-discord"></i></a>
+            <a href="https://www.youtube.com/@tormetitormeti2" target="_blank" class="social-icon" style="width:44px;height:44px;background:rgba(196,30,58,0.2);border:1.5px solid rgba(196,30,58,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;text-decoration:none;transition:all 0.4s;" onmouseover="this.style.background='var(--primary)';this.style.transform='translateY(-5px) scale(1.1)'" onmouseout="this.style.background='rgba(196,30,58,0.2)';this.style.transform='none'"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.tiktok.com/@fanaticroleplay777" target="_blank" class="social-icon" style="width:44px;height:44px;background:rgba(196,30,58,0.2);border:1.5px solid rgba(196,30,58,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;text-decoration:none;transition:all 0.4s;" onmouseover="this.style.background='var(--primary)';this.style.transform='translateY(-5px) scale(1.1)'" onmouseout="this.style.background='rgba(196,30,58,0.2)';this.style.transform='none'"><i class="fab fa-tiktok"></i></a>
+            <a href="https://www.facebook.com/groups/687009050835555/" target="_blank" class="social-icon" style="width:44px;height:44px;background:rgba(196,30,58,0.2);border:1.5px solid rgba(196,30,58,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:18px;text-decoration:none;transition:all 0.4s;" onmouseover="this.style.background='var(--primary)';this.style.transform='translateY(-5px) scale(1.1)'" onmouseout="this.style.background='rgba(196,30,58,0.2)';this.style.transform='none'"><i class="fab fa-facebook-f"></i></a>
         </div>
     </div>
 
-    <section class="hero" id="home">
-        <div class="hero-content">
+    <!-- Hero -->
+    <section class="hero">
+        <div style="background:rgba(10,13,27,0.4);backdrop-filter:blur(20px);padding:60px;border-radius:30px;border:2px solid rgba(212,160,23,0.2);max-width:90%;">
             <h1>FANATIC ROLE PLAY</h1>
             <p class="hero-subtitle">ერთ-ერთი საუკეთესო SA-MP სერვერი საქართველოში • 2025</p>
             <button class="ip-btn" onclick="copyIP()">185.189.255.97:2561</button>
         </div>
     </section>
 
+    <!-- Features -->
     <section id="features">
         <h2 class="title">რატომ ჩვენ?</h2>
         <div class="cards">
@@ -731,111 +279,91 @@
         </div>
     </section>
 
+    <!-- About -->
     <section id="about">
         <div class="about-section">
-            <h2>ჩვენს შესახებ</h2>
-            <p>Fanatic Role Play არის საქართველოს ერთ-ერთი საუკეთესო SA-MP სერვერი, რომელიც გთავაზობთ უნიკალურ როლურ გამოცდილებას. ჩვენ ვქმნით საუკეთესო გარემოს მოთამაშეებისთვის, სადაც თქვენ შეგიძლიათ იყოთ ნებისმიერი ვინც გინდათ — პოლიციელი, ბიზნესმენი, კრიმინალი ან უბრალოდ მშვიდი მოქალაქე. შემოგვიერთდით და გახდით ნაწილი ჩვენი დიდი ოჯახისა!</p>
+            <h2 class="title">ჩვენს შესახებ</h2>
+            <p style="font-size:18px;line-height:1.9;color:var(--text-secondary);">Fanatic Role Play არის საქართველოს ერთ-ერთი საუკეთესო SA-MP სერვერი, რომელიც გთავაზობთ უნიკალურ როლურ გამოცდილებას. ჩვენ ვქმნით საუკეთესო გარემოს მოთამაშეებისთვის, სადაც თქვენ შეგიძლიათ იყოთ ნებისმიერი ვინც გინდათ — პოლიციელი, ბიზნესმენი, კრიმინალი ან უბრალოდ მშვიდი მოქალაქე. შემოგვიერთდით და გახდით ნაწილი ჩვენი დიდი ოჯახისა!</p>
         </div>
     </section>
 
+    <!-- Footer -->
     <footer>
         <p>&copy; 2025 Fanatic Role Play. ყველა უფლება დაცულია.</p>
     </footer>
 
-    <div id="toast" class="toast">IP დაკოპირებული!</div>
-
-    <!-- GSAP -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Toast -->
+    <div id="toast" class="toast">IP დაკოპირებული! 🎄</div>
 
     <script>
-       // Snow Effect
-        function createSnowflakes() {
-            const snowContainer = document.getElementById('snowContainer');
-            const snowflakeCount = 50;
-            
-            for (let i = 0; i < snowflakeCount; i++) {
-                const snowflake = document.createElement('div');
-                snowflake.classList.add('snowflake');
-                snowflake.textContent = '❄';
-                
-                const left = Math.random() * window.innerWidth;
-                const delay = Math.random() * 5;
-                const duration = 8 + Math.random() * 6;
-                const drift = (Math.random() - 0.5) * 200;
-                
-                snowflake.style.left = left + 'px';
-                snowflake.style.animationDelay = delay + 's';
-                snowflake.style.animationDuration = duration + 's';
-                snowflake.style.setProperty('--drift', drift + 'px');
-                snowflake.style.fontSize = (0.5 + Math.random() * 1.5) + 'em';
-                
-                snowContainer.appendChild(snowflake);
-                
-                setTimeout(() => {
-                    createSnowflake();
-                }, (duration + delay) * 1000);
+        // Snow
+        function createSnow() {
+            const snow = document.getElementById('snow');
+            for(let i = 0; i < 100; i++) {
+                const flake = document.createElement('div');
+                flake.classList.add('snowflake');
+                flake.textContent = ['❄','❅','❆'][Math.floor(Math.random()*3)];
+                flake.style.left = Math.random() * 100 + 'vw';
+                flake.style.animationDuration = 8 + Math.random() * 12 + 's';
+                flake.style.animationDelay = Math.random() * 5 + 's';
+                flake.style.setProperty('--drift', (Math.random() - 0.5) * 300 + 'px');
+                flake.style.fontSize = 0.8 + Math.random() * 1.4 + 'em';
+                snow.appendChild(flake);
             }
         }
-        
-        function createSnowflake() {
-            const snowContainer = document.getElementById('snowContainer');
-            const snowflake = document.createElement('div');
-            snowflake.classList.add('snowflake');
-            snowflake.textContent = '❄';
-            
-            const left = Math.random() * window.innerWidth;
-            const delay = 0;
-            const duration = 8 + Math.random() * 6;
-            const drift = (Math.random() - 0.5) * 200;
-            
-            snowflake.style.left = left + 'px';
-            snowflake.style.animationDelay = delay + 's';
-            snowflake.style.animationDuration = duration + 's';
-            snowflake.style.setProperty('--drift', drift + 'px');
-            snowflake.style.fontSize = (0.5 + Math.random() * 1.5) + 'em';
-            
-            snowContainer.appendChild(snowflake);
-            
-            setTimeout(() => {
-                snowflake.remove();
-                createSnowflake();
-            }, duration * 1000);
-        }
-        
-        createSnowflakes();
 
-        function toggleMenu() {
-            document.querySelector('.burger').classList.toggle('active');
-            document.querySelector('.slide-menu').classList.toggle('active');
+        // Fairy Lights
+        function createLights() {
+            const colors = ['#c41e3a', '#0f5132', '#d4a017', '#fff8e7', '#4169e1'];
+            for(let i = 0; i < 35; i++) {
+                const light = document.createElement('div');
+                light.className = 'light';
+                light.style.left = 2 + i * 2.8 + '%';
+                light.style.setProperty('--color', colors[Math.floor(Math.random() * colors.length)]);
+                light.style.animationDelay = Math.random() * 2 + 's';
+                document.querySelector('.garland').appendChild(light);
+            }
         }
 
-        function copyIP() {
-            navigator.clipboard.writeText('185.189.255.97:2561').then(() => {
-                const toast = document.getElementById('toast');
-                toast.classList.add('show');
-                setTimeout(() => toast.classList.remove('show'), 3000);
+        // Ornaments
+        function createOrnaments() {
+            const colors = ['#c41e3a', '#0f5132', '#d4a017', '#4169e1', '#8B4513'];
+            const positions = ['8%', '25%', '42%', '62%', '82%'];
+            positions.forEach((pos, i) => {
+                const orn = document.createElement('div');
+                orn.className = 'ornament';
+                orn.style.left = pos;
+                orn.style.animationDelay = i * 0.7 + 's';
+                orn.innerHTML = `<div class="ball" style="--ball-color: ${colors[i]}"></div>`;
+                document.getElementById('ornaments').appendChild(orn);
             });
         }
 
-        function navigate(page) { window.location.href = page; }
-        function downloadLauncher(type) {
-            alert(type === 'pc' ? 'PC ლაუნჩერის ჩამოტვირთვა მალე...' : 'Mobile ლაუნჩერის ჩამოტვირთვა მალე...');
+        // Copy IP
+        function copyIP() {
+            navigator.clipboard.writeText('185.189.255.97:2561');
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        window.addEventListener('load', () => setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1500));
+        // Init
+        window.onload = () => {
+            setTimeout(() => document.getElementById('loader').classList.add('hidden'), 2000);
+            createSnow();
+            createLights();
+            createOrnaments();
 
-        particlesJS('particles-js', {
-            particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: "#e74c3c" }, shape: { type: "circle" }, opacity: { value: 0.3, random: true }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#e74c3c", opacity: 0.2, width: 1 }, move: { enable: true, speed: 2, direction: "none", random: false, straight: false, out_mode: "out" } },
-            interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true } },
-            retina_detect: true
-        });
+            particlesJS('particles-js', {
+                particles: { number: { value: 70 }, color: { value: '#d4a017' }, opacity: { value: 0.4, random: true }, size: { value: 3 }, line_linked: { enable: false }, move: { speed: 1 } },
+                interactivity: { events: { onhover: { enable: true, mode: 'repulse' } } }
+            });
 
-        gsap.registerPlugin(ScrollTrigger);
-        gsap.utils.toArray('.title, .about-section, footer').forEach(el => gsap.to(el, { opacity: 1, y: 0, duration: 0.8, scrollTrigger: { trigger: el, start: 'top 80%' } }));
-        gsap.to('.orb-1', { y: 300, scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom top', scrub: 1 } });
-        gsap.to('.orb-2', { y: -200, scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom top', scrub: 1 } });
-        gsap.fromTo('.ip-btn', { boxShadow: '0 15px 50px rgba(231,76,60,0.6)' }, { boxShadow: '0 15px 50px rgba(231,76,60,0.8), 0 0 30px rgba(231,76,60,0.4)', duration: 1.5, repeat: -1, yoyo: true });
+            gsap.registerPlugin(ScrollTrigger);
+            gsap.utils.toArray('.card, .about-section').forEach(el => {
+                gsap.from(el, { opacity: 0, y: 100, duration: 1, scrollTrigger: { trigger: el, start: 'top 80%' } });
+            });
+        };
     </script>
 </body>
 </html>
