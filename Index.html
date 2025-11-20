@@ -257,6 +257,27 @@
             50% { transform: translateY(-10px); }
         }
 
+        /* GIFT BOXES */
+        .gift-box {
+            position: fixed;
+            width: 50px;
+            height: 50px;
+            pointer-events: none;
+            z-index: 9999;
+            animation: giftFloat 5s ease-in-out infinite;
+        }
+        
+        .gift-box::before {
+            content: '🎁';
+            font-size: 45px;
+            filter: drop-shadow(0 5px 15px rgba(231, 76, 60, 0.5));
+        }
+        
+        @keyframes giftFloat {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
         /* LOADER */
         #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at center, #0a0d1b 0%, #000000 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 99999; transition: opacity 1s ease-out, visibility 1s ease-out; }
         #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
@@ -286,7 +307,7 @@
         /* HEADER */
         header { position: fixed; top: 0; left: 0; width: 100%; padding: 20px 5%; background: var(--glass); backdrop-filter: blur(30px); border-bottom: 1px solid var(--border); z-index: 10000; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
         
-        .logo { display: flex; align-items: center; gap: 16px; font-size: 26px; font-weight: 900; color: white; text-decoration: none; letter-spacing: 1px; position: relative; padding: 10px 20px; background: linear-gradient(135deg, rgba(193, 30, 58, 0.15), rgba(15, 125, 63, 0.15)); border-radius: 50px; border: 2px solid transparent; background-clip: padding-box; }
+        .logo { display: flex; align-items: center; gap: 16px; font-size: 26px; font-weight: 900; color: white; text-decoration: none; letter-spacing: 1px; position: relative; padding: 10px 20px; background: linear-gradient(135deg, rgba(193, 30, 58, 0.15), rgba(15, 125, 63, 0.15)); border-radius: 50px; border: 2px solid transparent; background-clip: padding-box; transition: all 0.3s ease; }
         
         .logo::before {
             content: '🎄';
@@ -319,6 +340,7 @@
         }
         
         .logo img { width: 50px; height: 50px; border-radius: 50%; transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); object-fit: cover; border: 3px solid var(--christmas-gold); box-shadow: 0 0 15px rgba(255, 215, 0, 0.5); }
+        .logo:hover { transform: scale(1.05); }
         .logo:hover img { transform: scale(1.15) rotate(360deg); box-shadow: 0 0 25px rgba(255, 215, 0, 0.8); }
         
         .burger { display: flex; flex-direction: column; gap: 6px; cursor: pointer; z-index: 10001; }
@@ -327,7 +349,7 @@
         .burger.active span:nth-child(2) { opacity: 0; transform: translateX(15px); }
         .burger.active span:nth-child(3) { transform: rotate(-45deg) translate(8px,-8px); }
 
-        .slide-menu { position: fixed; top: 0; right: -100%; width: 350px; height: 100vh; background: linear-gradient(135deg, rgba(10,13,27,0.98), rgba(20,28,50,0.95)); backdrop-filter: blur(30px); border-left: 1px solid var(--border); padding: 100px 30px 40px; transition: right 0.6s cubic-bezier(0.34,1.56,0.64,1); z-index: 9999; box-shadow: -15px 0 60px rgba(0,0,0,0.7); overflow-y: auto; }
+        .slide-menu { position: fixed; top: 0; right: -100%; width: min(350px, 85vw); height: 100vh; background: linear-gradient(135deg, rgba(10,13,27,0.98), rgba(20,28,50,0.95)); backdrop-filter: blur(30px); border-left: 1px solid var(--border); padding: 100px 30px 40px; transition: right 0.6s cubic-bezier(0.34,1.56,0.64,1); z-index: 9999; box-shadow: -15px 0 60px rgba(0,0,0,0.7); overflow-y: auto; }
         .slide-menu.active { right: 0; }
         .menu-section-title { font-size: 10px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin: 28px 0 14px; font-weight: 700; letter-spacing: 1.5px; }
         .menu-item { padding: 16px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 16px; font-weight: 600; color: white; cursor: pointer; transition: all 0.4s; display: flex; align-items: center; gap: 14px; border-radius: 10px; }
@@ -343,49 +365,82 @@
         .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 140px 5% 60px; position: relative; overflow: hidden; }
         .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%); z-index: 2; }
         .hero-content { position: relative; z-index: 3; background: rgba(10, 13, 27, 0.35); backdrop-filter: blur(20px); padding: 60px 40px; border-radius: 30px; border: 1px solid rgba(231, 76, 60, 0.15); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; align-items: center; gap: 28px; max-width: 90%; transition: all 0.6s ease; }
-        .hero-content:hover { background: rgba(10, 13, 27, 0.45); border-color: rgba(231, 76, 60, 0.25); }
-        .hero h1 { font-size: clamp(48px,10vw,90px); font-weight: 900; background: linear-gradient(135deg,#ffffff 0%,var(--primary-light) 40%,var(--primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 4px; line-height: 1.2; filter: drop-shadow(0 10px 30px rgba(231,76,60,0.5)); animation: neonPulse 3s ease-in-out infinite; }
-        .hero-subtitle { font-size: clamp(18px,4vw,26px); color: rgba(255, 255, 255, 0.85); font-weight: 500; letter-spacing: 2px; }
-        .ip-btn { padding: 24px 70px; font-size: clamp(20px,3vw,30px); font-weight: 800; background: linear-gradient(135deg,var(--primary),var(--primary-light),var(--primary-dark)); color: white; border: 3px solid rgba(255,255,255,0.3); border-radius: 60px; cursor: pointer; transition: all 0.5s cubic-bezier(0.34,1.56,0.64,1); position: relative; overflow: hidden; letter-spacing: 2px; box-shadow: 0 15px 50px rgba(231,76,60,0.5); font-family: 'Space Mono', monospace; border: none; }
+        .hero-content:hover { background: rgba(10, 13, 27, 0.45); border-color: rgba(231, 76, 60, 0.25); transform: scale(1.02); }
+        .hero h1 { font-size: clamp(36px,10vw,90px); font-weight: 900; background: linear-gradient(135deg,#ffffff 0%,var(--primary-light) 40%,var(--primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 4px; line-height: 1.2; filter: drop-shadow(0 10px 30px rgba(231,76,60,0.5)); animation: neonPulse 3s ease-in-out infinite; }
+        .hero-subtitle { font-size: clamp(16px,4vw,26px); color: rgba(255, 255, 255, 0.85); font-weight: 500; letter-spacing: 2px; }
+        .ip-btn { padding: 20px 50px; font-size: clamp(18px,3vw,30px); font-weight: 800; background: linear-gradient(135deg,var(--primary),var(--primary-light),var(--primary-dark)); color: white; border: 3px solid rgba(255,255,255,0.3); border-radius: 60px; cursor: pointer; transition: all 0.5s cubic-bezier(0.34,1.56,0.64,1); position: relative; overflow: hidden; letter-spacing: 2px; box-shadow: 0 15px 50px rgba(231,76,60,0.5); font-family: 'Space Mono', monospace; border: none; }
         .ip-btn:before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent); transition: left 0.8s; }
         .ip-btn:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 30px 80px rgba(231,76,60,1); }
         .ip-btn:hover:before { left: 100%; }
+        .ip-btn:active { transform: translateY(-4px) scale(1.02); }
         @keyframes neonPulse { 0%,100% { filter: drop-shadow(0 10px 30px rgba(231,76,60,0.5)); } 50% { filter: drop-shadow(0 10px 50px rgba(231,76,60,0.9)); } }
 
         /* SECTIONS */
         section { padding: clamp(60px,8vw,80px) 5%; position: relative; z-index: 2; }
         section#features { padding-top: clamp(40px,6vw,60px); }
-        .title { font-size: clamp(40px,8vw,70px); font-weight: 900; text-align: center; margin-bottom: clamp(40px,6vw,60px); background: linear-gradient(135deg,#e74c3c 0%,#ff8c7a 50%,var(--primary-light) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 2px; filter: drop-shadow(0 5px 20px rgba(231,76,60,0.4)); }
-        .cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(300px,1fr)); gap: clamp(30px,5vw,50px); max-width: 1400px; margin: 0 auto; }
-        .card { background: var(--glass); backdrop-filter: blur(25px); border: 2px solid var(--border); border-radius: 25px; padding: clamp(40px,6vw,60px); text-align: center; transition: all 0.6s cubic-bezier(0.34,1.56,0.64,1); position: relative; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .title { font-size: clamp(32px,8vw,70px); font-weight: 900; text-align: center; margin-bottom: clamp(40px,6vw,60px); background: linear-gradient(135deg,#e74c3c 0%,#ff8c7a 50%,var(--primary-light) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 2px; filter: drop-shadow(0 5px 20px rgba(231,76,60,0.4)); }
+        .cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(300px, 100%), 1fr)); gap: clamp(30px,5vw,50px); max-width: 1400px; margin: 0 auto; }
+        .card { background: var(--glass); backdrop-filter: blur(25px); border: 2px solid var(--border); border-radius: 25px; padding: clamp(30px,6vw,60px); text-align: center; transition: all 0.6s cubic-bezier(0.34,1.56,0.64,1); position: relative; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
         .card:hover { transform: translateY(-20px) scale(1.03); border-color: var(--primary); box-shadow: 0 30px 70px rgba(231,76,60,0.4), var(--neon-glow); }
         .card i { font-size: clamp(50px,10vw,80px); color: var(--primary); margin-bottom: 30px; filter: drop-shadow(var(--neon-glow)); transition: all 0.6s; }
         .card:hover i { transform: scale(1.3) rotate(-15deg); }
-        .card h3 { font-size: clamp(22px,4vw,28px); margin-bottom: 16px; font-weight: 700; }
-        .card p { font-size: clamp(15px,2.5vw,18px); color: var(--text-secondary); line-height: 1.7; }
+        .card h3 { font-size: clamp(20px,4vw,28px); margin-bottom: 16px; font-weight: 700; }
+        .card p { font-size: clamp(14px,2.5vw,18px); color: var(--text-secondary); line-height: 1.7; }
 
-        .about-section { background: var(--glass); backdrop-filter: blur(30px); border-radius: 30px; padding: clamp(50px,10vw,80px); margin: 0 auto; max-width: 1200px; border: 2px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,0.4), var(--neon-glow); }
-        .about-section h2 { font-size: clamp(36px,8vw,60px); text-align: center; margin-bottom: 35px; background: linear-gradient(135deg,#e74c3c 0%,#ff8c7a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .about-section p { font-size: clamp(16px,3vw,20px); line-height: 1.9; color: var(--text-secondary); text-align: center; }
+        .about-section { background: var(--glass); backdrop-filter: blur(30px); border-radius: 30px; padding: clamp(40px,10vw,80px); margin: 0 auto; max-width: 1200px; border: 2px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,0.4), var(--neon-glow); }
+        .about-section h2 { font-size: clamp(28px,8vw,60px); text-align: center; margin-bottom: 35px; background: linear-gradient(135deg,#e74c3c 0%,#ff8c7a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .about-section p { font-size: clamp(15px,3vw,20px); line-height: 1.9; color: var(--text-secondary); text-align: center; }
 
-        footer { background: linear-gradient(135deg,rgba(5,6,9,0.95),rgba(10,13,27,0.95)); backdrop-filter: blur(20px); padding: clamp(60px,10vw,90px) 5% clamp(40px,6vw,60px); text-align: center; border-top: 2px solid var(--border); }
-        footer p { font-size: clamp(14px,2vw,16px); color: rgba(255,255,255,0.5); font-weight: 500; }
+        footer { background: linear-gradient(135deg,rgba(5,6,9,0.95),rgba(10,13,27,0.95)); backdrop-filter: blur(25px); padding: 50px 5%; border-top: 2px solid var(--border); text-align: center; position: relative; z-index: 2; }
+        footer p { font-size: clamp(14px,2.5vw,18px); color: rgba(255,255,255,0.7); margin-bottom: 20px; }
+        footer .footer-links { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; margin-bottom: 25px; }
+        footer .footer-links a { color: var(--primary); text-decoration: none; font-weight: 600; transition: all 0.3s; font-size: clamp(13px,2.5vw,16px); }
+        footer .footer-links a:hover { color: var(--primary-light); text-shadow: var(--neon-glow); }
+        footer .copyright { font-size: clamp(12px,2vw,14px); color: rgba(255,255,255,0.5); margin-top: 25px; }
 
-        .toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg,var(--primary),var(--primary-light)); color: white; padding: 20px 50px; border-radius: 50px; font-weight: 700; font-size: 16px; box-shadow: var(--neon-glow); z-index: 100000; transition: bottom 0.5s cubic-bezier(0.34,1.56,0.64,1); border: 2px solid rgba(255,255,255,0.3); }
-        .toast.show { bottom: 50px; }
-
+        /* RESPONSIVE */
         @media (max-width: 768px) {
-            .hero { padding: 120px 5%40px; }
+            header { padding: 15px 4%; }
+            .logo { font-size: 20px; padding: 8px 15px; }
+            .logo img { width: 40px; height: 40px; }
+            .logo::before, .logo::after { font-size: 22px; }
+            .burger span { width: 24px; }
+            .hero { padding: 120px 4% 50px; }
             .hero-content { padding: 40px 25px; }
+            .ip-btn { padding: 16px 35px; }
+            .cards { grid-template-columns: 1fr; gap: 25px; }
+            section { padding: 50px 4%; }
+            .christmas-lights { top: 75px; }
+            .light-bulb { width: 10px; height: 15px; }
+            .ornament { display: none; }
+            .candy-cane, .wreath, .gift-box { width: 35px; height: 35px; }
         }
+
+        /* SCROLL ANIMATION */
+        .fade-in { opacity: 0; transform: translateY(50px); transition: all 1s cubic-bezier(0.34,1.56,0.64,1); }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body>
 
-    <!-- SNOW CONTAINER -->
+    <!-- LOADER -->
+    <div id="loader">
+        <div class="loader-container">
+            <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" alt="Logo" class="loader-logo">
+            <div class="loader-ring"></div>
+        </div>
+        <div class="loader-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        <div class="loader-text">იტვირთება...</div>
+    </div>
+
+    <!-- SNOW EFFECT -->
     <div class="snow-container" id="snowContainer"></div>
 
-    <!-- CHRISTMAS LIGHTS GARLAND -->
+    <!-- CHRISTMAS LIGHTS -->
     <div class="christmas-lights">
         <div class="light-string">
             <div class="light-bulb red"></div>
@@ -403,254 +458,255 @@
             <div class="light-bulb red"></div>
             <div class="light-bulb green"></div>
             <div class="light-bulb blue"></div>
-            <div class="light-bulb yellow"></div>
         </div>
     </div>
 
-    <!-- HANGING ORNAMENTS -->
-    <div class="ornament" style="left: 15%; top: 140px; animation-delay: 0s;">
+    <!-- CHRISTMAS DECORATIONS -->
+    <div class="ornament" style="top: 100px; left: 10%;">
         <div class="ornament-string"></div>
         <div class="ornament-ball red"></div>
     </div>
-    <div class="ornament" style="left: 30%; top: 140px; animation-delay: 0.5s;">
+    <div class="ornament" style="top: 100px; right: 10%; animation-delay: 1s;">
         <div class="ornament-string"></div>
         <div class="ornament-ball gold"></div>
     </div>
-    <div class="ornament" style="left: 50%; top: 140px; animation-delay: 1s;">
+    <div class="ornament" style="top: 150px; left: 25%; animation-delay: 2s;">
         <div class="ornament-string"></div>
         <div class="ornament-ball blue"></div>
     </div>
-    <div class="ornament" style="left: 70%; top: 140px; animation-delay: 1.5s;">
+    <div class="ornament" style="top: 150px; right: 25%; animation-delay: 1.5s;">
         <div class="ornament-string"></div>
         <div class="ornament-ball silver"></div>
     </div>
-    <div class="ornament" style="left: 85%; top: 140px; animation-delay: 2s;">
-        <div class="ornament-string"></div>
-        <div class="ornament-ball red"></div>
-    </div>
 
     <!-- CANDY CANES -->
-    <div class="candy-cane" style="left: 5%; top: 150px;">
-        <svg viewBox="0 0 100 150">
-            <defs>
-                <pattern id="candyStripe" patternUnits="userSpaceOnUse" width="20" height="20" patternTransform="rotate(45)">
-                    <rect width="10" height="20" fill="#ffffff"/>
-                    <rect x="10" width="10" height="20" fill="#e74c3c"/>
-                </pattern>
-            </defs>
-            <path d="M 50 30 Q 30 30 30 50 Q 30 70 50 70 L 50 140" 
-                  stroke="url(#candyStripe)" 
-                  stroke-width="15" 
-                  fill="none" 
-                  stroke-linecap="round"/>
+    <div class="candy-cane" style="top: 120px; left: 5%;">
+        <svg viewBox="0 0 50 80" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15,10 Q15,5 20,5 Q25,5 25,10 L25,60 Q25,70 20,75 Q15,70 15,60 Z" fill="#fff" stroke="#c41e3a" stroke-width="3"/>
+            <rect x="15" y="15" width="10" height="8" fill="#c41e3a"/>
+            <rect x="15" y="31" width="10" height="8" fill="#c41e3a"/>
+            <rect x="15" y="47" width="10" height="8" fill="#c41e3a"/>
         </svg>
     </div>
-    <div class="candy-cane" style="right: 5%; top: 150px; transform: scaleX(-1);">
-        <svg viewBox="0 0 100 150">
-            <defs>
-                <pattern id="candyStripe2" patternUnits="userSpaceOnUse" width="20" height="20" patternTransform="rotate(45)">
-                    <rect width="10" height="20" fill="#ffffff"/>
-                    <rect x="10" width="10" height="20" fill="#e74c3c"/>
-                </pattern>
-            </defs>
-            <path d="M 50 30 Q 30 30 30 50 Q 30 70 50 70 L 50 140" 
-                  stroke="url(#candyStripe2)" 
-                  stroke-width="15" 
-                  fill="none" 
-                  stroke-linecap="round"/>
+    <div class="candy-cane" style="top: 120px; right: 5%; animation-delay: 2s;">
+        <svg viewBox="0 0 50 80" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15,10 Q15,5 20,5 Q25,5 25,10 L25,60 Q25,70 20,75 Q15,70 15,60 Z" fill="#fff" stroke="#c41e3a" stroke-width="3"/>
+            <rect x="15" y="15" width="10" height="8" fill="#c41e3a"/>
+            <rect x="15" y="31" width="10" height="8" fill="#c41e3a"/>
+            <rect x="15" y="47" width="10" height="8" fill="#c41e3a"/>
         </svg>
     </div>
 
-    <!-- CHRISTMAS WREATHS -->
-    <div class="wreath" style="left: 10%; top: 200px;"></div>
-    <div class="wreath" style="right: 10%; top: 200px;"></div>
+    <!-- WREATHS -->
+    <div class="wreath" style="top: 180px; left: 50%; transform: translateX(-50%);"></div>
 
-    <!-- HOLLY DECORATIONS -->
-    <div class="holly" style="left: 20%; top: 160px;">🌿</div>
-    <div class="holly" style="right: 20%; top: 160px;">🌿</div>
-    <div class="holly" style="left: 40%; top: 180px;">🌿</div>
-    <div class="holly" style="right: 40%; top: 180px;">🌿</div>
+    <!-- HOLLY -->
+    <div class="holly" style="top: 250px; left: 15%;">🌿</div>
+    <div class="holly" style="top: 250px; right: 15%; animation-delay: 1.5s;">🌿</div>
 
-    <!-- GLOW ORBS -->
+    <!-- GIFT BOXES -->
+    <div class="gift-box" style="bottom: 100px; left: 8%;"></div>
+    <div class="gift-box" style="bottom: 100px; right: 8%; animation-delay: 2.5s;"></div>
+
+    <!-- BACKGROUND -->
+    <div id="particles-js"></div>
     <div class="glow-orbs">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
         <div class="orb orb-3"></div>
     </div>
-    <div id="particles-js"></div>
 
-    <!-- LOADER -->
-    <div id="loader">
-        <div class="loader-container">
-            <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" alt="Logo" class="loader-logo">
-            <div class="loader-ring"></div>
-        </div>
-        <div class="loader-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-        <div class="loader-text">იტვირთება...</div>
-    </div>
-
+    <!-- HEADER -->
     <header>
-        <a href="index.html" class="logo">
-            <div class="logo-decoration lights"></div>
-            <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" alt="Fanatic RP">
-            <span>FANATIC RP</span>
+        <a href="#" class="logo">
+            <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" alt="Fanatic RP Logo">
+            <span>Fanatic RP</span>
         </a>
         <div class="burger" onclick="toggleMenu()">
-            <span></span><span></span><span></span>
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
     </header>
 
     <!-- SLIDE MENU -->
-    <div class="slide-menu">
-        <div class="menu-section-title">ნავიგაცია</div>
-        <div class="menu-item" onclick="navigate('index.html')"><i class="fas fa-home"></i> მთავარი</div>
-        <div class="menu-item" onclick="navigate('donation.html')"><i class="fas fa-shopping-cart"></i> მაღაზია</div>
-        <div class="menu-item" onclick="alert('მალე გაიხსნება...')"><i class="fas fa-comments"></i> ფორუმი</div>
-
-        <div class="menu-section-title">ჩამოტვირთვა</div>
-        <div class="menu-item" onclick="downloadLauncher('pc')"><i class="fas fa-desktop"></i> PC ლაუნჩერი</div>
-        <div class="menu-item" onclick="downloadLauncher('mobile')"><i class="fas fa-mobile-alt"></i> Mobile ლაუნჩერი</div>
-
+    <div class="slide-menu" id="slideMenu">
+        <div class="menu-section-title">🎄 ნავიგაცია</div>
+        <div class="menu-item" onclick="scrollToSection('hero')"><i class="fas fa-home"></i> მთავარი</div>
+        <div class="menu-item" onclick="scrollToSection('features')"><i class="fas fa-star"></i> შესაძლებლობები</div>
+        <div class="menu-item" onclick="scrollToSection('about')"><i class="fas fa-info-circle"></i> ჩვენს შესახებ</div>
+        
         <div class="menu-section-title">Web Development Team</div>
         <div class="team-member"><i class="fas fa-code"></i> ზვიადი გეგიძე</div>
         <div class="team-member"><i class="fas fa-code"></i> ნიკა გეორგაძე</div>
-
-        <div class="menu-section-title">სოციალური ქსელები</div>
+        
+        <div class="menu-section-title">🔗 სოციალური ქსელები</div>
         <div class="social-icons">
-            <a href="https://discord.gg/uasS77WA" target="_blank" class="social-icon"><i class="fab fa-discord"></i></a>
-            <a href="https://www.youtube.com/@tormetitormeti2" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
-            <a href="https://www.tiktok.com/@fanaticroleplay777" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
-            <a href="https://www.facebook.com/groups/687009050835555/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon" title="Discord"><i class="fab fa-discord"></i></a>
+            <a href="#" class="social-icon" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon" title="TikTok"><i class="fab fa-tiktok"></i></a>
+            <a href="#" class="social-icon" title="YouTube"><i class="fab fa-youtube"></i></a>
         </div>
     </div>
 
-    <section class="hero" id="home">
-        <div class="hero-content">
+    <!-- HERO SECTION -->
+    <section class="hero" id="hero">
+        <div class="hero-content fade-in">
             <h1>FANATIC ROLE PLAY</h1>
-            <p class="hero-subtitle">ერთ-ერთი საუკეთესო SA-MP სერვერი საქართველოში • 2025</p>
-            <button class="ip-btn" onclick="copyIP()">185.189.255.97:2561</button>
+            <p class="hero-subtitle">🎅 საუკეთესო SA-MP სერვერი საქართველოში 🎄</p>
+            <button class="ip-btn" onclick="copyIP()">📋 COPY IP: 185.172.224.153:7777</button>
         </div>
     </section>
 
+    <!-- FEATURES SECTION -->
     <section id="features">
-        <h2 class="title">რატომ ჩვენ?</h2>
+        <h2 class="title fade-in">🎁 სერვერის შესაძლებლობები</h2>
         <div class="cards">
-            <div class="card"><i class="fas fa-rocket"></i><h3>უნიკალური სისტემები</h3><p>განსხვავებული და ინოვაციური თამაშის სისტემები, რომლებიც არსად ვერ იხილავთ.</p></div>
-            <div class="card"><i class="fas fa-crown"></i><h3>პროფესიონალი გუნდი</h3><p>ჩვენი გუნდი მუდმივად მზადაა თქვენი დახმარებისთვის 24/7 რეჟიმში.</p></div>
-            <div class="card"><i class="fas fa-fire"></i><h3>24/7 აქტიური</h3><p>სერვერი მუშაობს მთელი დღე-ღამის განმავლობაში სტაბილურად.</p></div>
+            <div class="card fade-in">
+                <i class="fas fa-users"></i>
+                <h3>აქტიური საზოგადოება</h3>
+                <p>შემოგვიერთდი ათასობით მოთამაშეს და იქმენი ჩვენი დიდი ოჯახის ნაწილი</p>
+            </div>
+            <div class="card fade-in">
+                <i class="fas fa-car"></i>
+                <h3>უნიკალური სისტემები</h3>
+                <p>მანქანები, სახლები, ბიზნესები, ფრაქციები და კიდევ უამრავი სიახლე</p>
+            </div>
+            <div class="card fade-in">
+                <i class="fas fa-shield-alt"></i>
+                <h3>პროფესიონალი გუნდი</h3>
+                <p>24/7 ხელმისაწვდომი და გამოცდილი ადმინისტრაცია თქვენი კომფორტისთვის</p>
+            </div>
+            <div class="card fade-in">
+                <i class="fas fa-rocket"></i>
+                <h3>რეგულარული განახლებები</h3>
+                <p>ყოველკვირეული სიახლეები და ივენთები მოთამაშეებისთვის</p>
+            </div>
+            <div class="card fade-in">
+                <i class="fas fa-trophy"></i>
+                <h3>კონკურსები და ჯილდოები</h3>
+                <p>მონაწილეობა მიიღე ჩვენს ივენთებში და მოიგე ფასიანი საჩუქრები</p>
+            </div>
+            <div class="card fade-in">
+                <i class="fas fa-headset"></i>
+                <h3>სწრაფი მხარდაჭერა</h3>
+                <p>დახმარება და პასუხები თქვენს შეკითხვებზე წამებში</p>
+            </div>
         </div>
     </section>
 
+    <!-- ABOUT SECTION -->
     <section id="about">
-        <div class="about-section">
-            <h2>ჩვენს შესახებ</h2>
-            <p>Fanatic Role Play არის საქართველოს ერთ-ერთი საუკეთესო SA-MP სერვერი, რომელიც გთავაზობთ უნიკალურ როლურ გამოცდილებას. ჩვენ ვქმნით საუკეთესო გარემოს მოთამაშეებისთვის, სადაც თქვენ შეგიძლიათ იყოთ ნებისმიერი ვინც გინდათ — პოლიციელი, ბიზნესმენი, კრიმინალი ან უბრალოდ მშვიდი მოქალაქე. შემოგვიერთდით და გახდით ნაწილი ჩვენი დიდი ოჯახისა!</p>
+        <div class="about-section fade-in">
+            <h2>🎄 ჩვენს შესახებ</h2>
+            <p>
+                Fanatic Role Play არის საქართველოს ერთ-ერთი წამყვანი SA-MP სერვერი, რომელიც დაარსდა მოთამაშეთა საუკეთესო გამოცდილების შესაქმნელად. 
+                ჩვენ ვზრუნავთ თითოეულ მოთამაშეზე და ვცდილობთ შევქმნათ მეგობრული და სამართლიანი გარემო. 
+                ჩვენი სერვერი გთავაზობთ უნიკალურ სისტემებს, რეგულარულ განახლებებს და მრავალფეროვან შესაძლებლობებს.
+                შემოგვიერთდი და გახდი ჩვენი დიდი ოჯახის ნაწილი!
+            </p>
         </div>
     </section>
 
+    <!-- FOOTER -->
     <footer>
-        <p>&copy; 2025 Fanatic Role Play. ყველა უფლება დაცულია.</p>
+        <p>© 2024 Fanatic Role Play - ყველა უფლება დაცულია</p>
+        <div class="footer-links">
+            <a href="#">წესები</a>
+            <a href="#">Discord</a>
+            <a href="#">Forum</a>
+            <a href="#">Donate</a>
+        </div>
+        <p class="copyright">Made with ❤️ by ზვიადი გეგიძე & ნიკა გეორგაძე</p>
     </footer>
 
-    <div id="toast" class="toast">IP დაკოპირებული!</div>
-
-    <!-- GSAP -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
     <script>
-        // Enhanced Snow Effect with realistic physics
-        function createSnowflakes() {
-            const snowContainer = document.getElementById('snowContainer');
-            const snowflakeCount = 60;
-            
-            for (let i = 0; i < snowflakeCount; i++) {
-                const snowflake = document.createElement('div');
-                snowflake.classList.add('snowflake');
-                snowflake.textContent = '❄';
-                
-                const left = Math.random() * window.innerWidth;
-                const delay = Math.random() * 5;
-                const duration = 8 + Math.random() * 8;
-                const drift = (Math.random() - 0.5) * 300;
-                const rotation = Math.random() * 360;
-                
-                snowflake.style.left = left + 'px';
-                snowflake.style.animationDelay = delay + 's';
-                snowflake.style.animationDuration = duration + 's';
-                snowflake.style.setProperty('--drift', drift + 'px');
-                snowflake.style.setProperty('--rotation', rotation + 'deg');
-                snowflake.style.fontSize = (0.5 + Math.random() * 1.5) + 'em';
-                
-                snowContainer.appendChild(snowflake);
-                
-                setTimeout(() => {
-                    snowflake.remove();
-                    createSnowflake();
-                }, (duration + delay) * 1000);
+        // LOADER
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 2500);
+        });
+
+        // PARTICLES
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 100, density: { enable: true, value_area: 800 } },
+                color: { value: '#e74c3c' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: '#e74c3c', opacity: 0.2, width: 1 },
+                move: { enable: true, speed: 2, direction: 'none', random: true, out_mode: 'out' }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } },
+                modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } }
             }
-        }
-        
+        });
+
+        // SNOW EFFECT
         function createSnowflake() {
             const snowContainer = document.getElementById('snowContainer');
             const snowflake = document.createElement('div');
             snowflake.classList.add('snowflake');
-            snowflake.textContent = '❄';
-            
-            const left = Math.random() * window.innerWidth;
-            const delay = 0;
-            const duration = 8 + Math.random() * 8;
-            const drift = (Math.random() - 0.5) * 300;
-            const rotation = Math.random() * 360;
-            
-            snowflake.style.left = left + 'px';
-            snowflake.style.animationDelay = delay + 's';
-            snowflake.style.animationDuration = duration + 's';
-            snowflake.style.setProperty('--drift', drift + 'px');
-            snowflake.style.setProperty('--rotation', rotation + 'deg');
-            snowflake.style.fontSize = (0.5 + Math.random() * 1.5) + 'em';
-            
+            snowflake.innerHTML = '❄';
+            snowflake.style.left = Math.random() * 100 + '%';
+            snowflake.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            snowflake.style.setProperty('--drift', (Math.random() - 0.5) * 100 + 'px');
+            snowflake.style.setProperty('--rotation', (Math.random() * 360) + 'deg');
+            snowflake.style.fontSize = (Math.random() * 1 + 0.5) + 'em';
             snowContainer.appendChild(snowflake);
-            
-            setTimeout(() => {
-                snowflake.remove();
-                createSnowflake();
-            }, duration * 1000);
+            setTimeout(() => snowflake.remove(), 10000);
         }
-        
-        createSnowflakes();
+        setInterval(createSnowflake, 200);
 
+        // MENU TOGGLE
         function toggleMenu() {
             document.querySelector('.burger').classList.toggle('active');
-            document.querySelector('.slide-menu').classList.toggle('active');
+            document.getElementById('slideMenu').classList.toggle('active');
         }
 
+        // SCROLL TO SECTION
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                toggleMenu();
+            }
+        }
+
+        // COPY IP
         function copyIP() {
-            navigator.clipboard.writeText('185.189.255.97:2561').then(() => {
-                const toast = document.getElementById('toast');
-                toast.classList.add('show');
-                setTimeout(() => toast.classList.remove('show'), 3000);
+            const ip = '185.172.224.153:7777';
+            navigator.clipboard.writeText(ip).then(() => {
+                alert('✅ IP დაკოპირდა: ' + ip);
             });
         }
 
-        function navigate(page) { window.location.href = page; }
-        function downloadLauncher(type) {
-            alert(type === 'pc' ? 'PC ლაუნჩერის ჩამოტვირთვა მალე...' : 'Mobile ლაუნჩერის ჩამოტვირთვა მალე...');
-        }
+        // SCROLL ANIMATION
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -100px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
 
-        window.addEventListener('load', () => setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1500));
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-        particlesJS('particles-js', {
-            particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: "#e74c3c" }, shape: { type: "circle" }, opacity: { value: 0.3, random: true }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#e74c3c", opacity: 0.2, width: 1 }, move: { enable: true, speed: 2, direction: "none", random: false, straight: false, out_mode: "out" } },
-            interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true } },
-            retina_detect: true
+        // CLOSE MENU ON OUTSIDE CLICK
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('slideMenu');
+            const burger = document.querySelector('.burger');
+            if (menu.classList.contains('active') && !menu.contains(e.target) && !burger.contains(e.target)) {
+                toggleMenu();
+            }
         });
-
-        gsap.registerPlugin(ScrollTrigger);
-        gsap.utils.toArray('.title, .about-section, footer').forEach(el => gsap.to(el, { opacity: 1, y: 0, duration: 0.8, scrollTrigger: { trigger: el, start: 'top 80%' } }));
-        gsap.to('.orb-1', { y: 300, scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom top', scrub: 1 } });
-        gsap.to('.orb-2', { y: -200, scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom top', scrub: 1 } });
-        gsap.fromTo('.ip-btn', { boxShadow: '0 15px 50px rgba(231,76,60,0.6)' }, { boxShadow: '0 15px 50px rgba(231,76,60,0.8), 0 0 30px rgba(231,76,60,0.4)', duration: 1.5, repeat: -1, yoyo: true });
     </script>
+
 </body>
 </html>
