@@ -30,6 +30,9 @@
             --text-primary: #ffffff;
             --text-secondary: rgba(255, 255, 255, 0.8);
             --neon-glow: 0 0 10px #e74c3c, 0 0 20px #e74c3c, 0 0 30px #e74c3c;
+            --christmas-green: #0f7d3f;
+            --christmas-red: #c41e3a;
+            --christmas-gold: #ffd700;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -100,11 +103,112 @@
         .orb-3 { width: 450px; height: 450px; background: #9b59b6; bottom: 10%; left: 40%; animation: float 30s ease-in-out infinite; }
         @keyframes float { 0%,100% { transform: translate(0,0); } 33% { transform: translate(50px,-50px); } 66% { transform: translate(-30px,30px); } }
 
-        /* HEADER & MENU */
-        header { position: fixed; top: 0; left: 0; width: 100%; padding: 20px 5%; background: var(--glass); backdrop-filter: blur(30px); border-bottom: 1px solid var(--border); z-index: 1000; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
-        .logo { display: flex; align-items: center; gap: 16px; font-size: 26px; font-weight: 900; color: white; text-decoration: none; letter-spacing: 1px; text-shadow: var(--neon-glow); }
-        .logo img { width: 50px; height: 50px; border-radius: 50%; box-shadow: var(--neon-glow); transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); object-fit: cover; }
-        .logo:hover img { transform: scale(1.15) rotate(8deg); box-shadow: 0 0 40px rgba(231,76,60,1); }
+        /* HEADER & MENU WITH CHRISTMAS DECORATIONS */
+        header { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            padding: 20px 5%; 
+            background: var(--glass); 
+            backdrop-filter: blur(30px); 
+            border-bottom: 1px solid var(--border); 
+            z-index: 1000; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6); 
+        }
+        
+        .logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 16px; 
+            font-size: 26px; 
+            font-weight: 900; 
+            color: white; 
+            text-decoration: none; 
+            letter-spacing: 1px; 
+            position: relative;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, rgba(193, 30, 58, 0.15), rgba(15, 125, 63, 0.15));
+            border-radius: 50px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+        
+        .logo::before {
+            content: '🎄';
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 28px;
+            animation: sway 3s ease-in-out infinite;
+        }
+        
+        .logo::after {
+            content: '🎅';
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 28px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes sway {
+            0%, 100% { transform: translateY(-50%) rotate(-5deg); }
+            50% { transform: translateY(-50%) rotate(5deg); }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(-50%); }
+            50% { transform: translateY(-60%); }
+        }
+        
+        .logo-decoration {
+            position: absolute;
+            pointer-events: none;
+        }
+        
+        .logo-decoration.lights {
+            top: -8px;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, 
+                var(--christmas-red) 0%, 
+                var(--christmas-gold) 20%, 
+                var(--christmas-green) 40%, 
+                var(--christmas-red) 60%, 
+                var(--christmas-gold) 80%, 
+                var(--christmas-green) 100%);
+            border-radius: 50px;
+            animation: lightsPulse 2s ease-in-out infinite;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+        }
+        
+        @keyframes lightsPulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 10px rgba(255, 215, 0, 0.6); }
+            50% { opacity: 0.6; box-shadow: 0 0 20px rgba(255, 215, 0, 0.9); }
+        }
+        
+        .logo img { 
+            width: 50px; 
+            height: 50px; 
+            border-radius: 50%; 
+            transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); 
+            object-fit: cover; 
+            border: 3px solid var(--christmas-gold);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        
+        .logo:hover img { 
+            transform: scale(1.15) rotate(360deg); 
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
+        }
+        
         .burger { display: flex; flex-direction: column; gap: 6px; cursor: pointer; z-index: 1001; }
         .burger span { width: 28px; height: 2.5px; background: white; border-radius: 3px; transition: 0.5s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
         .burger.active span:nth-child(1) { transform: rotate(45deg) translate(10px,10px); }
@@ -165,12 +269,16 @@
             .ip-btn { padding: 20px 50px; }
             section { padding: clamp(40px,6vw,60px) 5%; }
             section#features { padding-top: clamp(30px,5vw,40px); }
+            .logo::before { left: -10px; font-size: 20px; }
+            .logo::after { right: -10px; font-size: 20px; }
         }
         @media (max-width: 480px) {
-            .logo { font-size: 20px; }
+            .logo { font-size: 20px; padding: 8px 15px; }
             .logo img { width: 40px; height: 40px; }
             .ip-btn { padding: 18px 40px; }
             .slide-menu { width: 90%; }
+            .logo::before { left: -8px; font-size: 18px; }
+            .logo::after { right: -8px; font-size: 18px; }
         }
     </style>
 </head>
@@ -197,6 +305,7 @@
 
     <header>
         <a href="index.html" class="logo">
+            <div class="logo-decoration lights"></div>
             <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" alt="Fanatic RP">
             <span>FANATIC RP</span>
         </a>
