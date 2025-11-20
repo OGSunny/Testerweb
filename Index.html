@@ -339,19 +339,19 @@
 
         /* HERO – შენი მოთხოვნილი ცვლილება */
         .hero {
-            min-height: 55vh; /* Reduced to 80% of viewport height */
+            min-height: 80vh; /* Reduced to 80% of viewport height */
             /* min-height: 60vh; */ /* თუ კიდევ უფრო დაბლა გინდა, მოაშორე კომენტარი */
             display: flex; 
-            flex-direction: column; 
+            flex-direction: row; 
             align-items: center; 
-            justify-content: center; 
-            text-align: center; 
+            justify-content: space-between; 
+            text-align: left; 
             padding: 120px 5% 50px; /* Keep the existing padding */
             position: relative; 
             overflow: hidden; 
         }
         .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at center, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.55) 100%); z-index: 2; }
-        .hero-content { position: relative; z-index: 3; background: rgba(10, 13, 27, 0.3); backdrop-filter: blur(15px); padding: 50px 30px; border-radius: 25px; border: 1px solid rgba(231, 76, 60, 0.12); box-shadow: 0 15px 50px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08); display: flex; flex-direction: column; align-items: center; gap: 24px; max-width: 85%; transition: all 0.5s ease; }
+        .hero-content { position: relative; z-index: 3; background: rgba(10, 13, 27, 0.3); backdrop-filter: blur(15px); padding: 50px 30px; border-radius: 25px; border: 1px solid rgba(231, 76, 60, 0.12); box-shadow: 0 15px 50px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08); display: flex; flex-direction: column; align-items: flex-start; gap: 24px; max-width: 50%; transition: all 0.5s ease; }
         .hero-content:hover { background: rgba(10, 13, 27, 0.4); border-color: rgba(231, 76, 60, 0.2); }
         .hero h1 { font-size: clamp(42px,9vw,80px); font-weight: 900; background: linear-gradient(135deg,#ffffff 0%,var(--primary-light) 40%,var(--primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 3px; line-height: 1.1; filter: drop-shadow(0 8px 25px rgba(231,76,60,0.4)); animation: neonPulse 3.5s ease-in-out infinite; }
         .hero-subtitle { font-size: clamp(16px,3.5vw,24px); color: rgba(255, 255, 255, 0.8); font-weight: 500; letter-spacing: 1.5px; }
@@ -360,6 +360,27 @@
         .ip-btn:hover { transform: translateY(-6px) scale(1.04); box-shadow: 0 25px 70px rgba(231,76,60,0.9); }
         .ip-btn:hover:before { left: 100%; }
         @keyframes neonPulse { 0%,100% { filter: drop-shadow(0 8px 25px rgba(231,76,60,0.4)); } 50% { filter: drop-shadow(0 8px 40px rgba(231,76,60,0.8)); } }
+
+        .hero-image {
+            position: relative;
+            z-index: 3;
+            width: 45%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-image img {
+            max-height: 70vh;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 0 20px rgba(231,76,60,0.5));
+            transition: all 0.5s ease;
+        }
+
+        .hero-image:hover img {
+            transform: scale(1.05);
+        }
 
         /* SECTIONS */
         section { padding: clamp(50px,7vw,70px) 5%; position: relative; z-index: 2; }
@@ -385,15 +406,17 @@
 
         /* Media Queries */
         @media (max-width: 768px) {
-            .hero { padding: 100px 5% 35px; }
-            .hero-content { padding: 40px 25px; gap: 22px; max-width: 95%; }
+            .hero { padding: 100px 5% 35px; flex-direction: column; justify-content: center; }
+            .hero-content { padding: 40px 25px; gap: 22px; max-width: 95%; align-items: center; text-align: center; }
+            .hero-image { width: 100%; margin-top: 20px; }
+            .hero-image img { max-height: 40vh; }
             .ip-btn { padding: 18px 45px; }
             section { padding: clamp(35px,5vw,50px) 5%; }
             section#features { padding-top: clamp(25px,4vw,35px); }
             .logo::before { left: -8px; font-size: 20px; }
             .logo::after { right: -8px; font-size: 20px; }
             .christmas-lights-string { top: -25px; left: -25px; right: -25px; height: 45px; }
-            .light-bulb { securities: 14px; height: 14px; top: 8px; }
+            .light-bulb { width: 14px; height: 14px; top: 8px; }
             .light-bulb::before { top: -8px; height: 12px; width: 2.5px; }
             .cards { gap: clamp(20px,3vw,30px); }
             .card { padding: clamp(30px,4vw,40px); }
@@ -411,6 +434,7 @@
             .title { letter-spacing: 1px; }
             .snowflake { font-size: 0.8em; }
             .orb { filter: blur(60px); opacity: 0.12; }
+            .hero-image img { max-height: 30vh; }
         }
 
         a, button { outline: none; }
@@ -482,6 +506,9 @@
             <h1>FANATIC ROLE PLAY</h1>
             <p class="hero-subtitle">ერთ-ერთი საუკეთესო SA-MP სერვერი საქართველოში • 2025</p>
             <button class="ip-btn" onclick="copyIP()">185.189.255.97:2561</button>
+        </div>
+        <div class="hero-image">
+            <img src="https://example.com/gta-character.png" alt="GTA Character">
         </div>
     </section>
 
