@@ -258,19 +258,15 @@
             </aside>
 
             <main class="main-content" id="mainContent">
-                <div class="loading">
-                    <i class="fas fa-spinner"></i>
-                    <p>იტვირთება...</p>
-                </div>
+                <!-- აქ ჩაიტვირთება პოსტები ინსტანტურად -->
             </main>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // ========== შეცვალე ეს URL შენი Worker-ის URL-ით ==========
-        const KV_URL = "https://zaraticdb.jemalagegidze.workers.dev/";
-        // =============================================================
+        // შენი Worker URL
+        const KV_URL = "https://zaraticdb.jemalagegidze.workers.dev/kv";
 
         const forumData = {
             'rules': { title: 'სერვერის საერთო წესები', desc: 'სერვერის წესები და რეგულაციები', official: true },
@@ -308,10 +304,10 @@
             const wasAtBottom = main.scrollHeight - main.scrollTop - main.clientHeight < 100;
 
             try {
-                const res = await fetch(`${KV_URL}?section=${currentSection}`);
+                const res = await fetch(`${KV_URL}?section=${currentSection}`, { cache: "no-store" });
                 const posts = res.ok ? await res.json() : [];
 
-                const info = forumData[currentSection] || forumData['rules'];
+                const info = forumData[currentSection] || { title: currentSection, desc: '', official: false };
                 const canPost = currentUser !== 'სტუმარო' && (!info.official || adminUsers.includes(currentUser));
 
                 let html = `<div class="forum-header"><h2>${info.title}</h2><p>${info.desc}</p></div>`;
@@ -320,25 +316,30 @@
                     html += `
                         <div class="post-form">
                             <form onsubmit="sendPost(event)">
-                                <div class="form-group"><label>სათაური</label><input type="text" id="postTitle" class="form-input" required></div>
-                                <div class="form-group"><label>შინაარსი</label><textarea id="postContent" class="form-textarea" required></textarea></div>
+                                <div class="form-group"><label>სათაური</label><input type="text" id="postTitle" class="form-input" required placeholder="მიუთითეთ თემის სათაური"></div>
+                                <div class="form-group"><label>შინაარსი</label><textarea id="postContent" class="form-textarea" required placeholder="დაწერეთ თქვენი პოსტი..."></textarea></div>
                                 <button type="submit" class="submit-btn">გამოქვეყნება</button>
                             </form>
                         </div>`;
                 }
 
                 if (posts.length === 0) {
-                    html += `<div class="empty-state"><i class="fas fa-inbox"></i><p>ჯერ არ არის პოსტები</p></div>`;
+                    html += `<div class="empty-state"><i class="fas fa-inbox"></i><p>ჯერ არ არის შექმნილი პოსტები ამ განყოფილებაში</p></div>`;
                 } else {
                     html += `<div class="posts-list">`;
                     posts.forEach(p => {
                         const date = new Date(p.timestamp).toLocaleString('ka-GE');
-                        const letter = p.author[0].toUpperCase();
+                        const letter = p.author.charAt(0).toUpperCase();
                         html += `
                             <div class="post">
-                                <div class="post-author">
-                                    <div class="author-avatar">${letter}</div>
-                                    <div><strong>${escape(p.author)}</strong><div class="post-date">${date}</div></div>
+                                <div class="post-header">
+                                    <div class="post-author">
+                                        <div class="author-avatar">${letter}</div>
+                                        <div>
+                                            <h4>${escape(p.author)}</h4>
+                                            <div class="post-date">${date}</div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="post-title">${escape(p.title)}</div>
                                 <div class="post-content">${escape(p.content).replace(/\n/g, '<br>')}</div>
@@ -351,12 +352,13 @@
 
                 if (wasAtBottom) main.scrollTop = main.scrollHeight;
 
-                // აქტიური სექციის ხაზგასმა
                 document.querySelectorAll('.forum-item').forEach(el => {
                     el.classList.toggle('active', el.href.includes(`id=${currentSection}`));
                 });
 
-            } catch (e) { console.error(e); }
+            } catch (err) {
+                main.innerHTML = `<div class="empty-state"><p>შეცდომა სერვერთან კავშირში...</p></div>`;
+            }
         }
 
         async function sendPost(e) {
@@ -395,9 +397,9 @@
             return div.innerHTML;
         }
 
-        // Real-time განახლება ყოველ 2.5 წამში
+        // Instant load + real-time update ყოველ 2 წამში
         loadPosts();
-        setInterval(loadPosts, 2500);
+        setInterval(loadPosts, 2000);
     </script>
 </body>
 </html>
