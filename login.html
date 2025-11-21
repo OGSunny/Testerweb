@@ -8,17 +8,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #e74c3c; --glass: rgba(15,20,40,0.92); --border: rgba(231,76,60,0.4); }
-        body { font-family: 'Noto Sans Georgian', sans-serif; background:#000; color:white; height:100vh; display:flex; align-items:center; justify-content:center; }
-        #particles-js { position:fixed; width:100%; height:100%; top:0; left:0; z-index:-1; }
-        .login-box { background:var(--glass); backdrop-filter:blur(30px); border:1px solid var(--border); border-radius:16px; padding:50px 40px; width:420px; text-align:center; box-shadow:0 15px 35px rgba(0,0,0,0.5); }
-        .logo { width:100px; height:100px; border-radius:50%; margin-bottom:20px; box-shadow:0 0 20px var(--primary); }
-        h1 { font-size:32px; margin-bottom:30px; color:var(--primary); }
-        input { width:100%; padding:16px; margin:12px 0; background:rgba(255,255,255,0.08); border:1px solid var(--border); border-radius:12px; color:white; font-size:16px; }
-        button { width:100%; padding:16px; background:var(--primary); border:none; border-radius:12px; color:white; font-size:18px; cursor:pointer; margin-top:20px; transition:0.3s; }
-        button:hover { background:#c0392b; }
-        .switch { margin-top:20px; color:rgba(255,255,255,0.7); }
-        .switch a { color:var(--primary); cursor:pointer; text-decoration:underline; }
+        :root{--primary:#e74c3c;--glass:rgba(15,20,40,0.92);--border:rgba(231,76,60,0.4);}
+        body{font-family:'Noto Sans Georgian',sans-serif;background:#000;color:white;height:100vh;display:flex;align-items:center;justify-content:center;}
+        #particles-js{position:fixed;width:100%;height:100%;top:0;left:0;z-index:-1;}
+        .login-box{background:var(--glass);backdrop-filter:blur(30px);border:1px solid var(--border);border-radius:16px;padding:50px 40px;width:420px;text-align:center;box-shadow:0 15px 35px rgba(0,0,0,0.5);}
+        .logo{width:100px;height:100px;border-radius:50%;margin-bottom:20px;box-shadow:0 0 20px var(--primary);}
+        h1{font-size:32px;margin-bottom:30px;color:var(--primary);}
+        input{width:100%;padding:16px;margin:12px 0;background:rgba(255,255,255,0.08);border:1px solid var(--border);border-radius:12px;color:white;font-size:16px;}
+        button{width:100%;padding:16px;background:var(--primary);border:none;border-radius:12px;color:white;font-size:18px;cursor:pointer;margin-top:20px;transition:0.3s;}
+        button:hover{background:#c0392b;}
+        .switch{margin-top:20px;color:rgba(255,255,255,0.7);}
+        .switch a{color:var(--primary);cursor:pointer;text-decoration:underline;}
     </style>
 </head>
 <body>
@@ -35,11 +35,10 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script src="https://unpkg.com/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
     <script>
-        const workerUrl = 'https://your-worker.workers.dev';
+        const workerUrl = 'https://data.jemalagegidze.workers.dev';
         let isLogin = true;
-        particlesJS('particles-js', { particles: { number: { value: 80 }, color: { value: '#e74c3c' }, opacity: { value: 0.3 }, move: { speed: 1.5 } } });
+        particlesJS('particles-js', {particles:{number:{value:80},color:{value:'#e74c3c'},opacity:{value:0.3},move:{speed:1.5}}});
 
         if (localStorage.getItem('username')) location.href = 'forum.html';
 
@@ -59,18 +58,10 @@
             if (username.length < 3 || password.length < 4) return alert('მონაცემები არასაკმარისია');
 
             const endpoint = isLogin ? '/login' : '/register';
-            const res = await fetch(workerUrl + endpoint, {
-                method: 'POST',
-                headers: {'Content-Type':'application/json'},
-                body: JSON.stringify({username, password})
-            });
+            const res = await fetch(workerUrl + endpoint, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password})});
             const data = await res.json();
-            if (res.ok) {
-                localStorage.setItem('username', username);
-                location.href = 'forum.html';
-            } else {
-                alert(data.error || 'შეცდომა');
-            }
+            if (res.ok) {localStorage.setItem('username', username);location.href = 'forum.html';}
+            else alert(data.error || 'შეცდომა');
         };
     </script>
 </body>
