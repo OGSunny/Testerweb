@@ -1,58 +1,76 @@
+<!-- FILE 3: login.html -->
 <!DOCTYPE html>
 <html lang="ka">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>შესვლა • Zaratic RP</title>
-  <link rel="icon" href="https://raw.githubusercontent.com/OGSunny/Testerweb/main/lv_0_20251120194047.jpg">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root { --red:#e74c3c; --dark:#0f0f0f; --glass:rgba(20,20,30,0.9); --border:rgba(231,76,60,0.3); }
-    body { font-family:'Noto Sans Georgian',sans-serif; background:#000; color:white; height:100vh; display:grid; place-items:center; }
-    .box { background:var(--glass); border:1px solid var(--border); border-radius:12px; padding:30px 40px; width:360px; text-align:center; backdrop-filter:blur(20px); }
-    img { width:80px; height:80px; border-radius:50%; margin-bottom:20px; }
-    h1 { font-size:22px; color:var(--red); margin-bottom:20px; }
-    input { width:100%; padding:12px; margin:10px 0; background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:8px; color:white; font-size:14px; }
-    button { width:100%; padding:12px; background:var(--red); border:none; border-radius:8px; color:white; cursor:pointer; font-size:14px; margin-top:10px; }
-    .switch { margin-top:15px; font-size:13px; }
-    .switch a { color:var(--red); cursor:pointer; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>შესვლა • Zaratic RP</title>
+    <link rel="icon" href="https://raw.githubusercontent.com/OGSunny/Testerweb/main/lv_0_20251120194047.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --accent: #e91e63; --bg-primary: #0a0a0a; --bg-glass: rgba(20,20,30,0.9); --border: rgba(233,30,99,0.25); }
+        body { font-family: 'Noto Sans Georgian', sans-serif; background: var(--bg-primary); color: #ffffff; height: 100vh; display: grid; place-items: center; }
+        .box { background: var(--bg-glass); border: 1px solid var(--border); border-radius: 12px; padding: 30px 40px; width: 360px; text-align: center; backdrop-filter: blur(20px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        img { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 20px; border: 2px solid var(--accent); }
+        h1 { font-size: 22px; color: var(--accent); margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; color: #ffffff; font-size: 14px; transition: all 0.2s ease; }
+        input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 5px var(--accent); }
+        button { width: 100%; padding: 12px; background: var(--accent); border: none; border-radius: 8px; color: #ffffff; cursor: pointer; font-size: 14px; margin-top: 10px; transition: all 0.2s ease; }
+        button:hover { background: #f50057; }
+        .switch { margin-top: 15px; font-size: 13px; color: #b0b0b0; }
+        .switch a { color: var(--accent); cursor: pointer; text-decoration: underline; }
+        .switch a:hover { color: #f50057; }
+        .error { color: #f44336; font-size: 13px; margin-top: 10px; }
+    </style>
 </head>
 <body>
-  <div class="box">
-    <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/lv_0_20251120194047.jpg">
-    <h1 id="title">შესვლა</h1>
-    <form id="form">
-      <input type="text" id="user" placeholder="მომხმარებელი" required minlength="3">
-      <input type="password" id="pass" placeholder="პაროლი" required>
-      <button type="submit" id="btn">შესვლა</button>
-    </form>
-    <div class="switch">არ გაქვს ანგარიში? <a id="toggle">რეგისტრაცია</a></div>
-  </div>
+    <div class="box">
+        <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/lv_0_20251120194047.jpg">
+        <h1 id="title">შესვლა</h1>
+        <form id="form">
+            <input type="text" id="user" placeholder="მომხმარებელი" required minlength="3">
+            <input type="password" id="pass" placeholder="პაროლი" required minlength="4">
+            <button type="submit" id="btn">შესვლა</button>
+        </form>
+        <div class="switch">არ გაქვს ანგარიში? <a id="toggle">რეგისტრაცია</a></div>
+        <div class="error" id="error"></div>
+    </div>
 
-  <script>
-    const worker = 'https://data.jemalagegidze.workers.dev';
-    let login = true;
-    if (localStorage.getItem('username')) location.href = 'forum.html';
+    <script>
+        const WORKER_URL = 'https://data.jemalagegidze.workers.dev';
+        let isLogin = true;
+        if (localStorage.getItem('username')) location.href = 'forum.html';
 
-    document.getElementById('toggle').onclick = () => {
-      login = !login;
-      document.getElementById('title').textContent = login ? 'შესვლა' : 'რეგისტრაცია';
-      document.getElementById('btn').textContent = login ? 'შესვლა' : 'რეგისტრაცია';
-      document.querySelector('.switch').innerHTML = login ? 'არ გაქვს ანგარიში? <a id="toggle">რეგისტრაცია</a>' : 'უკვე გაქვს? <a id="toggle">შესვლა</a>';
-      document.getElementById('toggle').onclick = arguments.callee;
-    };
+        document.getElementById('toggle').onclick = () => {
+            isLogin = !isLogin;
+            document.getElementById('title').textContent = isLogin ? 'შესვლა' : 'რეგისტრაცია';
+            document.getElementById('btn').textContent = isLogin ? 'შესვლა' : 'რეგისტრაცია';
+            document.querySelector('.switch').innerHTML = isLogin ? 'არ გაქვს ანგარიში? <a id="toggle">რეგისტრაცია</a>' : 'უკვე გაქვს? <a id="toggle">შესვლა</a>';
+            document.getElementById('toggle').onclick = arguments.callee;
+            document.getElementById('error').textContent = '';
+        };
 
-    document.getElementById('form').onsubmit = async e => {
-      e.preventDefault();
-      const u = document.getElementById('user').value.trim();
-      const p = document.getElementById('pass').value;
-      const path = login ? '/login' : '/register';
-      const res = await fetch(worker + path, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})});
-      const data = await res.json();
-      if (res.ok) { localStorage.setItem('username', u); location.href = 'forum.html'; }
-      else alert(data.error || 'შეცდომა');
-    };
-  </script>
+        document.getElementById('form').onsubmit = async e => {
+            e.preventDefault();
+            const username = document.getElementById('user').value.trim();
+            const password = document.getElementById('pass').value;
+            if (username.length < 3) return document.getElementById('error').textContent = 'მომხმარებელი მინიმუმ 3 სიმბოლო';
+            if (password.length < 4) return document.getElementById('error').textContent = 'პაროლი მინიმუმ 4 სიმბოლო';
+            const path = isLogin ? '/login' : '/register';
+            try {
+                const res = await fetch(WORKER_URL + path, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'შეცდომა');
+                localStorage.setItem('username', username);
+                location.href = 'forum.html';
+            } catch (error) {
+                document.getElementById('error').textContent = error.message;
+            }
+        };
+    </script>
 </body>
 </html>
