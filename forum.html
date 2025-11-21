@@ -1,100 +1,597 @@
+<!-- FILE 1: forum.html -->
 <!DOCTYPE html>
 <html lang="ka">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zaratic RP • ფორუმი</title>
-  <link rel="icon" href="https://raw.githubusercontent.com/OGSunny/Testerweb/main/lv_0_20251120194047.jpg">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <style>
-    :root { --red: #e74c3c; --dark: #0f0f0f; --glass: rgba(20,20,30,0.9); --border: rgba(231,76,60,0.3); }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family: 'Noto Sans Georgian', sans-serif; background:#000; color:#eee; min-height:100vh; font-size:14px; line-height:1.5; }
-    header { position:fixed; top:0; left:0; width:100%; padding:12px 20px; background:var(--glass); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); z-index:1000; display:flex; justify-content:space-between; align-items:center; }
-    .logo { display:flex; align-items:center; gap:10px; font-weight:600; font-size:18px; color:white; text-decoration:none; }
-    .logo img { width:36px; height:36px; border-radius:50%; }
-    .user { display:flex; align-items:center; gap:10px; cursor:pointer; }
-    .avatar { width:36px; height:36px; background:var(--red); border-radius:50%; display:grid; place-items:center; font-weight:bold; }
-    .container { max-width:1100px; margin:70px auto 20px; padding:0 15px; display:grid; grid-template-columns:1fr 280px; gap:20px; }
-    .section h2 { font-size:16px; color:var(--red); margin:25px 0 12px; font-weight:600; }
-    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px; }
-    .card { background:var(--glass); border:1px solid var(--border); border-radius:8px; padding:14px; transition:0.2s; cursor:pointer; }
-    .card:hover { border-color:var(--red); transform:translateY(-2px); }
-    .card h3 { font-size:15px; margin-bottom:6px; display:flex; align-items:center; gap:6px; }
-    .lock { color:#e67e22; font-size:13px; }
-    .card p { font-size:13px; color:#ccc; margin-bottom:8px; }
-    .stats { font-size:12px; color:#999; display:flex; justify-content:space-between; }
-    .sidebar { background:var(--glass); border:1px solid var(--border); border-radius:8px; padding:16px; height:fit-content; position:sticky; top:70px; }
-    .sidebar h3 { font-size:14px; color:var(--red); margin-bottom:10px; }
-    .stat { font-size:13px; margin:8px 0; color:#ccc; }
-    footer { text-align:center; padding:20px; color:#666; font-size:12px; }
-    @media (max-width:900px) { .container { grid-template-columns:1fr; } .sidebar { position:static; } }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ფორუმი • Zaratic Role Play</title>
+    <link rel="icon" href="https://raw.githubusercontent.com/OGSunny/Testerweb/main/lv_0_20251120194047.jpg" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700;900&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #121218;
+            --bg-card: #1a1a24;
+            --bg-glass: rgba(20, 20, 30, 0.92);
+            --accent: #e91e63;
+            --accent-hover: #f50057;
+            --accent-light: rgba(233, 30, 99, 0.2);
+            --border: rgba(233, 30, 99, 0.25);
+            --border-hover: rgba(233, 30, 99, 0.5);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --text-muted: #707070;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --error: #f44336;
+            --shadow: 0 4px 12px rgba(0,0,0,0.3);
+            --transition: all 0.2s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans Georgian', 'Montserrat', sans-serif; background: var(--bg-primary); color: var(--text-primary); overflow-x: hidden; min-height: 100vh; }
+        a { text-decoration: none; color: var(--accent); transition: var(--transition); }
+        a:hover { color: var(--accent-hover); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+        .flex { display: flex; align-items: center; }
+        .grid { display: grid; gap: 20px; }
+
+        header { position: fixed; top: 0; left: 0; width: 100%; background: var(--bg-glass); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); z-index: 1000; padding: 10px 0; }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 700; color: var(--text-primary); }
+        .logo img { width: 40px; height: 40px; border-radius: 50%; }
+        nav ul { list-style: none; display: flex; gap: 20px; }
+        nav ul li a { font-size: 16px; color: var(--text-secondary); }
+        nav ul li a:hover { color: var(--accent); }
+        .search { position: relative; }
+        .search input { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 8px 30px 8px 15px; color: var(--text-primary); width: 200px; }
+        .search i { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+        .icons { display: flex; gap: 15px; }
+        .icons i { font-size: 18px; color: var(--text-secondary); cursor: pointer; }
+        .icons i:hover { color: var(--accent); }
+        .user-menu { position: relative; }
+        .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); display: grid; place-items: center; font-size: 14px; font-weight: bold; cursor: pointer; }
+        .dropdown { position: absolute; top: 40px; right: 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 10px; display: none; box-shadow: var(--shadow); }
+        .dropdown.active { display: block; }
+        .dropdown a { display: block; padding: 8px 15px; color: var(--text-secondary); }
+        .dropdown a:hover { background: var(--accent-light); color: var(--text-primary); }
+
+        .hero { background: var(--bg-secondary); padding: 60px 0; margin-top: 60px; text-align: center; }
+        .hero h1 { font-size: 36px; color: var(--accent); margin-bottom: 10px; }
+        .hero p { font-size: 18px; color: var(--text-secondary); margin-bottom: 20px; }
+        .hero button { padding: 12px 30px; background: var(--accent); color: var(--text-primary); border: none; border-radius: 8px; cursor: pointer; font-weight: 700; transition: var(--transition); }
+        .hero button:hover { background: var(--accent-hover); }
+
+        .forum-sections { padding: 40px 0; display: grid; grid-template-columns: 3fr 1fr; gap: 30px; }
+        .category { background: var(--bg-glass); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+        .category-header { display: flex; align-items: center; gap: 10px; font-size: 20px; color: var(--accent); margin-bottom: 15px; cursor: pointer; }
+        .category-header i { font-size: 18px; }
+        .section-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+        .section-row:last-child { border-bottom: none; }
+        .section-info { display: flex; align-items: center; gap: 15px; flex: 1; }
+        .section-icon { font-size: 24px; color: var(--accent); }
+        .section-title { font-size: 16px; font-weight: 600; }
+        .section-sub { font-size: 12px; color: var(--text-muted); }
+        .section-stats { text-align: right; color: var(--text-secondary); font-size: 14px; }
+        .section-last { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-muted); }
+        .section-last .avatar { width: 20px; height: 20px; border-radius: 50%; background: var(--accent); }
+
+        .sidebar-box { background: var(--bg-glass); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 8px; padding: 15px; margin-bottom: 20px; }
+        .sidebar-header { font-size: 16px; color: var(--accent); margin-bottom: 10px; }
+        .status-update { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text-secondary); }
+        .status-update:last-child { border-bottom: none; }
+        .status-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); }
+        .contributors { list-style: none; }
+        .contributor { display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 13px; }
+        .contributor-num { font-weight: bold; color: var(--accent); }
+        .tabs { display: flex; gap: 10px; margin-bottom: 10px; }
+        .tab { padding: 5px 10px; background: var(--bg-card); border-radius: 4px; cursor: pointer; color: var(--text-secondary); }
+        .tab.active { background: var(--accent); color: var(--text-primary); }
+
+        .stats { background: var(--bg-secondary); padding: 40px 0; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .stat-box { background: var(--bg-glass); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 8px; padding: 15px; }
+        .stat-header { font-size: 16px; color: var(--accent); margin-bottom: 10px; }
+        .online-users { display: flex; flex-wrap: wrap; gap: 5px; }
+        .online-user { color: var(--text-secondary); font-size: 13px; }
+        .online-user:hover { color: var(--accent); }
+
+        footer { background: var(--bg-secondary); padding: 20px 0; text-align: center; font-size: 12px; color: var(--text-muted); }
+        footer a { color: var(--text-secondary); margin: 0 10px; }
+        footer a:hover { color: var(--accent); }
+
+        .loading { text-align: center; padding: 20px; color: var(--text-muted); }
+        .loading i { animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 1200px) { .forum-sections { grid-template-columns: 2fr 1fr; } }
+        @media (max-width: 768px) { .forum-sections { grid-template-columns: 1fr; } .stats-grid { grid-template-columns: 1fr; } .header-inner { flex-wrap: wrap; } nav { display: none; } .hamburger { display: block; cursor: pointer; } }
+        .hamburger { display: none; font-size: 24px; color: var(--text-secondary); }
+        .nav-mobile { display: none; position: absolute; top: 50px; left: 0; width: 100%; background: var(--bg-glass); padding: 10px; }
+        .nav-mobile.active { display: block; }
+    </style>
 </head>
 <body>
-  <header>
-    <a href="forum.html" class="logo">
-      <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/lv_0_20251120194047.jpg" alt="Zaratic RP">
-      Zaratic RP
-    </a>
-    <div class="user" onclick="location.href='profile.html'">
-      <div class="avatar" id="avatar">Z</div>
-      <span id="username">Guest</span>
-    </div>
-  </header>
-
-  <div class="container">
-    <main>
-      <div class="section"><h2>სერვერის ინფორმაცია</h2>
-        <div class="grid">
-          <div class="card" data-id="rules"><h3>წესები <i class="fas fa-lock lock"></i></h3><p>ოფიციალური წესები</p><div class="stats"><span id="rules-count">0 პოსტი</span></div></div>
-          <div class="card" data-id="news"><h3>სიახლეები <i class="fas fa-lock lock"></i></h3><p>ადმინის განცხადებები</p><div class="stats"><span id="news-count">0</span></div></div>
-          <div class="card" data-id="updates"><h3>განახლებები <i class="fas fa-lock lock"></i></h3><p>სერვერის ცვლილებები</p><div class="stats"><span id="updates-count">0</span></div></div>
+    <header>
+        <div class="container header-inner">
+            <a href="forum.html" class="logo">
+                <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/lv_0_20251120194047.jpg" alt="Zaratic RP">
+                Zaratic RP
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#">საზოგადოება</a></li>
+                    <li><a href="#">აქტივობა</a></li>
+                </ul>
+            </nav>
+            <div class="search">
+                <input type="text" id="searchInput" placeholder="ძიება...">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="icons">
+                <i class="fas fa-bell"></i>
+                <i class="fas fa-envelope"></i>
+            </div>
+            <div class="user-menu">
+                <div id="userAvatar" class="user-avatar"></div>
+                <div class="dropdown" id="dropdown">
+                    <a href="profile.html">პროფილი</a>
+                    <a href="#" onclick="logout()">გამოსვლა</a>
+                </div>
+            </div>
+            <i class="fas fa-bars hamburger" id="hamburger"></i>
         </div>
-      </div>
+        <nav class="nav-mobile" id="navMobile">
+            <ul>
+                <li><a href="#">საზოგადოება</a></li>
+                <li><a href="#">აქტივობა</a></li>
+            </ul>
+        </nav>
+    </header>
 
-      <div class="section"><h2>საჩივრები & ვაკანსიები</h2>
-        <div class="grid">
-          <div class="card" data-id="complaints-admin"><h3>საჩივარი ადმინზე</h3><p id="ca-count">0</p></div>
-          <div class="card" data-id="complaints-player"><h3>საჩივარი მოთამაშეზე</h3><p id="cp-count">0</p></div>
-          <div class="card" data-id="vacancies-leaders"><h3>ლიდერები</h3><p id="vl-count">0</p></div>
+    <section class="hero">
+        <div class="container">
+            <h1>სწრაფი დახმარება</h1>
+            <p>გჭირდებათ დახმარება? შექმენით თემა ტექნიკურ განყოფილებაში და ადმინისტრაცია დაგეხმარებათ.</p>
+            <button onclick="location.href='section.html?id=tech-help'">დახმარება</button>
         </div>
-      </div>
-    </main>
+    </section>
 
-    <aside class="sidebar">
-      <h3>სტატისტიკა</h3>
-      <div class="stat">პოსტები: <strong id="total">0</strong></div>
-      <div class="stat">ონლაინ: <strong id="online">0</strong></div>
-    </aside>
-  </div>
+    <section class="forum-sections container grid">
+        <div>
+            <div class="category">
+                <div class="category-header"><i class="fas fa-home"></i> ED:RP - ფორუმის მთავარი განყოფილება</div>
+            </div>
+            <div class="category" id="server-info">
+                <div class="category-header"><i class="fas fa-server"></i> სერვერის ინფო</div>
+                <div class="section-row">
+                    <div class="section-info">
+                        <i class="fas fa-clipboard-list section-icon"></i>
+                        <div>
+                            <div class="section-title">სერვერის საერთო წესები</div>
+                            <div class="section-sub">სერვერის წესები</div>
+                        </div>
+                    </div>
+                    <div class="section-stats">
+                        <div id="rules-count">პოსტები: 0</div>
+                        <div class="section-last"><div class="avatar"></div> ბოლო პოსტი: -</div>
+                    </div>
+                </div>
+                <div class="section-row">
+                    <div class="section-info">
+                        <i class="fas fa-newspaper section-icon"></i>
+                        <div>
+                            <div class="section-title">სერვერის სიახლეები</div>
+                            <div class="section-sub">სერვერის სიახლეები</div>
+                        </div>
+                    </div>
+                    <div class="section-stats">
+                        <div id="news-count">პოსტები: 0</div>
+                        <div class="section-last"><div class="avatar"></div> ბოლო პოსტი: -</div>
+                    </div>
+                </div>
+                <div class="section-row">
+                    <div class="section-info">
+                        <i class="fas fa-sync-alt section-icon"></i>
+                        <div>
+                            <div class="section-title">სერვერის განახლებები</div>
+                            <div class="section-sub">სერვერის განახლებები</div>
+                        </div>
+                    </div>
+                    <div class="section-stats">
+                        <div id="updates-count">პოსტები: 0</div>
+                        <div class="section-last"><div class="avatar"></div> ბოლო პოსტი: -</div>
+                    </div>
+                </div>
+            </div>
+            <div class="category" id="info-section">
+                <div class="category-header"><i class="fas fa-info-circle"></i> საინფორმაციო განყოფილება</div>
+                <div class="section-row">
+                    <div class="section-info">
+                        <i class="fas fa-info-circle section-icon"></i>
+                        <div>
+                            <div class="section-title">საინფორმაციო განყოფილება</div>
+                            <div class="section-sub">მეთოდოლოგიები, ფონისტორიები, RP ბიოგრაფიები</div>
+                        </div>
+                    </div>
+                    <div class="section-stats">
+                        <div id="info-count">პოსტები: 0</div>
+                        <div class="section-last"><div class="avatar"></div> ბოლო პოსტი: -</div>
+                    </div>
+                </div>
+                <div class="section-row">
+                    <div class="section-info">
+                        <i class="fas fa-lightbulb section-icon"></i>
+                        <div>
+                            <div class="section-title">წინადადებები</div>
+                        </div>
+                    </div>
+                    <div class="section-stats">
+                        <div id="suggestions-count">პოსტები: 0</div>
+                        <div class="section-last"><div class="avatar"></div> ბოლო პოსტი: -</div>
+                    </div>
+                </div>
+                <div class="section-row">
+                    <div class="section-info">
+                        <i class="fas fa-calendar-alt section-icon"></i>
+                        <div>
+                            <div class="section-title">ივენთები</div>
+                        </div>
+                    </div>
+                    <div class="section-stats">
+                        <div id="events-count">პოსტები: 0</div>
+                        <div class="section-last"><div class="avatar"></div> ბოლო პოსტი: -</div>
+                    </div>
+                </div>
+                <div class="section-row">
+                    <div class="section-info">
+                        <i class="fas fa-user-edit section-icon"></i>
+                        <div>
+                            <div class="section-title">RP ბიოგრაფიები</div>
+                        </div>
+                    </div>
+                    <div class="section-stats">
+                        <div id="biographies-count">პოსტები: 0</div>
+                        <div class="section-last"><div class="avatar"></div> ბოლო პოსტი: -</div>
+                    </div>
+                </div>
+            </div>
+            <div class="category" id="complaints">
+                <div class="category-header"><i class="fas fa-exclamation-triangle"></i> საჩივრები</div>
+                <div class="section-row">
+                    <div class="section-info">
+                        <i class="fas fa-exclamation-triangle section-icon"></i>
+                        <div>
+                            <div class="section-title">საჩივრები ადმინისტრატორზე</div>
+                        </div>
+                    </div>
+                    <div class="section-stats">
+                        <div id="complaints-admin-count">პოსტები: 0</div>
+                        <div class="section-last"><div class="avatar"></div> ბოლო პოსტი: -</div>
+                    </div>
+                </div>
+                <div class="section-row">
+                    <div class="section-info">
+                        <i class="fas fa-user-times section-icon"></i>
+                        <div>
+                            <div class="section-title">საჩივრები მოთამაშეზე</div>
+                        </div>
+                    </div>
+                    <div class="section-stats">
+                        <div id="complaints-player-count">პოსტები: 0</div>
+                        <div class="section-last"><div class="avatar"></div> ბოლო პოსტი: -</div>
+                    </div>
+                </div>
+                <div class="section-row">
+                    <div class="section-info">
+                        <i class="fas fa-gavel section-icon"></i>
+                        <div>
+                            <div class="section-title">აპელაციები</div>
+                        </div>
+                    </div>
+                    <div class="section-stats">
+                        <div id="appeals-count">პოსტები: 0</div>
+                        <div class="section-last"><div class="avatar"></div> ბოლო პოსტი: -</div>
+                    </div>
+                </div>
+                <div class="section-row">
+                    <div class="section-info">
+                        <i class="fas fa-unlock section-icon"></i>
+                        <div>
+                            <div class="section-title">განბლოკვის მოთხოვნები</div>
+                        </div>
+                    </div>
+                    <div class="section-stats">
+                        <div id="unban-count">პოსტები: 0</div>
+                        <div class="section-last"><div class="avatar"></div> ბოლო პოსტი: -</div>
+                    </div>
+                </div>
+            </div>
+            <div class="category" id="vacancies">
+                <div class="category-header"><i class="fas fa-briefcase"></i> ვაკანსიები</div>
+                <div class="section-row">
+                    <div class="section-info">
+                        <i class="fas fa-crown section-icon"></i>
+                        <div>
+                            <div class="section-title">ვაკანსია ლიდერზე</div>
+                        </div>
+                    </div>
+                    <div class="section-stats">
+                        <div id="vacancies-leaders-count">პოსტები: 0</div>
+                        <div class="section-last"><div class="avatar"></div> ბოლო პოსტი: -</div>
+                    </div>
+                </div>
+                <div class="section-row">
+                    <div class="section-info">
+                        <i class="fas fa-user-shield section-icon"></i>
+                        <div>
+                            <div class="section-title">ვაკანსია ადმინისტრატორებისთვის</div>
+                        </div>
+                    </div>
+                    <div class="section-stats">
+                        <div id="vacancies-admin-count">პოსტები: 0</div>
+                        <div class="section-last"><div class="avatar"></div> ბოლო პოსტი: -</div>
+                    </div>
+                </div>
+                <div class="section-row">
+                    <div class="section-info">
+                        <i class="fas fa-handshake section-icon"></i>
+                        <div>
+                            <div class="section-title">პარტნიორობა</div>
+                        </div>
+                    </div>
+                    <div class="section-stats">
+                        <div id="vacancies-partner-count">პოსტები: 0</div>
+                        <div class="section-last"><div class="avatar"></div> ბოლო პოსტი: -</div>
+                    </div>
+                </div>
+            </div>
+            <div class="category" id="technical">
+                <div class="category-header"><i class="fas fa-wrench"></i> ტექნიკური განყოფილება</div>
+                <div class="section-row">
+                    <div class="section-info">
+                        <i class="fas fa-donate section-icon"></i>
+                        <div>
+                            <div class="section-title">დახმარება დონატით</div>
+                        </div>
+                    </div>
+                    <div class="section-stats">
+                        <div id="donation-help-count">პოსტები: 0</div>
+                        <div class="section-last"><div class="avatar"></div> ბოლო პოსტი: -</div>
+                    </div>
+                </div>
+                <div class="section-row">
+                    <div class="section-info">
+                        <i class="fas fa-tools section-icon"></i>
+                        <div>
+                            <div class="section-title">ტექნიკური დახმარება</div>
+                        </div>
+                    </div>
+                    <div class="section-stats">
+                        <div id="tech-help-count">პოსტები: 0</div>
+                        <div class="section-last"><div class="avatar"></div> ბოლო პოსტი: -</div>
+                    </div>
+                </div>
+                <div class="section-row">
+                    <div class="section-info">
+                        <i class="fas fa-comments section-icon"></i>
+                        <div>
+                            <div class="section-title">ზოგადი დისკუსია</div>
+                        </div>
+                    </div>
+                    <div class="section-stats">
+                        <div id="general-count">პოსტები: 0</div>
+                        <div class="section-last"><div class="avatar"></div> ბოლო პოსტი: -</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <aside>
+            <div class="sidebar-box">
+                <div class="sidebar-header">ბოლო სტატუს განახლებები</div>
+                <div id="status-updates" class="loading"><i class="fas fa-spinner"></i> იტვირთება...</div>
+            </div>
+            <div class="sidebar-box">
+                <div class="sidebar-header">პოპულარული კონტრიბუტორები</div>
+                <div class="tabs">
+                    <div class="tab" data-period="week">კვირა</div>
+                    <div class="tab active" data-period="month">თვე</div>
+                    <div class="tab" data-period="year">წელი</div>
+                    <div class="tab" data-period="all">სულ</div>
+                </div>
+                <ul id="contributors" class="contributors loading"><i class="fas fa-spinner"></i> იტვირთება...</ul>
+                <a href="#">მეტის ნახვა</a>
+            </div>
+        </aside>
+    </section>
 
-  <footer>© 2025 Zaratic Role Play</footer>
+    <section class="stats">
+        <div class="container stats-grid">
+            <div class="stat-box">
+                <div class="stat-header">ონლაინ მომხმარებლები</div>
+                <div id="online-count">ონლაინ: 0</div>
+                <div class="online-users" id="online-users"></div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-header">ფორუმის სტატისტიკა</div>
+                <div>სულ თემები: <span id="total-threads">0</span></div>
+                <div>სულ პოსტი: <span id="total-posts">0</span></div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-header">მომხმარებლების სტატისტიკა</div>
+                <div>რეგისტრირებული მომხმარებელი: <span id="total-users">0</span></div>
+                <div>მაქსიმალური ონლაინ: <span id="max-online">0</span></div>
+                <div>ბოლო რეგისტრირებული: <span id="newest-member"></span></div>
+            </div>
+        </div>
+    </section>
 
-  <script>
-    const worker = 'https://data.jemalagegidze.workers.dev';
-    const user = localStorage.getItem('username');
-    if (!user) location.href = 'login.html';
-    document.getElementById('username').textContent = user;
-    document.getElementById('avatar').textContent = user[0].toUpperCase();
+    <footer>
+        <div class="container">
+            &copy; 2025 Zaratic RP. All Rights Reserved.
+            <a href="#"><i class="fab fa-discord"></i></a>
+            <a href="#">სერვერის ინფო</a>
+        </div>
+    </footer>
 
-    const sections = ['rules','news','updates','complaints-admin','complaints-player','vacancies-leaders'];
-    async function load() {
-      let total = 0;
-      for (const s of sections) {
-        const res = await fetch(`${worker}/?section=${s}`);
-        const posts = await res.json();
-        total += posts.length;
-        const el = document.getElementById(s + '-count') || document.querySelector(`[data-id="${s}"] p`);
-        el.innerHTML = posts.length + (posts.length === 1 ? ' პოსტი' : ' პოსტი');
-      }
-      document.getElementById('total').textContent = total;
-      document.getElementById('online').textContent = Math.floor(Math.random()*30)+10;
-    }
-    load(); setInterval(load,30000);
+    <script>
+        const WORKER_URL = 'https://data.jemalagegidze.workers.dev';
+        const SECTIONS = {
+            'rules': 'სერვერის საერთო წესები',
+            'news': 'სერვერის სიახლეები',
+            'updates': 'სერვერის განახლებები',
+            'info': 'საინფორმაციო განყოფილება',
+            'suggestions': 'წინადადებები',
+            'events': 'ივენთები',
+            'biographies': 'RP ბიოგრაფიები',
+            'complaints-admin': 'საჩივრები ადმინისტრატორზე',
+            'complaints-player': 'საჩივრები მოთამაშეზე',
+            'appeals': 'აპელაციები',
+            'unban': 'განბლოკვის მოთხოვნები',
+            'vacancies-leaders': 'ვაკანსია ლიდერზე',
+            'vacancies-admin': 'ვაკანსია ადმინისტრატორებისთვის',
+            'vacancies-partner': 'პარტნიორობა',
+            'donation-help': 'დახმარება დონატით',
+            'tech-help': 'ტექნიკური დახმარება',
+            'general': 'ზოგადი დისკუსია'
+        };
+        const ADMINS = ['Zviadi Gegidze', 'Nika Georgadze', 'Admin'];
 
-    document.querySelectorAll('.card').forEach(c => c.onclick = () => location.href = `section.html?id=${c.dataset.id}`);
-  </script>
+        function checkAuth() {
+            const user = localStorage.getItem('username');
+            if (!user) {
+                location.href = 'login.html';
+                return null;
+            }
+            return user;
+        }
+
+        const currentUser = checkAuth();
+
+        function getAvatarColor(username) {
+            const colors = ['#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#00bcd4', '#009688', '#4caf50', '#ff9800', '#ff5722'];
+            let hash = 0;
+            for (let i = 0; i < username.length; i++) {
+                hash = username.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            return colors[Math.abs(hash) % colors.length];
+        }
+
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diff = now - date;
+            if (diff < 60000) return 'ახლახანს';
+            if (diff < 3600000) return Math.floor(diff / 60000) + ' წუთის წინ';
+            if (diff < 86400000) return Math.floor(diff / 3600000) + ' საათის წინ';
+            if (diff < 604800000) return Math.floor(diff / 86400000) + ' დღის წინ';
+            return date.toLocaleDateString('ka-GE', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        }
+
+        async function apiCall(endpoint, options = {}) {
+            try {
+                const response = await fetch(WORKER_URL + endpoint, {
+                    headers: { 'Content-Type': 'application/json' },
+                    ...options
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || 'შეცდომა');
+                return data;
+            } catch (error) {
+                alert(error.message);
+                throw error;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('username');
+            location.href = 'login.html';
+        }
+
+        async function updateOnlineStatus() {
+            if (currentUser) {
+                await apiCall('/user/update', {
+                    method: 'POST',
+                    body: JSON.stringify({ username: currentUser })
+                });
+            }
+        }
+
+        async function loadSectionStats() {
+            const stats = await apiCall('/stats');
+            for (const [section, data] of Object.entries(stats.sectionStats)) {
+                document.getElementById(`${section}-count`).textContent = `პოსტები: ${data.count}`;
+                const last = document.querySelector(`#${section}-count ~ .section-last`);
+                if (data.lastPost) {
+                    last.innerHTML = `<div class="avatar" style="background: ${getAvatarColor(data.lastPost.author)}"></div> ბოლო პოსტი: ${formatDate(data.lastPost.timestamp)} - ${data.lastPost.author}`;
+                } else {
+                    last.textContent = 'ბოლო პოსტი: -';
+                }
+            }
+        }
+
+        async function loadForumStats() {
+            const stats = await apiCall('/stats');
+            document.getElementById('total-posts').textContent = stats.totalPosts;
+            document.getElementById('total-users').textContent = stats.totalUsers;
+            document.getElementById('newest-member').innerHTML = `<div class="avatar" style="background: ${getAvatarColor(stats.newestMember)}"></div> ${stats.newestMember} (${formatDate(stats.newestMemberDate)})`;
+            document.getElementById('online-count').textContent = `ონლაინ: ${stats.onlineCount}`;
+            document.getElementById('online-users').innerHTML = stats.onlineUsers.map(u => `<a href="profile.html?username=${u}" class="online-user">${u}</a>`).join(', ');
+            document.getElementById('max-online').textContent = stats.onlineCount; // Assuming current is max for simplicity
+            document.getElementById('total-threads').textContent = stats.totalPosts; // Threads ~ Posts for simplicity
+        }
+
+        async function loadStatusUpdates() {
+            // Simulate status updates (use real API if needed)
+            document.getElementById('status-updates').innerHTML = 'სტატუსები არ არის'; // Placeholder, as no API for status
+        }
+
+        async function loadContributors(period = 'month') {
+            const contributors = await apiCall('/contributors?period=' + period);
+            document.getElementById('contributors').innerHTML = contributors.map((c, i) => `
+                <li class="contributor">
+                    <span class="contributor-num">${i+1}</span>
+                    <div class="avatar" style="background: ${getAvatarColor(c.username)}">${c.username[0].toUpperCase()}</div>
+                    ${c.username} - ${c.postCount} პოსტი
+                </li>
+            `).join('');
+        }
+
+        function init() {
+            const userAvatar = document.getElementById('userAvatar');
+            userAvatar.textContent = currentUser[0].toUpperCase();
+            userAvatar.style.background = getAvatarColor(currentUser);
+
+            document.getElementById('userAvatar').onclick = () => document.getElementById('dropdown').classList.toggle('active');
+            document.getElementById('hamburger').onclick = () => document.getElementById('navMobile').classList.toggle('active');
+
+            document.getElementById('searchInput').oninput = async (e) => {
+                const query = e.target.value;
+                if (query.length > 2) {
+                    const results = await apiCall('/search?q=' + query);
+                    console.log(results); // Display results in console for now, add UI if needed
+                }
+            };
+
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.onclick = () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    loadContributors(tab.dataset.period);
+                };
+            });
+
+            loadSectionStats();
+            loadForumStats();
+            loadStatusUpdates();
+            loadContributors('month');
+            updateOnlineStatus();
+        }
+
+        init();
+        setInterval(() => { loadForumStats(); updateOnlineStatus(); }, 30000);
+    </script>
 </body>
 </html>
