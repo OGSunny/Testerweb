@@ -29,14 +29,12 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-
         body {
             font-family: 'Noto Sans Georgian', 'Montserrat', sans-serif;
             background: #000000;
             color: var(--text-primary);
             overflow-x: hidden;
             min-height: 100vh;
-            transition: all 0.5s ease;
         }
 
         #particles-js { 
@@ -64,33 +62,12 @@
             border-radius: 50%; 
             filter: blur(100px); 
             opacity: 0.2; 
-            transition: all 2s ease;
-        }
-        .orb-1 { 
-            width: 500px; 
-            height: 500px; 
-            background: var(--primary); 
-            top: -15%; 
-            left: 15%; 
             animation: float 20s ease-in-out infinite; 
         }
-        .orb-2 { 
-            width: 450px; 
-            height: 450px; 
-            background: var(--accent); 
-            top: 60%; 
-            right: 10%; 
-            animation: float 25s ease-in-out infinite reverse; 
-        }
-        .orb-3 { 
-            width: 300px; 
-            height: 300px; 
-            background: var(--primary-light); 
-            bottom: -10%; 
-            left: 50%; 
-            animation: float 28s ease-in-out infinite; 
-        }
-        
+        .orb-1 { width: 500px; height: 500px; background: var(--primary); top: -15%; left: 15%; }
+        .orb-2 { width: 450px; height: 450px; background: var(--accent); top: 60%; right: 10%; animation-direction: reverse; animation-duration: 25s; }
+        .orb-3 { width: 300px; height: 300px; background: var(--primary-light); bottom: -10%; left: 50%; animation-duration: 28s; }
+
         @keyframes float { 
             0%,100% { transform: translate(0,0) scale(1); } 
             33% { transform: translate(50px,-50px) scale(1.05); } 
@@ -98,509 +75,130 @@
         }
 
         header { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            padding: 15px 5%; 
-            background: var(--glass); 
-            backdrop-filter: blur(25px); 
-            border-bottom: 1px solid var(--border); 
-            z-index: 1000; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            box-shadow: var(--shadow); 
-            transition: all 0.3s ease;
+            position: fixed; top: 0; left: 0; width: 100%; padding: 15px 5%; 
+            background: var(--glass); backdrop-filter: blur(25px); 
+            border-bottom: 1px solid var(--border); z-index: 1000; 
+            display: flex; justify-content: space-between; align-items: center; 
+            box-shadow: var(--shadow);
         }
 
         .logo { 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            font-size: 24px; 
-            font-weight: 900; 
-            color: white; 
-            text-decoration: none; 
-            letter-spacing: 1px; 
-            transition: all 0.3s ease;
+            display: flex; align-items: center; gap: 12px; font-size: 24px; 
+            font-weight: 900; color: white; text-decoration: none;
         }
-        
         .logo img { 
-            width: 55px; 
-            height: 55px; 
-            border-radius: 50%; 
-            transition: all 0.4s ease; 
-            object-fit: cover; 
-            box-shadow: 0 0 5px var(--primary);
+            width: 55px; height: 55px; border-radius: 50%; object-fit: cover; 
+            box-shadow: 0 0 10px var(--primary); transition: 0.4s;
         }
-        
-        .logo:hover img { 
-            transform: scale(1.1) rotate(360deg); 
-        }
+        .logo:hover img { transform: scale(1.1) rotate(360deg); }
 
         .back-btn {
-            padding: 12px 30px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: none;
+            padding: 12px 30px; background: var(--primary); color: white; 
+            border: none; border-radius: 8px; font-weight: 700; cursor: pointer;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+            transition: 0.3s;
         }
+        .back-btn:hover { background: var(--primary-dark); transform: translateY(-2px); }
 
-        .back-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 100px auto 50px;
-            padding: 20px;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeIn 1s ease forwards;
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .forum-content {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        .forum-content.active {
-            display: block;
-            opacity: 1;
-        }
+        .container { max-width: 1400px; margin: 100px auto 50px; padding: 20px; }
 
         .user-info {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-        }
-
-        .user-info h3 {
-            color: var(--primary);
-            font-size: 20px;
+            background: var(--glass); backdrop-filter: blur(20px);
+            border: 1px solid var(--border); border-radius: 12px; padding: 20px;
+            margin-bottom: 30px; display: flex; justify-content: space-between;
+            align-items: center; box-shadow: var(--shadow);
         }
 
         .logout-btn {
-            padding: 10px 25px;
-            background: transparent;
-            color: white;
-            border: 1px solid var(--primary);
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            padding: 10px 25px; background: transparent; color: white;
+            border: 1px solid var(--primary); border-radius: 8px; font-weight: 600;
+            cursor: pointer; transition: 0.3s;
         }
+        .logout-btn:hover { background: var(--primary); }
 
-        .logout-btn:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .forum-grid {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 30px;
-            margin-top: 30px;
-        }
-
+        .forum-grid { display: grid; grid-template-columns: 300px 1fr; gap: 30px; margin-top: 30px; }
         .sidebar {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 30px;
-            height: fit-content;
-            position: sticky;
-            top: 100px;
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
+            background: var(--glass); backdrop-filter: blur(20px);
+            border: 1px solid var(--border); border-radius: 12px; padding: 30px;
+            height: fit-content; position: sticky; top: 100px; box-shadow: var(--shadow);
         }
+        .sidebar h3 { color: var(--primary); text-transform: uppercase; margin-bottom: 20px; }
 
-        .sidebar h3 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .forum-category {
-            margin-bottom: 30px;
-        }
-
-        .category-title {
-            font-size: 12px;
-            color: rgba(255,255,255,0.4);
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
+        .category-title { font-size: 12px; color: rgba(255,255,255,0.4); text-transform: uppercase; margin: 20px 0 10px; font-weight: 700; }
         .forum-item {
-            padding: 12px 15px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 5px;
-            font-size: 14px;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
+            display: flex; align-items: center; gap: 10px; padding: 12px 15px;
+            border-radius: 10px; color: var(--text-secondary); text-decoration: none;
+            transition: 0.3s; margin-bottom: 5px;
         }
-
-        .forum-item i {
-            color: var(--primary);
-            font-size: 14px;
-            width: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .forum-item:hover {
-            background: rgba(231,76,60,0.1);
-            color: white;
-            padding-left: 20px;
-        }
-
-        .forum-item.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .forum-item.active i {
-            color: white;
-        }
+        .forum-item:hover { background: rgba(231,76,60,0.1); color: white; padding-left: 20px; }
+        .forum-item.active { background: var(--primary); color: white; }
+        .forum-item i { color: var(--primary); width: 20px; }
 
         .main-content {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 40px;
-            min-height: 600px;
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
+            background: var(--glass); backdrop-filter: blur(20px);
+            border: 1px solid var(--border); border-radius: 12px; padding: 40px;
+            min-height: 600px; box-shadow: var(--shadow);
         }
 
-        .forum-header {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-            opacity: 0;
-            transform: translateY(-10px);
-            animation: slideIn 0.5s ease forwards;
-        }
-
-        @keyframes slideIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .forum-header h2 {
-            font-size: 28px;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        .forum-header p {
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
+        .forum-header h2 { font-size: 28px; color: var(--primary); margin-bottom: 10px; }
+        .forum-header p { color: var(--text-secondary); }
 
         .post-form {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+            border-radius: 12px; padding: 25px; margin-bottom: 30px;
         }
-
-        .post-form h3 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: white;
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; color: var(--text-secondary); font-weight: 600; }
+        .form-input, .form-textarea {
+            width: 100%; padding: 12px 15px; background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border); border-radius: 8px; color: white;
+            font-family: inherit; transition: 0.3s;
         }
-
-        .form-group {
-            margin-bottom: 20px;
-            opacity: 0;
-            transform: translateX(-20px);
-            animation: fadeSlide 0.6s ease forwards;
-        }
-
-        @keyframes fadeSlide {
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-secondary);
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: white;
-            font-size: 15px;
-            font-family: inherit;
-            transition: all 0.3s ease;
-        }
-
-        .form-textarea {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: white;
-            font-size: 15px;
-            font-family: inherit;
-            transition: all 0.3s ease;
-            min-height: 120px;
-            resize: vertical;
-        }
-
+        .form-textarea { min-height: 120px; resize: vertical; }
         .form-input:focus, .form-textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 5px var(--primary);
+            outline: none; border-color: var(--primary); box-shadow: 0 0 10px rgba(231,76,60,0.4);
         }
-
         .submit-btn {
-            padding: 12px 35px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: none;
+            padding: 12px 35px; background: var(--primary); color: white;
+            border: none; border-radius: 8px; font-weight: 700; cursor: pointer;
+            transition: 0.3s;
         }
+        .submit-btn:hover { background: var(--primary-dark); transform: translateY(-2px); }
 
-        .submit-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-
-        .posts-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
+        .posts-list { display: flex; flex-direction: column; gap: 20px; }
         .post {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 25px;
-            transition: all 0.3s ease;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: postAppear 0.5s ease forwards;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+            border-radius: 12px; padding: 25px; transition: 0.3s;
         }
+        .post:hover { border-color: var(--primary); transform: translateY(-3px); box-shadow: 0 5px 20px rgba(231,76,60,0.2); }
 
-        @keyframes postAppear {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .post:nth-child(2) { animation-delay: 0.1s; }
-        .post:nth-child(3) { animation-delay: 0.2s; }
-        .post:nth-child(4) { animation-delay: 0.3s; }
-
-        .post:hover {
-            border-color: var(--primary);
-            box-shadow: 0 2px 10px rgba(231,76,60,0.2);
-            transform: translateY(-3px);
-        }
-
-        .post-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .post-author {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
+        .post-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .post-author { display: flex; align-items: center; gap: 12px; }
         .author-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            font-weight: 700;
-            box-shadow: none;
-            transition: all 0.3s ease;
+            width: 45px; height: 45px; border-radius: 50%; background: var(--primary);
+            display: flex; align-items: center; justify-content: center; font-weight: bold; color: white;
         }
+        .post-title { font-size: 20px; margin: 15px 0; color: white; }
+        .post-content { color: var(--text-secondary); line-height: 1.7; }
+        .post-date { font-size: 12px; color: rgba(255,255,255,0.5); }
 
-        .author-info h4 {
-            font-size: 16px;
-            color: white;
-            margin-bottom: 3px;
-        }
+        .empty-state { text-align: center; padding: 80px 20px; color: var(--text-secondary); }
+        .empty-state i { font-size: 70px; color: var(--primary); opacity: 0.3; margin-bottom: 20px; }
 
-        .post-date {
-            font-size: 12px;
-            color: rgba(255,255,255,0.4);
-        }
-
-        .post-title {
-            font-size: 20px;
-            color: white;
-            margin-bottom: 12px;
-            font-weight: 700;
-        }
-
-        .post-content {
-            color: var(--text-secondary);
-            line-height: 1.6;
-            font-size: 15px;
-            word-break: break-word;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-secondary);
-            opacity: 0;
-            animation: fadeIn 1s ease forwards;
-        }
-
-        .empty-state i {
-            font-size: 60px;
-            color: var(--primary);
-            margin-bottom: 20px;
-            opacity: 0.5;
-            transition: all 0.3s ease;
-        }
-
-        .empty-state:hover i {
-            opacity: 1;
-            transform: scale(1.1);
-        }
-
-        .empty-state p {
-            font-size: 16px;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: var(--text-secondary);
-        }
-
-        .loading i {
-            font-size: 40px;
-            color: var(--primary);
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        .loading { text-align: center; padding: 60px; color: var(--text-secondary); }
+        .loading i { font-size: 50px; color: var(--primary); animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--primary);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease;
-            z-index: 1001;
+            position: fixed; bottom: 30px; right: 30px; background: var(--primary);
+            color: white; padding: 15px 30px; border-radius: 8px; z-index: 10000;
+            opacity: 0; transform: translateY(20px); transition: all 0.4s ease;
         }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .toast.show { opacity: 1; transform: translateY(0); }
 
         @media (max-width: 968px) {
-            .forum-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .sidebar {
-                position: static;
-            }
-
-            .main-content {
-                padding: 25px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 15px;
-            }
-
-            .main-content {
-                padding: 20px;
-            }
-
-            .post {
-                padding: 20px;
-            }
+            .forum-grid { grid-template-columns: 1fr; }
+            .sidebar { position: static; }
         }
     </style>
 </head>
@@ -624,277 +222,257 @@
     </header>
 
     <div class="container">
-        <div id="forumContent" class="forum-content active">
-            <div class="user-info">
-                <h3>მოგესალმებით, <span id="currentUser">ღამ</span>!</h3>
-                <button onclick="logout()" class="logout-btn">გამოსვლა</button>
-            </div>
+        <div class="user-info">
+            <h3>მოგესალმებით, <span id="currentUser">სტუმარო</span>!</h3>
+            <button onclick="logout()" class="logout-btn">გამოსვლა</button>
+        </div>
 
-            <div class="forum-grid">
-                <aside class="sidebar">
-                    <h3>ფორუმის სექციები</h3>
-                    
-                    <div class="forum-category">
-                        <div class="category-title">სერვერის ინფო</div>
-                        <a href="section.html?id=rules" class="forum-item">
-                            <i class="fas fa-book"></i>
-                            სერვერის საერთო წესები
-                        </a>
-                        <a href="section.html?id=news" class="forum-item">
-                            <i class="fas fa-newspaper"></i>
-                            სერვერის სიახლეები
-                        </a>
-                        <a href="section.html?id=updates" class="forum-item">
-                            <i class="fas fa-sync-alt"></i>
-                            სერვერის განახლებები
-                        </a>
-                    </div>
+        <div class="forum-grid">
+            <aside class="sidebar">
+                <h3>ფორუმის სექციები</h3>
+                
+                <div class="category-title">სერვერის ინფო</div>
+                <a href="section.html?id=rules" class="forum-item"><i class="fas fa-book"></i> სერვერის საერთო წესები</a>
+                <a href="section.html?id=news" class="forum-item"><i class="fas fa-newspaper"></i> სერვერის სიახლეები</a>
+                <a href="section.html?id=updates" class="forum-item"><i class="fas fa-sync-alt"></i> სერვერის განახლებები</a>
 
-                    <div class="forum-category">
-                        <div class="category-title">საინფორმაციო</div>
-                        <a href="section.html?id=info" class="forum-item">
-                            <i class="fas fa-info-circle"></i>
-                            საინფორმაციო განყოფილება
-                        </a>
-                        <a href="section.html?id=suggestions" class="forum-item">
-                            <i class="fas fa-lightbulb"></i>
-                            შემოთავაზებები
-                        </a>
-                        <a href="section.html?id=events" class="forum-item">
-                            <i class="fas fa-calendar-alt"></i>
-                            ღონისძიებები
-                        </a>
-                        <a href="section.html?id=biographies" class="forum-item">
-                            <i class="fas fa-user-edit"></i>
-                            RP ბიოგრაფიები
-                        </a>
-                    </div>
+                <div class="category-title">საინფორმაციო</div>
+                <a href="section.html?id=info" class="forum-item"><i class="fas fa-info-circle"></i> საინფორმაციო განყოფილება</a>
+                <a href="section.html?id=suggestions" class="forum-item"><i class="fas fa-lightbulb"></i> შემოთავაზებები</a>
+                <a href="section.html?id=events" class="forum-item"><i class="fas fa-calendar-alt"></i> ღონისძიებები</a>
+                <a href="section.html?id=biographies" class="forum-item"><i class="fas fa-user-edit"></i> RP ბიოგრაფიები</a>
 
-                    <div class="forum-category">
-                        <div class="category-title">საჩივრები</div>
-                        <a href="section.html?id=complaints-admin" class="forum-item">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            საჩივრები ადმინისტრატორზე
-                        </a>
-                        <a href="section.html?id=complaints-player" class="forum-item">
-                            <i class="fas fa-user-times"></i>
-                            საჩივრები მოთამაშეზე
-                        </a>
-                        <a href="section.html?id=appeals" class="forum-item">
-                            <i class="fas fa-gavel"></i>
-                            სასჯელის შემცირება/შეწყალება
-                        </a>
-                    </div>
+                <div class="category-title">საჩივრები</div>
+                <a href="section.html?id=complaints-admin" class="forum-item"><i class="fas fa-exclamation-triangle"></i> საჩივრები ადმინზე</a>
+                <a href="section.html?id=complaints-player" class="forum-item"><i class="fas fa-user-times"></i> საჩივრები მოთამაშეზე</a>
+                <a href="section.html?id=appeals" class="forum-item"><i class="fas fa-gavel"></i> სასჯელის გასაჩივრება</a>
 
-                    <div class="forum-category">
-                        <div class="category-title">ვაკანსიები</div>
-                        <a href="section.html?id=vacancies-leaders" class="forum-item">
-                            <i class="fas fa-crown"></i>
-                            ვაკანსია ლიდერებზე
-                        </a>
-                        <a href="section.html?id=vacancies-admin" class="forum-item">
-                            <i class="fas fa-user-shield"></i>
-                            ვაკანსია ადმინისტრაციაზე
-                        </a>
-                        <a href="section.html?id=vacancies-partner" class="forum-item">
-                            <i class="fas fa-handshake"></i>
-                            ვაკანსია პარტნიორობაზე
-                        </a>
-                    </div>
+                <div class="category-title">ვაკანსიები</div>
+                <a href="section.html?id=vacancies-leaders" class="forum-item"><i class="fas fa-crown"></i> ლიდერები</a>
+                <a href="section.html?id=vacancies-admin" class="forum-item"><i class="fas fa-user-shield"></i> ადმინისტრაცია</a>
+                <a href="section.html?id=vacancies-partner" class="forum-item"><i class="fas fa-handshake"></i> პარტნიორობა</a>
 
-                    <div class="forum-category">
-                        <div class="category-title">ტექნიკური</div>
-                        <a href="section.html?id=donation-help" class="forum-item">
-                            <i class="fas fa-donate"></i>
-                            დახმარება დონაციაზე
-                        </a>
-                        <a href="section.html?id=tech-help" class="forum-item">
-                            <i class="fas fa-tools"></i>
-                            დახმარება ტექნიკურ საკითხებზე
-                        </a>
-                    </div>
-                </aside>
+                <div class="category-title">ტექნიკური</div>
+                <a href="section.html?id=donation-help" class="forum-item"><i class="fas fa-donate"></i> დონაცია</a>
+                <a href="section.html?id=tech-help" class="forum-item"><i class="fas fa-tools"></i> ტექ. დახმარება</a>
+            </aside>
 
-                <main class="main-content" id="mainContent">
-                    <div class="loading">
-                        <i class="fas fa-spinner"></i>
-                        <p>იტვირთება...</p>
-                    </div>
-                </main>
-            </div>
+            <main class="main-content" id="mainContent">
+                <div class="loading">
+                    <i class="fas fa-spinner"></i>
+                    <p>იტვირთება...</p>
+                </div>
+            </main>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // Forum Data Structure
+        // Forum sections data
         const forumData = {
-            'rules': { title: 'სერვერის საერთო წესები', description: 'სერვერის წესები და რეგულაციები' },
-            'news': { title: 'სერვერის სიახლეები', description: 'უახლესი სიახლეები სერვერზე' },
-            'updates': { title: 'სერვერის განახლებები', description: 'სერვერის განახლებები და ცვლილებები' },
-            'info': { title: 'საინფორმაციო განყოფილება', description: 'ზოგადი ინფორმაცია' },
-            'suggestions': { title: 'შემოთავაზებები', description: 'თქვენი შემოთავაზებები სერვერის გასაუმჯობესებლად' },
-            'events': { title: 'ღონისძიებები', description: 'სერვერის ღონისძიებები და ტურნირები' },
-            'biographies': { title: 'RP ბიოგრაფიები', description: 'მოთამაშეთა RP ბიოგრაფიები' },
-            'complaints-admin': { title: 'საჩივრები ადმინისტრატორზე', description: 'საჩივრები ადმინისტრაციის წევრებზე' },
-            'complaints-player': { title: 'საჩივრები მოთამაშეზე', description: 'საჩივრები სხვა მოთამაშეებზე' },
-            'appeals': { title: 'სასჯელის შემცირება/შეწყალება', description: 'სასჯელის შემცირების განაცხადები' },
-            'vacancies-leaders': { title: 'ვაკანსია ლიდერებზე', description: 'ვაკანსიები ლიდერის პოზიციაზე' },
-            'vacancies-admin': { title: 'ვაკანსია ადმინისტრაციაზე', description: 'ვაკანსიები ადმინისტრაციაში' },
-            'vacancies-partner': { title: 'ვაკანსია პარტნიორობაზე', description: 'პარტნიორობის შეთავაზებები' },
-            'donation-help': { title: 'დახმარება დონაციაზე', description: 'დახმარება დონაციასთან დაკავშირებით' },
-            'tech-help': { title: 'დახმარება ტექნიკურ საკითხებზე', description: 'ტექნიკური დახმარება' }
+            'rules': { title: 'სერვერის საერთო წესები', desc: 'სერვერის წესები და რეგულაციები' },
+            'news': { title: 'სერვერის სიახლეები', desc: 'უახლესი სიახლეები სერვერზე' },
+            'updates': { title: 'სერვერის განახლებები', desc: 'სერვერის განახლებები და ცვლილებები' },
+            'info': { title: 'საინფორმაციო განყოფილება', desc: 'ზოგადი ინფორმაცია' },
+            'suggestions': { title: 'შემოთავაზებები', desc: 'თქვენი შემოთავაზებები სერვერის გასაუმჯობესებლად' },
+            'events': { title: 'ღონისძიებები', desc: 'სერვერის ღონისძიებები და ტურნირები' },
+            'biographies': { title: 'RP ბიოგრაფიები', desc: 'მოთამაშეთა RP ბიოგრაფიები' },
+            'complaints-admin': { title: 'საჩივრები ადმინზე', desc: 'საჩივრები ადმინისტრაციის წევრებზე' },
+            'complaints-player': { title: 'საჩივრები მოთამაშეზე', desc: 'საჩივრები სხვა მოთამაშეებზე' },
+            'appeals': { title: 'სასჯელის გასაჩივრება', desc: 'სასჯელის შემცირება/შეწყალება' },
+            'vacancies-leaders': { title: 'ვაკანსია ლიდერებზე', desc: 'ლიდერის პოზიციები' },
+            'vacancies-admin': { title: 'ვაკანსია ადმინზე', desc: 'ადმინისტრაციაში ვაკანსიები' },
+            'vacancies-partner': { title: 'პარტნიორობა', desc: 'პარტნიორობის შეთავაზებები' },
+            'donation-help': { title: 'დახმარება დონაციაზე', desc: 'დონაციასთან დაკავშირებით' },
+            'tech-help': { title: 'ტექნიკური დახმარება', desc: 'ტექნიკური პრობლემები' }
         };
 
+        let currentUser = null;
         let currentForum = null;
-        let currentUsername = null;
-        let isAdmin = false;
+        const adminUsers = ['Zviadi Gegidze', 'Nika Georgadze'];
 
-        // Initialize
-        window.onload = function() {
+        // Init
+        window.addEventListener('load', () => {
             particlesJS('particles-js', {
-                particles: { 
-                    number: { value: 80, density: { enable: true, value_area: 800 } }, 
-                    color: { value: "#e74c3c" }, 
-                    shape: { type: "circle" }, 
-                    opacity: { value: 0.3, random: true }, 
-                    size: { value: 3, random: true }, 
-                    line_linked: { enable: true, distance: 150, color: "#e74c3c", opacity: 0.2, width: 1 }, 
-                    move: { enable: true, speed: 2 } 
-                }
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: "#e74c3c" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.3, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: { enable: true, distance: 150, color: "#e74c3c", opacity: 0.2, width: 1 },
+                    move: { enable: true, speed: 2 }
+                },
+                interactivity: { detect_on: "canvas", events: { resize: true } }
             });
 
-            checkAuth();
-        };
+            initAuth();
+        });
 
-        function checkAuth() {
-            const username = localStorage.getItem('forum_username');
-            if (username) {
-                currentUsername = username;
-                isAdmin = ['Zviadi Gegidze', 'Nika Georgadze'].includes(username);
-                document.getElementById('currentUser').textContent = currentUsername;
-                document.getElementById('forumContent').classList.add('active');
-                loadSection();
+        function initAuth() {
+            const saved = localStorage.getItem('forum_username');
+            if (saved) {
+                currentUser = saved;
+                document.getElementById('currentUser').textContent = currentUser;
             } else {
-                currentUsername = 'ღამ';
-                document.getElementById('currentUser').textContent = 'ღამ';
-                loadSection();
+                currentUser = 'სტუმარო';
+                document.getElementById('currentUser').textContent = currentUser;
             }
+            loadCurrentSection();
         }
 
         function logout() {
-            currentUsername = null;
-            isAdmin = false;
             localStorage.removeItem('forum_username');
-            window.location.href = 'forum.html';
+            location.href = 'forum.html';
         }
 
-        async function loadSection() {
-            const params = new URLSearchParams(window.location.search);
+        async function loadCurrentSection() {
+            const params = new URLSearchParams(location.search);
             currentForum = params.get('id') || 'rules';
-            if (!forumData[currentForum]) {
-                currentForum = 'rules';
-            }
+            if (!forumData[currentForum]) currentForum = 'rules';
 
-            // Highlight active item
-            document.querySelectorAll('.forum-item').forEach(item => {
-                if (item.getAttribute('href').includes(`id=${currentForum}`)) {
-                    item.classList.add('active');
-                } else {
-                    item.classList.remove('active');
-                }
+            // Highlight active menu item
+            document.querySelectorAll('.forum-item').forEach(el => {
+                el.classList.toggle('active', el.getAttribute('href').includes(`id=${currentForum}`));
             });
 
-            const mainContent = document.getElementById('mainContent');
-            const forumInfo = forumData[currentForum];
+            const main = document.getElementById('mainContent');
+            const info = forumData[currentForum];
 
-            // Show loading
-            mainContent.innerHTML = `
-                <div class="loading">
-                    <i class="fas fa-spinner"></i>
-                    <p>იტვირთება...</p>
+            // Show loading only for a moment
+            main.innerHTML = `<div class="loading"><i class="fas fa-spinner"></i><p>იტვირთება...</p></div>`;
+            
+            // Fake delay for style
+            await new Promise(r => setTimeout(r, 600));
+
+            const posts = await getPosts(currentForum);
+            const isOfficial = ['rules', 'news', 'updates'].includes(currentForum);
+            const canPost = !isOfficial || adminUsers.includes(currentUser);
+
+            let html = `
+                <div class="forum-header">
+                    <h2>${info.title}</h2>
+                    <p>${info.desc}</p>
                 </div>
             `;
 
-            // Simulate slower loading
-            await new Promise(resolve => setTimeout(resolve, 800));
-
-            const officialSections = ['rules', 'news', 'updates'];
-            const canPost = !officialSections.includes(currentForum) || isAdmin;
-
-            try {
-                const posts = await loadPosts(currentForum);
-                
-                mainContent.innerHTML = `
-                    <div class="forum-header">
-                        <h2>${forumInfo.title}</h2>
-                        <p>${forumInfo.description}</p>
-                    </div>
-
-                    ${canPost ? `
+            if (canPost) {
+                html += `
                     <div class="post-form">
-                        <h3>ახალი პოსტის დამატება</h3>
-                        <form onsubmit="createPost(event, '${currentForum}'); return false;"></div>
-                `;
-            } catch (error) {
-                console.error('Error:', error);
-                mainContent.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <p>შეცდომა ფორუმის ჩატვირთვისას</p>
+                        <h3>ახალი თემის შექმნა</h3>
+                        <form onsubmit="createPost(event)">
+                            <div class="form-group">
+                                <label>სათაური</label>
+                                <input type="text" id="postTitle" class="form-input" required placeholder="მიუთითეთ თემის სათაური">
+                            </div>
+                            <div class="form-group">
+                                <label>შინაარსი</label>
+                                <textarea id="postContent" class="form-textarea" required placeholder="დაწერეთ თქვენი პოსტი..."></textarea>
+                            </div>
+                            <button type="submit" class="submit-btn">გამოქვეყნება</button>
+                        </form>
                     </div>
                 `;
             }
+
+            if (posts.length === 0) {
+                html += `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>ჯერ არ არის შექმნილი პოსტები ამ განყოფილებაში</p>
+                    </div>
+                `;
+            } else {
+                html += `<div class="posts-list">`;
+                posts.forEach(post => {
+                    const date = new Date(post.timestamp).toLocaleString('ka-GE');
+                    const avatarLetter = post.author.charAt(0).toUpperCase();
+                    html += `
+                        <div class="post">
+                            <div class="post-header">
+                                <div class="post-author">
+                                    <div class="author-avatar">${avatarLetter}</div>
+                                    <div>
+                                        <h4>${post.author}</h4>
+                                        <div class="post-date">${date}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="post-title">${escapeHtml(post.title)}</div>
+                            <div class="post-content">${escapeHtml(post.content).replace(/\n/g, '<br>')}</div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            main.innerHTML = html;
         }
 
-        async function loadPosts(forumId) {
+        function getPosts(forumId) {
             const posts = [];
-            const keys = Object.keys(localStorage);
-            for (let key of keys) {
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
                 if (key.startsWith(`post_${forumId}_`)) {
-                    const post = JSON.parse(localStorage.getItem(key));
-                    posts.push(post);
+                    try {
+                        const post = JSON.parse(localStorage.getItem(key));
+                        posts.push(post);
+                    } catch(e) {}
                 }
             }
             return posts.sort((a, b) => b.timestamp - a.timestamp);
         }
 
-        async function createPost(event, forumId) {
-            event.preventDefault();
-            
+        async function createPost(e) {
+            e.preventDefault();
+            if (!currentUser || currentUser === 'სტუმარო') {
+                alert('პოსტის შესაქმნელად გთხოვთ შეხვიდეთ სისტემაში');
+                return;
+            }
+
             const title = document.getElementById('postTitle').value.trim();
             const content = document.getElementById('postContent').value.trim();
 
             if (!title || !content) {
-                alert('გთხოვთ შეავსოთ ყველა ველი');
+                alert('შეავსეთ ყველა ველი');
                 return;
             }
 
             const post = {
                 id: Date.now(),
-                author: currentUsername,
-                title: title,
-                content: content,
+                author: currentUser,
+                title,
+                content,
                 timestamp: Date.now()
             };
 
-            localStorage.setItem(`post_${forumId}_${post.id}`, JSON.stringify(post));
+            localStorage.setItem(`post_${currentForum}_${post.id}`, JSON.stringify(post));
+
             document.getElementById('postTitle').value = '';
             document.getElementById('postContent').value = '';
-            
-            const toast = document.createElement('div');
-            toast.className = 'toast show';
-            toast.textContent = 'პოსტი წარმატებით გამოქვეყნდა!';
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-            
-            loadSection();
+
+            showToast('პოსტი წარმატებით გამოქვეყნდა!');
+
+            loadCurrentSection();
         }
 
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast show';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Auto-refresh every 15 seconds (optional)
         setInterval(() => {
-            if (currentUsername && currentForum) {
-                loadSection();
-            }
+            if (currentForum) loadCurrentSection();
         }, 15000);
     </script>
 </body>
