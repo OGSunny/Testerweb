@@ -1,52 +1,147 @@
+<!-- FILE 4: profile.html -->
 <!DOCTYPE html>
 <html lang="ka">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>პროფილი • Zaratic RP</title>
-  <link rel="icon" href="https://raw.githubusercontent.com/OGSunny/Testerweb/main/lv_0_20251120194047.jpg">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root { --red:#e74c3c; --glass:rgba(20,20,30,0.9); --border:rgba(231,76,60,0.3); }
-    body { font-family:'Noto Sans Georgian',sans-serif; background:#000; color:#eee; min-height:100vh; font-size:14px; }
-    header { position:fixed; top:0; width:100%; padding:12px 20px; background:var(--glass); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); display:flex; justify-content:space-between; }
-    .back { color:white; text-decoration:none; }
-    .main { max-width:600px; margin:80px auto; padding:20px; text-align:center; }
-    .avatar { width:100px; height:100px; background:var(--red); border-radius:50%; display:inline-grid; place-items:center; font-size:40px; font-weight:bold; margin-bottom:15px; }
-    h1 { font-size:24px; color:var(--red); margin-bottom:10px; }
-    .info { background:var(--glass); border:1px solid var(--border); border-radius:8px; padding:15px; margin-top:20px; line-height:1.8; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>პროფილი • Zaratic RP</title>
+    <link rel="icon" href="https://raw.githubusercontent.com/OGSunny/Testerweb/main/lv_0_20251120194047.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root { --accent: #e91e63; --bg-primary: #0a0a0a; --bg-glass: rgba(20,20,30,0.9); --border: rgba(233,30,99,0.25); --text-secondary: #b0b0b0; }
+        body { font-family: 'Noto Sans Georgian', sans-serif; background: var(--bg-primary); color: #ffffff; min-height: 100vh; font-size: 14px; }
+        header { position: fixed; top: 0; width: 100%; padding: 12px 20px; background: var(--bg-glass); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
+        .back { color: #ffffff; text-decoration: none; display: flex; align-items: center; gap: 5px; }
+        .back:hover { color: var(--accent); }
+        .main { max-width: 600px; margin: 80px auto; padding: 20px; text-align: center; }
+        .avatar { width: 100px; height: 100px; border-radius: 50%; background: var(--accent); display: inline-grid; place-items: center; font-size: 40px; font-weight: bold; margin-bottom: 15px; }
+        h1 { font-size: 24px; color: var(--accent); margin-bottom: 10px; }
+        .role { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; }
+        .bio { background: var(--bg-glass); border: 1px solid var(--border); border-radius: 8px; padding: 15px; margin-bottom: 20px; line-height: 1.6; white-space: pre-wrap; }
+        .edit-bio { display: none; margin-top: 10px; }
+        .edit-bio textarea { width: 100%; height: 100px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; padding: 10px; color: #ffffff; }
+        .edit-bio button { padding: 8px 14px; background: var(--accent); color: #ffffff; border: none; border-radius: 6px; cursor: pointer; }
+        .info { background: var(--bg-glass); border: 1px solid var(--border); border-radius: 8px; padding: 15px; margin-bottom: 20px; line-height: 1.8; }
+        .recent { background: var(--bg-glass); border: 1px solid var(--border); border-radius: 8px; padding: 15px; }
+        .recent h2 { font-size: 18px; color: var(--accent); margin-bottom: 10px; }
+        .recent-post { padding: 10px 0; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+        .recent-post:last-child { border-bottom: none; }
+        .logout { padding: 10px 20px; background: var(--accent); color: #ffffff; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; margin-top: 20px; }
+        .logout:hover { background: #f50057; }
+        .loading { text-align: center; padding: 20px; color: var(--text-secondary); }
+        .loading i { animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
 </head>
 <body>
-  <header>
-    <a href="forum.html" class="back"><i class="fas fa-arrow-left"></i> უკან</a>
-  </header>
+    <header>
+        <a href="forum.html" class="back"><i class="fas fa-arrow-left"></i> უკან</a>
+    </header>
 
-  <div class="main">
-    <div class="avatar" id="av"></div>
-    <h1 id="name"></h1>
-    <div class="info">
-      <div>პოსტები: <strong id="posts">0</strong></div>
-      <div>რეგისტრაცია: <span id="date"></span></div>
-      <div>სტატუსი: <span id="role">მომხმარებელი</span></div>
+    <div class="main">
+        <div class="avatar" id="av"></div>
+        <h1 id="name"></h1>
+        <div class="role" id="role"></div>
+        <div class="bio" id="bio"></div>
+        <div class="edit-bio" id="editBio">
+            <textarea id="bioText"></textarea>
+            <button onclick="saveBio()">შენახვა</button>
+        </div>
+        <div class="info">
+            <div>პოსტები: <strong id="posts">0</strong></div>
+            <div>რეგისტრაცია: <span id="date"></span></div>
+            <div>ბოლო აქტივობა: <span id="lastOnline"></span></div>
+        </div>
+        <div class="recent">
+            <h2>ბოლო აქტივობა</h2>
+            <div id="recentPosts" class="loading"><i class="fas fa-spinner"></i> იტვირთება...</div>
+        </div>
+        <button class="logout" onclick="logout()">გამოსვლა</button>
     </div>
-  </div>
 
-  <script>
-    const worker = 'https://data.jemalagegidze.workers.dev';
-    const user = localStorage.getItem('username');
-    if (!user) location.href = 'login.html';
+    <script>
+        const WORKER_URL = 'https://data.jemalagegidze.workers.dev';
+        const ADMINS = ['Zviadi Gegidze', 'Nika Georgadze', 'Admin'];
+        const params = new URLSearchParams(location.search);
+        let username = params.get('username') || localStorage.getItem('username');
+        const isOwnProfile = username === localStorage.getItem('username');
 
-    document.getElementById('name').textContent = user;
-    document.getElementById('av').textContent = user[0].toUpperCase();
+        if (!localStorage.getItem('username')) location.href = 'login.html';
 
-    fetch(`${worker}/user?username=${user}`)
-      .then(r => r.json())
-      .then(d => {
-        document.getElementById('posts').textContent = d.postCount || 0;
-        document.getElementById('date').textContent = new Date(d.createdAt).toLocaleDateString('ka-GE');
-        if (['Zviadi Gegidze','Nika Georgadze'].includes(user)) document.getElementById('role').textContent = 'ადმინისტრატორი';
-      });
-  </script>
+        function getAvatarColor(username) {
+            const colors = ['#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#00bcd4', '#009688', '#4caf50', '#ff9800', '#ff5722'];
+            let hash = 0;
+            for (let i = 0; i < username.length; i++) {
+                hash = username.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            return colors[Math.abs(hash) % colors.length];
+        }
+
+        function formatDate(timestamp) {
+            return new Date(timestamp).toLocaleDateString('ka-GE', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        }
+
+        async function apiCall(endpoint, options = {}) {
+            try {
+                const response = await fetch(WORKER_URL + endpoint, {
+                    headers: { 'Content-Type': 'application/json' },
+                    ...options
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || 'შეცდომა');
+                return data;
+            } catch (error) {
+                alert(error.message);
+                throw error;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('username');
+            location.href = 'login.html';
+        }
+
+        async function loadProfile() {
+            const data = await apiCall(`/user?username=${username}`);
+            document.getElementById('name').textContent = data.username;
+            document.getElementById('av').textContent = data.username[0].toUpperCase();
+            document.getElementById('av').style.background = getAvatarColor(data.username);
+            document.getElementById('role').textContent = data.isAdmin ? 'ადმინისტრატორი' : 'მომხმარებელი';
+            document.getElementById('bio').textContent = data.bio || 'ბიოგრაფია არ არის';
+            document.getElementById('posts').textContent = data.postCount;
+            document.getElementById('date').textContent = formatDate(data.createdAt);
+            document.getElementById('lastOnline').textContent = formatDate(data.lastOnline);
+            if (isOwnProfile) {
+                document.getElementById('bio').onclick = () => {
+                    document.getElementById('bioText').value = data.bio || '';
+                    document.getElementById('editBio').style.display = 'block';
+                };
+            }
+        }
+
+        async function saveBio() {
+            const bio = document.getElementById('bioText').value.trim();
+            await apiCall('/user/update', {
+                method: 'POST',
+                body: JSON.stringify({ username, bio })
+            });
+            document.getElementById('bio').textContent = bio || 'ბიოგრაფია არ არის';
+            document.getElementById('editBio').style.display = 'none';
+        }
+
+        async function loadRecentPosts() {
+            const results = await apiCall(`/search?q=${username}`);
+            const recent = results.filter(p => p.author === username).slice(0, 5);
+            document.getElementById('recentPosts').innerHTML = recent.length ? recent.map(p => `
+                <div class="recent-post">
+                    <a href="section.html?id=${p.section}">${p.title}</a> - ${formatDate(p.timestamp)}
+                </div>
+            `).join('') : 'აქტივობა არ არის';
+        }
+
+        loadProfile();
+        loadRecentPosts();
+    </script>
 </body>
 </html>
