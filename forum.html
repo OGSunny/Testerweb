@@ -540,6 +540,26 @@
             to { transform: rotate(360deg); }
         }
 
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s;
+            z-index: 1001;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         @media (max-width: 968px) {
             .forum-grid {
                 grid-template-columns: 1fr;
@@ -633,15 +653,15 @@
                     
                     <div class="forum-category">
                         <div class="category-title">სერვერის ინფო</div>
-                        <div class="forum-item" onclick="switchForum('rules')">
+                        <div class="forum-item" data-forum-id="rules" onclick="switchForum('rules')">
                             <i class="fas fa-book"></i>
                             სერვერის საერთო წესები
                         </div>
-                        <div class="forum-item" onclick="switchForum('news')">
+                        <div class="forum-item" data-forum-id="news" onclick="switchForum('news')">
                             <i class="fas fa-newspaper"></i>
                             სერვერის სიახლეები
                         </div>
-                        <div class="forum-item" onclick="switchForum('updates')">
+                        <div class="forum-item" data-forum-id="updates" onclick="switchForum('updates')">
                             <i class="fas fa-sync-alt"></i>
                             სერვერის განახლებები
                         </div>
@@ -649,19 +669,19 @@
 
                     <div class="forum-category">
                         <div class="category-title">საინფორმაციო</div>
-                        <div class="forum-item" onclick="switchForum('info')">
+                        <div class="forum-item" data-forum-id="info" onclick="switchForum('info')">
                             <i class="fas fa-info-circle"></i>
                             საინფორმაციო განყოფილება
                         </div>
-                        <div class="forum-item" onclick="switchForum('suggestions')">
+                        <div class="forum-item" data-forum-id="suggestions" onclick="switchForum('suggestions')">
                             <i class="fas fa-lightbulb"></i>
                             შემოთავაზებები
                         </div>
-                        <div class="forum-item" onclick="switchForum('events')">
+                        <div class="forum-item" data-forum-id="events" onclick="switchForum('events')">
                             <i class="fas fa-calendar-alt"></i>
                             ღონისძიებები
                         </div>
-                        <div class="forum-item" onclick="switchForum('biographies')">
+                        <div class="forum-item" data-forum-id="biographies" onclick="switchForum('biographies')">
                             <i class="fas fa-user-edit"></i>
                             RP ბიოგრაფიები
                         </div>
@@ -669,15 +689,15 @@
 
                     <div class="forum-category">
                         <div class="category-title">საჩივრები</div>
-                        <div class="forum-item" onclick="switchForum('complaints-admin')">
+                        <div class="forum-item" data-forum-id="complaints-admin" onclick="switchForum('complaints-admin')">
                             <i class="fas fa-exclamation-triangle"></i>
                             საჩივრები ადმინისტრატორზე
                         </div>
-                        <div class="forum-item" onclick="switchForum('complaints-player')">
+                        <div class="forum-item" data-forum-id="complaints-player" onclick="switchForum('complaints-player')">
                             <i class="fas fa-user-times"></i>
                             საჩივრები მოთამაშეზე
                         </div>
-                        <div class="forum-item" onclick="switchForum('appeals')">
+                        <div class="forum-item" data-forum-id="appeals" onclick="switchForum('appeals')">
                             <i class="fas fa-gavel"></i>
                             სასჯელის შემცირება/შეწყალება
                         </div>
@@ -685,15 +705,15 @@
 
                     <div class="forum-category">
                         <div class="category-title">ვაკანსიები</div>
-                        <div class="forum-item" onclick="switchForum('vacancies-leaders')">
+                        <div class="forum-item" data-forum-id="vacancies-leaders" onclick="switchForum('vacancies-leaders')">
                             <i class="fas fa-crown"></i>
                             ვაკანსია ლიდერებზე
                         </div>
-                        <div class="forum-item" onclick="switchForum('vacancies-admin')">
+                        <div class="forum-item" data-forum-id="vacancies-admin" onclick="switchForum('vacancies-admin')">
                             <i class="fas fa-user-shield"></i>
                             ვაკანსია ადმინისტრაციაზე
                         </div>
-                        <div class="forum-item" onclick="switchForum('vacancies-partner')">
+                        <div class="forum-item" data-forum-id="vacancies-partner" onclick="switchForum('vacancies-partner')">
                             <i class="fas fa-handshake"></i>
                             ვაკანსია პარტნიორობაზე
                         </div>
@@ -701,11 +721,11 @@
 
                     <div class="forum-category">
                         <div class="category-title">ტექნიკური</div>
-                        <div class="forum-item" onclick="switchForum('donation-help')">
+                        <div class="forum-item" data-forum-id="donation-help" onclick="switchForum('donation-help')">
                             <i class="fas fa-donate"></i>
                             დახმარება დონაციაზე
                         </div>
-                        <div class="forum-item" onclick="switchForum('tech-help')">
+                        <div class="forum-item" data-forum-id="tech-help" onclick="switchForum('tech-help')">
                             <i class="fas fa-tools"></i>
                             დახმარება ტექნიკურ საკითხებზე
                         </div>
@@ -724,6 +744,34 @@
 
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script>
+        // Local Storage Wrapper (to simulate persistent storage)
+        const storage = {
+            async get(key) {
+                return new Promise((resolve) => {
+                    const value = localStorage.getItem(key);
+                    resolve(value ? { value } : null);
+                });
+            },
+            async set(key, value) {
+                return new Promise((resolve) => {
+                    localStorage.setItem(key, value);
+                    resolve();
+                });
+            },
+            async list(prefix) {
+                return new Promise((resolve) => {
+                    const keys = [];
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const k = localStorage.key(i);
+                        if (k.startsWith(prefix)) {
+                            keys.push(k);
+                        }
+                    }
+                    resolve({ keys });
+                });
+            }
+        };
+
         // Forum Data Structure
         const forumData = {
             'rules': { title: 'სერვერის საერთო წესები', description: 'სერვერის წესები და რეგულაციები' },
@@ -768,6 +816,8 @@
             if (username) {
                 currentUsername = username;
                 showForum();
+            } else {
+                document.getElementById('authSection').style.display = 'block';
             }
         }
 
@@ -802,13 +852,13 @@
             }
 
             try {
-                const existingUser = await window.storage.get(`user:${username}`, true);
+                const existingUser = await storage.get(`user:${username}`);
                 if (existingUser) {
                     alert('ეს მომხმარებელი უკვე არსებობს');
                     return;
                 }
 
-                await window.storage.set(`user:${username}`, JSON.stringify({ password, createdAt: Date.now() }), true);
+                await storage.set(`user:${username}`, JSON.stringify({ password, createdAt: Date.now() }));
                 
                 currentUsername = username;
                 localStorage.setItem('forum_username', username);
@@ -829,7 +879,7 @@
             }
 
             try {
-                const userData = await window.storage.get(`user:${username}`, true);
+                const userData = await storage.get(`user:${username}`);
                 if (!userData) {
                     alert('მომხმარებელი ვერ მოიძებნა');
                     return;
@@ -870,7 +920,7 @@
             
             // Update active menu item
             document.querySelectorAll('.forum-item').forEach(item => item.classList.remove('active'));
-            event.target.closest('.forum-item').classList.add('active');
+            document.querySelector(`.forum-item[data-forum-id="${forumId}"]`).classList.add('active');
             
             const mainContent = document.getElementById('mainContent');
             const forumInfo = forumData[forumId];
@@ -883,8 +933,8 @@
                 </div>
             `;
 
-            // Check if user can post in this forum
-            const canPost = ['rules', 'news', 'updates'].includes(forumId);
+            // Check if user can post in this forum (allow in community sections, not official)
+            const canPost = !['rules', 'news', 'updates'].includes(forumId);
 
             // Load posts
             try {
@@ -936,7 +986,7 @@
 
         async function loadPosts(forumId) {
             try {
-                const postKeys = await window.storage.list(`post:${forumId}:`, true);
+                const postKeys = await storage.list(`post:${forumId}:`);
                 if (!postKeys || !postKeys.keys || postKeys.keys.length === 0) {
                     return [];
                 }
@@ -944,7 +994,7 @@
                 const posts = [];
                 for (const key of postKeys.keys) {
                     try {
-                        const postData = await window.storage.get(key, true);
+                        const postData = await storage.get(key);
                         if (postData && postData.value) {
                             const post = JSON.parse(postData.value);
                             posts.push(post);
@@ -1013,7 +1063,7 @@
             };
 
             try {
-                await window.storage.set(`post:${forumId}:${post.id}`, JSON.stringify(post), true);
+                await storage.set(`post:${forumId}:${post.id}`, JSON.stringify(post));
                 
                 // Clear form
                 document.getElementById('postTitle').value = '';
@@ -1027,13 +1077,15 @@
                     postsList.innerHTML = posts.map(p => createPostHTML(p)).join('');
                 }
                 
-                // Show success message
+                // Show success toast
                 const toast = document.createElement('div');
-                toast.className = 'toast show';
+                toast.className = 'toast';
                 toast.textContent = 'პოსტი წარმატებით გამოქვეყნდა!';
                 document.body.appendChild(toast);
+                setTimeout(() => toast.classList.add('show'), 10);
                 setTimeout(() => {
-                    toast.remove();
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
                 }, 2500);
             } catch (error) {
                 console.error('Error creating post:', error);
@@ -1060,4 +1112,4 @@
         }, 10000);
     </script>
 </body>
-          </html>
+</html>
