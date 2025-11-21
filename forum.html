@@ -1,3 +1,4 @@
+<!-- forum.html -->
 <!DOCTYPE html>
 <html lang="ka">
 <head>
@@ -23,8 +24,8 @@
             --border: rgba(231, 76, 60, 0.3);
             --text-primary: #ffffff;
             --text-secondary: rgba(255, 255, 255, 0.8);
-            --neon-glow: 0 0 10px #e74c3c, 0 0 20px #e74c3c, 0 0 30px #e74c3c;
-            --shadow: 0 10px 30px rgba(0,0,0,0.5);
+            --neon-glow: 0 0 5px #e74c3c;
+            --shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -114,10 +115,6 @@
             transition: all 0.3s ease;
         }
 
-        header:hover {
-            box-shadow: var(--neon-glow);
-        }
-
         .logo { 
             display: flex; 
             align-items: center; 
@@ -136,12 +133,11 @@
             border-radius: 50%; 
             transition: all 0.4s ease; 
             object-fit: cover; 
-            box-shadow: 0 0 10px var(--primary);
+            box-shadow: 0 0 5px var(--primary);
         }
         
         .logo:hover img { 
             transform: scale(1.1) rotate(360deg); 
-            box-shadow: var(--neon-glow);
         }
 
         .back-btn {
@@ -149,7 +145,7 @@
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 25px;
+            border-radius: 8px;
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
@@ -158,12 +154,12 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 15px rgba(231,76,60,0.3);
+            box-shadow: none;
         }
 
         .back-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: var(--neon-glow);
+            background: var(--primary-dark);
+            transform: translateY(-2px);
         }
 
         .container {
@@ -185,8 +181,8 @@
         .auth-section {
             background: var(--glass);
             backdrop-filter: blur(20px);
-            border: 1.5px solid var(--border);
-            border-radius: 20px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
             padding: 40px;
             margin-bottom: 30px;
             text-align: center;
@@ -194,17 +190,10 @@
             transition: all 0.3s ease;
         }
 
-        .auth-section:hover {
-            box-shadow: var(--neon-glow);
-        }
-
         .auth-section h2 {
             font-size: 32px;
             margin-bottom: 30px;
-            background: linear-gradient(135deg,#e74c3c 0%,#ff8c7a 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px rgba(231,76,60,0.3);
+            color: var(--primary);
         }
 
         .auth-form {
@@ -218,8 +207,8 @@
         .auth-input {
             padding: 15px 20px;
             background: rgba(255,255,255,0.05);
-            border: 1.5px solid var(--border);
-            border-radius: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
             color: white;
             font-size: 16px;
             font-family: inherit;
@@ -229,8 +218,7 @@
         .auth-input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: var(--neon-glow);
-            transform: scale(1.02);
+            box-shadow: 0 0 5px var(--primary);
         }
 
         .auth-btn {
@@ -238,17 +226,17 @@
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 25px;
+            border-radius: 8px;
             font-size: 18px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(231,76,60,0.3);
+            box-shadow: none;
         }
 
         .auth-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: var(--neon-glow);
+            background: var(--primary-dark);
+            transform: translateY(-2px);
         }
 
         .switch-auth {
@@ -265,7 +253,7 @@
         }
 
         .switch-auth a:hover {
-            text-shadow: 0 0 5px var(--primary);
+            color: var(--primary-light);
         }
 
         .forum-content {
@@ -282,8 +270,8 @@
         .user-info {
             background: var(--glass);
             backdrop-filter: blur(20px);
-            border: 1.5px solid var(--border);
-            border-radius: 15px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
             padding: 20px;
             margin-bottom: 30px;
             display: flex;
@@ -293,22 +281,17 @@
             transition: all 0.3s ease;
         }
 
-        .user-info:hover {
-            box-shadow: var(--neon-glow);
-        }
-
         .user-info h3 {
             color: var(--primary);
             font-size: 20px;
-            text-shadow: 0 1px 5px rgba(231,76,60,0.2);
         }
 
         .logout-btn {
             padding: 10px 25px;
-            background: rgba(231,76,60,0.2);
+            background: transparent;
             color: white;
             border: 1px solid var(--primary);
-            border-radius: 20px;
+            border-radius: 8px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
@@ -317,8 +300,7 @@
 
         .logout-btn:hover {
             background: var(--primary);
-            box-shadow: var(--neon-glow);
-            transform: scale(1.05);
+            color: white;
         }
 
         .forum-grid {
@@ -331,8 +313,8 @@
         .sidebar {
             background: var(--glass);
             backdrop-filter: blur(20px);
-            border: 1.5px solid var(--border);
-            border-radius: 20px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
             padding: 30px;
             height: fit-content;
             position: sticky;
@@ -341,17 +323,12 @@
             transition: all 0.3s ease;
         }
 
-        .sidebar:hover {
-            box-shadow: var(--neon-glow);
-        }
-
         .sidebar h3 {
             font-size: 18px;
             margin-bottom: 20px;
             color: var(--primary);
             text-transform: uppercase;
             letter-spacing: 1px;
-            text-shadow: 0 1px 5px rgba(231,76,60,0.2);
         }
 
         .forum-category {
@@ -390,17 +367,11 @@
             background: rgba(231,76,60,0.1);
             color: white;
             padding-left: 20px;
-            transform: translateX(5px);
-        }
-
-        .forum-item:hover i {
-            transform: rotate(15deg);
         }
 
         .forum-item.active {
             background: var(--primary);
             color: white;
-            box-shadow: var(--neon-glow);
         }
 
         .forum-item.active i {
@@ -410,16 +381,12 @@
         .main-content {
             background: var(--glass);
             backdrop-filter: blur(20px);
-            border: 1.5px solid var(--border);
-            border-radius: 20px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
             padding: 40px;
             min-height: 600px;
             box-shadow: var(--shadow);
             transition: all 0.3s ease;
-        }
-
-        .main-content:hover {
-            box-shadow: var(--neon-glow);
         }
 
         .forum-header {
@@ -442,198 +409,11 @@
             font-size: 28px;
             color: var(--primary);
             margin-bottom: 10px;
-            text-shadow: 0 2px 10px rgba(231,76,60,0.3);
         }
 
         .forum-header p {
             color: var(--text-secondary);
             font-size: 14px;
-        }
-
-        .post-form {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-        }
-
-        .post-form:hover {
-            box-shadow: var(--neon-glow);
-        }
-
-        .post-form h3 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: white;
-            text-shadow: 0 1px 5px rgba(255,255,255,0.2);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            opacity: 0;
-            transform: translateX(-20px);
-            animation: fadeSlide 0.6s ease forwards;
-        }
-
-        @keyframes fadeSlide {
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-secondary);
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(255,255,255,0.05);
-            border: 1.5px solid var(--border);
-            border-radius: 10px;
-            color: white;
-            font-size: 15px;
-            font-family: inherit;
-            transition: all 0.3s ease;
-        }
-
-        .form-textarea {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(255,255,255,0.05);
-            border: 1.5px solid var(--border);
-            border-radius: 10px;
-            color: white;
-            font-size: 15px;
-            font-family: inherit;
-            transition: all 0.3s ease;
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .form-input:focus, .form-textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: var(--neon-glow);
-            transform: scale(1.01);
-        }
-
-        .submit-btn {
-            padding: 12px 35px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(231,76,60,0.3);
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: var(--neon-glow);
-        }
-
-        .posts-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .post {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            padding: 25px;
-            transition: all 0.3s ease;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: postAppear 0.5s ease forwards;
-        }
-
-        @keyframes postAppear {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .post:nth-child(2) { animation-delay: 0.1s; }
-        .post:nth-child(3) { animation-delay: 0.2s; }
-        .post:nth-child(4) { animation-delay: 0.3s; }
-
-        .post:hover {
-            border-color: var(--primary);
-            box-shadow: var(--neon-glow);
-            transform: translateY(-5px);
-        }
-
-        .post-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .post-author {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .author-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            font-weight: 700;
-            box-shadow: 0 0 10px rgba(231,76,60,0.3);
-            transition: all 0.3s ease;
-        }
-
-        .post:hover .author-avatar {
-            box-shadow: var(--neon-glow);
-        }
-
-        .author-info h4 {
-            font-size: 16px;
-            color: white;
-            margin-bottom: 3px;
-        }
-
-        .post-date {
-            font-size: 12px;
-            color: rgba(255,255,255,0.4);
-        }
-
-        .post-title {
-            font-size: 20px;
-            color: white;
-            margin-bottom: 12px;
-            font-weight: 700;
-            text-shadow: 0 1px 5px rgba(255,255,255,0.1);
-        }
-
-        .post-content {
-            color: var(--text-secondary);
-            line-height: 1.6;
-            font-size: 15px;
         }
 
         .empty-state {
@@ -685,7 +465,7 @@
             color: white;
             padding: 15px 25px;
             border-radius: 8px;
-            box-shadow: var(--neon-glow);
+            box-shadow: var(--shadow);
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.5s ease;
@@ -791,89 +571,93 @@
                     
                     <div class="forum-category">
                         <div class="category-title">სერვერის ინფო</div>
-                        <div class="forum-item" data-forum-id="rules" onclick="switchForum('rules')">
+                        <a href="section.html?id=rules" class="forum-item">
                             <i class="fas fa-book"></i>
                             სერვერის საერთო წესები
-                        </div>
-                        <div class="forum-item" data-forum-id="news" onclick="switchForum('news')">
+                        </a>
+                        <a href="section.html?id=news" class="forum-item">
                             <i class="fas fa-newspaper"></i>
                             სერვერის სიახლეები
-                        </div>
-                        <div class="forum-item" data-forum-id="updates" onclick="switchForum('updates')">
+                        </a>
+                        <a href="section.html?id=updates" class="forum-item">
                             <i class="fas fa-sync-alt"></i>
                             სერვერის განახლებები
-                        </div>
+                        </a>
                     </div>
 
                     <div class="forum-category">
                         <div class="category-title">საინფორმაციო</div>
-                        <div class="forum-item" data-forum-id="info" onclick="switchForum('info')">
+                        <a href="section.html?id=info" class="forum-item">
                             <i class="fas fa-info-circle"></i>
                             საინფორმაციო განყოფილება
-                        </div>
-                        <div class="forum-item" data-forum-id="suggestions" onclick="switchForum('suggestions')">
+                        </a>
+                        <a href="section.html?id=suggestions" class="forum-item">
                             <i class="fas fa-lightbulb"></i>
                             შემოთავაზებები
-                        </div>
-                        <div class="forum-item" data-forum-id="events" onclick="switchForum('events')">
+                        </a>
+                        <a href="section.html?id=events" class="forum-item">
                             <i class="fas fa-calendar-alt"></i>
                             ღონისძიებები
-                        </div>
-                        <div class="forum-item" data-forum-id="biographies" onclick="switchForum('biographies')">
+                        </a>
+                        <a href="section.html?id=biographies" class="forum-item">
                             <i class="fas fa-user-edit"></i>
                             RP ბიოგრაფიები
-                        </div>
+                        </a>
                     </div>
 
                     <div class="forum-category">
                         <div class="category-title">საჩივრები</div>
-                        <div class="forum-item" data-forum-id="complaints-admin" onclick="switchForum('complaints-admin')">
+                        <a href="section.html?id=complaints-admin" class="forum-item">
                             <i class="fas fa-exclamation-triangle"></i>
                             საჩივრები ადმინისტრატორზე
-                        </div>
-                        <div class="forum-item" data-forum-id="complaints-player" onclick="switchForum('complaints-player')">
+                        </a>
+                        <a href="section.html?id=complaints-player" class="forum-item">
                             <i class="fas fa-user-times"></i>
                             საჩივრები მოთამაშეზე
-                        </div>
-                        <div class="forum-item" data-forum-id="appeals" onclick="switchForum('appeals')">
+                        </a>
+                        <a href="section.html?id=appeals" class="forum-item">
                             <i class="fas fa-gavel"></i>
                             სასჯელის შემცირება/შეწყალება
-                        </div>
+                        </a>
                     </div>
 
                     <div class="forum-category">
                         <div class="category-title">ვაკანსიები</div>
-                        <div class="forum-item" data-forum-id="vacancies-leaders" onclick="switchForum('vacancies-leaders')">
+                        <a href="section.html?id=vacancies-leaders" class="forum-item">
                             <i class="fas fa-crown"></i>
                             ვაკანსია ლიდერებზე
-                        </div>
-                        <div class="forum-item" data-forum-id="vacancies-admin" onclick="switchForum('vacancies-admin')">
+                        </a>
+                        <a href="section.html?id=vacancies-admin" class="forum-item">
                             <i class="fas fa-user-shield"></i>
                             ვაკანსია ადმინისტრაციაზე
-                        </div>
-                        <div class="forum-item" data-forum-id="vacancies-partner" onclick="switchForum('vacancies-partner')">
+                        </a>
+                        <a href="section.html?id=vacancies-partner" class="forum-item">
                             <i class="fas fa-handshake"></i>
                             ვაკანსია პარტნიორობაზე
-                        </div>
+                        </a>
                     </div>
 
                     <div class="forum-category">
                         <div class="category-title">ტექნიკური</div>
-                        <div class="forum-item" data-forum-id="donation-help" onclick="switchForum('donation-help')">
+                        <a href="section.html?id=donation-help" class="forum-item">
                             <i class="fas fa-donate"></i>
                             დახმარება დონაციაზე
-                        </div>
-                        <div class="forum-item" data-forum-id="tech-help" onclick="switchForum('tech-help')">
+                        </a>
+                        <a href="section.html?id=tech-help" class="forum-item">
                             <i class="fas fa-tools"></i>
                             დახმარება ტექნიკურ საკითხებზე
-                        </div>
+                        </a>
                     </div>
                 </aside>
 
                 <main class="main-content" id="mainContent">
-                    <div class="loading">
-                        <i class="fas fa-spinner"></i>
-                        <p>იტვირთება...</p>
+                    <div class="forum-header">
+                        <h2>ფორუმი</h2>
+                        <p>შეარჩიეთ სექცია მენიუდან</p>
+                    </div>
+                    <div class="empty-state">
+                        <i class="fas fa-comments"></i>
+                        <p>გთხოვთ აირჩიოთ სექცია</p>
                     </div>
                 </main>
             </div>
@@ -910,26 +694,6 @@
             }
         };
 
-        // Forum Data Structure
-        const forumData = {
-            'rules': { title: 'სერვერის საერთო წესები', description: 'სერვერის წესები და რეგულაციები' },
-            'news': { title: 'სერვერის სიახლეები', description: 'უახლესი სიახლეები სერვერზე' },
-            'updates': { title: 'სერვერის განახლებები', description: 'სერვერის განახლებები და ცვლილებები' },
-            'info': { title: 'საინფორმაციო განყოფილება', description: 'ზოგადი ინფორმაცია' },
-            'suggestions': { title: 'შემოთავაზებები', description: 'თქვენი შემოთავაზებები სერვერის გასაუმჯობესებლად' },
-            'events': { title: 'ღონისძიებები', description: 'სერვერის ღონისძიებები და ტურნირები' },
-            'biographies': { title: 'RP ბიოგრაფიები', description: 'მოთამაშეთა RP ბიოგრაფიები' },
-            'complaints-admin': { title: 'საჩივრები ადმინისტრატორზე', description: 'საჩივრები ადმინისტრაციის წევრებზე' },
-            'complaints-player': { title: 'საჩივრები მოთამაშეზე', description: 'საჩივრები სხვა მოთამაშეებზე' },
-            'appeals': { title: 'სასჯელის შემცირება/შეწყალება', description: 'სასჯელის შემცირების განაცხადები' },
-            'vacancies-leaders': { title: 'ვაკანსია ლიდერებზე', description: 'ვაკანსიები ლიდერის პოზიციაზე' },
-            'vacancies-admin': { title: 'ვაკანსია ადმინისტრაციაზე', description: 'ვაკანსიები ადმინისტრაციაში' },
-            'vacancies-partner': { title: 'ვაკანსია პარტნიორობაზე', description: 'პარტნიორობის შეთავაზებები' },
-            'donation-help': { title: 'დახმარება დონაციაზე', description: 'დახმარება დონაციასთან დაკავშირებით' },
-            'tech-help': { title: 'დახმარება ტექნიკურ საკითხებზე', description: 'ტექნიკური დახმარება' }
-        };
-
-        let currentForum = 'rules';
         let currentUsername = null;
         let isAdmin = false;
 
@@ -1068,206 +832,7 @@
             document.getElementById('authSection').style.display = 'none';
             document.getElementById('forumContent').classList.add('active');
             document.getElementById('currentUser').textContent = currentUsername;
-            switchForum('rules');
         }
-
-        async function switchForum(forumId) {
-            currentForum = forumId;
-            
-            // Update active menu item
-            document.querySelectorAll('.forum-item').forEach(item => item.classList.remove('active'));
-            document.querySelector(`.forum-item[data-forum-id="${forumId}"]`).classList.add('active');
-            
-            const mainContent = document.getElementById('mainContent');
-            const forumInfo = forumData[forumId];
-            
-            // Show loading
-            mainContent.innerHTML = `
-                <div class="loading">
-                    <i class="fas fa-spinner"></i>
-                    <p>იტვირთება...</p>
-                </div>
-            `;
-
-            // Simulate slower loading for better feel
-            await new Promise(resolve => setTimeout(resolve, 800));
-
-            // Check if user can post
-            const officialSections = ['rules', 'news', 'updates'];
-            const canPost = !officialSections.includes(forumId) || isAdmin;
-
-            // Load posts
-            try {
-                const posts = await loadPosts(forumId);
-                
-                mainContent.innerHTML = `
-                    <div class="forum-header">
-                        <h2>${forumInfo.title}</h2>
-                        <p>${forumInfo.description}</p>
-                    </div>
-
-                    ${canPost ? `
-                    <div class="post-form">
-                        <h3>ახალი პოსტის დამატება</h3>
-                        <form onsubmit="createPost(event, '${forumId}'); return false;">
-                            <div class="form-group">
-                                <label>სათაური</label>
-                                <input type="text" class="form-input" id="postTitle" required placeholder="შეიყვანეთ პოსტის სათაური">
-                            </div>
-                            <div class="form-group">
-                                <label>შინაარსი</label>
-                                <textarea class="form-textarea" id="postContent" required placeholder="დაწერეთ თქვენი შეტყობინება..."></textarea>
-                            </div>
-                            <button type="submit" class="submit-btn">გამოქვეყნება</button>
-                        </form>
-                    </div>
-                    ` : ''}
-
-                    <div class="posts-list" id="postsList">
-                        ${posts.length > 0 ? posts.map((post, index) => `<div class="post" style="animation-delay: ${index * 0.1}s;">${createPostHTML(post)}</div>`).join('') : `
-                            <div class="empty-state">
-                                <i class="fas fa-comments"></i>
-                                <p>პოსტები ჯერ არ არის დამატებული</p>
-                            </div>
-                        `}
-                    </div>
-                `;
-            } catch (error) {
-                console.error('Error loading forum:', error);
-                mainContent.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <p>შეცდომა ფორუმის ჩატვირთვისას</p>
-                    </div>
-                `;
-            }
-        }
-
-        async function loadPosts(forumId) {
-            try {
-                const postKeys = await storage.list(`post:${forumId}:`);
-                if (!postKeys || !postKeys.keys || postKeys.keys.length === 0) {
-                    return [];
-                }
-
-                const posts = [];
-                for (const key of postKeys.keys) {
-                    try {
-                        const postData = await storage.get(key);
-                        if (postData && postData.value) {
-                            const post = JSON.parse(postData.value);
-                            posts.push(post);
-                        }
-                    } catch (err) {
-                        console.error('Error loading post:', err);
-                    }
-                }
-
-                // Sort by date (newest first)
-                posts.sort((a, b) => b.timestamp - a.timestamp);
-                return posts;
-            } catch (error) {
-                console.error('Error in loadPosts:', error);
-                return [];
-            }
-        }
-
-        function createPostHTML(post) {
-            const date = new Date(post.timestamp);
-            const formattedDate = date.toLocaleDateString('ka-GE', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-
-            const firstLetter = post.author.charAt(0).toUpperCase();
-
-            return `
-                <div class="post-header">
-                    <div class="post-author">
-                        <div class="author-avatar">${firstLetter}</div>
-                        <div class="author-info">
-                            <h4>${post.author}</h4>
-                            <span class="post-date">${formattedDate}</span>
-                        </div>
-                    </div>
-                </div>
-                <h3 class="post-title">${escapeHtml(post.title)}</h3>
-                <p class="post-content">${escapeHtml(post.content)}</p>
-            `;
-        }
-
-        async function createPost(event, forumId) {
-            event.preventDefault();
-            
-            const title = document.getElementById('postTitle').value.trim();
-            const content = document.getElementById('postContent').value.trim();
-
-            if (!title || !content) {
-                alert('გთხოვთ შეავსოთ ყველა ველი');
-                return;
-            }
-
-            const post = {
-                id: Date.now().toString(),
-                forumId: forumId,
-                author: currentUsername,
-                title: title,
-                content: content,
-                timestamp: Date.now()
-            };
-
-            try {
-                await storage.set(`post:${forumId}:${post.id}`, JSON.stringify(post));
-                
-                // Clear form
-                document.getElementById('postTitle').value = '';
-                document.getElementById('postContent').value = '';
-                
-                // Reload posts with delay for smooth feel
-                await new Promise(resolve => setTimeout(resolve, 500));
-                const posts = await loadPosts(forumId);
-                const postsList = document.getElementById('postsList');
-                
-                if (posts.length > 0) {
-                    postsList.innerHTML = posts.map((p, index) => `<div class="post" style="animation-delay: ${index * 0.1}s;">${createPostHTML(p)}</div>`).join('');
-                }
-                
-                // Show success toast
-                const toast = document.createElement('div');
-                toast.className = 'toast';
-                toast.textContent = 'პოსტი წარმატებით გამოქვეყნდა!';
-                document.body.appendChild(toast);
-                setTimeout(() => toast.classList.add('show'), 10);
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                    setTimeout(() => toast.remove(), 500);
-                }, 3000);
-            } catch (error) {
-                console.error('Error creating post:', error);
-                alert('პოსტის გამოქვეყნების შეცდომა');
-            }
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        // Auto-refresh posts every 15 seconds for smoother experience
-        setInterval(async () => {
-            if (currentUsername && currentForum) {
-                const posts = await loadPosts(currentForum);
-                const postsList = document.getElementById('postsList');
-                
-                if (postsList && posts.length > 0) {
-                    postsList.innerHTML = posts.map((p, index) => `<div class="post" style="animation-delay: ${index * 0.1}s;">${createPostHTML(p)}</div>`).join('');
-                }
-            }
-        }, 15000);
     </script>
 </body>
 </html>
