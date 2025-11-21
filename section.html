@@ -1,4 +1,4 @@
-<!-- FILE 2: section.html -->
+<!-- section.html -->
 <!DOCTYPE html>
 <html lang="ka">
 <head>
@@ -67,14 +67,18 @@
         .post-actions { display: flex; gap: 10px; margin-top: 10px; align-items: center; }
         .post-actions button { background: none; color: var(--text-muted); font-size: 14px; padding: 0; cursor: pointer; display: flex; align-items: center; gap: 5px; }
         .post-actions button:hover { color: var(--accent); }
+        .post-actions .liked { color: var(--accent); }
         .likes { font-size: 12px; color: var(--text-muted); }
         .replies { margin-top: 15px; padding-top: 10px; border-top: 1px solid var(--border); }
         .reply { background: var(--bg-secondary); padding: 10px; border-radius: 6px; margin-bottom: 10px; }
         .reply-header { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-muted); margin-bottom: 5px; }
         .reply-avatar { width: 24px; height: 24px; border-radius: 50%; background: var(--accent); display: grid; place-items: center; font-size: 12px; }
         .reply-content { color: var(--text-secondary); }
-        .reply-form { margin-top: 20px; }
-        .reply-form textarea { min-height: 60px; }
+        .post-reply-form { margin-top: 10px; }
+        .post-reply-form textarea { min-height: 60px; }
+        .topic-list { text-align: center; margin-top: 20px; }
+        .topic-list a { color: var(--accent); font-size: 14px; }
+        .topic-list a:hover { color: var(--accent-hover); }
         .empty { text-align: center; color: var(--text-muted); padding: 20px; }
         .loading { text-align: center; padding: 20px; color: var(--text-muted); }
         .loading i { animation: spin 1s linear infinite; }
@@ -110,10 +114,8 @@
             </form>
 
             <div id="posts" class="loading"><i class="fas fa-spinner"></i> იტვირთება...</div>
-
-            <div class="reply-form">
-                <textarea id="replyContent" placeholder="პასუხი თემაზე..."></textarea>
-                <button onclick="addReply()">პასუხის გაგზავნა</button>
+            <div class="topic-list">
+                <a href="forum.html">თემების სიაში გადასვლა</a>
             </div>
         </main>
     </div>
@@ -241,8 +243,8 @@ OOC შესახებ:
                 const role = ROLES[userRole];
                 const canEdit = p.author === currentUser || isAdminUser;
                 const likes = p.likes || [];
-                const liked = likes.includes(currentUser);
-                const replies = p.replies || [];
+                const liked = likes.includes(currentUser) ? 'liked' : '';
+                const replies = p.likes || [];
                 return `
                     <div class="post" data-id="${p.id}" data-timestamp="${p.timestamp}">
                         <div class="author-info">
@@ -256,7 +258,7 @@ OOC შესახებ:
                             <div class="post-title">${p.title}</div>
                             <div class="post-text">${p.content.replace(/\n/g, '<br>')}</div>
                             <div class="post-actions">
-                                <button onclick="likePost('${p.id}')"><i class="fas fa-heart ${liked ? 'liked' : ''}"></i> <span class="likes">${likes.length}</span></button>
+                                <button onclick="likePost('${p.id}')"><i class="fas fa-heart ${liked}"></i> <span class="likes">${likes.length}</span></button>
                                 <button><i class="fas fa-quote-left"></i> ციტატა</button>
                                 ${canEdit ? `<button onclick="editPost('${p.id}', '${p.title.replace(/'/g, "\\'")}', '${p.content.replace(/'/g, "\\'")}')"><i class="fas fa-edit"></i></button>` : ''}
                                 ${canEdit ? `<button onclick="deletePost('${p.id}')"><i class="fas fa-trash"></i></button>` : ''}
@@ -272,7 +274,7 @@ OOC შესახებ:
                                     </div>
                                 `).join('')}
                             </div>
-                            <div class="reply-form">
+                            <div class="post-reply-form">
                                 <textarea placeholder="პასუხი..."></textarea>
                                 <button onclick="addReplyToPost('${p.id}', this.previousElementSibling.value)">გაგზავნა</button>
                             </div>
@@ -300,6 +302,7 @@ OOC შესახებ:
             document.getElementById('title').value = t;
             document.getElementById('content').value = c;
             const form = document.getElementById('postForm');
+            const originalSubmit = form.onsubmit;
             form.onsubmit = async e => {
                 e.preventDefault();
                 const newTitle = document.getElementById('title').value.trim();
@@ -310,7 +313,7 @@ OOC შესახებ:
                 });
                 form.reset();
                 if (isVacancy) document.getElementById('content').value = TEMPLATE;
-                form.onsubmit = document.getElementById('postForm').onsubmit;
+                form.onsubmit = originalSubmit;
                 loadPosts();
             };
         };
@@ -342,9 +345,10 @@ OOC შესახებ:
         };
 
         function cancelEdit() {
-            document.getElementById('postForm').reset();
+            const form = document.getElementById('postForm');
+            form.reset();
             if (isVacancy) document.getElementById('content').value = TEMPLATE;
-            document.getElementById('postForm').onsubmit = document.getElementById('postForm').onsubmit;
+            form.onsubmit = document.getElementById('postForm').onsubmit;
         }
 
         loadPosts();
