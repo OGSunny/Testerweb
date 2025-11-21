@@ -1,52 +1,52 @@
 <!DOCTYPE html>
 <html lang="ka">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>პროფილი • Zaratic Role Play</title>
-    <link rel="icon" href="https://raw.githubusercontent.com/OGSunny/Testerweb/main/lv_0_20251120194047.jpg">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root{--primary:#e74c3c;--glass:rgba(15,20,40,0.92);--border:rgba(231,76,60,0.4);}
-        body{font-family:'Noto Sans Georgian',sans-serif;background:#000;color:white;min-height:100vh;}
-        #particles-js{position:fixed;width:100%;height:100%;top:0;left:0;z-index:-1;}
-        header{position:fixed;top:0;width:100%;padding:18px 5%;background:var(--glass);backdrop-filter:blur(30px);border-bottom:1px solid var(--border);z-index:1000;display:flex;justify-content:space-between;}
-        .profile-container{max-width:900px;margin:120px auto;padding:30px;background:var(--glass);border-radius:16px;border:1px solid var(--border);text-align:center;}
-        .avatar-large{width:140px;height:140px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#ff6b57);display:inline-flex;align-items:center;justify-content:center;font-size:60px;margin-bottom:20px;}
-        .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px;margin-top:30px;}
-        .stat{background:rgba(255,255,255,0.05);padding:20px;border-radius:12px;}
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>პროფილი • Zaratic RP</title>
+  <link rel="icon" href="https://raw.githubusercontent.com/OGSunny/Testerweb/main/lv_0_20251120194047.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --red:#e74c3c; --glass:rgba(20,20,30,0.9); --border:rgba(231,76,60,0.3); }
+    body { font-family:'Noto Sans Georgian',sans-serif; background:#000; color:#eee; min-height:100vh; font-size:14px; }
+    header { position:fixed; top:0; width:100%; padding:12px 20px; background:var(--glass); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); display:flex; justify-content:space-between; }
+    .back { color:white; text-decoration:none; }
+    .main { max-width:600px; margin:80px auto; padding:20px; text-align:center; }
+    .avatar { width:100px; height:100px; background:var(--red); border-radius:50%; display:inline-grid; place-items:center; font-size:40px; font-weight:bold; margin-bottom:15px; }
+    h1 { font-size:24px; color:var(--red); margin-bottom:10px; }
+    .info { background:var(--glass); border:1px solid var(--border); border-radius:8px; padding:15px; margin-top:20px; line-height:1.8; }
+  </style>
 </head>
 <body>
-    <div id="particles-js"></div>
-    <header>
-        <a href="forum.html" class="logo"><img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/lv_0_20251120194047.jpg" style="width:55px;height:55px;border-radius:50%;"> Zaratic RP</a>
-    </header>
-    <div class="profile-container">
-        <div class="avatar-large" id="avatar"></div>
-        <h1 id="username"></h1>
-        <p>რეგისტრაცია: <span id="regdate"></span></p>
-        <div class="stats">
-            <div class="stat"><h3 id="postcount">0</h3><p>პოსტი</p></div>
-            <div class="stat"><h3 id="role">მომხმარებელი</h3><p>სტატუსი</p></div>
-        </div>
+  <header>
+    <a href="forum.html" class="back"><i class="fas fa-arrow-left"></i> უკან</a>
+  </header>
+
+  <div class="main">
+    <div class="avatar" id="av"></div>
+    <h1 id="name"></h1>
+    <div class="info">
+      <div>პოსტები: <strong id="posts">0</strong></div>
+      <div>რეგისტრაცია: <span id="date"></span></div>
+      <div>სტატუსი: <span id="role">მომხმარებელი</span></div>
     </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script>
-        const workerUrl = 'https://data.jemalagegidze.workers.dev';
-        const user = localStorage.getItem('username');
-        if (!user) location.href='login.html';
-        document.getElementById('username').textContent = user;
-        document.getElementById('avatar').textContent = user[0].toUpperCase();
-        particlesJS('particles-js', {particles:{number:{value:60},color:{value:'#e74c3c'},opacity:{value:0.3},move:{speed:1}}});
+  <script>
+    const worker = 'https://data.jemalagegidze.workers.dev';
+    const user = localStorage.getItem('username');
+    if (!user) location.href = 'login.html';
 
-        fetch(`${workerUrl}/user?username=${user}`).then(r=>r.json()).then(data=>{
-            document.getElementById('regdate').textContent = new Date(data.createdAt).toLocaleDateString('ka-GE');
-            document.getElementById('postcount').textContent = data.postCount || 0;
-            if (['Zviadi Gegidze','Nika Georgadze'].includes(user)) document.getElementById('role').textContent = 'ადმინისტრატორი';
-        });
-    </script>
+    document.getElementById('name').textContent = user;
+    document.getElementById('av').textContent = user[0].toUpperCase();
+
+    fetch(`${worker}/user?username=${user}`)
+      .then(r => r.json())
+      .then(d => {
+        document.getElementById('posts').textContent = d.postCount || 0;
+        document.getElementById('date').textContent = new Date(d.createdAt).toLocaleDateString('ka-GE');
+        if (['Zviadi Gegidze','Nika Georgadze'].includes(user)) document.getElementById('role').textContent = 'ადმინისტრატორი';
+      });
+  </script>
 </body>
 </html>
