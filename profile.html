@@ -1,3 +1,4 @@
+<!-- profile.html -->
 <!DOCTYPE html>
 <html lang="ka">
 <head>
@@ -8,12 +9,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
-        :root{--bg:#0a0a10;--card:rgba(25,25,45,.96);--accent:#e91e63;--glow:#ff4081;--border:rgba(233,30,99,.3)}
+        :root{--bg:#0a0a10;--card:rgba(25,25,45,.97);--accent:#e91e63;--glow:rgba(233,30,99,.25);--border:rgba(233,30,99,.3)}
         *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Noto Sans Georgian',sans-serif;background:var(--bg);color:#fff;min-height:100vh}
-        header{position:fixed;top:0;width:100%;background:rgba(15,15,35,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:15px 0;z-index:1000}
+        body{font-family:'Noto Sans Georgian',sans-serif;background:var(--bg);color:#fff;min-height:100vh;opacity:0;transition:opacity .6s}
+        body.loaded{opacity:1}
+        header{position:fixed;top:0;width:100%;background:rgba(15,15,35,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:15px 0;z-index:1000}
         .nav{max-width:1200px;margin:auto;display:flex;align-items:center;padding:0 25px}
-        .back{color:#fff;text-decoration:none;display:flex;align-items:center;gap:10px;font-size:18px}
+        .back{color:#fff;text-decoration:none;display:flex;align-items:center;gap:10px;font-size:18px;transition:.2s}
         .back:hover{color:var(--accent)}
         main{margin-top:100px;max-width:700px;margin:auto;padding:20px}
         .cover{height:180px;background:linear-gradient(135deg,var(--accent),#9c27b0);border-radius:20px 20px 0 0}
@@ -26,12 +28,8 @@
         .stat{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;text-align:center}
         .stat-label{color:var(--accent);font-size:14px;margin-bottom:8px}
         .stat-value{font-size:24px;font-weight:700}
-        .activity{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:25px}
-        .activity h2{color:var(--accent);margin-bottom:20px}
-        .act-item{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:14px}
-        .act-item:last-child{border:none}
-        button{margin-top:25px;width:100%;padding:14px;background:var(--accent);border:none;border-radius:12px;color:#fff;font-size:16px;cursor:pointer}
-        button:hover{background:var(--glow)}
+        .logout{margin-top:40px;width:100%;padding:14px;background:#ff5252;border:none;border-radius:12px;color:#fff;font-size:16px;cursor:pointer}
+        .logout:hover{background:#ff1744}
     </style>
 </head>
 <body>
@@ -41,48 +39,50 @@
         <div class="avatar" id="avatar">Z</div>
         <h1 id="username"></h1>
         <div class="role" id="role">მოთამაშე</div>
-        <div class="bio" id="bio" onclick="editBio()">ბიო არ არის</div>
-        <div class="edit-bio" id="editBio" style="display:none">
+        <div class="bio" id="bio" onclick="document.getElementById('editBio').style.display='block';this.style.display='none'">ბიო არ არის</div>
+        <div class="edit-bio" id="editBio" style="display:none;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin:25px 0">
             <textarea id="bioText"></textarea>
-            <button onclick="saveBio()">შენახვა</button>
+            <button onclick="saveBio()" style="width:100%;padding:12px;background:var(--accent);border:none;border-radius:12px;color:#fff;cursor:pointer">შენახვა</button>
         </div>
         <div class="stats">
             <div class="stat"><div class="stat-label">პოსტები</div><div class="stat-value" id="posts">0</div></div>
             <div class="stat"><div class="stat-label">რეგისტრაცია</div><div class="stat-value" id="reg"></div></div>
             <div class="stat"><div class="stat-label">ბოლო აქტივობა</div><div class="stat-value" id="last"></div></div>
         </div>
-        <div class="activity">
-            <h2>ბოლო აქტივობა</h2>
-            <div id="activity"></div>
-        </div>
-        <button onclick="localStorage.clear();location='login.html'">გამოსვლა</button>
+        <button class="logout" onclick="localStorage.clear();location='login.html'">გამოსვლა</button>
     </main>
 
     <script>
         const worker='https://data.jemalagegidze.workers.dev';
-        const current=localStorage.username;
+        const current=localStorage.getItem('username');
         if(!current) location='login.html';
-        const url=new URL(location.href);
-        const target=url.searchParams.get('username')||current;
+        const target=new URL(location.href).searchParams.get('username')||current;
 
         function color(n){let h=0;for(let i=0;i<n.length;i++)h=n.charCodeAt(i)+((h<<5)-h);const c=['#e91e63','#9c27b0','#673ab7','#3f51b5','#2196f3','#00bcd4','#009688','#4caf50','#ff9800','#ff5722'];return c[Math.abs(h)%c.length]}
 
         async function load(){
-            const data=await fetch(`${worker}/user?username=${target}`).then(r=>r.json());
-            document.getElementById('username').textContent=data.username;
-            document.getElementById('avatar').textContent=data.username[0].toUpperCase();
-            document.getElementById('avatar').style.background=color(data.username);
-            document.getElementById('role').textContent=data.isAdmin?'ადმინისტრატორი':'მოთამაშე';
-            document.getElementById('bio').textContent=data.bio||'ბიო არ არის';
-            document.getElementById('posts').textContent=data.postCount;
-            document.getElementById('reg').textContent=new Date(data.createdAt).toLocaleDateString('ka-GE');
-            document.getElementById('last').textContent=new Date(data.lastOnline).toLocaleDateString('ka-GE',{hour:'2-digit',minute:'2-digit'});
+            const d=await fetch(`${worker}/user?username=${target}`).then(r=>r.json());
+            document.getElementById('username').textContent=d.username;
+            document.getElementById('avatar').textContent=d.username[0].toUpperCase();
+            document.getElementById('avatar').style.background=color(d.username);
+            document.getElementById('role').textContent=d.isAdmin?'ადმინისტრატორი':'მოთამაშე';
+            document.getElementById('bio').textContent=d.bio||'ბიო არ არის';
+            document.getElementById('bioText').value=d.bio||'';
+            document.getElementById('posts').textContent=d.postCount||0;
+            document.getElementById('reg').textContent=new Date(d.createdAt).toLocaleDateString('ka-GE');
+            document.getElementById('last').textContent=new Date(d.lastOnline).toLocaleDateString('ka-GE',{hour:'2-digit',minute:'2-digit'});
+            if(target!==current) document.querySelectorAll('[onclick]').forEach(el=>el.onclick=null);
         }
 
-        window.editBio=()=>{if(target!==current) return;document.getElementById('bioText').value=document.getElementById('bio').textContent;document.getElementById('editBio').style.display='block';document.getElementById('bio').style.display='none';}
-        window.saveBio=async()=>{const b=document.getElementById('bioText').value.trim();await fetch(worker+'/user/update',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:current,bio:b})});document.getElementById('bio').textContent=b||'ბიო არ არის';document.getElementById('editBio').style.display='none';document.getElementById('bio').style.display='block';}
+        async function saveBio(){
+            const b=document.getElementById('bioText').value.trim();
+            await fetch(worker+'/user/update',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:current,bio:b})});
+            document.getElementById('bio').textContent=b||'ბიო არ არის';
+            document.getElementById('editBio').style.display='none';
+            document.getElementById('bio').style.display='block';
+        }
 
-        load();
+        load();document.body.classList.add('loaded');
     </script>
 </body>
 </html>
