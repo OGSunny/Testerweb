@@ -6,6 +6,7 @@
     <title>Zaratic Role Play - ფორუმი</title>
     <link rel="icon" href="https://raw.githubusercontent.com/OGSunny/Testerweb/main/lv_0_20251120194047.jpg" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
     <style>
         * {
             margin: 0;
@@ -30,7 +31,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             background: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 100%);
             color: var(--text);
             min-height: 100vh;
@@ -372,7 +373,6 @@
             box-shadow: 0 0 0 3px rgba(255,0,0,0.1);
         }
 
-        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -938,41 +938,28 @@
     </div>
 
     <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('worker.js').catch(err => console.error('Service Worker Error:', err));
-        }
-
-        emailjs.init('Zaraticsregister9178');
-
-        const storageKey = 'zaraticForumData';
-        let forumData = JSON.parse(localStorage.getItem(storageKey)) || { users: {}, posts: {} };
-
-        if (Object.keys(forumData.users).length === 0) {
-            forumData.users = {
-                'Nikushaa': { password: 'admin123', role: 'admin', badges: ['admin'], profile: { name: 'Nikushaa', email: 'nikushaa@zaratic.ge', phone: '', bio: 'Server Administrator', avatar: '' }, verified: true },
-                'Zviooo': { password: 'admin123', role: 'admin', badges: ['admin'], profile: { name: 'Zviooo', email: 'zviooo@zaratic.ge', phone: '', bio: 'Server Administrator', avatar: '' }, verified: true }
-            };
-            forumData.posts = {};
-            saveData();
-        }
+        const API_URL = 'https://data7167.jemalagegidze.workers.dev/';
+        emailjs.init('6mfdsM4fGZ9WWDFst');
 
         let currentUser = null;
         let currentSection = null;
+        let userData = null;
+        const storageKey = 'zaraticLocalData';
+        const localData = JSON.parse(localStorage.getItem(storageKey)) || { user: null, posts: {} };
 
-        function saveData() {
-            localStorage.setItem(storageKey, JSON.stringify(forumData));
+        async function updateSectionStats() {
+            const response = await fetch(`${API_URL}/post-counts`);
+            if (response.ok) {
+                const counts = await response.json();
+                document.querySelectorAll('.section').forEach(sec => {
+                    const sectionId = sec.dataset.section;
+                    sec.querySelector('.sec-stats').textContent = counts[sectionId] || 0;
+                });
+            }
         }
-
-        function updateSectionStats() {
-            document.querySelectorAll('.section').forEach(sec => {
-                const sectionId = sec.dataset.section;
-                const postCount = (forumData.posts[sectionId] || []).length;
-                sec.querySelector('.sec-stats').textContent = postCount;
-            });
-        }
-        updateSectionStats();
 
         document.addEventListener('DOMContentLoaded', () => {
+            updateSectionStats();
             updateSectionAccess();
             document.getElementById('loginForm').addEventListener('submit', handleLogin);
             document.getElementById('registerForm').addEventListener('submit', handleRegister);
@@ -981,9 +968,9 @@
             document.getElementById('newPostForm').addEventListener('submit', handleNewPost);
 
             document.querySelectorAll('.section').forEach(section => {
-                section.addEventListener('click', (e) => {
+                section.addEventListener('click', async (e) => {
                     e.preventDefault();
-                    if (section.classList.contains('locked') && !(currentUser && forumData.users[currentUser].role === 'admin')) {
+                    if (section.classList.contains('locked') && !(currentUser && userData.role === 'admin')) {
                         alert('მხოლოდ ადმინისტრატორებს აქვთ წვდომა ამ კატეგორიაზე');
                         return;
                     }
@@ -991,9 +978,15 @@
                     document.getElementById('forumView').style.display = 'none';
                     document.getElementById('sectionView').style.display = 'block';
                     document.getElementById('sectionTitle').textContent = section.querySelector('.sec-title').textContent;
-                    renderPosts();
+                    await renderPosts();
                 });
             });
+
+            if (localData.user) {
+                currentUser = localData.user.username;
+                userData = localData.user;
+                updateUI();
+            }
         });
 
         function showLogin() {
@@ -1008,81 +1001,96 @@
             document.getElementById(modalId).classList.remove('active');
         }
 
-        function handleLogin(e) {
+        async function handleLogin(e) {
             e.preventDefault();
             const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
-            const user = forumData.users[username];
-            if (user && user.password === password && user.verified) {
+
+            const response = await fetch(`${API_URL}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            if (response.ok) {
+                userData = await response.json();
                 currentUser = username;
+                localData.user = userData;
+                saveLocal();
                 updateUI();
                 closeModal('loginModal');
                 e.target.reset();
             } else {
-                alert('არასწორი მომხმარებელი, პაროლი ან არ არის ვერიფიცირებული');
+                alert(await response.text());
             }
         }
 
-        function handleRegister(e) {
+        async function handleRegister(e) {
             e.preventDefault();
             const username = document.getElementById('regUsername').value;
             const email = document.getElementById('regEmail').value;
             const password = document.getElementById('regPassword').value;
 
-            if (forumData.users[username]) {
-                alert('ეს მომხმარებელი უკვე არსებობს');
-                return;
-            }
-
             const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-            emailjs.send('service_abcdef123', 'template_abcdef123', {
+            const sendResponse = await emailjs.send('service_uqvxc6o', 'Zaraticsregister9178', {
                 to_email: email,
                 to_name: username,
                 code: verifyCode
-            }).then(() => {
-                sessionStorage.setItem('pendingRegistration', JSON.stringify({ username, email, password, verifyCode }));
-                closeModal('registerModal');
-                document.getElementById('verifyModal').classList.add('active');
-                e.target.reset();
-            }, (error) => {
-                alert('ელფოსტის გაგზავნა ვერ მოხერხდა: ' + error.text);
             });
+
+            if (sendResponse.status === 200) {
+                const pending = { username, email, password, code: verifyCode };
+                const response = await fetch(`${API_URL}/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(pending)
+                });
+                if (response.ok) {
+                    sessionStorage.setItem('pendingEmail', email);
+                    closeModal('registerModal');
+                    document.getElementById('verifyModal').classList.add('active');
+                    e.target.reset();
+                } else {
+                    alert('Error saving pending');
+                }
+            } else {
+                alert('Email send failed');
+            }
         }
 
-        function handleVerify(e) {
+        async function handleVerify(e) {
             e.preventDefault();
             const enteredCode = document.getElementById('verifyCode').value;
-            const pending = JSON.parse(sessionStorage.getItem('pendingRegistration'));
-            if (pending && enteredCode === pending.verifyCode) {
-                forumData.users[pending.username] = {
-                    password: pending.password,
-                    role: 'player',
-                    badges: ['player'],
-                    profile: { name: pending.username, email: pending.email, phone: '', bio: '', avatar: '' },
-                    verified: true
-                };
-                saveData();
-                currentUser = pending.username;
+            const email = sessionStorage.getItem('pendingEmail');
+            const response = await fetch(`${API_URL}/verify`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, code: enteredCode })
+            });
+            if (response.ok) {
+                userData = await response.json();
+                currentUser = userData.profile.name;
+                localData.user = userData;
+                saveLocal();
                 updateUI();
                 closeModal('verifyModal');
-                sessionStorage.removeItem('pendingRegistration');
+                sessionStorage.removeItem('pendingEmail');
             } else {
-                alert('არასწორი კოდი. სცადეთ თავიდან.');
+                alert(await response.text());
             }
             e.target.reset();
         }
 
         function updateUI() {
-            const user = forumData.users[currentUser];
-            const avatarStyle = user.profile.avatar ? `style="background-image: url(${user.profile.avatar}); background-color: transparent;"` : '';
-            const avatarText = user.profile.avatar ? '' : currentUser[0].toUpperCase();
+            const avatarStyle = userData.profile.avatar ? `style="background-image: url(${userData.profile.avatar}); background-color: transparent;"` : '';
+            const avatarText = userData.profile.avatar ? '' : currentUser[0].toUpperCase();
             document.getElementById('navActions').innerHTML = `
                 <div class="user-info" onclick="showProfile()">
                     <div class="user-avatar" ${avatarStyle}>${avatarText}</div>
                     <span>${currentUser}</span>
                     <div class="user-badges">
-                        ${user.badges.map(b => `<span class="badge badge-${b}">${b === 'admin' ? 'ადმინი' : b === 'tech' ? 'ტექ. ადმინი' : 'მოთამაშე'}</span>`).join('')}
+                        ${userData.badges.map(b => `<span class="badge badge-${b}">${b === 'admin' ? 'ადმინი' : b === 'tech' ? 'ტექ. ადმინი' : 'მოთამაშე'}</span>`).join('')}
                     </div>
                 </div>
                 <button class="btn btn-secondary" onclick="logout()">გასვლა</button>
@@ -1092,12 +1100,15 @@
 
         function updateSectionAccess() {
             document.querySelectorAll('[data-restricted="true"]').forEach(sec => {
-                sec.classList.toggle('locked', !(currentUser && forumData.users[currentUser].role === 'admin'));
+                sec.classList.toggle('locked', !(currentUser && userData.role === 'admin'));
             });
         }
 
         function logout() {
             currentUser = null;
+            userData = null;
+            localData.user = null;
+            saveLocal();
             document.getElementById('navActions').innerHTML = `
                 <button class="btn btn-primary" onclick="showLogin()">შესვლა</button>
                 <button class="btn btn-secondary" onclick="showRegister()">რეგისტრაცია</button>
@@ -1107,48 +1118,69 @@
             backToForumFromSection();
         }
 
-        function renderPosts() {
+        async function renderPosts() {
             const postsList = document.getElementById('postsList');
             postsList.innerHTML = '';
-            const posts = (forumData.posts[currentSection] || []).sort((a, b) => b.pinned - a.pinned);
-            posts.forEach((post, index) => {
-                const postDiv = document.createElement('div');
-                postDiv.className = 'post' + (post.pinned ? ' pinned' : '');
-                postDiv.innerHTML = `
-                    <div class="post-header">
-                        <span class="post-author">${post.author}</span>
-                        <span class="post-time">${new Date(post.time).toLocaleString('ka-GE')}</span>
-                    </div>
-                    <div class="post-content">${post.content.replace(/\n/g, '<br>')}</div>
-                    <div class="post-actions">
-                        ${forumData.users[currentUser]?.role === 'admin' ? `<button onclick="togglePin(${index})">${post.pinned ? 'განპინება' : 'პინ'}</button>` : ''}
-                    </div>
-                `;
-                postsList.appendChild(postDiv);
-            });
+            const response = await fetch(`${API_URL}/posts/${currentSection}`);
+            if (response.ok) {
+                let sectionPosts = await response.json();
+                sectionPosts.sort((a, b) => b.pinned - a.pinned);
+                sectionPosts.forEach((post, index) => {
+                    const postDiv = document.createElement('div');
+                    postDiv.className = 'post' + (post.pinned ? ' pinned' : '');
+                    postDiv.innerHTML = `
+                        <div class="post-header">
+                            <span class="post-author">${post.author}</span>
+                            <span class="post-time">${new Date(post.time).toLocaleString('ka-GE')}</span>
+                        </div>
+                        <div class="post-content">${post.content.replace(/\n/g, '<br>')}</div>
+                        <div class="post-actions">
+                            ${userData.role === 'admin' ? `<button onclick="togglePin('${currentSection}', ${index})">${post.pinned ? 'განპინება' : 'პინ'}</button>` : ''}
+                        </div>
+                    `;
+                    postsList.appendChild(postDiv);
+                });
+                localData.posts[currentSection] = sectionPosts;
+                saveLocal();
+            }
         }
 
-        function handleNewPost(e) {
+        async function handleNewPost(e) {
             e.preventDefault();
             if (!currentUser) {
-                alert('პოსტის დასამატებლად შესვლა საჭიროა');
+                alert('პოსტის დასამატებლად შეხვლა საჭიროა');
                 return;
             }
             const content = document.getElementById('postContent').value.trim();
             if (!content) return;
-            if (!forumData.posts[currentSection]) forumData.posts[currentSection] = [];
-            forumData.posts[currentSection].push({ author: currentUser, content, time: Date.now(), pinned: false });
-            saveData();
-            updateSectionStats();
-            renderPosts();
-            e.target.reset();
+            const post = { author: currentUser, content, time: Date.now(), pinned: false };
+            const response = await fetch(`${API_URL}/posts/${currentSection}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(post)
+            });
+            if (response.ok) {
+                await renderPosts();
+                updateSectionStats();
+                e.target.reset();
+            } else {
+                alert('Error adding post');
+            }
         }
 
-        window.togglePin = function(index) {
-            const post = forumData.posts[currentSection][index];
-            post.pinned = !post.pinned;
-            saveData();
-            renderPosts();
+        window.togglePin = async function(section, index) {
+            let sectionPosts = localData.posts[section] || [];
+            sectionPosts[index].pinned = !sectionPosts[index].pinned;
+            const response = await fetch(`${API_URL}/posts/${section}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(sectionPosts[index])
+            });
+            if (response.ok) {
+                await renderPosts();
+            } else {
+                alert('Error pinning');
+            }
         }
 
         function backToForumFromSection() {
@@ -1157,32 +1189,35 @@
             currentSection = null;
         }
 
-        function showProfile() {
+        async function showProfile() {
             if (!currentUser) return;
-            const user = forumData.users[currentUser];
+            const response = await fetch(`${API_URL}/users/${currentUser}`);
+            if (response.ok) {
+                userData = await response.json();
+            }
             document.getElementById('forumView').style.display = 'none';
             document.getElementById('sectionView').style.display = 'none';
             document.getElementById('profileView').style.display = 'block';
 
-            const avatarStyle = user.profile.avatar ? `background-image: url(${user.profile.avatar}); background-color: transparent;` : '';
-            const avatarText = user.profile.avatar ? '' : currentUser[0].toUpperCase();
+            const avatarStyle = userData.profile.avatar ? `background-image: url(${userData.profile.avatar}); background-color: transparent;` : '';
+            const avatarText = userData.profile.avatar ? '' : currentUser[0].toUpperCase();
             document.getElementById('profileAvatarLarge').style.cssText = avatarStyle;
             document.getElementById('profileAvatarLarge').textContent = avatarText;
 
             document.getElementById('profileUsername').textContent = currentUser;
-            document.getElementById('profileBadges').innerHTML = user.badges.map(b => `<span class="badge badge-${b}">${b === 'admin' ? 'ადმინი' : b === 'tech' ? 'ტექ. ადმინი' : 'მოთამაშე'}</span>`).join('');
+            document.getElementById('profileBadges').innerHTML = userData.badges.map(b => `<span class="badge badge-${b}">${b === 'admin' ? 'ადმინი' : b === 'tech' ? 'ტექ. ადმინი' : 'მოთამაშე'}</span>`).join('');
 
-            document.getElementById('displayName').textContent = user.profile.name || '-';
-            document.getElementById('displayEmail').textContent = user.profile.email || '-';
-            document.getElementById('displayPhone').textContent = user.profile.phone || '-';
-            document.getElementById('displayBio').textContent = user.profile.bio || '-';
+            document.getElementById('displayName').textContent = userData.profile.name || '-';
+            document.getElementById('displayEmail').textContent = userData.profile.email || '-';
+            document.getElementById('displayPhone').textContent = userData.profile.phone || '-';
+            document.getElementById('displayBio').textContent = userData.profile.bio || '-';
 
-            document.getElementById('editName').value = user.profile.name || '';
-            document.getElementById('editEmail').value = user.profile.email || '';
-            document.getElementById('editPhone').value = user.profile.phone || '';
-            document.getElementById('editBio').value = user.profile.bio || '';
+            document.getElementById('editName').value = userData.profile.name || '';
+            document.getElementById('editEmail').value = userData.profile.email || '';
+            document.getElementById('editPhone').value = userData.profile.phone || '';
+            document.getElementById('editBio').value = userData.profile.bio || '';
 
-            document.getElementById('adminTab').style.display = user.role === 'admin' ? 'block' : 'none';
+            document.getElementById('adminTab').style.display = userData.role === 'admin' ? 'block' : 'none';
         }
 
         function backToForum() {
@@ -1197,34 +1232,47 @@
             document.getElementById(tabName + 'Tab').classList.add('active');
         }
 
-        function handleProfileUpdate(e) {
+        async function handleProfileUpdate(e) {
             e.preventDefault();
             if (!currentUser) return;
-            const user = forumData.users[currentUser];
             const avatarInput = document.getElementById('editAvatar');
             if (avatarInput.files && avatarInput.files[0]) {
                 const reader = new FileReader();
-                reader.onload = function(ev) {
-                    user.profile.avatar = ev.target.result;
-                    saveData();
+                reader.onload = async function(ev) {
+                    userData.profile.avatar = ev.target.result;
+                    await saveUser();
                     updateUI();
                     showProfile();
                 };
                 reader.readAsDataURL(avatarInput.files[0]);
             }
-            user.profile.name = document.getElementById('editName').value;
-            user.profile.email = document.getElementById('editEmail').value;
-            user.profile.phone = document.getElementById('editPhone').value;
-            user.profile.bio = document.getElementById('editBio').value;
-            saveData();
+            userData.profile.name = document.getElementById('editName').value;
+            userData.profile.email = document.getElementById('editEmail').value;
+            userData.profile.phone = document.getElementById('editPhone').value;
+            userData.profile.bio = document.getElementById('editBio').value;
+            await saveUser();
 
-            document.getElementById('displayName').textContent = user.profile.name || '-';
-            document.getElementById('displayEmail').textContent = user.profile.email || '-';
-            document.getElementById('displayPhone').textContent = user.profile.phone || '-';
-            document.getElementById('displayBio').textContent = user.profile.bio || '-';
+            document.getElementById('displayName').textContent = userData.profile.name || '-';
+            document.getElementById('displayEmail').textContent = userData.profile.email || '-';
+            document.getElementById('displayPhone').textContent = userData.profile.phone || '-';
+            document.getElementById('displayBio').textContent = userData.profile.bio || '-';
 
             switchTabProgrammatic('info');
             alert('პროფილი განახლდა!');
+        }
+
+        async function saveUser() {
+            const response = await fetch(`${API_URL}/users/${currentUser}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userData)
+            });
+            if (response.ok) {
+                localData.user = userData;
+                saveLocal();
+            } else {
+                alert('Error saving profile');
+            }
         }
 
         function switchTabProgrammatic(tabName) {
@@ -1235,27 +1283,46 @@
             document.getElementById(tabName + 'Tab').classList.add('active');
         }
 
-        function assignBadge() {
-            if (!currentUser || forumData.users[currentUser].role !== 'admin') {
+        async function assignBadge() {
+            if (!currentUser || userData.role !== 'admin') {
                 alert('მხოლოდ ადმინებს შეუძლიათ ბეჯების მინიჭება');
                 return;
             }
             const username = document.getElementById('badgeUsername').value;
             const badgeType = document.getElementById('badgeType').value;
-            const user = forumData.users[username];
-            if (!user) {
-                alert('მომხმარებელი არ მოიძებნა');
-                return;
-            }
-            if (!user.badges.includes(badgeType)) {
-                user.badges.push(badgeType);
-                if (badgeType === 'admin') user.role = 'admin';
-                saveData();
-                alert(`ბეჯი "${badgeType}" მინიჭებულია!`);
+            const response = await fetch(`${API_URL}/users/${username}`);
+            if (response.ok) {
+                const targetUser = await response.json();
+                if (!targetUser.badges.includes(badgeType)) {
+                    targetUser.badges.push(badgeType);
+                    if (badgeType === 'admin') targetUser.role = 'admin';
+                    const updateResponse = await fetch(`${API_URL}/users/${username}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(targetUser)
+                    });
+                    if (updateResponse.ok) {
+                        alert(`ბეჯი "${badgeType}" მინიჭებულია!`);
+                        if (username === currentUser) {
+                            userData = targetUser;
+                            localData.user = userData;
+                            saveLocal();
+                            updateUI();
+                        }
+                    } else {
+                        alert('Error updating');
+                    }
+                } else {
+                    alert('უკვე აქვს ეს ბეჯი');
+                }
             } else {
-                alert('უკვე აქვს ეს ბეჯი');
+                alert('მომხმარებელი არ მოიძებნა');
             }
             document.getElementById('badgeUsername').value = '';
+        }
+
+        function saveLocal() {
+            localStorage.setItem(storageKey, JSON.stringify(localData));
         }
 
         window.onclick = (event) => {
