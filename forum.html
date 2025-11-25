@@ -200,7 +200,7 @@
             background: linear-gradient(135deg, rgba(255, 0, 0, 0.1), rgba(179, 0, 0, 0.1));
             border-bottom: 1px solid var(--dark-lighter);
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             display: flex;
             align-items: center;
             gap: 0.75rem;
@@ -650,6 +650,129 @@
                 font-size: 1rem;
             }
         }
+
+        .fullscreen-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .fullscreen-modal.active {
+            display: flex;
+        }
+
+        .modal-carousel {
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            padding: 3rem;
+        }
+
+        .carousel-slide {
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+
+        .carousel-slide.active {
+            display: block;
+        }
+
+        .carousel-title {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            font-weight: 700;
+        }
+
+        .carousel-description {
+            font-size: 1.5rem;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 3rem;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(139, 90, 142, 0.3);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .carousel-nav:hover {
+            background: rgba(139, 90, 142, 0.6);
+        }
+
+        .carousel-nav.prev {
+            left: -80px;
+        }
+
+        .carousel-nav.next {
+            right: -80px;
+        }
+
+        .carousel-actions {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .carousel-actions .btn {
+            min-width: 200px;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+
+        .carousel-dots {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(139, 90, 142, 0.3);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            background: #8b5a8e;
+        }
+
+        .cat-header {
+            padding: 1.2rem 1.5rem;
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.1), rgba(179, 0, 0, 0.1));
+            border-bottom: 1px solid var(--dark-lighter);
+            font-weight: 700;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .cat-header::before {
+            font-size: 1.5rem;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 </head>
@@ -661,8 +784,8 @@
                 <span><i class="fas fa-gamepad"></i> Zaratic Role Play</span>
             </div>
             <div class="nav-actions" id="navActions">
-                <button class="btn btn-primary" onclick="showLogin()">შესვლა</button>
-                <button class="btn btn-secondary" onclick="showRegister()">რეგისტრაცია</button>
+                <button class="btn btn-primary" onclick="showWelcomeModal()">შესვლა</button>
+                <button class="btn btn-secondary" onclick="showWelcomeModal()">რეგისტრაცია</button>
             </div>
         </div>
     </nav>
@@ -671,7 +794,7 @@
         <div id="forumView">
             <div class="categories">
                 <div class="cat">
-                    <div class="cat-header"><i class="fas fa-gavel"></i> სერვერის ინფორმაცია</div>
+                    <div class="cat-header">📋 სერვერის ინფორმაცია</div>
                     <a href="#" class="section" data-section="rules" data-view-only="true">
                         <div class="sec-info">
                             <i class="fas fa-book"></i>
@@ -695,7 +818,7 @@
                     </a>
                 </div>
                 <div class="cat">
-                    <div class="cat-header"><i class="fas fa-users"></i> საზოგადოება</div>
+                    <div class="cat-header">👥 საზოგადოება</div>
                     <a href="#" class="section" data-section="suggestions">
                         <div class="sec-info">
                             <i class="fas fa-lightbulb"></i>
@@ -719,7 +842,7 @@
                     </a>
                 </div>
                 <div class="cat">
-                    <div class="cat-header"><i class="fas fa-exclamation-triangle"></i> საჩივრები</div>
+                    <div class="cat-header">⚠️ საჩივრები</div>
                     <a href="#" class="section" data-section="complaints-admin">
                         <div class="sec-info">
                             <i class="fas fa-user-shield"></i>
@@ -750,7 +873,7 @@
                     </a>
                 </div>
                 <div class="cat">
-                    <div class="cat-header"><i class="fas fa-briefcase"></i> ვაკანსიები</div>
+                    <div class="cat-header">💼 ვაკანსიები</div>
                     <a href="#" class="section" data-section="vacancies-leaders">
                         <div class="sec-info">
                             <i class="fas fa-crown"></i>
@@ -774,7 +897,7 @@
                     </a>
                 </div>
                 <div class="cat">
-                    <div class="cat-header"><i class="fas fa-wrench"></i> ტექნიკური</div>
+                    <div class="cat-header">🔧 ტექნიკური</div>
                     <a href="#" class="section" data-section="donation-help">
                         <div class="sec-info">
                             <i class="fas fa-heart"></i>
@@ -929,6 +1052,29 @@
                 <button class="btn btn-secondary" onclick="backToForum()" style="margin-top: 2rem;">
                     <i class="fas fa-arrow-left"></i> უკან ფორუმზე
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="welcomeModal" class="fullscreen-modal">
+        <div class="modal-carousel">
+            <button class="carousel-nav prev" onclick="prevSlide()"><i class="fas fa-chevron-left"></i></button>
+            <button class="carousel-nav next" onclick="nextSlide()"><i class="fas fa-chevron-right"></i></button>
+            <div class="carousel-slide">
+                <h2 class="carousel-title">მოგესალმებით</h2>
+                <p class="carousel-description">თქვენ ეწვიეთ Zaratic RP\'ს ფორუმს, როგორც სტუმარი. იმისთვის რომ გაეცნოთ ყველა საკითხს სრულად, გთხოვთ გაიაროთ რეგისტრაცია ან ავტორიზაცია, თუ უკვე რეგისტრირებული ხართ.</p>
+            </div>
+            <div class="carousel-slide">
+                <h2 class="carousel-title">Zaratic RP</h2>
+                <p class="carousel-description">შემოგვიერთდი და გახდი ჩვენი საზოგადოების ნაწილი. აღმოაჩინე უამრავი შესაძლებლობა და ისიამოვნე საუკეთესო როლ-პლეიით!</p>
+            </div>
+            <div class="carousel-actions">
+                <button class="btn btn-primary" onclick="showRegister()">რეგისტრაცია</button>
+                <button class="btn btn-secondary" onclick="showLogin()">ავტორიზაცია</button>
+            </div>
+            <div class="carousel-dots">
+                <div class="carousel-dot active" onclick="showSlide(0)"></div>
+                <div class="carousel-dot" onclick="showSlide(1)"></div>
             </div>
         </div>
     </div>
@@ -1422,8 +1568,8 @@
             localData.username = null;
             saveLocal();
             document.getElementById('navActions').innerHTML = `
-                <button class="btn btn-primary" onclick="showLogin()">შესვლა</button>
-                <button class="btn btn-secondary" onclick="showRegister()">რეგისტრაცია</button>
+                <button class="btn btn-primary" onclick="showWelcomeModal()">შესვლა</button>
+                <button class="btn btn-secondary" onclick="showWelcomeModal()">რეგისტრაცია</button>
             `;
             updateSectionAccess();
             backToForum();
@@ -1828,10 +1974,12 @@
         }
 
         function showLogin() {
+            closeModal('welcomeModal');
             document.getElementById('loginModal').classList.add('active');
         }
 
         function showRegister() {
+            closeModal('welcomeModal');
             document.getElementById('registerModal').classList.add('active');
         }
 
@@ -1846,6 +1994,42 @@
             document.getElementById('newThreadModal').classList.add('active');
         }
 
+        let currentSlide = 0;
+        const slides = [
+            {
+                title: 'მოგესალმებით',
+                description: 'თქვენ ეწვიეთ Zaratic RP\'ს ფორუმს, როგორც სტუმარი. იმისთვის რომ გაეცნოთ ყველა საკითხს სრულად, გთხოვთ გაიაროთ რეგისტრაცია ან ავტორიზაცია, თუ უკვე რეგისტრირებული ხართ.'
+            },
+            {
+                title: 'Zaratic RP',
+                description: 'შემოგვიერთდი და გახდი ჩვენი საზოგადოების ნაწილი. აღმოაჩინე უამრავი შესაძლებლობა და ისიამოვნე საუკეთესო როლ-პლეიით!'
+            }
+        ];
+
+        function showSlide(index) {
+            document.querySelectorAll('.carousel-slide').forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function showWelcomeModal() {
+            document.getElementById('welcomeModal').classList.add('active');
+            showSlide(0);
+        }
+
         document.addEventListener('DOMContentLoaded', async () => {
             await updateSectionStats();
             updateSectionAccess();
@@ -1854,6 +2038,8 @@
                 userData = localData.user;
                 updateUI();
                 refreshUserData(); // background update
+            } else {
+                showWelcomeModal();
             }
 
             document.getElementById('loginForm').addEventListener('submit', handleLogin);
@@ -1894,4 +2080,4 @@
         };
     </script>
 </body>
-</html>
+    </html>
