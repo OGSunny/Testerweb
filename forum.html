@@ -28,6 +28,12 @@
             --danger: #ff0000;
             --admin-badge: #ff9900;
             --tech-badge: #0099ff;
+            --player-badge: #666666;
+            --glass-bg: rgba(17, 17, 17, 0.6);
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 8px rgba(0,0,0,0.4);
+            --shadow-lg: 0 10px 20px rgba(0,0,0,0.5);
+            --glow-red: 0 0 10px rgba(255,0,0,0.5);
         }
 
         body {
@@ -35,23 +41,24 @@
             background: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 100%);
             color: var(--text);
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         .navbar {
-            background: rgba(0, 0, 0, 0.95);
+            background: var(--glass-bg);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--dark-lighter);
             padding: 1rem 0;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            box-shadow: var(--shadow-md);
         }
 
         .nav-content {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -63,7 +70,6 @@
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -72,7 +78,7 @@
         .logo img {
             height: 40px;
             border-radius: 50%;
-            box-shadow: 0 0 10px var(--primary);
+            box-shadow: var(--glow-red);
         }
 
         .nav-actions {
@@ -86,16 +92,16 @@
             align-items: center;
             gap: 0.75rem;
             padding: 0.5rem 1rem;
-            background: var(--dark-light);
+            background: var(--glass-bg);
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(255, 0, 0, 0.2);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: var(--shadow-sm);
         }
 
         .user-info:hover {
-            background: var(--dark-lighter);
             transform: scale(1.02);
+            box-shadow: var(--glow-red);
         }
 
         .user-avatar {
@@ -103,13 +109,9 @@
             height: 36px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
             background-size: cover;
             background-position: center;
-            box-shadow: 0 0 5px var(--primary);
+            box-shadow: var(--glow-red);
         }
 
         .user-badges {
@@ -123,27 +125,27 @@
             font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.1);
+            box-shadow: var(--shadow-sm), inset 0 1px 1px rgba(255,255,255,0.1);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .badge:hover {
             transform: scale(1.1);
-            box-shadow: 0 4px 8px rgba(255,0,0,0.3);
+            box-shadow: var(--glow-red);
         }
 
         .badge-admin {
-            background: linear-gradient(135deg, #ff9900, #cc6600);
+            background: linear-gradient(135deg, var(--admin-badge), #cc6600);
             color: #000;
         }
 
         .badge-tech {
-            background: linear-gradient(135deg, #0099ff, #0066cc);
+            background: linear-gradient(135deg, var(--tech-badge), #0066cc);
             color: white;
         }
 
         .badge-player {
-            background: linear-gradient(135deg, #222222, #111111);
+            background: linear-gradient(135deg, var(--player-badge), #333333);
             color: var(--text-muted);
         }
 
@@ -153,9 +155,9 @@
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             font-size: 0.95rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: var(--shadow-sm);
         }
 
         .btn-primary {
@@ -165,7 +167,7 @@
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255, 0, 0, 0.4);
+            box-shadow: var(--glow-red);
         }
 
         .btn-secondary {
@@ -175,13 +177,13 @@
 
         .btn-secondary:hover {
             background: var(--dark-lighter);
-            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.2);
+            box-shadow: var(--shadow-md);
         }
 
         .container {
             max-width: 1400px;
             margin: 2rem auto;
-            padding: 0 2rem;
+            padding: 0 1rem;
         }
 
         .categories {
@@ -191,12 +193,17 @@
         }
 
         .cat {
-            background: rgba(17, 17, 17, 0.8);
+            background: var(--glass-bg);
             backdrop-filter: blur(20px);
             border-radius: 16px;
             overflow: hidden;
             border: 1px solid var(--dark-lighter);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            box-shadow: var(--shadow-lg);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .cat:hover {
+            box-shadow: var(--glow-red);
         }
 
         .cat-header {
@@ -208,7 +215,6 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
 
         .cat-header i {
@@ -220,10 +226,10 @@
             justify-content: space-between;
             align-items: center;
             padding: 1.2rem 1.5rem;
-            border-bottom: 1px solid rgba(34, 34, 34, 0.5);
+            border-bottom: 1px solid var(--dark-lighter);
             text-decoration: none;
             color: var(--text);
-            transition: all 0.3s ease;
+            transition: background 0.3s ease, padding-left 0.3s ease;
             position: relative;
         }
 
@@ -234,7 +240,6 @@
         .section:hover {
             background: rgba(255, 0, 0, 0.05);
             padding-left: 2rem;
-            box-shadow: inset 0 0 10px rgba(255,0,0,0.1);
         }
 
         .section.locked {
@@ -247,7 +252,7 @@
             font-family: 'Font Awesome 6 Free';
             font-weight: 900;
             position: absolute;
-            right: 5rem;
+            right: 1.5rem;
             color: var(--warning);
         }
 
@@ -277,34 +282,59 @@
             color: var(--text-muted);
             min-width: 50px;
             text-align: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            box-shadow: var(--shadow-sm);
         }
 
-        .posts-container {
+        .breadcrumbs {
+            margin: 1rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumbs span {
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .breadcrumbs span:hover {
+            color: var(--primary);
+        }
+
+        .threads-container, .posts-container {
             display: flex;
             flex-direction: column;
             gap: 1rem;
             padding: 1rem 0;
         }
 
-        .post {
-            background: var(--dark-light);
+        .thread-card, .post {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
             padding: 1.2rem;
             border-radius: 12px;
             border: 1px solid var(--dark-lighter);
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: var(--shadow-md);
         }
 
-        .post:hover {
-            box-shadow: 0 6px 20px rgba(255,0,0,0.2);
-            transform: translateY(-2px);
+        .thread-card:hover, .post:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--glow-red);
+        }
+
+        .thread-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
         }
 
         .post-header {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 1rem;
             margin-bottom: 0.75rem;
         }
 
@@ -326,21 +356,29 @@
         .post-actions {
             display: flex;
             gap: 0.5rem;
+            align-items: center;
         }
 
-        .post-actions button {
+        .post-actions button, .like-btn {
             padding: 0.4rem 0.8rem;
             background: var(--dark-lighter);
             color: var(--text);
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: background 0.2s ease, color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
         }
 
-        .post-actions button:hover {
+        .post-actions button:hover, .like-btn:hover {
             background: var(--primary);
             color: white;
+        }
+
+        .like-btn.liked {
+            color: var(--danger);
         }
 
         .pinned {
@@ -356,21 +394,31 @@
             margin-right: 0.5rem;
         }
 
-        textarea {
+        .new-indicator {
+            background: var(--warning);
+            color: var(--dark);
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+        }
+
+        textarea, input[type="text"], input[type="email"], input[type="password"], input[type="tel"] {
             width: 100%;
             padding: 0.8rem;
             background: var(--dark);
             border: 1px solid var(--dark-lighter);
             border-radius: 8px;
             color: var(--text);
-            min-height: 100px;
-            resize: vertical;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+            font-size: 1rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: inset var(--shadow-sm);
         }
 
-        textarea:focus {
+        textarea:focus, input:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(255,0,0,0.1);
+            outline: none;
         }
 
         .modal {
@@ -385,36 +433,32 @@
             z-index: 2000;
             align-items: center;
             justify-content: center;
+            animation: fadeIn 0.3s ease;
         }
 
         .modal.active {
             display: flex;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         .modal-content {
-            background: var(--dark-light);
+            background: var(--glass-bg);
             border-radius: 16px;
             padding: 2rem;
             max-width: 500px;
             width: 90%;
             border: 1px solid var(--dark-lighter);
+            box-shadow: var(--shadow-lg);
             animation: slideIn 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .modal-header {
-            margin-bottom: 1.5rem;
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .modal-header h2 {
@@ -422,7 +466,6 @@
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .form-group {
@@ -436,24 +479,6 @@
             font-weight: 500;
         }
 
-        .form-group input {
-            width: 100%;
-            padding: 0.8rem;
-            background: var(--dark);
-            border: 1px solid var(--dark-lighter);
-            border-radius: 8px;
-            color: var(--text);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(255,0,0,0.1);
-        }
-
         .form-actions {
             display: flex;
             gap: 1rem;
@@ -465,12 +490,12 @@
         }
 
         .profile-section {
-            background: rgba(17, 17, 17, 0.8);
+            background: var(--glass-bg);
             backdrop-filter: blur(20px);
             border-radius: 16px;
             padding: 2rem;
             border: 1px solid var(--dark-lighter);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            box-shadow: var(--shadow-lg);
         }
 
         .profile-header {
@@ -485,20 +510,14 @@
             height: 100px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            font-weight: 700;
             background-size: cover;
             background-position: center;
-            box-shadow: 0 0 15px var(--primary);
+            box-shadow: var(--glow-red);
         }
 
         .profile-details h2 {
             font-size: 2rem;
             margin-bottom: 0.5rem;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
 
         .tabs {
@@ -513,7 +532,7 @@
             cursor: pointer;
             color: var(--text-muted);
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: color 0.2s ease, border-bottom-color 0.2s ease;
             border-bottom: 3px solid transparent;
             margin-bottom: -2px;
         }
@@ -545,7 +564,7 @@
             background: var(--dark);
             padding: 1rem;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            box-shadow: var(--shadow-sm);
         }
 
         .info-label {
@@ -559,18 +578,41 @@
             font-weight: 600;
         }
 
+        #loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--glass-bg);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            display: none;
+            z-index: 3000;
+            box-shadow: var(--shadow-md);
+        }
+
+        #toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--success);
+            color: var(--dark);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            display: none;
+            z-index: 3000;
+            box-shadow: var(--shadow-md);
+            animation: fadeIn 0.3s ease;
+        }
+
         @media (max-width: 768px) {
             .nav-content {
                 flex-direction: column;
                 gap: 1rem;
             }
 
-            .user-info span {
-                display: none;
-            }
-
             .container {
-                padding: 0 1rem;
+                padding: 0 0.5rem;
             }
 
             .section {
@@ -581,6 +623,16 @@
 
             .sec-stats {
                 align-self: flex-end;
+            }
+
+            .post-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .btn {
+                padding: 0.8rem;
+                font-size: 1rem;
             }
         }
     </style>
@@ -603,165 +655,131 @@
     <div class="container">
         <div id="forumView">
             <div class="categories">
+                <!-- Categories and sections remain the same -->
                 <div class="cat">
                     <div class="cat-header"><i class="fas fa-gavel"></i> სერვერის ინფორმაცია</div>
                     <a href="#" class="section locked" data-section="rules" data-restricted="true">
                         <div class="sec-info">
                             <i class="fas fa-book"></i>
-                            <div>
-                                <div class="sec-title">სერვერის წესები</div>
-                            </div>
+                            <div class="sec-title">სერვერის წესები</div>
                         </div>
                         <div class="sec-stats">0</div>
                     </a>
                     <a href="#" class="section locked" data-section="news" data-restricted="true">
                         <div class="sec-info">
                             <i class="fas fa-bullhorn"></i>
-                            <div>
-                                <div class="sec-title">სიახლეები</div>
-                            </div>
+                            <div class="sec-title">სიახლეები</div>
                         </div>
                         <div class="sec-stats">0</div>
                     </a>
                     <a href="#" class="section locked" data-section="updates" data-restricted="true">
                         <div class="sec-info">
                             <i class="fas fa-sync"></i>
-                            <div>
-                                <div class="sec-title">განახლებები</div>
-                            </div>
+                            <div class="sec-title">განახლებები</div>
                         </div>
                         <div class="sec-stats">0</div>
                     </a>
                 </div>
-
+                <!-- Other categories... -->
                 <div class="cat">
                     <div class="cat-header"><i class="fas fa-users"></i> საზოგადოება</div>
                     <a href="#" class="section" data-section="suggestions">
                         <div class="sec-info">
                             <i class="fas fa-lightbulb"></i>
-                            <div>
-                                <div class="sec-title">წინადადებები</div>
-                            </div>
+                            <div class="sec-title">წინადადებები</div>
                         </div>
                         <div class="sec-stats">0</div>
                     </a>
                     <a href="#" class="section" data-section="events">
                         <div class="sec-info">
                             <i class="fas fa-calendar"></i>
-                            <div>
-                                <div class="sec-title">ივენთები</div>
-                            </div>
+                            <div class="sec-title">ივენთები</div>
                         </div>
                         <div class="sec-stats">0</div>
                     </a>
                     <a href="#" class="section" data-section="biographies">
                         <div class="sec-info">
                             <i class="fas fa-user-edit"></i>
-                            <div>
-                                <div class="sec-title">ბიოგრაფიები</div>
-                            </div>
+                            <div class="sec-title">ბიოგრაფიები</div>
                         </div>
                         <div class="sec-stats">0</div>
                     </a>
                 </div>
-
                 <div class="cat">
                     <div class="cat-header"><i class="fas fa-exclamation-triangle"></i> საჩივრები</div>
                     <a href="#" class="section" data-section="complaints-admin">
                         <div class="sec-info">
                             <i class="fas fa-user-shield"></i>
-                            <div>
-                                <div class="sec-title">ადმინზე</div>
-                            </div>
+                            <div class="sec-title">ადმინზე</div>
                         </div>
                         <div class="sec-stats">0</div>
                     </a>
                     <a href="#" class="section" data-section="complaints-player">
                         <div class="sec-info">
                             <i class="fas fa-user-slash"></i>
-                            <div>
-                                <div class="sec-title">მოთამაშეზე</div>
-                            </div>
+                            <div class="sec-title">მოთამაშეზე</div>
                         </div>
                         <div class="sec-stats">0</div>
                     </a>
                     <a href="#" class="section" data-section="appeals">
                         <div class="sec-info">
                             <i class="fas fa-gavel"></i>
-                            <div>
-                                <div class="sec-title">აპელაციები</div>
-                            </div>
+                            <div class="sec-title">აპელაციები</div>
                         </div>
                         <div class="sec-stats">0</div>
                     </a>
                     <a href="#" class="section" data-section="unban">
                         <div class="sec-info">
                             <i class="fas fa-unlock"></i>
-                            <div>
-                                <div class="sec-title">განბლოკვა</div>
-                            </div>
+                            <div class="sec-title">განბლოკვა</div>
                         </div>
                         <div class="sec-stats">0</div>
                     </a>
                 </div>
-
                 <div class="cat">
                     <div class="cat-header"><i class="fas fa-briefcase"></i> ვაკანსიები</div>
                     <a href="#" class="section" data-section="vacancies-leaders">
                         <div class="sec-info">
                             <i class="fas fa-crown"></i>
-                            <div>
-                                <div class="sec-title">ლიდერები</div>
-                            </div>
+                            <div class="sec-title">ლიდერები</div>
                         </div>
                         <div class="sec-stats">0</div>
                     </a>
                     <a href="#" class="section" data-section="vacancies-admin">
                         <div class="sec-info">
                             <i class="fas fa-user-shield"></i>
-                            <div>
-                                <div class="sec-title">ადმინები</div>
-                            </div>
+                            <div class="sec-title">ადმინები</div>
                         </div>
                         <div class="sec-stats">0</div>
                     </a>
                     <a href="#" class="section" data-section="vacancies-partner">
                         <div class="sec-info">
                             <i class="fas fa-handshake"></i>
-                            <div>
-                                <div class="sec-title">პარტნიორები</div>
-                            </div>
+                            <div class="sec-title">პარტნიორები</div>
                         </div>
                         <div class="sec-stats">0</div>
                     </a>
                 </div>
-
                 <div class="cat">
                     <div class="cat-header"><i class="fas fa-wrench"></i> ტექნიკური</div>
                     <a href="#" class="section" data-section="donation-help">
                         <div class="sec-info">
                             <i class="fas fa-heart"></i>
-                            <div>
-                                <div class="sec-title">დონატი</div>
-                            </div>
+                            <div class="sec-title">დონატი</div>
                         </div>
                         <div class="sec-stats">0</div>
                     </a>
                     <a href="#" class="section" data-section="tech-help">
                         <div class="sec-info">
                             <i class="fas fa-tools"></i>
-                            <div>
-                                <div class="sec-title">ტექ. დახმარება</div>
-                            </div>
+                            <div class="sec-title">ტექ. დახმარება</div>
                         </div>
                         <div class="sec-stats">0</div>
                     </a>
                     <a href="#" class="section" data-section="general">
                         <div class="sec-info">
                             <i class="fas fa-comments"></i>
-                            <div>
-                                <div class="sec-title">დისკუსია</div>
-                            </div>
+                            <div class="sec-title">დისკუსია</div>
                         </div>
                         <div class="sec-stats">0</div>
                     </a>
@@ -770,14 +788,23 @@
         </div>
 
         <div id="sectionView" style="display: none;">
+            <div class="breadcrumbs" id="sectionBreadcrumbs"></div>
             <button class="btn btn-secondary" onclick="backToForumFromSection()"><i class="fas fa-arrow-left"></i> უკან</button>
             <h2 id="sectionTitle" style="margin: 1rem 0;"></h2>
-            <div class="posts-container" id="postsList"></div>
-            <form id="newPostForm">
+            <button class="btn btn-primary" onclick="showNewThreadModal()">ახალი თრედი</button>
+            <div class="threads-container" id="threadsList"></div>
+        </div>
+
+        <div id="threadView" style="display: none;">
+            <div class="breadcrumbs" id="threadBreadcrumbs"></div>
+            <button class="btn btn-secondary" onclick="backToSectionFromThread()"><i class="fas fa-arrow-left"></i> უკან</button>
+            <h2 id="threadTitle" style="margin: 1rem 0;"></h2>
+            <div class="posts-container" id="threadPosts"></div>
+            <form id="newReplyForm">
                 <div class="form-group">
-                    <textarea id="postContent" placeholder="დაწერეთ თქვენი პოსტი..." required></textarea>
+                    <textarea id="replyContent" placeholder="დაწერეთ თქვენი პასუხი..." required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">გამოქვეყნება</button>
+                <button type="submit" class="btn btn-primary">პასუხის გაგზავნა</button>
             </form>
         </div>
 
@@ -790,13 +817,11 @@
                         <div class="user-badges" id="profileBadges"></div>
                     </div>
                 </div>
-
                 <div class="tabs">
                     <div class="tab active" onclick="switchTab('info')">ინფორმაცია</div>
                     <div class="tab" onclick="switchTab('edit')">რედაქტირება</div>
                     <div class="tab" onclick="switchTab('admin')" id="adminTab" style="display: none;">ადმინ პანელი</div>
                 </div>
-
                 <div id="infoTab" class="tab-content active">
                     <div class="info-grid">
                         <div class="info-item">
@@ -817,7 +842,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div id="editTab" class="tab-content">
                     <form id="profileEditForm">
                         <div class="form-group">
@@ -843,7 +867,6 @@
                         <button type="submit" class="btn btn-primary">შენახვა</button>
                     </form>
                 </div>
-
                 <div id="adminTab" class="tab-content">
                     <h3 style="margin-bottom: 1rem;">ბეჯების მინიჭება</h3>
                     <div class="form-group">
@@ -852,7 +875,7 @@
                     </div>
                     <div class="form-group">
                         <label>ბეჯი</label>
-                        <select id="badgeType" style="width: 100%; padding: 0.8rem; background: var(--dark); border: 1px solid var(--dark-lighter); border-radius: 8px; color: var(--text);">
+                        <select id="badgeType">
                             <option value="admin">ადმინი</option>
                             <option value="tech">ტექ. ადმინი</option>
                             <option value="player">მოთამაშე</option>
@@ -860,7 +883,6 @@
                     </div>
                     <button class="btn btn-primary" onclick="assignBadge()">ბეჯის მინიჭება</button>
                 </div>
-
                 <button class="btn btn-secondary" onclick="backToForum()" style="margin-top: 2rem;">
                     <i class="fas fa-arrow-left"></i> უკან ფორუმზე
                 </button>
@@ -868,12 +890,10 @@
         </div>
     </div>
 
-    <!-- Login Modal -->
+    <!-- Modals remain similar, add new thread modal -->
     <div id="loginModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2>შესვლა</h2>
-            </div>
+            <div class="modal-header"><h2>შესვლა</h2></div>
             <form id="loginForm">
                 <div class="form-group">
                     <label>მომხმარებელი</label>
@@ -891,12 +911,9 @@
         </div>
     </div>
 
-    <!-- Register Modal -->
     <div id="registerModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2>რეგისტრაცია</h2>
-            </div>
+            <div class="modal-header"><h2>რეგისტრაცია</h2></div>
             <form id="registerForm">
                 <div class="form-group">
                     <label>მომხმარებელი</label>
@@ -918,15 +935,12 @@
         </div>
     </div>
 
-    <!-- Verification Modal -->
     <div id="verifyModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2>ელფოსტის ვერიფიკაცია</h2>
-            </div>
+            <div class="modal-header"><h2>ელფოსტის ვერიფიკაცია</h2></div>
             <form id="verifyForm">
                 <div class="form-group">
-                    <label>ვერიფიკაციის კოდი (შეამოწმეთ თქვენი ელფოსტა)</label>
+                    <label>ვერიფიკაციის კოდი</label>
                     <input type="text" id="verifyCode" placeholder="შეიყვანეთ 6-ციფრიანი კოდი" required>
                 </div>
                 <div class="form-actions">
@@ -937,160 +951,90 @@
         </div>
     </div>
 
+    <div id="newThreadModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h2>ახალი თრედი</h2></div>
+            <form id="newThreadForm">
+                <div class="form-group">
+                    <label>სათაური</label>
+                    <input type="text" id="threadTitleInput" placeholder="თრედის სათაური" required>
+                </div>
+                <div class="form-group">
+                    <textarea id="threadContent" placeholder="დაწერეთ თქვენი პოსტი..." required></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">შექმნა</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('newThreadModal')">გაუქმება</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="loading">იტვირთება...</div>
+    <div id="toast"></div>
+
     <script>
         const API_URL = 'https://data7167.jemalagegidze.workers.dev/';
         emailjs.init('6mfdsM4fGZ9WWDFst');
 
         let currentUser = null;
-        let currentSection = null;
         let userData = null;
+        let currentSection = null;
+        let currentThread = null;
+        let sectionPosts = [];
+        let refreshInterval = null;
         const storageKey = 'zaraticLocalData';
-        const localData = JSON.parse(localStorage.getItem(storageKey)) || { user: null, posts: {} };
+        let localData = JSON.parse(localStorage.getItem(storageKey)) || { user: null, lastViewed: {} };
 
-        async function updateSectionStats() {
-            const response = await fetch(`${API_URL}/post-counts`);
-            if (response.ok) {
-                const counts = await response.json();
-                document.querySelectorAll('.section').forEach(sec => {
-                    const sectionId = sec.dataset.section;
-                    sec.querySelector('.sec-stats').textContent = counts[sectionId] || 0;
-                });
-            }
+        // Helper functions
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            updateSectionStats();
-            updateSectionAccess();
-            document.getElementById('loginForm').addEventListener('submit', handleLogin);
-            document.getElementById('registerForm').addEventListener('submit', handleRegister);
-            document.getElementById('verifyForm').addEventListener('submit', handleVerify);
-            document.getElementById('profileEditForm').addEventListener('submit', handleProfileUpdate);
-            document.getElementById('newPostForm').addEventListener('submit', handleNewPost);
-
-            document.querySelectorAll('.section').forEach(section => {
-                section.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    if (section.classList.contains('locked') && !(currentUser && userData.role === 'admin')) {
-                        alert('მხოლოდ ადმინისტრატორებს აქვთ წვდომა ამ კატეგორიაზე');
-                        return;
-                    }
-                    currentSection = section.dataset.section;
-                    document.getElementById('forumView').style.display = 'none';
-                    document.getElementById('sectionView').style.display = 'block';
-                    document.getElementById('sectionTitle').textContent = section.querySelector('.sec-title').textContent;
-                    await renderPosts();
-                });
-            });
-
-            if (localData.user) {
-                currentUser = localData.user.username;
-                userData = localData.user;
-                updateUI();
-            }
-        });
-
-        function showLogin() {
-            document.getElementById('loginModal').classList.add('active');
-        }
-
-        function showRegister() {
-            document.getElementById('registerModal').classList.add('active');
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.background = type === 'success' ? var(--success) : var(--danger);
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
         }
 
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
         }
 
-        async function handleLogin(e) {
-            e.preventDefault();
-            const username = document.getElementById('loginUsername').value;
-            const password = document.getElementById('loginPassword').value;
-
-            const response = await fetch(`${API_URL}/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
-
-            if (response.ok) {
-                userData = await response.json();
-                currentUser = username;
-                localData.user = userData;
-                saveLocal();
-                updateUI();
-                closeModal('loginModal');
-                e.target.reset();
-            } else {
-                alert(await response.text());
-            }
+        function formatTime(time) {
+            const diff = Date.now() - time;
+            const seconds = Math.floor(diff / 1000);
+            if (seconds < 60) return 'ახლახანს';
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return `${minutes} წუთის წინ`;
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `${hours} საათის წინ`;
+            const days = Math.floor(hours / 24);
+            if (days < 7) return `${days} დღის წინ`;
+            return new Date(time).toLocaleString('ka-GE');
         }
 
-        async function handleRegister(e) {
-            e.preventDefault();
-            const username = document.getElementById('regUsername').value;
-            const email = document.getElementById('regEmail').value;
-            const password = document.getElementById('regPassword').value;
-
-            const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
-
-            const sendResponse = await emailjs.send('service_uqvxc6o', 'Zaraticsregister9178', {
-                to_email: email,
-                to_name: username,
-                code: verifyCode
-            });
-
-            if (sendResponse.status === 200) {
-                const pending = { username, email, password, code: verifyCode };
-                const response = await fetch(`${API_URL}/register`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(pending)
-                });
-                if (response.ok) {
-                    sessionStorage.setItem('pendingEmail', email);
-                    closeModal('registerModal');
-                    document.getElementById('verifyModal').classList.add('active');
-                    e.target.reset();
-                } else {
-                    alert('Error saving pending');
-                }
-            } else {
-                alert('Email send failed');
-            }
+        function isNew(time) {
+            return Date.now() - time < 3600000; // 1 hour
         }
 
-        async function handleVerify(e) {
-            e.preventDefault();
-            const enteredCode = document.getElementById('verifyCode').value;
-            const email = sessionStorage.getItem('pendingEmail');
-            const response = await fetch(`${API_URL}/verify`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, code: enteredCode })
-            });
-            if (response.ok) {
-                userData = await response.json();
-                currentUser = userData.profile.name;
-                localData.user = userData;
-                saveLocal();
-                updateUI();
-                closeModal('verifyModal');
-                sessionStorage.removeItem('pendingEmail');
-            } else {
-                alert(await response.text());
-            }
-            e.target.reset();
+        function saveLocal() {
+            localStorage.setItem(storageKey, JSON.stringify(localData));
         }
 
+        // Update UI for logged in user
         function updateUI() {
-            const avatarStyle = userData.profile.avatar ? `style="background-image: url(${userData.profile.avatar}); background-color: transparent;"` : '';
+            if (!userData) return;
+            const avatarStyle = userData.profile.avatar ? `background-image: url(${userData.profile.avatar});` : 'background: linear-gradient(135deg, var(--primary), var(--secondary));';
             const avatarText = userData.profile.avatar ? '' : currentUser[0].toUpperCase();
             document.getElementById('navActions').innerHTML = `
                 <div class="user-info" onclick="showProfile()">
-                    <div class="user-avatar" ${avatarStyle}>${avatarText}</div>
+                    <div class="user-avatar" style="${avatarStyle}">${avatarText}</div>
                     <span>${currentUser}</span>
                     <div class="user-badges">
-                        ${userData.badges.map(b => `<span class="badge badge-${b}">${b === 'admin' ? 'ადმინი' : b === 'tech' ? 'ტექ. ადმინი' : 'მოთამაშე'}</span>`).join('')}
+                        ${userData.badges.map(b => `<span class="badge badge-${b}" title="${b === 'admin' ? 'ადმინისტრატორი' : b === 'tech' ? 'ტექნიკური ადმინი' : 'მოთამაშე'}">${b === 'admin' ? 'ადმინი' : b === 'tech' ? 'ტექ. ადმინი' : 'მოთამაშე'}</span>`).join('')}
                     </div>
                 </div>
                 <button class="btn btn-secondary" onclick="logout()">გასვლა</button>
@@ -1098,12 +1042,268 @@
             updateSectionAccess();
         }
 
+        // Update access to restricted sections
         function updateSectionAccess() {
             document.querySelectorAll('[data-restricted="true"]').forEach(sec => {
                 sec.classList.toggle('locked', !(currentUser && userData.role === 'admin'));
             });
         }
 
+        // Fetch and update section stats (thread counts)
+        async function updateSectionStats() {
+            showLoading(true);
+            try {
+                const response = await fetch(`${API_URL}/post-counts`);
+                if (response.ok) {
+                    const counts = await response.json();
+                    document.querySelectorAll('.section').forEach(sec => {
+                        const sectionId = sec.dataset.section;
+                        sec.querySelector('.sec-stats').textContent = counts[sectionId] || 0;
+                    });
+                }
+            } catch (error) {
+                showToast('შეცდომა სტატისტიკის ჩატვირთვაში', 'error');
+            }
+            showLoading(false);
+        }
+
+        // Fetch posts for current section
+        async function fetchPosts() {
+            showLoading(true);
+            try {
+                const response = await fetch(`${API_URL}/posts/${currentSection}`);
+                if (response.ok) {
+                    sectionPosts = await response.json();
+                    return sectionPosts;
+                }
+            } catch (error) {
+                showToast('შეცდომა პოსტების ჩატვირთვაში', 'error');
+            }
+            showLoading(false);
+            return [];
+        }
+
+        // Render threads in section view
+        async function renderThreads() {
+            await fetchPosts();
+            const threadsList = document.getElementById('threadsList');
+            threadsList.innerHTML = '';
+            const threads = sectionPosts.filter(p => !p.parentId);
+            threads.sort((a, b) => b.pinned - a.pinned || getLastActivity(b) - getLastActivity(a));
+            threads.forEach(thread => {
+                const replies = sectionPosts.filter(r => r.parentId === thread.id);
+                const replyCount = replies.length;
+                const lastActivity = formatTime(getLastActivity(thread));
+                const isPinned = thread.pinned ? ' pinned' : '';
+                const newInd = isNew(getLastActivity(thread)) ? '<span class="new-indicator">ახალი</span>' : '';
+                const threadDiv = document.createElement('div');
+                threadDiv.className = `thread-card${isPinned}`;
+                threadDiv.innerHTML = `
+                    <h3>${thread.title || thread.content.substring(0, 50) + '...'}${newInd}</h3>
+                    <div class="thread-info">
+                        <span>ავტორი: ${thread.author}</span>
+                        <span>პასუხები: ${replyCount}</span>
+                        <span>ბოლო აქტივობა: ${lastActivity}</span>
+                    </div>
+                    ${userData?.role === 'admin' ? `<button class="btn btn-secondary" onclick="togglePin('${thread.id}')">${thread.pinned ? 'განპინება' : 'პინ'}</button>` : ''}
+                `;
+                threadDiv.addEventListener('click', (e) => {
+                    if (!e.target.tagName === 'BUTTON') {
+                        openThread(thread.id, thread.title || thread.content.substring(0, 50));
+                    }
+                });
+                threadsList.appendChild(threadDiv);
+            });
+        }
+
+        // Get last activity time for a thread
+        function getLastActivity(thread) {
+            const replies = sectionPosts.filter(r => r.parentId === thread.id);
+            const times = [thread.time, ...replies.map(r => r.time)];
+            return Math.max(...times);
+        }
+
+        // Render posts in thread view
+        async function renderThread() {
+            await fetchPosts();
+            const threadPostsDiv = document.getElementById('threadPosts');
+            threadPostsDiv.innerHTML = '';
+            const thread = sectionPosts.find(p => p.id === currentThread);
+            if (!thread) return;
+            threadPostsDiv.appendChild(createPostElement(thread, false));
+            const replies = sectionPosts.filter(r => r.parentId === currentThread).sort((a, b) => a.time - b.time);
+            replies.forEach(reply => {
+                threadPostsDiv.appendChild(createPostElement(reply, true));
+            });
+        }
+
+        // Create post HTML element
+        function createPostElement(post, isReply) {
+            const isPinned = post.pinned && !isReply ? ' pinned' : '';
+            const avatarStyle = post.avatar ? `background-image: url(${post.avatar});` : '';
+            const liked = post.likes.includes(currentUser) ? 'liked' : '';
+            const postDiv = document.createElement('div');
+            postDiv.className = `post${isPinned}`;
+            postDiv.innerHTML = `
+                <div class="post-header">
+                    <div class="user-avatar" style="${avatarStyle}"></div>
+                    <span class="post-author">${post.author}</span>
+                    <div class="user-badges">
+                        ${post.badges.map(b => `<span class="badge badge-${b}" title="${b === 'admin' ? 'ადმინისტრატორი' : b === 'tech' ? 'ტექნიკური ადმინი' : 'მოთამაშე'}">${b === 'admin' ? 'ადმინი' : b === 'tech' ? 'ტექ. ადმინი' : 'მოთამაშე'}</span>`).join('')}
+                    </div>
+                    <span class="post-time">${formatTime(post.time)}</span>
+                </div>
+                ${!isReply ? `<h3>${post.title || ''}</h3>` : ''}
+                <div class="post-content">${post.content.replace(/\n/g, '<br>')}</div>
+                <div class="post-actions">
+                    <button class="like-btn ${liked}" onclick="toggleLike('${post.id}')"><i class="fas fa-heart"></i> ${post.likes.length}</button>
+                    ${userData?.role === 'admin' && !isReply ? `<button onclick="togglePin('${post.id}')">${post.pinned ? 'განპინება' : 'პინ'}</button>` : ''}
+                </div>
+            `;
+            return postDiv;
+        }
+
+        // Open thread view
+        function openThread(threadId, title) {
+            currentThread = threadId;
+            document.getElementById('sectionView').style.display = 'none';
+            document.getElementById('threadView').style.display = 'block';
+            document.getElementById('threadTitle').textContent = title;
+            updateBreadcrumbs('thread');
+            renderThread();
+        }
+
+        // Update breadcrumbs
+        function updateBreadcrumbs(view) {
+            if (view === 'section') {
+                const catHeader = document.querySelector(`.section[data-section="${currentSection}"]`).closest('.cat').querySelector('.cat-header').textContent;
+                document.getElementById('sectionBreadcrumbs').innerHTML = `<span onclick="backToForumFromSection()">ფორუმი</span> > ${catHeader} > ${document.getElementById('sectionTitle').textContent}`;
+            } else if (view === 'thread') {
+                const sectionBcr = document.getElementById('sectionBreadcrumbs').innerHTML;
+                document.getElementById('threadBreadcrumbs').innerHTML = `${sectionBcr} > <span onclick="backToSectionFromThread()">${document.getElementById('threadTitle').textContent}</span>`;
+            }
+        }
+
+        // Handle login
+        async function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            if (!username || !password) return showToast('შეავსეთ ყველა ველი', 'error');
+            showLoading(true);
+            try {
+                const response = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                if (response.ok) {
+                    userData = await response.json();
+                    currentUser = username;
+                    localData.user = { username }; // Don't save sensitive data
+                    saveLocal();
+                    updateUI();
+                    closeModal('loginModal');
+                    showToast('წარმატებული შესვლა');
+                    await refreshUserData(); // Fetch fresh data
+                } else {
+                    showToast(await response.text(), 'error');
+                }
+            } catch (error) {
+                showToast('შეცდომა შესვლაში', 'error');
+            }
+            showLoading(false);
+            e.target.reset();
+        }
+
+        // Handle register
+        async function handleRegister(e) {
+            e.preventDefault();
+            const username = document.getElementById('regUsername').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value.trim();
+            if (!username || !email || !password) return showToast('შეავსეთ ყველა ველი', 'error');
+            const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
+            showLoading(true);
+            try {
+                const sendResponse = await emailjs.send('service_uqvxc6o', 'Zaraticsregister9178', {
+                    to_email: email,
+                    to_name: username,
+                    code: verifyCode
+                });
+                if (sendResponse.status === 200) {
+                    const pending = { username, email, password, code: verifyCode };
+                    const response = await fetch(`${API_URL}/register`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(pending)
+                    });
+                    if (response.ok) {
+                        sessionStorage.setItem('pendingEmail', email);
+                        closeModal('registerModal');
+                        document.getElementById('verifyModal').classList.add('active');
+                    } else {
+                        showToast('შეცდომა რეგისტრაციაში', 'error');
+                    }
+                } else {
+                    showToast('ელფოსტის გაგზავნა ვერ მოხერხდა', 'error');
+                }
+            } catch (error) {
+                showToast('შეცდომა რეგისტრაციაში', 'error');
+            }
+            showLoading(false);
+            e.target.reset();
+        }
+
+        // Handle verification
+        async function handleVerify(e) {
+            e.preventDefault();
+            const enteredCode = document.getElementById('verifyCode').value.trim();
+            const email = sessionStorage.getItem('pendingEmail');
+            if (!enteredCode) return showToast('შეიყვანეთ კოდი', 'error');
+            showLoading(true);
+            try {
+                const response = await fetch(`${API_URL}/verify`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, code: enteredCode })
+                });
+                if (response.ok) {
+                    userData = await response.json();
+                    currentUser = userData.profile.name;
+                    localData.user = { username: currentUser };
+                    saveLocal();
+                    updateUI();
+                    closeModal('verifyModal');
+                    sessionStorage.removeItem('pendingEmail');
+                    showToast('რეგისტრაცია დასრულებულია');
+                    await refreshUserData();
+                } else {
+                    showToast(await response.text(), 'error');
+                }
+            } catch (error) {
+                showToast('შეცდომა ვერიფიკაციაში', 'error');
+            }
+            showLoading(false);
+            e.target.reset();
+        }
+
+        // Refresh user data from server
+        async function refreshUserData() {
+            if (!currentUser) return;
+            showLoading(true);
+            try {
+                const response = await fetch(`${API_URL}/users/${currentUser}`);
+                if (response.ok) {
+                    userData = await response.json();
+                }
+            } catch (error) {
+                showToast('შეცდომა პროფილის განახლებაში', 'error');
+            }
+            showLoading(false);
+        }
+
+        // Logout
         function logout() {
             currentUser = null;
             userData = null;
@@ -1116,96 +1316,163 @@
             updateSectionAccess();
             backToForum();
             backToForumFromSection();
+            backToSectionFromThread();
+            showToast('გამოსვლა წარმატებულია');
         }
 
-        async function renderPosts() {
-            const postsList = document.getElementById('postsList');
-            postsList.innerHTML = '';
-            const response = await fetch(`${API_URL}/posts/${currentSection}`);
-            if (response.ok) {
-                let sectionPosts = await response.json();
-                sectionPosts.sort((a, b) => b.pinned - a.pinned);
-                sectionPosts.forEach((post, index) => {
-                    const postDiv = document.createElement('div');
-                    postDiv.className = 'post' + (post.pinned ? ' pinned' : '');
-                    postDiv.innerHTML = `
-                        <div class="post-header">
-                            <span class="post-author">${post.author}</span>
-                            <span class="post-time">${new Date(post.time).toLocaleString('ka-GE')}</span>
-                        </div>
-                        <div class="post-content">${post.content.replace(/\n/g, '<br>')}</div>
-                        <div class="post-actions">
-                            ${userData.role === 'admin' ? `<button onclick="togglePin('${currentSection}', ${index})">${post.pinned ? 'განპინება' : 'პინ'}</button>` : ''}
-                        </div>
-                    `;
-                    postsList.appendChild(postDiv);
+        // Toggle pin
+        async function togglePin(postId) {
+            if (!userData || userData.role !== 'admin') return;
+            const post = sectionPosts.find(p => p.id === postId);
+            if (!post) return;
+            post.pinned = !post.pinned;
+            showLoading(true);
+            try {
+                const response = await fetch(`${API_URL}/posts/${currentSection}/${postId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pinned: post.pinned })
                 });
-                localData.posts[currentSection] = sectionPosts;
-                saveLocal();
+                if (response.ok) {
+                    if (currentThread) {
+                        renderThread();
+                    } else {
+                        renderThreads();
+                    }
+                    updateSectionStats();
+                    showToast('პინის სტატუსი შეცვლილია');
+                } else {
+                    showToast('შეცდომა პინში', 'error');
+                }
+            } catch (error) {
+                showToast('შეცდომა პინში', 'error');
             }
+            showLoading(false);
         }
 
-        async function handleNewPost(e) {
+        // Toggle like
+        async function toggleLike(postId) {
+            if (!currentUser) return showToast('ლაიქისთვის შესვლა საჭიროა', 'error');
+            const post = sectionPosts.find(p => p.id === postId);
+            if (!post) return;
+            const index = post.likes.indexOf(currentUser);
+            if (index > -1) {
+                post.likes.splice(index, 1);
+            } else {
+                post.likes.push(currentUser);
+            }
+            showLoading(true);
+            try {
+                const response = await fetch(`${API_URL}/posts/${currentSection}/${postId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ likes: post.likes })
+                });
+                if (response.ok) {
+                    if (currentThread) {
+                        renderThread();
+                    } else {
+                        renderThreads();
+                    }
+                    showToast('ლაიქი განახლებულია');
+                } else {
+                    showToast('შეცდომა ლაიქში', 'error');
+                }
+            } catch (error) {
+                showToast('შეცდომა ლაიქში', 'error');
+            }
+            showLoading(false);
+        }
+
+        // Handle new thread
+        async function handleNewThread(e) {
             e.preventDefault();
-            if (!currentUser) {
-                alert('პოსტის დასამატებლად შეხვლა საჭიროა');
-                return;
+            if (!currentUser) return showToast('თრედის შექმნისთვის შესვლა საჭიროა', 'error');
+            const title = document.getElementById('threadTitleInput').value.trim();
+            const content = document.getElementById('threadContent').value.trim();
+            if (!title || !content) return showToast('შეავსეთ სათაური და კონტენტი', 'error');
+            const post = {
+                title,
+                content,
+                author: currentUser,
+                avatar: userData.profile.avatar || '',
+                badges: [...userData.badges],
+                pinned: false,
+                likes: [],
+                parentId: null
+            };
+            showLoading(true);
+            try {
+                const response = await fetch(`${API_URL}/posts/${currentSection}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(post)
+                });
+                if (response.ok) {
+                    closeModal('newThreadModal');
+                    await renderThreads();
+                    updateSectionStats();
+                    showToast('თრედი შექმნილია');
+                } else {
+                    showToast('შეცდომა თრედის შექმნაში', 'error');
+                }
+            } catch (error) {
+                showToast('შეცდომა თრედის შექმნაში', 'error');
             }
-            const content = document.getElementById('postContent').value.trim();
-            if (!content) return;
-            const post = { author: currentUser, content, time: Date.now(), pinned: false };
-            const response = await fetch(`${API_URL}/posts/${currentSection}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(post)
-            });
-            if (response.ok) {
-                await renderPosts();
-                updateSectionStats();
-                e.target.reset();
-            } else {
-                alert('Error adding post');
-            }
+            showLoading(false);
+            e.target.reset();
         }
 
-        window.togglePin = async function(section, index) {
-            let sectionPosts = localData.posts[section] || [];
-            sectionPosts[index].pinned = !sectionPosts[index].pinned;
-            const response = await fetch(`${API_URL}/posts/${section}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(sectionPosts[index])
-            });
-            if (response.ok) {
-                await renderPosts();
-            } else {
-                alert('Error pinning');
+        // Handle new reply
+        async function handleNewReply(e) {
+            e.preventDefault();
+            if (!currentUser) return showToast('პასუხისთვის შესვლა საჭიროა', 'error');
+            const content = document.getElementById('replyContent').value.trim();
+            if (!content) return showToast('შეავსეთ კონტენტი', 'error');
+            const post = {
+                content,
+                author: currentUser,
+                avatar: userData.profile.avatar || '',
+                badges: [...userData.badges],
+                pinned: false,
+                likes: [],
+                parentId: currentThread
+            };
+            showLoading(true);
+            try {
+                const response = await fetch(`${API_URL}/posts/${currentSection}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(post)
+                });
+                if (response.ok) {
+                    document.getElementById('replyContent').value = '';
+                    await renderThread();
+                    updateSectionStats();
+                    showToast('პასუხი გაგზავნილია');
+                } else {
+                    showToast('შეცდომა პასუხის გაგზავნაში', 'error');
+                }
+            } catch (error) {
+                showToast('შეცდომა პასუხის გაგზავნაში', 'error');
             }
+            showLoading(false);
         }
 
-        function backToForumFromSection() {
-            document.getElementById('sectionView').style.display = 'none';
-            document.getElementById('forumView').style.display = 'block';
-            currentSection = null;
-        }
-
+        // Show profile
         async function showProfile() {
-            if (!currentUser) return;
-            const response = await fetch(`${API_URL}/users/${currentUser}`);
-            if (response.ok) {
-                userData = await response.json();
-            }
+            await refreshUserData();
+            if (!userData) return;
             document.getElementById('forumView').style.display = 'none';
             document.getElementById('sectionView').style.display = 'none';
+            document.getElementById('threadView').style.display = 'none';
             document.getElementById('profileView').style.display = 'block';
 
-            const avatarStyle = userData.profile.avatar ? `background-image: url(${userData.profile.avatar}); background-color: transparent;` : '';
-            const avatarText = userData.profile.avatar ? '' : currentUser[0].toUpperCase();
+            const avatarStyle = userData.profile.avatar ? `background-image: url(${userData.profile.avatar});` : '';
             document.getElementById('profileAvatarLarge').style.cssText = avatarStyle;
-            document.getElementById('profileAvatarLarge').textContent = avatarText;
 
             document.getElementById('profileUsername').textContent = currentUser;
-            document.getElementById('profileBadges').innerHTML = userData.badges.map(b => `<span class="badge badge-${b}">${b === 'admin' ? 'ადმინი' : b === 'tech' ? 'ტექ. ადმინი' : 'მოთამაშე'}</span>`).join('');
+            document.getElementById('profileBadges').innerHTML = userData.badges.map(b => `<span class="badge badge-${b}" title="${b === 'admin' ? 'ადმინისტრატორი' : b === 'tech' ? 'ტექნიკური ადმინი' : 'მოთამაშე'}">${b === 'admin' ? 'ადმინი' : b === 'tech' ? 'ტექ. ადმინი' : 'მოთამაშე'}</span>`).join('');
 
             document.getElementById('displayName').textContent = userData.profile.name || '-';
             document.getElementById('displayEmail').textContent = userData.profile.email || '-';
@@ -1220,11 +1487,107 @@
             document.getElementById('adminTab').style.display = userData.role === 'admin' ? 'block' : 'none';
         }
 
+        // Handle profile update with proper avatar handling
+        async function handleProfileUpdate(e) {
+            e.preventDefault();
+            if (!currentUser) return;
+            const avatarInput = document.getElementById('editAvatar');
+            let avatarPromise = Promise.resolve(userData.profile.avatar);
+            if (avatarInput.files && avatarInput.files[0]) {
+                avatarPromise = new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (ev) => resolve(ev.target.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(avatarInput.files[0]);
+                });
+            }
+            userData.profile.name = document.getElementById('editName').value.trim();
+            userData.profile.email = document.getElementById('editEmail').value.trim();
+            userData.profile.phone = document.getElementById('editPhone').value.trim();
+            userData.profile.bio = document.getElementById('editBio').value.trim();
+            showLoading(true);
+            try {
+                userData.profile.avatar = await avatarPromise;
+                const response = await fetch(`${API_URL}/users/${currentUser}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(userData)
+                });
+                if (response.ok) {
+                    updateUI();
+                    showProfile();
+                    showToast('პროფილი განახლებულია');
+                } else {
+                    showToast('შეცდომა პროფილის განახლებაში', 'error');
+                }
+            } catch (error) {
+                showToast('შეცდომა პროფილის განახლებაში', 'error');
+            }
+            showLoading(false);
+        }
+
+        // Assign badge
+        async function assignBadge() {
+            if (!userData || userData.role !== 'admin') return showToast('მხოლოდ ადმინებს შეუძლიათ', 'error');
+            const username = document.getElementById('badgeUsername').value.trim();
+            const badgeType = document.getElementById('badgeType').value;
+            if (!username) return showToast('შეიყვანეთ მომხმარებელი', 'error');
+            showLoading(true);
+            try {
+                const response = await fetch(`${API_URL}/users/${username}`);
+                if (response.ok) {
+                    const targetUser = await response.json();
+                    if (!targetUser.badges.includes(badgeType)) {
+                        targetUser.badges.push(badgeType);
+                        if (badgeType === 'admin') targetUser.role = 'admin';
+                        const updateResponse = await fetch(`${API_URL}/users/${username}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(targetUser)
+                        });
+                        if (updateResponse.ok) {
+                            showToast(`ბეჯი მინიჭებულია`);
+                            if (username === currentUser) {
+                                userData = targetUser;
+                                updateUI();
+                            }
+                        } else {
+                            showToast('შეცდომა განახლებაში', 'error');
+                        }
+                    } else {
+                        showToast('უკვე აქვს ეს ბეჯი', 'error');
+                    }
+                } else {
+                    showToast('მომხმარებელი არ მოიძებნა', 'error');
+                }
+            } catch (error) {
+                showToast('შეცდომა ბეჯის მინიჭებაში', 'error');
+            }
+            showLoading(false);
+            document.getElementById('badgeUsername').value = '';
+        }
+
+        // Navigation functions
         function backToForum() {
             document.getElementById('profileView').style.display = 'none';
             document.getElementById('forumView').style.display = 'block';
         }
 
+        function backToForumFromSection() {
+            document.getElementById('sectionView').style.display = 'none';
+            document.getElementById('forumView').style.display = 'block';
+            clearInterval(refreshInterval);
+            currentSection = null;
+        }
+
+        function backToSectionFromThread() {
+            document.getElementById('threadView').style.display = 'none';
+            document.getElementById('sectionView').style.display = 'block';
+            currentThread = null;
+            renderThreads();
+        }
+
+        // Switch tabs in profile
         function switchTab(tabName) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -1232,104 +1595,60 @@
             document.getElementById(tabName + 'Tab').classList.add('active');
         }
 
-        async function handleProfileUpdate(e) {
-            e.preventDefault();
-            if (!currentUser) return;
-            const avatarInput = document.getElementById('editAvatar');
-            if (avatarInput.files && avatarInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = async function(ev) {
-                    userData.profile.avatar = ev.target.result;
-                    await saveUser();
-                    updateUI();
-                    showProfile();
-                };
-                reader.readAsDataURL(avatarInput.files[0]);
-            }
-            userData.profile.name = document.getElementById('editName').value;
-            userData.profile.email = document.getElementById('editEmail').value;
-            userData.profile.phone = document.getElementById('editPhone').value;
-            userData.profile.bio = document.getElementById('editBio').value;
-            await saveUser();
-
-            document.getElementById('displayName').textContent = userData.profile.name || '-';
-            document.getElementById('displayEmail').textContent = userData.profile.email || '-';
-            document.getElementById('displayPhone').textContent = userData.profile.phone || '-';
-            document.getElementById('displayBio').textContent = userData.profile.bio || '-';
-
-            switchTabProgrammatic('info');
-            alert('პროფილი განახლდა!');
+        // Show login/register
+        function showLogin() {
+            document.getElementById('loginModal').classList.add('active');
         }
 
-        async function saveUser() {
-            const response = await fetch(`${API_URL}/users/${currentUser}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(userData)
-            });
-            if (response.ok) {
-                localData.user = userData;
-                saveLocal();
-            } else {
-                alert('Error saving profile');
-            }
+        function showRegister() {
+            document.getElementById('registerModal').classList.add('active');
         }
 
-        function switchTabProgrammatic(tabName) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            const tabs = document.querySelectorAll('.tab');
-            tabs[tabName === 'info' ? 0 : tabName === 'edit' ? 1 : 2].classList.add('active');
-            document.getElementById(tabName + 'Tab').classList.add('active');
+        function showNewThreadModal() {
+            document.getElementById('newThreadModal').classList.add('active');
         }
 
-        async function assignBadge() {
-            if (!currentUser || userData.role !== 'admin') {
-                alert('მხოლოდ ადმინებს შეუძლიათ ბეჯების მინიჭება');
-                return;
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', async () => {
+            await updateSectionStats();
+            updateSectionAccess();
+            if (localData.user) {
+                currentUser = localData.user.username;
+                await refreshUserData();
+                if (userData) updateUI();
+                else logout(); // If user not found on server, logout
             }
-            const username = document.getElementById('badgeUsername').value;
-            const badgeType = document.getElementById('badgeType').value;
-            const response = await fetch(`${API_URL}/users/${username}`);
-            if (response.ok) {
-                const targetUser = await response.json();
-                if (!targetUser.badges.includes(badgeType)) {
-                    targetUser.badges.push(badgeType);
-                    if (badgeType === 'admin') targetUser.role = 'admin';
-                    const updateResponse = await fetch(`${API_URL}/users/${username}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(targetUser)
-                    });
-                    if (updateResponse.ok) {
-                        alert(`ბეჯი "${badgeType}" მინიჭებულია!`);
-                        if (username === currentUser) {
-                            userData = targetUser;
-                            localData.user = userData;
-                            saveLocal();
-                            updateUI();
-                        }
-                    } else {
-                        alert('Error updating');
+
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            document.getElementById('registerForm').addEventListener('submit', handleRegister);
+            document.getElementById('verifyForm').addEventListener('submit', handleVerify);
+            document.getElementById('profileEditForm').addEventListener('submit', handleProfileUpdate);
+            document.getElementById('newThreadForm').addEventListener('submit', handleNewThread);
+            document.getElementById('newReplyForm').addEventListener('submit', handleNewReply);
+
+            document.querySelectorAll('.section').forEach(section => {
+                section.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    if (section.classList.contains('locked') && !(userData && userData.role === 'admin')) {
+                        showToast('წვდომა შეზღუდულია');
+                        return;
                     }
-                } else {
-                    alert('უკვე აქვს ეს ბეჯი');
-                }
-            } else {
-                alert('მომხმარებელი არ მოიძებნა');
-            }
-            document.getElementById('badgeUsername').value = '';
-        }
-
-        function saveLocal() {
-            localStorage.setItem(storageKey, JSON.stringify(localData));
-        }
+                    currentSection = section.dataset.section;
+                    document.getElementById('forumView').style.display = 'none';
+                    document.getElementById('sectionView').style.display = 'block';
+                    document.getElementById('sectionTitle').textContent = section.querySelector('.sec-title').textContent;
+                    updateBreadcrumbs('section');
+                    await renderThreads();
+                    // Near real-time update
+                    clearInterval(refreshInterval);
+                    refreshInterval = setInterval(renderThreads, 30000); // Every 30s
+                });
+            });
+        });
 
         window.onclick = (event) => {
-            if (event.target.classList.contains('modal')) {
-                event.target.classList.remove('active');
-            }
+            if (event.target.classList.contains('modal')) closeModal(event.target.id);
         };
     </script>
 </body>
-</html>
+    </html>
