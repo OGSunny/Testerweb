@@ -138,21 +138,6 @@
             box-shadow: var(--glow-red);
         }
 
-        .badge-admin {
-            background: linear-gradient(135deg, var(--admin-badge), #cc6600);
-            color: #000;
-        }
-
-        .badge-tech {
-            background: linear-gradient(135deg, var(--tech-badge), #0066cc);
-            color: white;
-        }
-
-        .badge-player {
-            background: linear-gradient(135deg, var(--player-badge), #333333);
-            color: var(--text-muted);
-        }
-
         .btn {
             padding: 0.6rem 1.5rem;
             border: none;
@@ -687,21 +672,21 @@
             <div class="categories">
                 <div class="cat">
                     <div class="cat-header"><i class="fas fa-gavel"></i> სერვერის ინფორმაცია</div>
-                    <a href="#" class="section locked" data-section="rules" data-restricted="true">
+                    <a href="#" class="section" data-section="rules" data-view-only="true">
                         <div class="sec-info">
                             <i class="fas fa-book"></i>
                             <div class="sec-title">სერვერის წესები</div>
                         </div>
                         <div class="sec-stats">0</div>
                     </a>
-                    <a href="#" class="section locked" data-section="news" data-restricted="true">
+                    <a href="#" class="section" data-section="news" data-view-only="true">
                         <div class="sec-info">
                             <i class="fas fa-bullhorn"></i>
                             <div class="sec-title">სიახლეები</div>
                         </div>
                         <div class="sec-stats">0</div>
                     </a>
-                    <a href="#" class="section locked" data-section="updates" data-restricted="true">
+                    <a href="#" class="section" data-section="updates" data-view-only="true">
                         <div class="sec-info">
                             <i class="fas fa-sync"></i>
                             <div class="sec-title">განახლებები</div>
@@ -899,20 +884,47 @@
                     </form>
                 </div>
                 <div id="adminTab" class="tab-content">
-                    <h3 style="margin-bottom: 1rem;">ბეჯების მინიჭება</h3>
-                    <div class="form-group">
-                        <label>მომხმარებელი</label>
-                        <input type="text" id="badgeUsername" placeholder="Username">
+                    <h3 style="margin-bottom: 1rem;">ბეჯების მართვა</h3>
+                    
+                    <!-- Add Badge -->
+                    <div style="background: var(--dark); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                        <h4 style="margin-bottom: 1rem; color: var(--primary);">ბეჯის დამატება</h4>
+                        <div class="form-group">
+                            <label>მომხმარებელი</label>
+                            <input type="text" id="badgeUsername" placeholder="Username">
+                        </div>
+                        <div class="form-group">
+                            <label>ბეჯის სახელი (ახალი ან არსებული)</label>
+                            <input type="text" id="customBadgeName" placeholder="მაგ: VIP, Moderator, Helper">
+                        </div>
+                        <div class="form-group">
+                            <label>ან აირჩიეთ არსებული</label>
+                            <select id="badgeType" onchange="document.getElementById('customBadgeName').value = this.value">
+                                <option value="">-- აირჩიეთ --</option>
+                                <option value="admin">ადმინი</option>
+                                <option value="tech">ტექ. ადმინი</option>
+                                <option value="player">მოთამაშე</option>
+                                <option value="vip">VIP</option>
+                                <option value="moderator">მოდერატორი</option>
+                                <option value="helper">დამხმარე</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" onclick="assignBadge()">ბეჯის დამატება</button>
                     </div>
-                    <div class="form-group">
-                        <label>ბეჯი</label>
-                        <select id="badgeType">
-                            <option value="admin">ადმინი</option>
-                            <option value="tech">ტექ. ადმინი</option>
-                            <option value="player">მოთამაშე</option>
-                        </select>
+                    
+                    <!-- Remove Badge -->
+                    <div style="background: var(--dark); padding: 1.5rem; border-radius: 8px;">
+                        <h4 style="margin-bottom: 1rem; color: var(--danger);">ბეჯის წაშლა</h4>
+                        <div class="form-group">
+                            <label>მომხმარებელი</label>
+                            <input type="text" id="removeBadgeUsername" placeholder="Username">
+                        </div>
+                        <div class="form-group">
+                            <label>ბეჯის სახელი</label>
+                            <input type="text" id="removeBadgeName" placeholder="წასაშლელი ბეჯი">
+                        </div>
+                        <button class="btn btn-secondary" style="background: var(--danger);" onclick="removeBadge()">ბეჯის წაშლა</button>
                     </div>
-                    <button class="btn btn-primary" onclick="assignBadge()">ბეჯის მინიჭება</button>
                 </div>
                 <button class="btn btn-secondary" onclick="backToForum()" style="margin-top: 2rem;">
                     <i class="fas fa-arrow-left"></i> უკან ფორუმზე
@@ -1053,6 +1065,47 @@
             localStorage.setItem(storageKey, JSON.stringify(localData));
         }
 
+        function getBadgeColor(badgeName) {
+            const colors = {
+                'admin': 'linear-gradient(135deg, #ff9900, #cc6600)',
+                'tech': 'linear-gradient(135deg, #0099ff, #0066cc)',
+                'player': 'linear-gradient(135deg, #666666, #333333)',
+                'vip': 'linear-gradient(135deg, #ffd700, #ffb700)',
+                'moderator': 'linear-gradient(135deg, #00ff00, #00cc00)',
+                'helper': 'linear-gradient(135deg, #ff69b4, #ff1493)',
+                'developer': 'linear-gradient(135deg, #9b59b6, #8e44ad)',
+                'tester': 'linear-gradient(135deg, #3498db, #2980b9)'
+            };
+            
+            // If badge color not defined, generate one based on badge name
+            if (!colors[badgeName]) {
+                const hash = badgeName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+                const hue = hash % 360;
+                return `linear-gradient(135deg, hsl(${hue}, 70%, 50%), hsl(${hue}, 70%, 40%))`;
+            }
+            
+            return colors[badgeName];
+        }
+
+        function renderBadge(badgeName) {
+            const displayNames = {
+                'admin': 'ადმინი',
+                'tech': 'ტექ. ადმინი',
+                'player': 'მოთამაშე',
+                'vip': 'VIP',
+                'moderator': 'მოდერატორი',
+                'helper': 'დამხმარე',
+                'developer': 'დეველოპერი',
+                'tester': 'ტესტერი'
+            };
+            
+            const displayName = displayNames[badgeName] || badgeName.toUpperCase();
+            const color = getBadgeColor(badgeName);
+            const textColor = ['player'].includes(badgeName) ? 'var(--text-muted)' : '#fff';
+            
+            return `<span class="badge" style="background: ${color}; color: ${textColor};" title="${displayName}">${displayName}</span>`;
+        }
+
         function updateUI() {
             if (!userData) return;
             const avatarStyle = userData.profile.avatar ? `background-image: url(${userData.profile.avatar}); background-size: cover; background-position: center;` : 'background: linear-gradient(135deg, var(--primary), var(--secondary));';
@@ -1062,7 +1115,7 @@
                     <div class="user-avatar" style="${avatarStyle}">${avatarText}</div>
                     <span>${currentUser}</span>
                     <div class="user-badges">
-                        ${userData.badges.map(b => `<span class="badge badge-${b}" title="${b === 'admin' ? 'ადმინისტრატორი' : b === 'tech' ? 'ტექნიკური ადმინი' : 'მოთამაშე'}">${b === 'admin' ? 'ადმინი' : b === 'tech' ? 'ტექ. ადმინი' : 'მოთამაშე'}</span>`).join('')}
+                        ${userData.badges.map(b => renderBadge(b)).join('')}
                     </div>
                 </div>
                 <button class="btn btn-secondary" onclick="logout()">გასვლა</button>
@@ -1129,7 +1182,12 @@
                         <span>პასუხები: ${replyCount}</span>
                         <span>ბოლო აქტივობა: ${lastActivity}</span>
                     </div>
-                    ${userData?.role === 'admin' ? `<button class="btn btn-secondary" onclick="togglePin('${thread.id}')">${thread.pinned ? 'განპინება' : 'პინ'}</button>` : ''}
+                    ${userData?.role === 'admin' ? `
+                        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                            <button class="btn btn-secondary" onclick="togglePin('${thread.id}')">${thread.pinned ? 'განპინება' : 'პინ'}</button>
+                            <button class="btn btn-secondary" style="background: var(--danger);" onclick="deleteThread('${thread.id}')">წაშლა</button>
+                        </div>
+                    ` : ''}
                 `;
                 threadDiv.addEventListener('click', (e) => {
                     if (e.target.tagName === 'BUTTON') {
@@ -1173,7 +1231,7 @@
                     <div class="user-avatar" style="${avatarStyle}">${avatarText}</div>
                     <span class="post-author">${post.author}</span>
                     <div class="user-badges">
-                        ${post.badges.map(b => `<span class="badge badge-${b}" title="${b === 'admin' ? 'ადმინისტრატორი' : b === 'tech' ? 'ტექნიკური ადმინი' : 'მოთამაშე'}">${b === 'admin' ? 'ადმინი' : b === 'tech' ? 'ტექ. ადმინი' : 'მოთამაშე'}</span>`).join('')}
+                        ${post.badges.map(b => renderBadge(b)).join('')}
                     </div>
                     <span class="post-time">${formatTime(post.time)}</span>
                 </div>
@@ -1380,6 +1438,34 @@
             showLoading(false);
         }
 
+        async function deleteThread(threadId) {
+            if (!userData || userData.role !== 'admin') return;
+            if (!confirm('ნამდვილად გსურთ ამ თრედის წაშლა? ეს მოქმედება შეუქცევადია.')) return;
+            
+            showLoading(true);
+            await fetchPosts();
+            
+            try {
+                const response = await fetch(`${API_URL}/posts/${currentSection}/delete`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ threadId })
+                });
+                
+                if (response.ok) {
+                    await fetchPosts();
+                    await renderThreads();
+                    await updateSectionStats();
+                    showToast('თრედი წაშლილია');
+                } else {
+                    showToast('შეცდომა წაშლაში', 'error');
+                }
+            } catch (error) {
+                showToast('შეცდომა წაშლაში', 'error');
+            }
+            showLoading(false);
+        }
+
         async function toggleLike(postId) {
             if (!currentUser) return showToast('ლაიქისთვის შესვლა საჭიროა', 'error');
             await fetchPosts();
@@ -1520,7 +1606,7 @@
             document.getElementById('profileAvatarLarge').textContent = avatarText;
 
             document.getElementById('profileUsername').textContent = currentUser;
-            document.getElementById('profileBadges').innerHTML = userData.badges.map(b => `<span class="badge badge-${b}" title="${b === 'admin' ? 'ადმინისტრატორი' : b === 'tech' ? 'ტექნიკური ადმინი' : 'მოთამაშე'}">${b === 'admin' ? 'ადმინი' : b === 'tech' ? 'ტექ. ადმინი' : 'მოთამაშე'}</span>`).join('');
+            document.getElementById('profileBadges').innerHTML = userData.badges.map(b => renderBadge(b)).join('');
 
             document.getElementById('displayName').textContent = userData.profile.name || '-';
             document.getElementById('displayEmail').textContent = userData.profile.email || '-';
@@ -1590,23 +1676,31 @@
         async function assignBadge() {
             if (!userData || userData.role !== 'admin') return showToast('მხოლოდ ადმინებს შეუძლიათ', 'error');
             const username = document.getElementById('badgeUsername').value.trim();
-            const badgeType = document.getElementById('badgeType').value;
-            if (!username) return showToast('შეიყვანეთ მომხმარებელი', 'error');
+            const customBadge = document.getElementById('customBadgeName').value.trim().toLowerCase();
+            
+            if (!username || !customBadge) return showToast('შეავსეთ ყველა ველი', 'error');
+            
             showLoading(true);
             try {
                 const response = await fetch(`${API_URL}/users/${username}`);
                 if (response.ok) {
                     const targetUser = await response.json();
-                    if (!targetUser.badges.includes(badgeType)) {
-                        targetUser.badges.push(badgeType);
-                        if (badgeType === 'admin') targetUser.role = 'admin';
+                    if (!targetUser.badges.includes(customBadge)) {
+                        targetUser.badges.push(customBadge);
+                        if (customBadge === 'admin') targetUser.role = 'admin';
+                        
                         const updateResponse = await fetch(`${API_URL}/users/${username}`, {
                             method: 'PUT',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(targetUser)
                         });
+                        
                         if (updateResponse.ok) {
-                            showToast(`ბეჯი მინიჭებულია`);
+                            showToast(`ბეჯი "${customBadge}" მინიჭებულია`);
+                            document.getElementById('badgeUsername').value = '';
+                            document.getElementById('customBadgeName').value = '';
+                            document.getElementById('badgeType').value = '';
+                            
                             if (username === currentUser) {
                                 userData = targetUser;
                                 localData.user = userData;
@@ -1626,7 +1720,59 @@
                 showToast('შეცდომა ბეჯის მინიჭებაში', 'error');
             }
             showLoading(false);
-            document.getElementById('badgeUsername').value = '';
+        }
+
+        async function removeBadge() {
+            if (!userData || userData.role !== 'admin') return showToast('მხოლოდ ადმინებს შეუძლიათ', 'error');
+            const username = document.getElementById('removeBadgeUsername').value.trim();
+            const badgeName = document.getElementById('removeBadgeName').value.trim().toLowerCase();
+            
+            if (!username || !badgeName) return showToast('შეავსეთ ყველა ველი', 'error');
+            if (!confirm(`ნამდვილად გსურთ "${badgeName}" ბეჯის წაშლა?`)) return;
+            
+            showLoading(true);
+            try {
+                const response = await fetch(`${API_URL}/users/${username}`);
+                if (response.ok) {
+                    const targetUser = await response.json();
+                    const index = targetUser.badges.indexOf(badgeName);
+                    
+                    if (index > -1) {
+                        targetUser.badges.splice(index, 1);
+                        if (badgeName === 'admin' && targetUser.role === 'admin') {
+                            targetUser.role = 'player';
+                        }
+                        
+                        const updateResponse = await fetch(`${API_URL}/users/${username}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(targetUser)
+                        });
+                        
+                        if (updateResponse.ok) {
+                            showToast(`ბეჯი "${badgeName}" წაშლილია`);
+                            document.getElementById('removeBadgeUsername').value = '';
+                            document.getElementById('removeBadgeName').value = '';
+                            
+                            if (username === currentUser) {
+                                userData = targetUser;
+                                localData.user = userData;
+                                saveLocal();
+                                updateUI();
+                            }
+                        } else {
+                            showToast('შეცდომა განახლებაში', 'error');
+                        }
+                    } else {
+                        showToast('ეს ბეჯი არ არსებობს', 'error');
+                    }
+                } else {
+                    showToast('მომხმარებელი არ მოიძებნა', 'error');
+                }
+            } catch (error) {
+                showToast('შეცდომა ბეჯის წაშლაში', 'error');
+            }
+            showLoading(false);
         }
 
         function backToForum() {
@@ -1666,6 +1812,13 @@
         }
 
         function showNewThreadModal() {
+            const section = document.querySelector(`.section[data-section="${currentSection}"]`);
+            const isViewOnly = section?.dataset.viewOnly === 'true';
+            
+            if (isViewOnly && (!userData || userData.role !== 'admin')) {
+                showToast('მხოლოდ ადმინებს შეუძლიათ პოსტის დამატება', 'error');
+                return;
+            }
             document.getElementById('newThreadModal').classList.add('active');
         }
 
@@ -1689,16 +1842,23 @@
             document.querySelectorAll('.section').forEach(section => {
                 section.addEventListener('click', async (e) => {
                     e.preventDefault();
-                    if (section.classList.contains('locked') && !(userData && userData.role === 'admin')) {
-                        showToast('წვდომა შეზღუდულია');
-                        return;
-                    }
+                    const isViewOnly = section.dataset.viewOnly === 'true';
+                    
                     currentSection = section.dataset.section;
                     document.getElementById('forumView').style.display = 'none';
                     document.getElementById('sectionView').style.display = 'block';
                     document.getElementById('sectionTitle').textContent = section.querySelector('.sec-title').textContent;
                     updateBreadcrumbs('section');
                     await renderThreads();
+                    
+                    // Hide "New Thread" button for view-only sections if not admin
+                    const newThreadBtn = document.querySelector('#sectionView .btn-primary');
+                    if (isViewOnly && (!userData || userData.role !== 'admin')) {
+                        newThreadBtn.style.display = 'none';
+                    } else {
+                        newThreadBtn.style.display = 'block';
+                    }
+                    
                     clearInterval(refreshInterval);
                     refreshInterval = setInterval(renderThreads, 30000);
                 });
