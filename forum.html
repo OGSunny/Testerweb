@@ -14,37 +14,37 @@
         }
 
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary: #8b5cf6;
-            --dark: #0f172a;
-            --dark-light: #1e293b;
-            --dark-lighter: #334155;
-            --text: #e2e8f0;
-            --text-muted: #94a3b8;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --admin-badge: #f59e0b;
-            --tech-badge: #3b82f6;
+            --primary: #ff0000;
+            --primary-dark: #cc0000;
+            --secondary: #b30000;
+            --dark: #000000;
+            --dark-light: #111111;
+            --dark-lighter: #222222;
+            --text: #ffffff;
+            --text-muted: #aaaaaa;
+            --success: #00ff00;
+            --warning: #ffff00;
+            --danger: #ff0000;
+            --admin-badge: #ff9900;
+            --tech-badge: #0099ff;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%), url('https://raw.githubusercontent.com/OGSunny/Testerweb/main/lv_0_20251120194047.jpg') center/cover no-repeat;
-            background-blend-mode: overlay;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 100%);
             color: var(--text);
             min-height: 100vh;
         }
 
         .navbar {
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--dark-lighter);
             padding: 1rem 0;
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
 
         .nav-content {
@@ -65,12 +65,13 @@
             background-clip: text;
             display: flex;
             align-items: center;
+            gap: 0.5rem;
         }
 
         .logo img {
-            height: 30px;
-            margin-left: 0.5rem;
+            height: 40px;
             border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary);
         }
 
         .nav-actions {
@@ -87,11 +88,13 @@
             background: var(--dark-light);
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(255, 0, 0, 0.2);
         }
 
         .user-info:hover {
             background: var(--dark-lighter);
+            transform: scale(1.02);
         }
 
         .user-avatar {
@@ -103,6 +106,9 @@
             align-items: center;
             justify-content: center;
             font-weight: 600;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 0 5px var(--primary);
         }
 
         .user-badges {
@@ -116,27 +122,28 @@
             font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            transition: transform 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .badge:hover {
-            transform: scale(1.05);
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(255,0,0,0.3);
         }
 
         .badge-admin {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: #fff;
+            background: linear-gradient(135deg, #ff9900, #cc6600);
+            color: #000;
         }
 
         .badge-tech {
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            background: linear-gradient(135deg, #0099ff, #0066cc);
             color: white;
         }
 
         .badge-player {
-            background: linear-gradient(135deg, #334155, #1e293b);
-            color: var(--text);
+            background: linear-gradient(135deg, #222222, #111111);
+            color: var(--text-muted);
         }
 
         .btn {
@@ -145,8 +152,9 @@
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             font-size: 0.95rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         .btn-primary {
@@ -156,7 +164,7 @@
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 10px 25px rgba(255, 0, 0, 0.4);
         }
 
         .btn-secondary {
@@ -166,6 +174,7 @@
 
         .btn-secondary:hover {
             background: var(--dark-lighter);
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.2);
         }
 
         .container {
@@ -181,22 +190,24 @@
         }
 
         .cat {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(10px);
+            background: rgba(17, 17, 17, 0.8);
+            backdrop-filter: blur(20px);
             border-radius: 16px;
             overflow: hidden;
             border: 1px solid var(--dark-lighter);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
         .cat-header {
             padding: 1.2rem 1.5rem;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.1), rgba(179, 0, 0, 0.1));
             border-bottom: 1px solid var(--dark-lighter);
             font-weight: 700;
             font-size: 1.1rem;
             display: flex;
             align-items: center;
             gap: 0.75rem;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
 
         .cat-header i {
@@ -208,10 +219,10 @@
             justify-content: space-between;
             align-items: center;
             padding: 1.2rem 1.5rem;
-            border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+            border-bottom: 1px solid rgba(34, 34, 34, 0.5);
             text-decoration: none;
             color: var(--text);
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             position: relative;
         }
 
@@ -220,8 +231,9 @@
         }
 
         .section:hover {
-            background: rgba(99, 102, 241, 0.1);
+            background: rgba(255, 0, 0, 0.05);
             padding-left: 2rem;
+            box-shadow: inset 0 0 10px rgba(255,0,0,0.1);
         }
 
         .section.locked {
@@ -264,6 +276,7 @@
             color: var(--text-muted);
             min-width: 50px;
             text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
 
         .posts-container {
@@ -278,11 +291,13 @@
             padding: 1.2rem;
             border-radius: 12px;
             border: 1px solid var(--dark-lighter);
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
         .post:hover {
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 6px 20px rgba(255,0,0,0.2);
+            transform: translateY(-2px);
         }
 
         .post-header {
@@ -319,7 +334,7 @@
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
 
         .post-actions button:hover {
@@ -329,7 +344,7 @@
 
         .pinned {
             border: 2px solid var(--success);
-            background: rgba(16, 185, 129, 0.1);
+            background: rgba(0, 255, 0, 0.05);
         }
 
         .pinned::before {
@@ -349,6 +364,12 @@
             color: var(--text);
             min-height: 100px;
             resize: vertical;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+        }
+
+        textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255,0,0,0.1);
         }
 
         /* Modal Styles */
@@ -378,6 +399,7 @@
             width: 90%;
             border: 1px solid var(--dark-lighter);
             animation: slideIn 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         @keyframes slideIn {
@@ -422,13 +444,14 @@
             border-radius: 8px;
             color: var(--text);
             font-size: 1rem;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
         }
 
         .form-group input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            box-shadow: 0 0 0 3px rgba(255,0,0,0.1);
         }
 
         .form-actions {
@@ -442,11 +465,12 @@
         }
 
         .profile-section {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(10px);
+            background: rgba(17, 17, 17, 0.8);
+            backdrop-filter: blur(20px);
             border-radius: 16px;
             padding: 2rem;
             border: 1px solid var(--dark-lighter);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
         .profile-header {
@@ -466,11 +490,15 @@
             justify-content: center;
             font-size: 2.5rem;
             font-weight: 700;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 0 15px var(--primary);
         }
 
         .profile-details h2 {
             font-size: 2rem;
             margin-bottom: 0.5rem;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
 
         .tabs {
@@ -485,9 +513,13 @@
             cursor: pointer;
             color: var(--text-muted);
             font-weight: 600;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             border-bottom: 3px solid transparent;
             margin-bottom: -2px;
+        }
+
+        .tab:hover {
+            color: var(--primary);
         }
 
         .tab.active {
@@ -513,6 +545,7 @@
             background: var(--dark);
             padding: 1rem;
             border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
 
         .info-label {
@@ -557,8 +590,8 @@
     <nav class="navbar">
         <div class="nav-content">
             <div class="logo">
-                <i class="fas fa-gamepad"></i> Zaratic Role Play
                 <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/lv_0_20251120194047.jpg" alt="Logo">
+                <span><i class="fas fa-gamepad"></i> Zaratic Role Play</span>
             </div>
             <div class="nav-actions" id="navActions">
                 <button class="btn btn-primary" onclick="showLogin()">შესვლა</button>
@@ -751,7 +784,7 @@
         <div id="profileView" style="display: none;">
             <div class="profile-section">
                 <div class="profile-header">
-                    <div class="profile-avatar-large" id="profileAvatarLarge">N</div>
+                    <div class="profile-avatar-large" id="profileAvatarLarge"></div>
                     <div class="profile-details">
                         <h2 id="profileUsername">Username</h2>
                         <div class="user-badges" id="profileBadges"></div>
@@ -787,6 +820,10 @@
 
                 <div id="editTab" class="tab-content">
                     <form id="profileEditForm">
+                        <div class="form-group">
+                            <label>ავატარი</label>
+                            <input type="file" id="editAvatar" accept="image/*">
+                        </div>
                         <div class="form-group">
                             <label>სახელი</label>
                             <input type="text" id="editName" placeholder="თქვენი სახელი">
@@ -901,25 +938,21 @@
     </div>
 
     <script>
-        // Register service worker for offline caching
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('worker.js').catch(err => console.error('Service Worker Error:', err));
         }
 
-        // Initialize EmailJS (replace with your EmailJS user ID)
-        emailjs.init('YOUR_EMAILJS_USER_ID'); // Get this from emailjs.com dashboard
+        emailjs.init('user_abcdef1234567890');
 
-        // LocalStorage data management
         const storageKey = 'zaraticForumData';
         let forumData = JSON.parse(localStorage.getItem(storageKey)) || { users: {}, posts: {} };
 
-        // Seed initial users if not present
         if (Object.keys(forumData.users).length === 0) {
             forumData.users = {
-                'Nikushaa': { password: 'admin123', role: 'admin', badges: ['admin'], profile: { name: 'Nikushaa', email: 'nikushaa@zaratic.ge', phone: '', bio: 'Server Administrator' }, verified: true },
-                'Zviooo': { password: 'admin123', role: 'admin', badges: ['admin'], profile: { name: 'Zviooo', email: 'zviooo@zaratic.ge', phone: '', bio: 'Server Administrator' }, verified: true }
+                'Nikushaa': { password: 'admin123', role: 'admin', badges: ['admin'], profile: { name: 'Nikushaa', email: 'nikushaa@zaratic.ge', phone: '', bio: 'Server Administrator', avatar: '' }, verified: true },
+                'Zviooo': { password: 'admin123', role: 'admin', badges: ['admin'], profile: { name: 'Zviooo', email: 'zviooo@zaratic.ge', phone: '', bio: 'Server Administrator', avatar: '' }, verified: true }
             };
-            forumData.posts = {}; // { sectionId: [{author, content, time, pinned}] }
+            forumData.posts = {};
             saveData();
         }
 
@@ -930,7 +963,6 @@
             localStorage.setItem(storageKey, JSON.stringify(forumData));
         }
 
-        // Update section stats (post counts)
         function updateSectionStats() {
             document.querySelectorAll('.section').forEach(sec => {
                 const sectionId = sec.dataset.section;
@@ -940,7 +972,6 @@
         }
         updateSectionStats();
 
-        // Initialize event listeners
         document.addEventListener('DOMContentLoaded', () => {
             updateSectionAccess();
             document.getElementById('loginForm').addEventListener('submit', handleLogin);
@@ -949,7 +980,6 @@
             document.getElementById('profileEditForm').addEventListener('submit', handleProfileUpdate);
             document.getElementById('newPostForm').addEventListener('submit', handleNewPost);
 
-            // Section click handlers
             document.querySelectorAll('.section').forEach(section => {
                 section.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -1004,16 +1034,13 @@
                 return;
             }
 
-            // Generate 6-digit code
             const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-            // Send verification email via EmailJS (replace service/template IDs)
-            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
+            emailjs.send('service_abcdef123', 'template_abcdef123', {
                 to_email: email,
                 to_name: username,
                 code: verifyCode
             }).then(() => {
-                // Store pending registration in sessionStorage
                 sessionStorage.setItem('pendingRegistration', JSON.stringify({ username, email, password, verifyCode }));
                 closeModal('registerModal');
                 document.getElementById('verifyModal').classList.add('active');
@@ -1032,7 +1059,7 @@
                     password: pending.password,
                     role: 'player',
                     badges: ['player'],
-                    profile: { name: pending.username, email: pending.email, phone: '', bio: '' },
+                    profile: { name: pending.username, email: pending.email, phone: '', bio: '', avatar: '' },
                     verified: true
                 };
                 saveData();
@@ -1048,9 +1075,11 @@
 
         function updateUI() {
             const user = forumData.users[currentUser];
+            const avatarStyle = user.profile.avatar ? `style="background-image: url(${user.profile.avatar}); background-color: transparent;"` : '';
+            const avatarText = user.profile.avatar ? '' : currentUser[0].toUpperCase();
             document.getElementById('navActions').innerHTML = `
                 <div class="user-info" onclick="showProfile()">
-                    <div class="user-avatar">${currentUser[0].toUpperCase()}</div>
+                    <div class="user-avatar" ${avatarStyle}>${avatarText}</div>
                     <span>${currentUser}</span>
                     <div class="user-badges">
                         ${user.badges.map(b => `<span class="badge badge-${b}">${b === 'admin' ? 'ადმინი' : b === 'tech' ? 'ტექ. ადმინი' : 'მოთამაშე'}</span>`).join('')}
@@ -1081,7 +1110,7 @@
         function renderPosts() {
             const postsList = document.getElementById('postsList');
             postsList.innerHTML = '';
-            const posts = (forumData.posts[currentSection] || []).sort((a, b) => b.pinned - a.pinned); // Pinned first
+            const posts = (forumData.posts[currentSection] || []).sort((a, b) => b.pinned - a.pinned);
             posts.forEach((post, index) => {
                 const postDiv = document.createElement('div');
                 postDiv.className = 'post' + (post.pinned ? ' pinned' : '');
@@ -1128,7 +1157,6 @@
             currentSection = null;
         }
 
-        // Existing profile functions (adapted to forumData)
         function showProfile() {
             if (!currentUser) return;
             const user = forumData.users[currentUser];
@@ -1136,7 +1164,11 @@
             document.getElementById('sectionView').style.display = 'none';
             document.getElementById('profileView').style.display = 'block';
 
-            document.getElementById('profileAvatarLarge').textContent = currentUser[0].toUpperCase();
+            const avatarStyle = user.profile.avatar ? `background-image: url(${user.profile.avatar}); background-color: transparent;` : '';
+            const avatarText = user.profile.avatar ? '' : currentUser[0].toUpperCase();
+            document.getElementById('profileAvatarLarge').style.cssText = avatarStyle;
+            document.getElementById('profileAvatarLarge').textContent = avatarText;
+
             document.getElementById('profileUsername').textContent = currentUser;
             document.getElementById('profileBadges').innerHTML = user.badges.map(b => `<span class="badge badge-${b}">${b === 'admin' ? 'ადმინი' : b === 'tech' ? 'ტექ. ადმინი' : 'მოთამაშე'}</span>`).join('');
 
@@ -1169,6 +1201,17 @@
             e.preventDefault();
             if (!currentUser) return;
             const user = forumData.users[currentUser];
+            const avatarInput = document.getElementById('editAvatar');
+            if (avatarInput.files && avatarInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    user.profile.avatar = ev.target.result;
+                    saveData();
+                    updateUI();
+                    showProfile();
+                };
+                reader.readAsDataURL(avatarInput.files[0]);
+            }
             user.profile.name = document.getElementById('editName').value;
             user.profile.email = document.getElementById('editEmail').value;
             user.profile.phone = document.getElementById('editPhone').value;
@@ -1215,7 +1258,6 @@
             document.getElementById('badgeUsername').value = '';
         }
 
-        // Close modals on outside click
         window.onclick = (event) => {
             if (event.target.classList.contains('modal')) {
                 event.target.classList.remove('active');
