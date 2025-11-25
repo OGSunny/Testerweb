@@ -330,6 +330,11 @@
         .post-author {
             font-weight: 600;
             color: var(--primary);
+            cursor: pointer;
+        }
+
+        .post-author:hover {
+            text-decoration: underline;
         }
 
         .post-time {
@@ -1219,44 +1224,34 @@
         }
 
         function getBadgeColor(badgeName) {
-            const colors = {
-                'admin': 'linear-gradient(135deg, #ff9900, #cc6600)',
-                'tech': 'linear-gradient(135deg, #0099ff, #0066cc)',
-                'player': 'linear-gradient(135deg, #666666, #333333)',
-                'vip': 'linear-gradient(135deg, #ffd700, #ffb700)',
-                'moderator': 'linear-gradient(135deg, #00ff00, #00cc00)',
-                'helper': 'linear-gradient(135deg, #ff69b4, #ff1493)',
-                'developer': 'linear-gradient(135deg, #9b59b6, #8e44ad)',
-                'tester': 'linear-gradient(135deg, #3498db, #2980b9)'
+            const predefinedColors = {
+                'admin': 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                'tech': 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+                'player': 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)',
+                'vip': 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
+                'moderator': 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                'helper': 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)'
             };
             
-            // If badge color not defined, generate one based on badge name
-            if (!colors[badgeName]) {
-                const hash = badgeName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-                const hue = hash % 360;
-                return `linear-gradient(135deg, hsl(${hue}, 70%, 50%), hsl(${hue}, 70%, 40%))`;
+            // Return predefined color if exists
+            if (predefinedColors[badgeName.toLowerCase()]) {
+                return predefinedColors[badgeName.toLowerCase()];
             }
             
-            return colors[badgeName];
+            // Generate color based on badge name hash
+            const hash = badgeName.split('').reduce((acc, char) => {
+                return acc + char.charCodeAt(0);
+            }, 0);
+            
+            const hue = hash % 360;
+            return `linear-gradient(135deg, hsl(${hue}, 70%, 50%), hsl(${hue}, 70%, 40%))`;
         }
 
         function renderBadge(badgeName) {
-            const displayNames = {
-                'admin': 'ადმინი',
-                'tech': 'ტექ. ადმინი',
-                'player': 'მოთამაშე',
-                'vip': 'VIP',
-                'moderator': 'მოდერატორი',
-                'helper': 'დამხმარე',
-                'developer': 'დეველოპერი',
-                'tester': 'ტესტერი'
-            };
+            const displayName = badgeName.toUpperCase();
+            const gradient = getBadgeColor(badgeName);
             
-            const displayName = displayNames[badgeName] || badgeName.toUpperCase();
-            const color = getBadgeColor(badgeName);
-            const textColor = ['player'].includes(badgeName) ? 'var(--text-muted)' : '#fff';
-            
-            return `<span class="badge" style="background: ${color}; color: ${textColor};" title="${displayName}">${displayName}</span>`;
+            return `<span class="badge" style="background: ${gradient};" title="${displayName}">${displayName}</span>`;
         }
 
         function updateUI() {
@@ -1382,7 +1377,8 @@
             postDiv.innerHTML = `
                 <div class="post-header">
                     <div class="user-avatar" style="${avatarStyle}">${avatarText}</div>
-                    <span class="post-author">${post.author}</span>
+                    <!-- Make username clickable -->
+                    <span class="post-author" onclick="viewUserProfile('${post.author}')">${post.author}</span>
                     <div class="user-badges">
                         ${post.badges.map(b => renderBadge(b)).join('')}
                     </div>
@@ -1844,47 +1840,55 @@
         }
 
         async function assignBadge() {
-            if (!userData || userData.role !== 'admin') return showToast('მხოლოდ ადმინებს შეუძლიათ', 'error');
-            const username = document.getElementById('badgeUsername').value.trim();
-            const customBadge = document.getElementById('customBadgeName').value.trim().toLowerCase();
+            if (!userData || userData.role !== 'admin') {
+                return showToast('მხოლოდ ადმინებს შეუძლიათ', 'error');
+            }
             
-            if (!username || !customBadge) return showToast('შეავსეთ ყველა ველი', 'error');
+            const username = document.getElementById('badgeUsername').value.trim();
+            const customBadge = document.getElementById('customBadgeName').value.trim() || 
+                                document.getElementById('badgeType').value;
+            
+            if (!username || !customBadge) {
+                return showToast('შეავსეთ ყველა ველი', 'error');
+            }
             
             showLoading(true);
             try {
+                // Get target user
                 const response = await fetch(`${API_URL}/users/${username}`);
-                if (response.ok) {
-                    const targetUser = await response.json();
-                    if (!targetUser.badges.includes(customBadge)) {
-                        targetUser.badges.push(customBadge);
-                        if (customBadge === 'admin') targetUser.role = 'admin';
-                        
-                        const updateResponse = await fetch(`${API_URL}/users/${username}`, {
-                            method: 'PUT',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(targetUser)
-                        });
-                        
-                        if (updateResponse.ok) {
-                            showToast(`ბეჯი "${customBadge}" მინიჭებულია`);
-                            document.getElementById('badgeUsername').value = '';
-                            document.getElementById('customBadgeName').value = '';
-                            document.getElementById('badgeType').value = '';
-                            
-                            if (username === currentUser) {
-                                userData = targetUser;
-                                localData.user = userData;
-                                saveLocal();
-                                updateUI();
-                            }
-                        } else {
-                            showToast('შეცდომა განახლებაში', 'error');
-                        }
-                    } else {
-                        showToast('უკვე აქვს ეს ბეჯი', 'error');
-                    }
-                } else {
+                if (!response.ok) {
                     showToast('მომხმარებელი არ მოიძებნა', 'error');
+                    return;
+                }
+                
+                const targetUser = await response.json();
+                
+                // Check if badge already exists
+                if (targetUser.badges.includes(customBadge)) {
+                    showToast('უკვე აქვს ეს ბეჯი', 'error');
+                    return;
+                }
+                
+                // Add badge
+                targetUser.badges.push(customBadge);
+                
+                // If admin badge, also update role
+                if (customBadge === 'admin') {
+                    targetUser.role = 'admin';
+                }
+                
+                // Update user in database
+                const updateResponse = await fetch(`${API_URL}/users/${username}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(targetUser)
+                });
+                
+                if (updateResponse.ok) {
+                    showToast(`ბეჯი "${customBadge}" მინიჭებულია`);
+                    document.getElementById('badgeUsername').value = '';
+                    document.getElementById('customBadgeName').value = '';
+                    document.getElementById('badgeType').value = '';
                 }
             } catch (error) {
                 showToast('შეცდომა ბეჯის მინიჭებაში', 'error');
@@ -1893,51 +1897,56 @@
         }
 
         async function removeBadge() {
-            if (!userData || userData.role !== 'admin') return showToast('მხოლოდ ადმინებს შეუძლიათ', 'error');
-            const username = document.getElementById('removeBadgeUsername').value.trim();
-            const badgeName = document.getElementById('removeBadgeName').value.trim().toLowerCase();
+            if (!userData || userData.role !== 'admin') {
+                return showToast('მხოლოდ ადმინებს შეუძლიათ', 'error');
+            }
             
-            if (!username || !badgeName) return showToast('შეავსეთ ყველა ველი', 'error');
-            if (!confirm(`ნამდვილად გსურთ "${badgeName}" ბეჯის წაშლა?`)) return;
+            const username = document.getElementById('removeBadgeUsername').value.trim();
+            const badgeName = document.getElementById('removeBadgeName').value.trim();
+            
+            if (!username || !badgeName) {
+                return showToast('შეავსეთ ყველა ველი', 'error');
+            }
+            
+            if (!confirm(`ნამდვილად გსურთ "${badgeName}" ბეჯის წაშლა?`)) {
+                return;
+            }
             
             showLoading(true);
             try {
                 const response = await fetch(`${API_URL}/users/${username}`);
-                if (response.ok) {
-                    const targetUser = await response.json();
-                    const index = targetUser.badges.indexOf(badgeName);
-                    
-                    if (index > -1) {
-                        targetUser.badges.splice(index, 1);
-                        if (badgeName === 'admin' && targetUser.role === 'admin') {
-                            targetUser.role = 'player';
-                        }
-                        
-                        const updateResponse = await fetch(`${API_URL}/users/${username}`, {
-                            method: 'PUT',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(targetUser)
-                        });
-                        
-                        if (updateResponse.ok) {
-                            showToast(`ბეჯი "${badgeName}" წაშლილია`);
-                            document.getElementById('removeBadgeUsername').value = '';
-                            document.getElementById('removeBadgeName').value = '';
-                            
-                            if (username === currentUser) {
-                                userData = targetUser;
-                                localData.user = userData;
-                                saveLocal();
-                                updateUI();
-                            }
-                        } else {
-                            showToast('შეცდომა განახლებაში', 'error');
-                        }
-                    } else {
-                        showToast('ეს ბეჯი არ არსებობს', 'error');
-                    }
-                } else {
+                if (!response.ok) {
                     showToast('მომხმარებელი არ მოიძებნა', 'error');
+                    return;
+                }
+                
+                const targetUser = await response.json();
+                const index = targetUser.badges.indexOf(badgeName);
+                
+                if (index === -1) {
+                    showToast('ეს ბეჯი არ არსებობს', 'error');
+                    return;
+                }
+                
+                // Remove badge
+                targetUser.badges.splice(index, 1);
+                
+                // If removing admin badge, downgrade role
+                if (badgeName === 'admin' && targetUser.role === 'admin') {
+                    targetUser.role = 'player';
+                }
+                
+                // Update user
+                const updateResponse = await fetch(`${API_URL}/users/${username}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(targetUser)
+                });
+                
+                if (updateResponse.ok) {
+                    showToast(`ბეჯი "${badgeName}" წაშლილია`);
+                    document.getElementById('removeBadgeUsername').value = '';
+                    document.getElementById('removeBadgeName').value = '';
                 }
             } catch (error) {
                 showToast('შეცდომა ბეჯის წაშლაში', 'error');
@@ -2030,6 +2039,41 @@
             showSlide(0);
         }
 
+        async function viewUserProfile(username) {
+            showLoading(true);
+            try {
+                const response = await fetch(`${API_URL}/users/${username}`);
+                if (response.ok) {
+                    const targetUserData = await response.json();
+                    displayUserProfile(targetUserData, username);
+                } else {
+                    showToast('მომხმარებელი არ მოიძებნა', 'error');
+                }
+            } catch (error) {
+                showToast('შეცდომა პროფილის ჩატვირთვაში', 'error');
+            }
+            showLoading(false);
+        }
+
+        function displayUserProfile(userData, username) {
+            // Hide other views
+            document.getElementById('forumView').style.display = 'none';
+            document.getElementById('sectionView').style.display = 'none';
+            document.getElementById('threadView').style.display = 'none';
+            document.getElementById('profileView').style.display = 'block';
+            
+            // Populate profile data
+            document.getElementById('profileUsername').textContent = username;
+            document.getElementById('profileBadges').innerHTML = userData.badges.map(b => renderBadge(b)).join('');
+            document.getElementById('displayName').textContent = userData.profile.name || '-';
+            document.getElementById('displayEmail').textContent = userData.profile.email || '-';
+            
+            // Hide edit tabs if viewing someone else's profile
+            const isOwnProfile = (username === currentUser);
+            document.getElementById('editTab').style.display = isOwnProfile ? 'block' : 'none';
+            document.querySelector('.tab[onclick*="edit"]').style.display = isOwnProfile ? 'block' : 'none';
+        }
+
         document.addEventListener('DOMContentLoaded', async () => {
             await updateSectionStats();
             updateSectionAccess();
@@ -2080,4 +2124,4 @@
         };
     </script>
 </body>
-    </html>
+</html>
