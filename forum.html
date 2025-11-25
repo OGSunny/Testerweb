@@ -1026,7 +1026,7 @@
         let sectionPosts = [];
         let refreshInterval = null;
         const storageKey = 'zaraticLocalData';
-        let localData = JSON.parse(localStorage.getItem(storageKey)) || { user: null, lastViewed: {} };
+        let localData = JSON.parse(localStorage.getItem(storageKey)) || { user: null, username: null, lastViewed: {} };
 
         function showLoading(show) {
             document.getElementById('loading').style.display = show ? 'block' : 'none';
@@ -1061,7 +1061,14 @@
             return Date.now() - time < 3600000; // 1 hour
         }
 
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
         function saveLocal() {
+            localData.username = currentUser;
             localStorage.setItem(storageKey, JSON.stringify(localData));
         }
 
@@ -1236,7 +1243,7 @@
                     <span class="post-time">${formatTime(post.time)}</span>
                 </div>
                 ${!isReply ? `<h3>${post.title || ''}</h3>` : ''}
-                <div class="post-content">${post.content.replace(/\n/g, '<br>')}</div>
+                <div class="post-content">${escapeHtml(post.content).replace(/\n/g, '<br>')}</div>
                 <div class="post-actions">
                     <button class="like-btn ${liked}" onclick="toggleLike('${post.id}')"><i class="fas fa-heart"></i> ${post.likes?.length || 0}</button>
                     ${userData?.role === 'admin' && !isReply ? `<button onclick="togglePin('${post.id}')">${post.pinned ? 'განპინება' : 'პინ'}</button>` : ''}
@@ -1250,6 +1257,15 @@
             document.getElementById('sectionView').style.display = 'none';
             document.getElementById('threadView').style.display = 'block';
             document.getElementById('threadTitle').textContent = title;
+            
+            // Show/hide reply form based on login status
+            const replyForm = document.getElementById('newReplyForm');
+            if (currentUser) {
+                replyForm.style.display = 'block';
+            } else {
+                replyForm.style.display = 'none';
+            }
+            
             updateBreadcrumbs('thread');
             renderThread();
             clearInterval(refreshInterval);
@@ -1288,6 +1304,7 @@
                     userData = await response.json();
                     currentUser = username;
                     localData.user = userData;
+                    localData.username = username;
                     saveLocal();
                     updateUI();
                     closeModal('loginModal');
@@ -1326,6 +1343,7 @@
                     });
                     if (response.ok) {
                         sessionStorage.setItem('pendingEmail', email);
+                        sessionStorage.setItem('pendingUsername', username);
                         closeModal('registerModal');
                         document.getElementById('verifyModal').classList.add('active');
                     } else {
@@ -1345,6 +1363,8 @@
             e.preventDefault();
             const enteredCode = document.getElementById('verifyCode').value.trim();
             const email = sessionStorage.getItem('pendingEmail');
+            const pendingUsername = sessionStorage.getItem('pendingUsername');
+            
             if (!enteredCode) return showToast('შეიყვანეთ კოდი', 'error');
             showLoading(true);
             try {
@@ -1355,12 +1375,14 @@
                 });
                 if (response.ok) {
                     userData = await response.json();
-                    currentUser = userData.profile.name;
+                    currentUser = pendingUsername;
                     localData.user = userData;
+                    localData.username = pendingUsername;
                     saveLocal();
                     updateUI();
                     closeModal('verifyModal');
                     sessionStorage.removeItem('pendingEmail');
+                    sessionStorage.removeItem('pendingUsername');
                     showToast('რეგისტრაცია დასრულებულია');
                     refreshUserData();
                 } else {
@@ -1381,6 +1403,7 @@
                 if (response.ok) {
                     userData = await response.json();
                     localData.user = userData;
+                    localData.username = currentUser;
                     saveLocal();
                     updateUI();
                 } else {
@@ -1396,6 +1419,7 @@
             currentUser = null;
             userData = null;
             localData.user = null;
+            localData.username = null;
             saveLocal();
             document.getElementById('navActions').innerHTML = `
                 <button class="btn btn-primary" onclick="showLogin()">შესვლა</button>
@@ -1826,7 +1850,7 @@
             await updateSectionStats();
             updateSectionAccess();
             if (localData.user) {
-                currentUser = localData.user.username;
+                currentUser = localData.username;
                 userData = localData.user;
                 updateUI();
                 refreshUserData(); // background update
