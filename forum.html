@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zaratic Role Play - ფორუმი</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --dark-lighter: #334155;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --admin-badge: #f59e0b;
+            --tech-badge: #3b82f6;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--dark-lighter);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: var(--dark-light);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .user-info:hover {
+            background: var(--dark-lighter);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .user-badges {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .badge {
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-admin {
+            background: var(--admin-badge);
+            color: var(--dark);
+        }
+
+        .badge-tech {
+            background: var(--tech-badge);
+            color: white;
+        }
+
+        .badge-player {
+            background: var(--dark-lighter);
+            color: var(--text-muted);
+        }
+
+        .btn {
+            padding: 0.6rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--dark-light);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: var(--dark-lighter);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .categories {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .cat {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--dark-lighter);
+        }
+
+        .cat-header {
+            padding: 1.2rem 1.5rem;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            border-bottom: 1px solid var(--dark-lighter);
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .cat-header i {
+            color: var(--primary);
+        }
+
+        .section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section:hover {
+            background: rgba(99, 102, 241, 0.1);
+            padding-left: 2rem;
+        }
+
+        .section.locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .section.locked::after {
+            content: '\f023';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 5rem;
+            color: var(--warning);
+        }
+
+        .sec-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sec-info i {
+            font-size: 1.4rem;
+            color: var(--primary);
+            width: 40px;
+            text-align: center;
+        }
+
+        .sec-title {
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        .sec-stats {
+            background: var(--dark-light);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            color: var(--text-muted);
+            min-width: 50px;
+            text-align: center;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--dark-light);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid var(--dark-lighter);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--dark);
+            border: 1px solid var(--dark-lighter);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .form-actions .btn {
+            flex: 1;
+        }
+
+        .profile-section {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--dark-lighter);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-avatar-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .profile-details h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--dark-lighter);
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-weight: 600;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .info-item {
+            background: var(--dark);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .info-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .nav-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .user-info span {
+                display: none;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .sec-stats {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <i class="fas fa-gamepad"></i> Zaratic Role Play
+            </div>
+            <div class="nav-actions" id="navActions">
+                <button class="btn btn-primary" onclick="showLogin()">შესვლა</button>
+                <button class="btn btn-secondary" onclick="showRegister()">რეგისტრაცია</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div id="forumView">
+            <div class="categories">
+                <div class="cat">
+                    <div class="cat-header"><i class="fas fa-gavel"></i> სერვერის ინფორმაცია</div>
+                    <a href="#" class="section locked" data-section="rules" data-restricted="true">
+                        <div class="sec-info">
+                            <i class="fas fa-book"></i>
+                            <div>
+                                <div class="sec-title">სერვერის წესები</div>
+                            </div>
+                        </div>
+                        <div class="sec-stats">0</div>
+                    </a>
+                    <a href="#" class="section locked" data-section="news" data-restricted="true">
+                        <div class="sec-info">
+                            <i class="fas fa-bullhorn"></i>
+                            <div>
+                                <div class="sec-title">სიახლეები</div>
+                            </div>
+                        </div>
+                        <div class="sec-stats">0</div>
+                    </a>
+                    <a href="#" class="section locked" data-section="updates" data-restricted="true">
+                        <div class="sec-info">
+                            <i class="fas fa-sync"></i>
+                            <div>
+                                <div class="sec-title">განახლებები</div>
+                            </div>
+                        </div>
+                        <div class="sec-stats">0</div>
+                    </a>
+                </div>
+
+                <div class="cat">
+                    <div class="cat-header"><i class="fas fa-users"></i> საზოგადოება</div>
+                    <a href="#" class="section" data-section="suggestions">
+                        <div class="sec-info">
+                            <i class="fas fa-lightbulb"></i>
+                            <div>
+                                <div class="sec-title">წინადადებები</div>
+                            </div>
+                        </div>
+                        <div class="sec-stats">0</div>
+                    </a>
+                    <a href="#" class="section" data-section="events">
+                        <div class="sec-info">
+                            <i class="fas fa-calendar"></i>
+                            <div>
+                                <div class="sec-title">ივენთები</div>
+                            </div>
+                        </div>
+                        <div class="sec-stats">0</div>
+                    </a>
+                    <a href="#" class="section" data-section="biographies">
+                        <div class="sec-info">
+                            <i class="fas fa-user-edit"></i>
+                            <div>
+                                <div class="sec-title">ბიოგრაფიები</div>
+                            </div>
+                        </div>
+                        <div class="sec-stats">0</div>
+                    </a>
+                </div>
+
+                <div class="cat">
+                    <div class="cat-header"><i class="fas fa-exclamation-triangle"></i> საჩივრები</div>
+                    <a href="#" class="section" data-section="complaints-admin">
+                        <div class="sec-info">
+                            <i class="fas fa-user-shield"></i>
+                            <div>
+                                <div class="sec-title">ადმინზე</div>
+                            </div>
+                        </div>
+                        <div class="sec-stats">0</div>
+                    </a>
+                    <a href="#" class="section" data-section="complaints-player">
+                        <div class="sec-info">
+                            <i class="fas fa-user-slash"></i>
+                            <div>
+                                <div class="sec-title">მოთამაშეზე</div>
+                            </div>
+                        </div>
+                        <div class="sec-stats">0</div>
+                    </a>
+                    <a href="#" class="section" data-section="appeals">
+                        <div class="sec-info">
+                            <i class="fas fa-gavel"></i>
+                            <div>
+                                <div class="sec-title">აპელაციები</div>
+                            </div>
+                        </div>
+                        <div class="sec-stats">0</div>
+                    </a>
+                    <a href="#" class="section" data-section="unban">
+                        <div class="sec-info">
+                            <i class="fas fa-unlock"></i>
+                            <div>
+                                <div class="sec-title">განბლოკვა</div>
+                            </div>
+                        </div>
+                        <div class="sec-stats">0</div>
+                    </a>
+                </div>
+
+                <div class="cat">
+                    <div class="cat-header"><i class="fas fa-briefcase"></i> ვაკანსიები</div>
+                    <a href="#" class="section" data-section="vacancies-leaders">
+                        <div class="sec-info">
+                            <i class="fas fa-crown"></i>
+                            <div>
+                                <div class="sec-title">ლიდერები</div>
+                            </div>
+                        </div>
+                        <div class="sec-stats">0</div>
+                    </a>
+                    <a href="#" class="section" data-section="vacancies-admin">
+                        <div class="sec-info">
+                            <i class="fas fa-user-shield"></i>
+                            <div>
+                                <div class="sec-title">ადმინები</div>
+                            </div>
+                        </div>
+                        <div class="sec-stats">0</div>
+                    </a>
+                    <a href="#" class="section" data-section="vacancies-partner">
+                        <div class="sec-info">
+                            <i class="fas fa-handshake"></i>
+                            <div>
+                                <div class="sec-title">პარტნიორები</div>
+                            </div>
+                        </div>
+                        <div class="sec-stats">0</div>
+                    </a>
+                </div>
+
+                <div class="cat">
+                    <div class="cat-header"><i class="fas fa-wrench"></i> ტექნიკური</div>
+                    <a href="#" class="section" data-section="donation-help">
+                        <div class="sec-info">
+                            <i class="fas fa-heart"></i>
+                            <div>
+                                <div class="sec-title">დონატი</div>
+                            </div>
+                        </div>
+                        <div class="sec-stats">0</div>
+                    </a>
+                    <a href="#" class="section" data-section="tech-help">
+                        <div class="sec-info">
+                            <i class="fas fa-tools"></i>
+                            <div>
+                                <div class="sec-title">ტექ. დახმარება</div>
+                            </div>
+                        </div>
+                        <div class="sec-stats">0</div>
+                    </a>
+                    <a href="#" class="section" data-section="general">
+                        <div class="sec-info">
+                            <i class="fas fa-comments"></i>
+                            <div>
+                                <div class="sec-title">დისკუსია</div>
+                            </div>
+                        </div>
+                        <div class="sec-stats">0</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="profileView" style="display: none;">
+            <div class="profile-section">
+                <div class="profile-header">
+                    <div class="profile-avatar-large" id="profileAvatarLarge">N</div>
+                    <div class="profile-details">
+                        <h2 id="profileUsername">Username</h2>
+                        <div class="user-badges" id="profileBadges"></div>
+                    </div>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab active" onclick="switchTab('info')">ინფორმაცია</div>
+                    <div class="tab" onclick="switchTab('edit')">რედაქტირება</div>
+                    <div class="tab" onclick="switchTab('admin')" id="adminTab" style="display: none;">ადმინ პანელი</div>
+                </div>
+
+                <div id="infoTab" class="tab-content active">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">სახელი</div>
+                            <div class="info-value" id="displayName">-</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">ელ. ფოსტა</div>
+                            <div class="info-value" id="displayEmail">-</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">ტელეფონი</div>
+                            <div class="info-value" id="displayPhone">-</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">ბიო</div>
+                            <div class="info-value" id="displayBio">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="editTab" class="tab-content">
+                    <form id="profileEditForm">
+                        <div class="form-group">
+                            <label>სახელი</label>
+                            <input type="text" id="editName" placeholder="თქვენი სახელი">
+                        </div>
+                        <div class="form-group">
+                            <label>ელ. ფოსტა</label>
+                            <input type="email" id="editEmail" placeholder="email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>ტელეფონი</label>
+                            <input type="tel" id="editPhone" placeholder="+995 XXX XXX XXX">
+                        </div>
+                        <div class="form-group">
+                            <label>ბიო</label>
+                            <input type="text" id="editBio" placeholder="რამე თქვენს შესახებ...">
+                        </div>
+                        <button type="submit" class="btn btn-primary">შენახვა</button>
+                    </form>
+                </div>
+
+                <div id="adminTab" class="tab-content">
+                    <h3 style="margin-bottom: 1rem;">ბეჯების მინიჭება</h3>
+                    <div class="form-group">
+                        <label>მომხმარებელი</label>
+                        <input type="text" id="badgeUsername" placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <label>ბეჯი</label>
+                        <select id="badgeType" style="width: 100%; padding: 0.8rem; background: var(--dark); border: 1px solid var(--dark-lighter); border-radius: 8px; color: var(--text);">
+                            <option value="admin">ადმინი</option>
+                            <option value="tech">ტექ. ადმინი</option>
+                            <option value="player">მოთამაშე</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" onclick="assignBadge()">ბეჯის მინიჭება</button>
+                </div>
+
+                <button class="btn btn-secondary" onclick="backToForum()" style="margin-top: 2rem;">
+                    <i class="fas fa-arrow-left"></i> უკან ფორუმზე
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>შესვლა</h2>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>მომხმარებელი</label>
+                    <input type="text" id="loginUsername" placeholder="Username" required>
+                </div>
+                <div class="form-group">
+                    <label>პაროლი</label>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">შესვლა</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('loginModal')">გაუქმება</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>რეგისტრაცია</h2>
+            </div>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label>მომხმარებელი</label>
+                    <input type="text" id="regUsername" placeholder="Username" required>
+                </div>
+                <div class="form-group">
+                    <label>ელ. ფოსტა</label>
+                    <input type="email" id="regEmail" placeholder="email@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>პაროლი</label>
+                    <input type="password" id="regPassword" placeholder="Password" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">რეგისტრაცია</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('registerModal')">გაუქმება</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // User database
+        const users = {
+            'Nikushaa': { password: 'admin123', role: 'admin', badges: ['admin'], profile: { name: 'Nikushaa', email: 'nikushaa@zaratic.ge', phone: '', bio: 'Server Administrator' } },
+            'Zviooo': { password: 'admin123', role: 'admin', badges: ['admin'], profile: { name: 'Zviooo', email: 'zviooo@zaratic.ge', phone: '', bio: 'Server Administrator' } }
+        };
+
+        let currentUser = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateSectionAccess();
+            
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            document.getElementById('registerForm').addEventListener('submit', handleRegister);
+            document.getElementById('profileEditForm').addEventListener('submit', handleProfileUpdate);
+
+            // Add click handlers to sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.addEventListener('click', (e) => {
+                    if (section.classList.contains('locked')) {
+                        e.preventDefault();
+                        alert('მხოლოდ ადმინისტრატორებს აქვთ წვდომა ამ კატეგორიაზე');
+                    }
+                });
+            });
+        });
+
+        function showLogin() {
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function showRegister() {
+            document.getElementById('registerModal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (users[username] && users[username].password === password) {
+                currentUser = username;
+                updateUI();
+                closeModal('loginModal');
+                e.target.reset();
+            } else {
+                alert('არასწორი მომხმარებელი ან პაროლი');
+            }
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+
+            if (users[username]) {
+                alert('ეს მომხმარებელი უკვე არსებობს');
+                return;
+            }
+
+            users[username] = {
+                password: password,
+                role: 'player',
+                badges: ['player'],
+                profile: {
+                    name: username,
+                    email: email,
+                    phone: '',
+                    bio: ''
+                }
+            };
+
+            currentUser = username;
+            updateUI();
+            closeModal('registerModal');
+            e.target.reset();
+        }
+
+        function updateUI() {
+            const user = users[currentUser];
+            const navActions = document.getElementById('navActions');
+
+            navActions.innerHTML = `
+                <div class="user-info" onclick="showProfile()">
+                    <div class="user-avatar">${currentUser[0].toUpperCase()}</div>
+                    <span>${currentUser}</span>
+                    <div class="user-badges">
+                        ${user.badges.map(badge => `<span class="badge badge-${badge}">${badge === 'admin' ? 'ადმინი' : badge === 'tech' ? 'ტექ. ადმინი' : 'მოთამაშე'}</span>`).join('')}
+                    </div>
+                </div>
+                <button class="btn btn-secondary" onclick="logout()">გასვლა</button>
+            `;
+
+            updateSectionAccess();
+        }
+
+        function updateSectionAccess() {
+            const restrictedSections = document.querySelectorAll('[data-restricted="true"]');
+            
+            restrictedSections.forEach(section => {
+                if (currentUser && users[currentUser].role === 'admin') {
+                    section.classList.remove('locked');
+                } else {
+                    section.classList.add('locked');
+                }
+            });
+        }
+
+        function logout() {
+            currentUser = null;
+            const navActions = document.getElementById('navActions');
+            navActions.innerHTML = `
+                <button class="btn btn-primary" onclick="showLogin()">შესვლა</button>
+                <button class="btn btn-secondary" onclick="showRegister()">რეგისტრაცია</button>
+            `;
+            updateSectionAccess();
+            backToForum();
+        }
+
+        function showProfile() {
+            if (!currentUser) return;
+
+            const user = users[currentUser];
+            document.getElementById('forumView').style.display = 'none';
+            document.getElementById('profileView').style.display = 'block';
+
+            // Update profile display
+            document.getElementById('profileAvatarLarge').textContent = currentUser[0].toUpperCase();
+            document.getElementById('profileUsername').textContent = currentUser;
+            
+            const profileBadges = document.getElementById('profileBadges');
+            profileBadges.innerHTML = user.badges.map(badge => 
+                `<span class="badge badge-${badge}">${badge === 'admin' ? 'ადმინი' : badge === 'tech' ? 'ტექ. ადმინი' : 'მოთამაშე'}</span>`
+            ).join('');
+
+            // Display profile info
+            document.getElementById('displayName').textContent = user.profile.name || '-';
+            document.getElementById('displayEmail').textContent = user.profile.email || '-';
+            document.getElementById('displayPhone').textContent = user.profile.phone || '-';
+            document.getElementById('displayBio').textContent = user.profile.bio || '-';
+
+            // Populate edit form
+            document.getElementById('editName').value = user.profile.name || '';
+            document.getElementById('editEmail').value = user.profile.email || '';
+            document.getElementById('editPhone').value = user.profile.phone || '';
+            document.getElementById('editBio').value = user.profile.bio || '';
+
+            // Show admin tab if user is admin
+            if (user.role === 'admin') {
+                document.getElementById('adminTab').style.display = 'block';
+            } else {
+                document.getElementById('adminTab').style.display = 'none';
+            }
+        }
+
+        function backToForum() {
+            document.getElementById('forumView').style.display = 'block';
+            document.getElementById('profileView').style.display = 'none';
+        }
+
+        function switchTab(tabName) {
+            // Remove active class from all tabs and contents
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            // Add active class to selected tab and content
+            event.target.classList.add('active');
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+
+        function handleProfileUpdate(e) {
+            e.preventDefault();
+            if (!currentUser) return;
+
+            const user = users[currentUser];
+            user.profile.name = document.getElementById('editName').value;
+            user.profile.email = document.getElementById('editEmail').value;
+            user.profile.phone = document.getElementById('editPhone').value;
+            user.profile.bio = document.getElementById('editBio').value;
+
+            // Update display
+            document.getElementById('displayName').textContent = user.profile.name || '-';
+            document.getElementById('displayEmail').textContent = user.profile.email || '-';
+            document.getElementById('displayPhone').textContent = user.profile.phone || '-';
+            document.getElementById('displayBio').textContent = user.profile.bio || '-';
+
+            // Switch back to info tab
+            switchTabProgrammatic('info');
+            
+            alert('პროფილი წარმატებით განახლდა!');
+        }
+
+        function switchTabProgrammatic(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            const tabs = document.querySelectorAll('.tab');
+            if (tabName === 'info') tabs[0].classList.add('active');
+            else if (tabName === 'edit') tabs[1].classList.add('active');
+            else if (tabName === 'admin') tabs[2].classList.add('active');
+
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+
+        function assignBadge() {
+            if (!currentUser || users[currentUser].role !== 'admin') {
+                alert('მხოლოდ ადმინისტრატორებს შეუძლიათ ბეჯების მინიჭება');
+                return;
+            }
+
+            const username = document.getElementById('badgeUsername').value;
+            const badgeType = document.getElementById('badgeType').value;
+
+            if (!users[username]) {
+                alert('მომხმარებელი არ მოიძებნა');
+                return;
+            }
+
+            if (!users[username].badges.includes(badgeType)) {
+                users[username].badges.push(badgeType);
+                
+                // Update role if admin badge is assigned
+                if (badgeType === 'admin') {
+                    users[username].role = 'admin';
+                }
+
+                alert(`ბეჯი "${badgeType}" წარმატებით მიენიჭა მომხმარებელს ${username}`);
+                document.getElementById('badgeUsername').value = '';
+            } else {
+                alert('ამ მომხმარებელს უკვე აქვს ეს ბეჯი');
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>
