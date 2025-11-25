@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zaratic Role Play - ფორუმი</title>
+    <link rel="icon" href="https://raw.githubusercontent.com/OGSunny/Testerweb/main/lv_0_20251120194047.jpg" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -30,7 +31,8 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%), url('https://raw.githubusercontent.com/OGSunny/Testerweb/main/lv_0_20251120194047.jpg') center/cover no-repeat;
+            background-blend-mode: overlay;
             color: var(--text);
             min-height: 100vh;
         }
@@ -61,6 +63,14 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 30px;
+            margin-left: 0.5rem;
+            border-radius: 50%;
         }
 
         .nav-actions {
@@ -101,26 +111,32 @@
         }
 
         .badge {
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            font-weight: 600;
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
             text-transform: uppercase;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+
+        .badge:hover {
+            transform: scale(1.05);
         }
 
         .badge-admin {
-            background: var(--admin-badge);
-            color: var(--dark);
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff;
         }
 
         .badge-tech {
-            background: var(--tech-badge);
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
             color: white;
         }
 
         .badge-player {
-            background: var(--dark-lighter);
-            color: var(--text-muted);
+            background: linear-gradient(135deg, #334155, #1e293b);
+            color: var(--text);
         }
 
         .btn {
@@ -248,6 +264,91 @@
             color: var(--text-muted);
             min-width: 50px;
             text-align: center;
+        }
+
+        .posts-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1rem 0;
+        }
+
+        .post {
+            background: var(--dark-light);
+            padding: 1.2rem;
+            border-radius: 12px;
+            border: 1px solid var(--dark-lighter);
+            transition: all 0.3s;
+        }
+
+        .post:hover {
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .post-author {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .post-time {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .post-content {
+            margin-bottom: 0.75rem;
+            line-height: 1.5;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .post-actions button {
+            padding: 0.4rem 0.8rem;
+            background: var(--dark-lighter);
+            color: var(--text);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .post-actions button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .pinned {
+            border: 2px solid var(--success);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .pinned::before {
+            content: '\f08d';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--success);
+            margin-right: 0.5rem;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--dark);
+            border: 1px solid var(--dark-lighter);
+            border-radius: 8px;
+            color: var(--text);
+            min-height: 100px;
+            resize: vertical;
         }
 
         /* Modal Styles */
@@ -450,12 +551,14 @@
             }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-content">
             <div class="logo">
                 <i class="fas fa-gamepad"></i> Zaratic Role Play
+                <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/lv_0_20251120194047.jpg" alt="Logo">
             </div>
             <div class="nav-actions" id="navActions">
                 <button class="btn btn-primary" onclick="showLogin()">შესვლა</button>
@@ -633,6 +736,18 @@
             </div>
         </div>
 
+        <div id="sectionView" style="display: none;">
+            <button class="btn btn-secondary" onclick="backToForumFromSection()"><i class="fas fa-arrow-left"></i> უკან</button>
+            <h2 id="sectionTitle" style="margin: 1rem 0;"></h2>
+            <div class="posts-container" id="postsList"></div>
+            <form id="newPostForm">
+                <div class="form-group">
+                    <textarea id="postContent" placeholder="დაწერეთ თქვენი პოსტი..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">გამოქვეყნება</button>
+            </form>
+        </div>
+
         <div id="profileView" style="display: none;">
             <div class="profile-section">
                 <div class="profile-header">
@@ -766,30 +881,87 @@
         </div>
     </div>
 
+    <!-- Verification Modal -->
+    <div id="verifyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>ელფოსტის ვერიფიკაცია</h2>
+            </div>
+            <form id="verifyForm">
+                <div class="form-group">
+                    <label>ვერიფიკაციის კოდი (შეამოწმეთ თქვენი ელფოსტა)</label>
+                    <input type="text" id="verifyCode" placeholder="შეიყვანეთ 6-ციფრიანი კოდი" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">დადასტურება</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('verifyModal')">გაუქმება</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
-        // User database
-        const users = {
-            'Nikushaa': { password: 'admin123', role: 'admin', badges: ['admin'], profile: { name: 'Nikushaa', email: 'nikushaa@zaratic.ge', phone: '', bio: 'Server Administrator' } },
-            'Zviooo': { password: 'admin123', role: 'admin', badges: ['admin'], profile: { name: 'Zviooo', email: 'zviooo@zaratic.ge', phone: '', bio: 'Server Administrator' } }
-        };
+        // Register service worker for offline caching
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('worker.js').catch(err => console.error('Service Worker Error:', err));
+        }
+
+        // Initialize EmailJS (replace with your EmailJS user ID)
+        emailjs.init('YOUR_EMAILJS_USER_ID'); // Get this from emailjs.com dashboard
+
+        // LocalStorage data management
+        const storageKey = 'zaraticForumData';
+        let forumData = JSON.parse(localStorage.getItem(storageKey)) || { users: {}, posts: {} };
+
+        // Seed initial users if not present
+        if (Object.keys(forumData.users).length === 0) {
+            forumData.users = {
+                'Nikushaa': { password: 'admin123', role: 'admin', badges: ['admin'], profile: { name: 'Nikushaa', email: 'nikushaa@zaratic.ge', phone: '', bio: 'Server Administrator' }, verified: true },
+                'Zviooo': { password: 'admin123', role: 'admin', badges: ['admin'], profile: { name: 'Zviooo', email: 'zviooo@zaratic.ge', phone: '', bio: 'Server Administrator' }, verified: true }
+            };
+            forumData.posts = {}; // { sectionId: [{author, content, time, pinned}] }
+            saveData();
+        }
 
         let currentUser = null;
+        let currentSection = null;
 
-        // Initialize
+        function saveData() {
+            localStorage.setItem(storageKey, JSON.stringify(forumData));
+        }
+
+        // Update section stats (post counts)
+        function updateSectionStats() {
+            document.querySelectorAll('.section').forEach(sec => {
+                const sectionId = sec.dataset.section;
+                const postCount = (forumData.posts[sectionId] || []).length;
+                sec.querySelector('.sec-stats').textContent = postCount;
+            });
+        }
+        updateSectionStats();
+
+        // Initialize event listeners
         document.addEventListener('DOMContentLoaded', () => {
             updateSectionAccess();
-            
             document.getElementById('loginForm').addEventListener('submit', handleLogin);
             document.getElementById('registerForm').addEventListener('submit', handleRegister);
+            document.getElementById('verifyForm').addEventListener('submit', handleVerify);
             document.getElementById('profileEditForm').addEventListener('submit', handleProfileUpdate);
+            document.getElementById('newPostForm').addEventListener('submit', handleNewPost);
 
-            // Add click handlers to sections
+            // Section click handlers
             document.querySelectorAll('.section').forEach(section => {
                 section.addEventListener('click', (e) => {
-                    if (section.classList.contains('locked')) {
-                        e.preventDefault();
+                    e.preventDefault();
+                    if (section.classList.contains('locked') && !(currentUser && forumData.users[currentUser].role === 'admin')) {
                         alert('მხოლოდ ადმინისტრატორებს აქვთ წვდომა ამ კატეგორიაზე');
+                        return;
                     }
+                    currentSection = section.dataset.section;
+                    document.getElementById('forumView').style.display = 'none';
+                    document.getElementById('sectionView').style.display = 'block';
+                    document.getElementById('sectionTitle').textContent = section.querySelector('.sec-title').textContent;
+                    renderPosts();
                 });
             });
         });
@@ -810,14 +982,14 @@
             e.preventDefault();
             const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
-
-            if (users[username] && users[username].password === password) {
+            const user = forumData.users[username];
+            if (user && user.password === password && user.verified) {
                 currentUser = username;
                 updateUI();
                 closeModal('loginModal');
                 e.target.reset();
             } else {
-                alert('არასწორი მომხმარებელი ან პაროლი');
+                alert('არასწორი მომხმარებელი, პაროლი ან არ არის ვერიფიცირებული');
             }
         }
 
@@ -827,117 +999,168 @@
             const email = document.getElementById('regEmail').value;
             const password = document.getElementById('regPassword').value;
 
-            if (users[username]) {
+            if (forumData.users[username]) {
                 alert('ეს მომხმარებელი უკვე არსებობს');
                 return;
             }
 
-            users[username] = {
-                password: password,
-                role: 'player',
-                badges: ['player'],
-                profile: {
-                    name: username,
-                    email: email,
-                    phone: '',
-                    bio: ''
-                }
-            };
+            // Generate 6-digit code
+            const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-            currentUser = username;
-            updateUI();
-            closeModal('registerModal');
+            // Send verification email via EmailJS (replace service/template IDs)
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
+                to_email: email,
+                to_name: username,
+                code: verifyCode
+            }).then(() => {
+                // Store pending registration in sessionStorage
+                sessionStorage.setItem('pendingRegistration', JSON.stringify({ username, email, password, verifyCode }));
+                closeModal('registerModal');
+                document.getElementById('verifyModal').classList.add('active');
+                e.target.reset();
+            }, (error) => {
+                alert('ელფოსტის გაგზავნა ვერ მოხერხდა: ' + error.text);
+            });
+        }
+
+        function handleVerify(e) {
+            e.preventDefault();
+            const enteredCode = document.getElementById('verifyCode').value;
+            const pending = JSON.parse(sessionStorage.getItem('pendingRegistration'));
+            if (pending && enteredCode === pending.verifyCode) {
+                forumData.users[pending.username] = {
+                    password: pending.password,
+                    role: 'player',
+                    badges: ['player'],
+                    profile: { name: pending.username, email: pending.email, phone: '', bio: '' },
+                    verified: true
+                };
+                saveData();
+                currentUser = pending.username;
+                updateUI();
+                closeModal('verifyModal');
+                sessionStorage.removeItem('pendingRegistration');
+            } else {
+                alert('არასწორი კოდი. სცადეთ თავიდან.');
+            }
             e.target.reset();
         }
 
         function updateUI() {
-            const user = users[currentUser];
-            const navActions = document.getElementById('navActions');
-
-            navActions.innerHTML = `
+            const user = forumData.users[currentUser];
+            document.getElementById('navActions').innerHTML = `
                 <div class="user-info" onclick="showProfile()">
                     <div class="user-avatar">${currentUser[0].toUpperCase()}</div>
                     <span>${currentUser}</span>
                     <div class="user-badges">
-                        ${user.badges.map(badge => `<span class="badge badge-${badge}">${badge === 'admin' ? 'ადმინი' : badge === 'tech' ? 'ტექ. ადმინი' : 'მოთამაშე'}</span>`).join('')}
+                        ${user.badges.map(b => `<span class="badge badge-${b}">${b === 'admin' ? 'ადმინი' : b === 'tech' ? 'ტექ. ადმინი' : 'მოთამაშე'}</span>`).join('')}
                     </div>
                 </div>
                 <button class="btn btn-secondary" onclick="logout()">გასვლა</button>
             `;
-
             updateSectionAccess();
         }
 
         function updateSectionAccess() {
-            const restrictedSections = document.querySelectorAll('[data-restricted="true"]');
-            
-            restrictedSections.forEach(section => {
-                if (currentUser && users[currentUser].role === 'admin') {
-                    section.classList.remove('locked');
-                } else {
-                    section.classList.add('locked');
-                }
+            document.querySelectorAll('[data-restricted="true"]').forEach(sec => {
+                sec.classList.toggle('locked', !(currentUser && forumData.users[currentUser].role === 'admin'));
             });
         }
 
         function logout() {
             currentUser = null;
-            const navActions = document.getElementById('navActions');
-            navActions.innerHTML = `
+            document.getElementById('navActions').innerHTML = `
                 <button class="btn btn-primary" onclick="showLogin()">შესვლა</button>
                 <button class="btn btn-secondary" onclick="showRegister()">რეგისტრაცია</button>
             `;
             updateSectionAccess();
             backToForum();
+            backToForumFromSection();
         }
 
+        function renderPosts() {
+            const postsList = document.getElementById('postsList');
+            postsList.innerHTML = '';
+            const posts = (forumData.posts[currentSection] || []).sort((a, b) => b.pinned - a.pinned); // Pinned first
+            posts.forEach((post, index) => {
+                const postDiv = document.createElement('div');
+                postDiv.className = 'post' + (post.pinned ? ' pinned' : '');
+                postDiv.innerHTML = `
+                    <div class="post-header">
+                        <span class="post-author">${post.author}</span>
+                        <span class="post-time">${new Date(post.time).toLocaleString('ka-GE')}</span>
+                    </div>
+                    <div class="post-content">${post.content.replace(/\n/g, '<br>')}</div>
+                    <div class="post-actions">
+                        ${forumData.users[currentUser]?.role === 'admin' ? `<button onclick="togglePin(${index})">${post.pinned ? 'განპინება' : 'პინ'}</button>` : ''}
+                    </div>
+                `;
+                postsList.appendChild(postDiv);
+            });
+        }
+
+        function handleNewPost(e) {
+            e.preventDefault();
+            if (!currentUser) {
+                alert('პოსტის დასამატებლად შესვლა საჭიროა');
+                return;
+            }
+            const content = document.getElementById('postContent').value.trim();
+            if (!content) return;
+            if (!forumData.posts[currentSection]) forumData.posts[currentSection] = [];
+            forumData.posts[currentSection].push({ author: currentUser, content, time: Date.now(), pinned: false });
+            saveData();
+            updateSectionStats();
+            renderPosts();
+            e.target.reset();
+        }
+
+        window.togglePin = function(index) {
+            const post = forumData.posts[currentSection][index];
+            post.pinned = !post.pinned;
+            saveData();
+            renderPosts();
+        }
+
+        function backToForumFromSection() {
+            document.getElementById('sectionView').style.display = 'none';
+            document.getElementById('forumView').style.display = 'block';
+            currentSection = null;
+        }
+
+        // Existing profile functions (adapted to forumData)
         function showProfile() {
             if (!currentUser) return;
-
-            const user = users[currentUser];
+            const user = forumData.users[currentUser];
             document.getElementById('forumView').style.display = 'none';
+            document.getElementById('sectionView').style.display = 'none';
             document.getElementById('profileView').style.display = 'block';
 
-            // Update profile display
             document.getElementById('profileAvatarLarge').textContent = currentUser[0].toUpperCase();
             document.getElementById('profileUsername').textContent = currentUser;
-            
-            const profileBadges = document.getElementById('profileBadges');
-            profileBadges.innerHTML = user.badges.map(badge => 
-                `<span class="badge badge-${badge}">${badge === 'admin' ? 'ადმინი' : badge === 'tech' ? 'ტექ. ადმინი' : 'მოთამაშე'}</span>`
-            ).join('');
+            document.getElementById('profileBadges').innerHTML = user.badges.map(b => `<span class="badge badge-${b}">${b === 'admin' ? 'ადმინი' : b === 'tech' ? 'ტექ. ადმინი' : 'მოთამაშე'}</span>`).join('');
 
-            // Display profile info
             document.getElementById('displayName').textContent = user.profile.name || '-';
             document.getElementById('displayEmail').textContent = user.profile.email || '-';
             document.getElementById('displayPhone').textContent = user.profile.phone || '-';
             document.getElementById('displayBio').textContent = user.profile.bio || '-';
 
-            // Populate edit form
             document.getElementById('editName').value = user.profile.name || '';
             document.getElementById('editEmail').value = user.profile.email || '';
             document.getElementById('editPhone').value = user.profile.phone || '';
             document.getElementById('editBio').value = user.profile.bio || '';
 
-            // Show admin tab if user is admin
-            if (user.role === 'admin') {
-                document.getElementById('adminTab').style.display = 'block';
-            } else {
-                document.getElementById('adminTab').style.display = 'none';
-            }
+            document.getElementById('adminTab').style.display = user.role === 'admin' ? 'block' : 'none';
         }
 
         function backToForum() {
-            document.getElementById('forumView').style.display = 'block';
             document.getElementById('profileView').style.display = 'none';
+            document.getElementById('forumView').style.display = 'block';
         }
 
         function switchTab(tabName) {
-            // Remove active class from all tabs and contents
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-
-            // Add active class to selected tab and content
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             event.target.classList.add('active');
             document.getElementById(tabName + 'Tab').classList.add('active');
         }
@@ -945,72 +1168,59 @@
         function handleProfileUpdate(e) {
             e.preventDefault();
             if (!currentUser) return;
-
-            const user = users[currentUser];
+            const user = forumData.users[currentUser];
             user.profile.name = document.getElementById('editName').value;
             user.profile.email = document.getElementById('editEmail').value;
             user.profile.phone = document.getElementById('editPhone').value;
             user.profile.bio = document.getElementById('editBio').value;
+            saveData();
 
-            // Update display
             document.getElementById('displayName').textContent = user.profile.name || '-';
             document.getElementById('displayEmail').textContent = user.profile.email || '-';
             document.getElementById('displayPhone').textContent = user.profile.phone || '-';
             document.getElementById('displayBio').textContent = user.profile.bio || '-';
 
-            // Switch back to info tab
             switchTabProgrammatic('info');
-            
-            alert('პროფილი წარმატებით განახლდა!');
+            alert('პროფილი განახლდა!');
         }
 
         function switchTabProgrammatic(tabName) {
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             const tabs = document.querySelectorAll('.tab');
-            if (tabName === 'info') tabs[0].classList.add('active');
-            else if (tabName === 'edit') tabs[1].classList.add('active');
-            else if (tabName === 'admin') tabs[2].classList.add('active');
-
+            tabs[tabName === 'info' ? 0 : tabName === 'edit' ? 1 : 2].classList.add('active');
             document.getElementById(tabName + 'Tab').classList.add('active');
         }
 
         function assignBadge() {
-            if (!currentUser || users[currentUser].role !== 'admin') {
-                alert('მხოლოდ ადმინისტრატორებს შეუძლიათ ბეჯების მინიჭება');
+            if (!currentUser || forumData.users[currentUser].role !== 'admin') {
+                alert('მხოლოდ ადმინებს შეუძლიათ ბეჯების მინიჭება');
                 return;
             }
-
             const username = document.getElementById('badgeUsername').value;
             const badgeType = document.getElementById('badgeType').value;
-
-            if (!users[username]) {
+            const user = forumData.users[username];
+            if (!user) {
                 alert('მომხმარებელი არ მოიძებნა');
                 return;
             }
-
-            if (!users[username].badges.includes(badgeType)) {
-                users[username].badges.push(badgeType);
-                
-                // Update role if admin badge is assigned
-                if (badgeType === 'admin') {
-                    users[username].role = 'admin';
-                }
-
-                alert(`ბეჯი "${badgeType}" წარმატებით მიენიჭა მომხმარებელს ${username}`);
-                document.getElementById('badgeUsername').value = '';
+            if (!user.badges.includes(badgeType)) {
+                user.badges.push(badgeType);
+                if (badgeType === 'admin') user.role = 'admin';
+                saveData();
+                alert(`ბეჯი "${badgeType}" მინიჭებულია!`);
             } else {
-                alert('ამ მომხმარებელს უკვე აქვს ეს ბეჯი');
+                alert('უკვე აქვს ეს ბეჯი');
             }
+            document.getElementById('badgeUsername').value = '';
         }
 
-        // Close modal when clicking outside
-        window.onclick = function(event) {
+        // Close modals on outside click
+        window.onclick = (event) => {
             if (event.target.classList.contains('modal')) {
                 event.target.classList.remove('active');
             }
-        }
+        };
     </script>
 </body>
 </html>
