@@ -8,776 +8,106 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #ff0000;
-            --primary-dark: #cc0000;
-            --secondary: #b30000;
-            --dark: #000000;
-            --dark-light: #111111;
-            --dark-lighter: #222222;
-            --text: #ffffff;
-            --text-muted: #aaaaaa;
-            --success: #00ff00;
-            --warning: #ffff00;
-            --danger: #ff0000;
-            --admin-badge: #ff9900;
-            --tech-badge: #0099ff;
-            --player-badge: #666666;
-            --glass-bg: rgba(17, 17, 17, 0.6);
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
-            --shadow-md: 0 4px 8px rgba(0,0,0,0.4);
-            --shadow-lg: 0 10px 20px rgba(0,0,0,0.5);
-            --glow-red: 0 0 10px rgba(255,0,0,0.5);
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 100%);
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        .navbar {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--dark-lighter);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: var(--shadow-md);
-        }
-
-        .nav-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logo img {
-            height: 40px;
-            border-radius: 50%;
-            box-shadow: var(--glow-red);
-        }
-
-        .nav-actions {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.5rem 1rem;
-            background: var(--glass-bg);
-            border-radius: 50px;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .user-info:hover {
-            transform: scale(1.02);
-            box-shadow: var(--glow-red);
-        }
-
-        .user-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            background-size: cover;
-            background-position: center;
-            box-shadow: var(--glow-red);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .user-badges {
-            display: flex;
-            gap: 0.25rem;
-        }
-
-        .badge {
-            padding: 0.3rem 0.6rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            box-shadow: var(--shadow-sm), inset 0 1px 1px rgba(255,255,255,0.1);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .badge:hover {
-            transform: scale(1.1);
-            box-shadow: var(--glow-red);
-        }
-
-        .btn {
-            padding: 0.6rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            font-size: 0.95rem;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--glow-red);
-        }
-
-        .btn-secondary {
-            background: var(--dark-light);
-            color: var(--text);
-        }
-
-        .btn-secondary:hover {
-            background: var(--dark-lighter);
-            box-shadow: var(--shadow-md);
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        .categories {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .cat {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid var(--dark-lighter);
-            box-shadow: var(--shadow-lg);
-            transition: box-shadow 0.3s ease;
-        }
-
-        .cat:hover {
-            box-shadow: var(--glow-red);
-        }
-
-        .cat-header {
-            padding: 1.2rem 1.5rem;
-            background: linear-gradient(135deg, rgba(255, 0, 0, 0.1), rgba(179, 0, 0, 0.1));
-            border-bottom: 1px solid var(--dark-lighter);
-            font-weight: 700;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .cat-header i {
-            color: var(--primary);
-        }
-
-        .section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.2rem 1.5rem;
-            border-bottom: 1px solid var(--dark-lighter);
-            text-decoration: none;
-            color: var(--text);
-            transition: background 0.3s ease, padding-left 0.3s ease;
-            position: relative;
-        }
-
-        .section:last-child {
-            border-bottom: none;
-        }
-
-        .section:hover {
-            background: rgba(255, 0, 0, 0.05);
-            padding-left: 2rem;
-        }
-
-        .section.locked {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .section.locked::after {
-            content: '\f023';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            position: absolute;
-            right: 1.5rem;
-            color: var(--warning);
-        }
-
-        .sec-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .sec-info i {
-            font-size: 1.4rem;
-            color: var(--primary);
-            width: 40px;
-            text-align: center;
-        }
-
-        .sec-title {
-            font-weight: 600;
-            font-size: 1.05rem;
-        }
-
-        .sec-stats {
-            background: var(--dark-light);
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-weight: 600;
-            color: var(--text-muted);
-            min-width: 50px;
-            text-align: center;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .breadcrumbs {
-            margin: 1rem 0;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .breadcrumbs span {
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .breadcrumbs span:hover {
-            color: var(--primary);
-        }
-
-        .threads-container, .posts-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            padding: 1rem 0;
-        }
-
-        .thread-card, .post {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            padding: 1.2rem;
-            border-radius: 12px;
-            border: 1px solid var(--dark-lighter);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            box-shadow: var(--shadow-md);
-        }
-
-        .thread-card:hover, .post:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--glow-red);
-        }
-
-        .thread-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 0.5rem;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        .post-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .post-author {
-            font-weight: 600;
-            color: var(--primary);
-            cursor: pointer;
-        }
-
-        .post-author:hover {
-            text-decoration: underline;
-        }
-
-        .post-time {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        .post-content {
-            margin-bottom: 0.75rem;
-            line-height: 1.5;
-        }
-
-        .post-actions {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-
-        .post-actions button, .like-btn {
-            padding: 0.4rem 0.8rem;
-            background: var(--dark-lighter);
-            color: var(--text);
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.2s ease, color 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-
-        .post-actions button:hover, .like-btn:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .like-btn.liked {
-            color: var(--danger);
-        }
-
-        .pinned {
-            border: 2px solid var(--success);
-            background: rgba(0, 255, 0, 0.05);
-        }
-
-        .pinned::before {
-            content: '\f08d';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            color: var(--success);
-            margin-right: 0.5rem;
-        }
-
-        .new-indicator {
-            background: var(--warning);
-            color: var(--dark);
-            padding: 0.2rem 0.5rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            margin-left: 0.5rem;
-        }
-
-        textarea, input[type="text"], input[type="email"], input[type="password"], input[type="tel"] {
-            width: 100%;
-            padding: 0.8rem;
-            background: var(--dark);
-            border: 1px solid var(--dark-lighter);
-            border-radius: 8px;
-            color: var(--text);
-            font-size: 1rem;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            box-shadow: inset var(--shadow-sm);
-        }
-
-        textarea:focus, input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(255,0,0,0.1);
-            outline: none;
-        }
-
-        select {
-            width: 100%;
-            padding: 0.8rem;
-            background: var(--dark);
-            border: 1px solid var(--dark-lighter);
-            border-radius: 8px;
-            color: var(--text);
-            font-size: 1rem;
-            cursor: pointer;
-        }
-
-        select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(255,0,0,0.1);
-        }
-
-        select option {
-            background: var(--dark);
-            color: var(--text);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal-content {
-            background: var(--glass-bg);
-            border-radius: 16px;
-            padding: 2rem;
-            max-width: 500px;
-            width: 90%;
-            border: 1px solid var(--dark-lighter);
-            box-shadow: var(--shadow-lg);
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .modal-header h2 {
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .form-actions .btn {
-            flex: 1;
-        }
-
-        .profile-section {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border-radius: 16px;
-            padding: 2rem;
-            border: 1px solid var(--dark-lighter);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .profile-avatar-large {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            background-size: cover;
-            background-position: center;
-            box-shadow: var(--glow-red);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            font-weight: bold;
-        }
-
-        .profile-details h2 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid var(--dark-lighter);
-        }
-
-        .tab {
-            padding: 1rem 1.5rem;
-            cursor: pointer;
-            color: var(--text-muted);
-            font-weight: 600;
-            transition: color 0.2s ease, border-bottom-color 0.2s ease;
-            border-bottom: 3px solid transparent;
-            margin-bottom: -2px;
-        }
-
-        .tab:hover {
-            color: var(--primary);
-        }
-
-        .tab.active {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-
-        .info-item {
-            background: var(--dark);
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .info-label {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .info-value {
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        #loading {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--glass-bg);
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            display: none;
-            z-index: 3000;
-            box-shadow: var(--shadow-md);
-        }
-
-        #toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            color: var(--dark);
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            display: none;
-            z-index: 3000;
-            box-shadow: var(--shadow-md);
-            animation: fadeIn 0.3s ease;
-        }
-
-        @media (max-width: 768px) {
-            .nav-content {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .container {
-                padding: 0 0.5rem;
-            }
-
-            .section {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.5rem;
-            }
-
-            .sec-stats {
-                align-self: flex-end;
-            }
-
-            .post-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .btn {
-                padding: 0.8rem;
-                font-size: 1rem;
-            }
-        }
-
-        .fullscreen-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #0a0a0a;
-            z-index: 3000;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .fullscreen-modal.active {
-            display: flex;
-        }
-
-        .modal-carousel {
-            max-width: 800px;
-            width: 90%;
-            text-align: center;
-            position: relative;
-            padding: 3rem;
-        }
-
-        .carousel-slide {
-            display: none;
-            animation: slideIn 0.5s ease;
-        }
-
-        .carousel-slide.active {
-            display: block;
-        }
-
-        .carousel-title {
-            font-size: 3rem;
-            margin-bottom: 2rem;
-            font-weight: 700;
-        }
-
-        .carousel-description {
-            font-size: 1.5rem;
-            line-height: 1.8;
-            color: var(--text);
-            margin-bottom: 3rem;
-        }
-
-        .carousel-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(139, 90, 142, 0.3);
-            border: none;
-            color: white;
-            font-size: 2rem;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .carousel-nav:hover {
-            background: rgba(139, 90, 142, 0.6);
-        }
-
-        .carousel-nav.prev {
-            left: -80px;
-        }
-
-        .carousel-nav.next {
-            right: -80px;
-        }
-
-        .carousel-actions {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            margin-top: 2rem;
-        }
-
-        .carousel-actions .btn {
-            min-width: 200px;
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-        }
-
-        .carousel-dots {
-            display: flex;
-            gap: 0.5rem;
-            justify-content: center;
-            margin-top: 2rem;
-        }
-
-        .carousel-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(139, 90, 142, 0.3);
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .carousel-dot.active {
-            background: #8b5a8e;
-        }
-
-        .cat-header {
-            padding: 1.2rem 1.5rem;
-            background: linear-gradient(135deg, rgba(255, 0, 0, 0.1), rgba(179, 0, 0, 0.1));
-            border-bottom: 1px solid var(--dark-lighter);
-            font-weight: 700;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .cat-header::before {
-            font-size: 1.5rem;
-        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--primary:#ff0000;--primary-dark:#cc0000;--secondary:#b30000;--dark:#000000;--dark-light:#111111;--dark-lighter:#222222;--text:#ffffff;--text-muted:#aaaaaa;--success:#00ff00;--warning:#ffff00;--danger:#ff0000;--admin-badge:#ff9900;--tech-badge:#0099ff;--player-badge:#666666;--glass-bg:rgba(17,17,17,0.6);--shadow-sm:0 2px 4px rgba(0,0,0,0.3);--shadow-md:0 4px 8px rgba(0,0,0,0.4);--shadow-lg:0 10px 20px rgba(0,0,0,0.5);--glow-red:0 0 10px rgba(255,0,0,0.5)}
+        body{font-family:'Roboto',sans-serif;background:linear-gradient(135deg,var(--dark) 0%,var(--dark-light) 100%);color:var(--text);min-height:100vh;overflow-x:hidden}
+        .navbar{background:var(--glass-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--dark-lighter);padding:1rem 0;position:sticky;top:0;z-index:1000;box-shadow:var(--shadow-md)}
+        .nav-content{max-width:1400px;margin:0 auto;padding:0 1rem;display:flex;justify-content:space-between;align-items:center}
+        .logo{font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:flex;align-items:center;gap:0.5rem}
+        .logo img{height:40px;border-radius:50%;box-shadow:var(--glow-red)}
+        .nav-actions{display:flex;gap:1rem;align-items:center}
+        .user-info{display:flex;align-items:center;gap:0.75rem;padding:0.5rem 1rem;background:var(--glass-bg);border-radius:50px;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;box-shadow:var(--shadow-sm)}
+        .user-info:hover{transform:scale(1.02);box-shadow:var(--glow-red)}
+        .user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));background-size:cover;background-position:center;box-shadow:var(--glow-red);display:flex;align-items:center;justify-content:center;font-weight:bold}
+        .user-badges{display:flex;gap:0.25rem}
+        .badge{padding:0.3rem 0.6rem;border-radius:20px;font-size:0.75rem;font-weight:700;text-transform:uppercase;box-shadow:var(--shadow-sm),inset 0 1px 1px rgba(255,255,255,0.1);transition:transform .2s ease,box-shadow .2s ease}
+        .badge:hover{transform:scale(1.1);box-shadow:var(--glow-red)}
+        .btn{padding:0.6rem 1.5rem;border:none;border-radius:8px;font-weight:600;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;font-size:0.95rem;box-shadow:var(--shadow-sm)}
+        .btn-primary{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white}
+        .btn-primary:hover{transform:translateY(-2px);box-shadow:var(--glow-red)}
+        .btn-secondary{background:var(--dark-light);color:var(--text)}
+        .btn-secondary:hover{background:var(--dark-lighter);box-shadow:var(--shadow-md)}
+        .container{max-width:1400px;margin:2rem auto;padding:0 1rem}
+        .categories{display:flex;flex-direction:column;gap:1.5rem}
+        .cat{background:var(--glass-bg);backdrop-filter:blur(20px);border-radius:16px;overflow:hidden;border:1px solid var(--dark-lighter);box-shadow:var(--shadow-lg);transition:box-shadow .3s ease}
+        .cat:hover{box-shadow:var(--glow-red)}
+        .cat-header{padding:1.2rem 1.5rem;background:linear-gradient(135deg,rgba(255,0,0,0.1),rgba(179,0,0,0.1));border-bottom:1px solid var(--dark-lighter);font-weight:700;font-size:1.2rem;display:flex;align-items:center;gap:0.75rem}
+        .cat-header i{color:var(--primary)}
+        .section{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 1.5rem;border-bottom:1px solid var(--dark-lighter);text-decoration:none;color:var(--text);transition:background .3s ease,padding-left .3s ease;position:relative}
+        .section:last-child{border-bottom:none}
+        .section:hover{background:rgba(255,0,0,0.05);padding-left:2rem}
+        .section.locked{opacity:0.6;cursor:not-allowed}
+        .section.locked::after{content:'\f023';font-family:'Font Awesome 6 Free';font-weight:900;position:absolute;right:1.5rem;color:var(--warning)}
+        .sec-info{display:flex;align-items:center;gap:1rem}
+        .sec-info i{font-size:1.4rem;color:var(--primary);width:40px;text-align:center}
+        .sec-title{font-weight:600;font-size:1.05rem}
+        .sec-stats{background:var(--dark-light);padding:0.4rem 1rem;border-radius:20px;font-weight:600;color:var(--text-muted);min-width:50px;text-align:center;box-shadow:var(--shadow-sm)}
+        .breadcrumbs{margin:1rem 0;color:var(--text-muted);font-size:0.9rem}
+        .breadcrumbs span{cursor:pointer;transition:color .2s}
+        .breadcrumbs span:hover{color:var(--primary)}
+        .threads-container,.posts-container{display:flex;flex-direction:column;gap:1rem;padding:1rem 0}
+        .thread-card,.post{background:var(--glass-bg);backdrop-filter:blur(10px);padding:1.2rem;border-radius:12px;border:1px solid var(--dark-lighter);transition:transform .2s ease,box-shadow .2s ease;box-shadow:var(--shadow-md)}
+        .thread-card:hover,.post:hover{transform:translateY(-4px);box-shadow:var(--glow-red)}
+        .thread-info{display:flex;justify-content:space-between;align-items:center;margin-top:0.5rem;color:var(--text-muted);font-size:0.85rem}
+        .post-header{display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem}
+        .post-author{font-weight:600;color:var(--primary);cursor:pointer}
+        .post-author:hover{text-decoration:underline}
+        .post-time{color:var(--text-muted);font-size:0.85rem}
+        .post-content{margin-bottom:0.75rem;line-height:1.5}
+        .post-actions{display:flex;gap:0.5rem;align-items:center}
+        .post-actions button,.like-btn{padding:0.4rem 0.8rem;background:var(--dark-lighter);color:var(--text);border:none;border-radius:6px;cursor:pointer;transition:background .2s ease,color .2s ease;display:flex;align-items:center;gap:0.25rem}
+        .post-actions button:hover,.like-btn:hover{background:var(--primary);color:white}
+        .like-btn.liked{color:var(--danger)}
+        .pinned{border:2px solid var(--success);background:rgba(0,255,0,0.05)}
+        .pinned::before{content:'\f08d';font-family:'Font Awesome 6 Free';font-weight:900;color:var(--success);margin-right:0.5rem}
+        .new-indicator{background:var(--warning);color:var(--dark);padding:0.2rem 0.5rem;border-radius:20px;font-size:0.75rem;margin-left:0.5rem}
+        textarea,input[type="text"],input[type="email"],input[type="password"],input[type="tel"]{width:100%;padding:0.8rem;background:var(--dark);border:1px solid var(--dark-lighter);border-radius:8px;color:var(--text);font-size:1rem;transition:border-color .2s ease,box-shadow .2s ease;box-shadow:inset var(--shadow-sm)}
+        textarea:focus,input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(255,0,0,0.1);outline:none}
+        select{width:100%;padding:0.8rem;background:var(--dark);border:1px solid var(--dark-lighter);border-radius:8px;color:var(--text);font-size:1rem;cursor:pointer}
+        select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(255,0,0,0.1)}
+        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);backdrop-filter:blur(5px);z-index:2000;align-items:center;justify-content:center;animation:fadeIn .3s ease}
+        .modal.active{display:flex}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        .modal-content{background:var(--glass-bg);border-radius:16px;padding:2rem;max-width:500px;width:90%;border:1px solid var(--dark-lighter);box-shadow:var(--shadow-lg);animation:slideIn .3s ease}
+        @keyframes slideIn{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+        .modal-header h2{font-size:1.8rem;background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .form-group{margin-bottom:1.5rem}
+        .form-group label{display:block;margin-bottom:0.5rem;color:var(--text-muted);font-weight:500}
+        .form-actions{display:flex;gap:1rem;margin-top:2rem}
+        .form-actions .btn{flex:1}
+        .profile-section{background:var(--glass-bg);backdrop-filter:blur(20px);border-radius:16px;padding:2rem;border:1px solid var(--dark-lighter);box-shadow:var(--shadow-lg)}
+        .profile-header{display:flex;align-items:center;gap:1.5rem;margin-bottom:2rem}
+        .profile-avatar-large{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));background-size:cover;background-position:center;box-shadow:var(--glow-red);display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:bold}
+        .profile-details h2{font-size:2rem;margin-bottom:0.5rem}
+        .tabs{display:flex;gap:1rem;margin-bottom:2rem;border-bottom:2px solid var(--dark-lighter)}
+        .tab{padding:1rem 1.5rem;cursor:pointer;color:var(--text-muted);font-weight:600;transition:color .2s ease,border-bottom-color .2s ease;border-bottom:3px solid transparent;margin-bottom:-2px}
+        .tab:hover{color:var(--primary)}
+        .tab.active{color:var(--primary);border-bottom-color:var(--primary)}
+        .tab-content{display:none}
+        .tab-content.active{display:block}
+        .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem}
+        .info-item{background:var(--dark);padding:1rem;border-radius:8px;box-shadow:var(--shadow-sm)}
+        .info-label{color:var(--text-muted);font-size:0.9rem;margin-bottom:0.5rem}
+        .info-value{font-size:1.1rem;font-weight:600}
+        #loading{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--glass-bg);padding:1rem 2rem;border-radius:8px;display:none;z-index:3000;box-shadow:var(--shadow-md)}
+        #toast{position:fixed;bottom:20px;right:20px;color:var(--dark);padding:1rem 2rem;border-radius:8px;display:none;z-index:3000;box-shadow:var(--shadow-md);animation:fadeIn .3s ease}
+        @media (max-width:768px){.nav-content{flex-direction:column;gap:1rem}.container{padding:0 0.5rem}.section{flex-direction:column;align-items:flex-start;gap:0.5rem}.sec-stats{align-self:flex-end}.post-header{flex-direction:column;align-items:flex-start}.btn{padding:0.8rem;font-size:1rem}}
+        .fullscreen-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#0a0a0a;z-index:3000;align-items:center;justify-content:center;animation:fadeIn .3s ease}
+        .fullscreen-modal.active{display:flex}
+        .modal-carousel{max-width:800px;width:90%;text-align:center;position:relative;padding:3rem}
+        .carousel-slide{display:none;animation:slideIn .5s ease}
+        .carousel-slide.active{display:block}
+        .carousel-title{font-size:3rem;margin-bottom:2rem;font-weight:700}
+        .carousel-description{font-size:1.5rem;line-height:1.8;color:var(--text);margin-bottom:3rem}
+        .carousel-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(139,90,142,0.3);border:none;color:white;font-size:2rem;width:60px;height:60px;border-radius:50%;cursor:pointer;transition:background .3s ease}
+        .carousel-nav:hover{background:rgba(139,90,142,0.6)}
+        .carousel-nav.prev{left:-80px}
+        .carousel-nav.next{right:-80px}
+        .carousel-actions{display:flex;gap:1.5rem;justify-content:center;margin-top:2rem}
+        .carousel-actions .btn{min-width:200px;padding:1rem 2rem;font-size:1.1rem}
+        .carousel-dots{display:flex;gap:0.5rem;justify-content:center;margin-top:2rem}
+        .carousel-dot{width:12px;height:12px;border-radius:50%;background:rgba(139,90,142,0.3);cursor:pointer;transition:background .3s ease}
+        .carousel-dot.active{background:#8b5a8e}
     </style>
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 </head>
@@ -928,18 +258,18 @@
             </div>
         </div>
 
-        <div id="sectionView" style="display: none;">
+        <div id="sectionView" style="display:none">
             <div class="breadcrumbs" id="sectionBreadcrumbs"></div>
             <button class="btn btn-secondary" onclick="backToForumFromSection()"><i class="fas fa-arrow-left"></i> უკან</button>
-            <h2 id="sectionTitle" style="margin: 1rem 0;"></h2>
+            <h2 id="sectionTitle" style="margin:1rem 0"></h2>
             <button class="btn btn-primary" onclick="showNewThreadModal()">ახალი თრედი</button>
             <div class="threads-container" id="threadsList"></div>
         </div>
 
-        <div id="threadView" style="display: none;">
+        <div id="threadView" style="display:none">
             <div class="breadcrumbs" id="threadBreadcrumbs"></div>
             <button class="btn btn-secondary" onclick="backToSectionFromThread()"><i class="fas fa-arrow-left"></i> უკან</button>
-            <h2 id="threadTitle" style="margin: 1rem 0;"></h2>
+            <h2 id="threadTitle" style="margin:1rem 0"></h2>
             <div class="posts-container" id="threadPosts"></div>
             <form id="newReplyForm">
                 <div class="form-group">
@@ -949,7 +279,7 @@
             </form>
         </div>
 
-        <div id="profileView" style="display: none;">
+        <div id="profileView" style="display:none">
             <div class="profile-section">
                 <div class="profile-header">
                     <div class="profile-avatar-large" id="profileAvatarLarge"></div>
@@ -961,7 +291,7 @@
                 <div class="tabs">
                     <div class="tab active" onclick="switchTab('info')">ინფორმაცია</div>
                     <div class="tab" onclick="switchTab('edit')">რედაქტირება</div>
-                    <div class="tab" onclick="switchTab('admin')" id="adminTab" style="display: none;">ადმინ პანელი</div>
+                    <div class="tab" onclick="switchTab('admin')" id="adminTab" style="display:none">ადმინ პანელი</div>
                 </div>
                 <div id="infoTab" class="tab-content active">
                     <div class="info-grid">
@@ -987,8 +317,8 @@
                     <form id="profileEditForm">
                         <div class="form-group">
                             <label>ავატარი</label>
-                            <div style="display: flex; align-items: center; gap: 1rem;">
-                                <div id="avatarPreview" class="user-avatar" style="width: 60px; height: 60px;"></div>
+                            <div style="display:flex;align-items:center;gap:1rem">
+                                <div id="avatarPreview" class="user-avatar" style="width:60px;height:60px"></div>
                                 <input type="file" id="editAvatar" accept="image/*" onchange="previewAvatar(this)">
                             </div>
                         </div>
@@ -1012,49 +342,33 @@
                     </form>
                 </div>
                 <div id="adminTab" class="tab-content">
-                    <h3 style="margin-bottom: 1rem;">ბეჯების მართვა</h3>
-                    
-                    <!-- Add Badge -->
-                    <div style="background: var(--dark); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
-                        <h4 style="margin-bottom: 1rem; color: var(--primary);">ბეჯის დამატება</h4>
+                    <h3 style="margin-bottom:1rem">ბეჯების მართვა</h3>
+                    <div style="background:var(--dark);padding:1.5rem;border-radius:8px;margin-bottom:1.5rem">
+                        <h4 style="margin-bottom:1rem;color:var(--primary)">ბეჯის დამატება</h4>
                         <div class="form-group">
                             <label>მომხმარებელი</label>
                             <input type="text" id="badgeUsername" placeholder="Username">
                         </div>
                         <div class="form-group">
-                            <label>ბეჯის სახელი (ახალი ან არსებული)</label>
-                            <input type="text" id="customBadgeName" placeholder="მაგ: VIP, Moderator, Helper">
+                            <label>ბეჯის სახელი</label>
+                            <input type="text" id="badgeName" placeholder="მაგ: VIP">
                         </div>
-                        <div class="form-group">
-                            <label>ან აირჩიეთ არსებული</label>
-                            <select id="badgeType" onchange="document.getElementById('customBadgeName').value = this.value">
-                                <option value="">-- აირჩიეთ --</option>
-                                <option value="admin">ადმინი</option>
-                                <option value="tech">ტექ. ადმინი</option>
-                                <option value="player">მოთამაშე</option>
-                                <option value="vip">VIP</option>
-                                <option value="moderator">მოდერატორი</option>
-                                <option value="helper">დამხმარე</option>
-                            </select>
-                        </div>
-                        <button class="btn btn-primary" onclick="assignBadge()">ბეჯის დამატება</button>
+                        <button class="btn btn-primary" onclick="assignBadge()">დამატება</button>
                     </div>
-                    
-                    <!-- Remove Badge -->
-                    <div style="background: var(--dark); padding: 1.5rem; border-radius: 8px;">
-                        <h4 style="margin-bottom: 1rem; color: var(--danger);">ბეჯის წაშლა</h4>
+                    <div style="background:var(--dark);padding:1.5rem;border-radius:8px">
+                        <h4 style="margin-bottom:1rem;color:var(--danger)">ბეჯის წაშლა</h4>
                         <div class="form-group">
                             <label>მომხმარებელი</label>
                             <input type="text" id="removeBadgeUsername" placeholder="Username">
                         </div>
                         <div class="form-group">
-                            <label>ბეჯის სახელი</label>
-                            <input type="text" id="removeBadgeName" placeholder="წასაშლელი ბეჯი">
+                            <label>ბეჯი</label>
+                            <input type="text" id="removeBadgeName" placeholder="ბეჯის სახელი">
                         </div>
-                        <button class="btn btn-secondary" style="background: var(--danger);" onclick="removeBadge()">ბეჯის წაშლა</button>
+                        <button class="btn btn-secondary" style="background:var(--danger)" onclick="removeBadge()">წაშლა</button>
                     </div>
                 </div>
-                <button class="btn btn-secondary" onclick="backToForum()" style="margin-top: 2rem;">
+                <button class="btn btn-secondary" onclick="backToForum()" style="margin-top:2rem">
                     <i class="fas fa-arrow-left"></i> უკან ფორუმზე
                 </button>
             </div>
@@ -1065,13 +379,13 @@
         <div class="modal-carousel">
             <button class="carousel-nav prev" onclick="prevSlide()"><i class="fas fa-chevron-left"></i></button>
             <button class="carousel-nav next" onclick="nextSlide()"><i class="fas fa-chevron-right"></i></button>
-            <div class="carousel-slide">
+            <div class="carousel-slide active">
                 <h2 class="carousel-title">მოგესალმებით</h2>
-                <p class="carousel-description">თქვენ ეწვიეთ Zaratic RP\'ს ფორუმს, როგორც სტუმარი. იმისთვის რომ გაეცნოთ ყველა საკითხს სრულად, გთხოვთ გაიაროთ რეგისტრაცია ან ავტორიზაცია, თუ უკვე რეგისტრირებული ხართ.</p>
+                <p class="carousel-description">თქვენ ეწვიეთ Zaratic RP-ს ფორუმს, როგორც სტუმარი. იმისთვის რომ გაეცნოთ ყველა საკითხს სრულად, გთხოვთ გაიაროთ რეგისტრაცია ან ავტორიზაცია.</p>
             </div>
             <div class="carousel-slide">
                 <h2 class="carousel-title">Zaratic RP</h2>
-                <p class="carousel-description">შემოგვიერთდი და გახდი ჩვენი საზოგადოების ნაწილი. აღმოაჩინე უამრავი შესაძლებლობა და ისიამოვნე საუკეთესო როლ-პლეიით!</p>
+                <p class="carousel-description">შემოგვიერთდი და გახდი ჩვენი საზოგადოების ნაწილი!</p>
             </div>
             <div class="carousel-actions">
                 <button class="btn btn-primary" onclick="showRegister()">რეგისტრაცია</button>
@@ -1106,7 +420,7 @@
 
     <div id="registerModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header"><h2>რეგისტრაცია</h2></div>
+            <div class="modal-header"><h2>რეგისტრ�</h2></div>
             <form id="registerForm">
                 <div class="form-group">
                     <label>მომხმარებელი</label>
@@ -1117,8 +431,8 @@
                     <input type="email" id="regEmail" placeholder="email@example.com" required>
                 </div>
                 <div class="form-group">
-                    <label>პაროლი</label>
-                    <input type="password" id="regPassword" placeholder="Password" required>
+                    <label>პაროლი (მინ. 8 სიმბოლო)</label>
+                    <input type="password" id="regPassword" required>
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">რეგისტრაცია</button>
@@ -1133,8 +447,8 @@
             <div class="modal-header"><h2>ელფოსტის ვერიფიკაცია</h2></div>
             <form id="verifyForm">
                 <div class="form-group">
-                    <label>ვერიფიკაციის კოდი</label>
-                    <input type="text" id="verifyCode" placeholder="შეიყვანეთ 6-ციფრიანი კოდი" required>
+                    <label>ვერიფიკაციის კოდი (8 ციფ)</label>
+                    <input type="text" id="verifyCode" placeholder="12345678" maxlength="8" required>
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">დადასტურება</button>
@@ -1167,7 +481,7 @@
     <div id="toast"></div>
 
     <script>
-        const API_URL = 'https://data7167.jemalagegidze.workers.dev/';
+        const API_URL = 'https://data7167.jemalagegidze.workers.dev';
         emailjs.init('6mfdsM4fGZ9WWDFst');
 
         let currentUser = null;
@@ -1176,8 +490,20 @@
         let currentThread = null;
         let sectionPosts = [];
         let refreshInterval = null;
-        const storageKey = 'zaraticLocalData';
-        let localData = JSON.parse(localStorage.getItem(storageKey)) || { user: null, username: null, lastViewed: {} };
+        const storageKey = 'zaraticForum_v2';
+        let localData = JSON.parse(localStorage.getItem(storageKey)) || { token: null };
+
+        async function api(path, options = {}) {
+            const headers = { 'Content-Type': 'application/json', ...options.headers };
+            if (localData.token) headers['Authorization'] = `Bearer ${localData.token}`;
+            const res = await fetch(API_URL + path, { ...options, headers });
+            if (res.status === 401 || res.status === 403) {
+                logout();
+                showToast('სესია დასრულდა', 'error');
+                return null;
+            }
+            return res;
+        }
 
         function showLoading(show) {
             document.getElementById('loading').style.display = show ? 'block' : 'none';
@@ -1188,28 +514,24 @@
             toast.textContent = message;
             toast.style.background = type === 'success' ? '#00ff00' : '#ff0000';
             toast.style.display = 'block';
-            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+            setTimeout(() => toast.style.display = 'none', 3000);
         }
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
         }
 
         function formatTime(time) {
             const diff = Date.now() - time;
-            const seconds = Math.floor(diff / 1000);
-            if (seconds < 60) return 'ახლახანს';
-            const minutes = Math.floor(seconds / 60);
-            if (minutes < 60) return `${minutes} წუთის წინ`;
-            const hours = Math.floor(minutes / 60);
-            if (hours < 24) return `${hours} საათის წინ`;
-            const days = Math.floor(hours / 24);
-            if (days < 7) return `${days} დღის წინ`;
+            if (diff < 60000) return 'ახლახანს';
+            if (diff < 3600000) return `${Math.floor(diff/60000)} წუთის წინ`;
+            if (diff < 86400000) return `${Math.floor(diff/3600000)} საათის წინ`;
+            if (diff < 604800000) return `${Math.floor(diff/86400000)} დღის წინ`;
             return new Date(time).toLocaleString('ka-GE');
         }
 
         function isNew(time) {
-            return Date.now() - time < 3600000; // 1 hour
+            return Date.now() - time < 3600000;
         }
 
         function escapeHtml(text) {
@@ -1218,215 +540,140 @@
             return div.innerHTML;
         }
 
-        function saveLocal() {
-            localData.username = currentUser;
-            localStorage.setItem(storageKey, JSON.stringify(localData));
-        }
-
-        function getBadgeColor(badgeName) {
-            const predefinedColors = {
-                'admin': 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
-                'tech': 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
-                'player': 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)',
-                'vip': 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
-                'moderator': 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                'helper': 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)'
-            };
-            
-            // Return predefined color if exists
-            if (predefinedColors[badgeName.toLowerCase()]) {
-                return predefinedColors[badgeName.toLowerCase()];
-            }
-            
-            // Generate color based on badge name hash
-            const hash = badgeName.split('').reduce((acc, char) => {
-                return acc + char.charCodeAt(0);
-            }, 0);
-            
+        function getBadgeColor(name) {
+            const colors = {admin: '#f59e0b', tech: '#3b82f6', player: '#6b7280', vip: '#fbbf24', moderator: '#10b981', helper: '#ec4899'};
+            if (colors[name.toLowerCase()]) return `linear-gradient(135deg, ${colors[name.toLowerCase()]} 0%, ${colors[name.toLowerCase()+'aa'} 100%)`;
+            let hash = 0;
+            for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
             const hue = hash % 360;
-            return `linear-gradient(135deg, hsl(${hue}, 70%, 50%), hsl(${hue}, 70%, 40%))`;
+            return `linear-gradient(135deg, hsl(${hue},70%,50%), hsl(${hue},70%,40%))`;
         }
 
-        function renderBadge(badgeName) {
-            const displayName = badgeName.toUpperCase();
-            const gradient = getBadgeColor(badgeName);
-            
-            return `<span class="badge" style="background: ${gradient};" title="${displayName}">${displayName}</span>`;
+        function renderBadge(name) {
+            return `<span class="badge" style="background:${getBadgeColor(name)}" title="${name.toUpperCase()}">${name.toUpperCase()}</span>`;
         }
 
         function updateUI() {
             if (!userData) return;
-            const avatarStyle = userData.profile.avatar ? `background-image: url(${userData.profile.avatar}); background-size: cover; background-position: center;` : 'background: linear-gradient(135deg, var(--primary), var(--secondary));';
+            const avatarStyle = userData.profile.avatar ? `background-image:url(${userData.profile.avatar});background-size:cover;background-position:center;` : 'background:linear-gradient(135deg,var(--primary),var(--secondary));';
             const avatarText = userData.profile.avatar ? '' : currentUser[0].toUpperCase();
             document.getElementById('navActions').innerHTML = `
                 <div class="user-info" onclick="showProfile()">
                     <div class="user-avatar" style="${avatarStyle}">${avatarText}</div>
                     <span>${currentUser}</span>
-                    <div class="user-badges">
-                        ${userData.badges.map(b => renderBadge(b)).join('')}
-                    </div>
+                    <div class="user-badges">${userData.badges.map(renderBadge).join('')}</div>
                 </div>
                 <button class="btn btn-secondary" onclick="logout()">გასვლა</button>
             `;
-            updateSectionAccess();
-        }
-
-        function updateSectionAccess() {
-            document.querySelectorAll('[data-restricted="true"]').forEach(sec => {
-                sec.classList.toggle('locked', !(currentUser && userData?.role === 'admin'));
-            });
         }
 
         async function updateSectionStats() {
-            showLoading(true);
-            try {
-                const response = await fetch(`${API_URL}/post-counts`);
-                if (response.ok) {
-                    const counts = await response.json();
-                    document.querySelectorAll('.section').forEach(sec => {
-                        const sectionId = sec.dataset.section;
-                        sec.querySelector('.sec-stats').textContent = counts[sectionId] || 0;
-                    });
-                }
-            } catch (error) {
-                showToast('შეცდომა სტატისტიკის ჩატვირთვაში', 'error');
-            }
-            showLoading(false);
+            const res = await api('/post-counts');
+            if (!res?.ok) return;
+            const counts = await res.json();
+            document.querySelectorAll('.section').forEach(el => {
+                const count = counts[el.dataset.section] || 0;
+                el.querySelector('.sec-stats').textContent = count;
+            });
         }
 
         async function fetchPosts() {
-            showLoading(true);
-            try {
-                const response = await fetch(`${API_URL}/posts/${currentSection}`);
-                if (response.ok) {
-                    sectionPosts = await response.json();
-                    return sectionPosts;
-                }
-            } catch (error) {
-                showToast('შეცდომა პოსტების ჩატვირთვაში', 'error');
-            }
-            showLoading(false);
-            return [];
+            const res = await api(`/posts/${currentSection}`);
+            if (!res?.ok) return [];
+            sectionPosts = await res.json();
+            return sectionPosts;
         }
 
         async function renderThreads() {
             await fetchPosts();
-            const threadsList = document.getElementById('threadsList');
-            threadsList.innerHTML = '';
-            const threads = sectionPosts.filter(p => !p.parentId);
-            threads.sort((a, b) => b.pinned - a.pinned || getLastActivity(b) - getLastActivity(a));
+            const list = document.getElementById('threadsList');
+            list.innerHTML = '';
+            const threads = sectionPosts.filter(p => !p.parentId)
+                .sort((a, b) => b.pinned - a.pinned || b.time - a.time);
             threads.forEach(thread => {
-                const replies = sectionPosts.filter(r => r.parentId === thread.id);
-                const replyCount = replies.length;
-                const lastActivity = formatTime(getLastActivity(thread));
-                const isPinned = thread.pinned ? ' pinned' : '';
-                const newInd = isNew(getLastActivity(thread)) ? '<span class="new-indicator">ახალი</span>' : '';
-                const threadDiv = document.createElement('div');
-                threadDiv.className = `thread-card${isPinned}`;
-                threadDiv.innerHTML = `
-                    <h3>${thread.title || thread.content.substring(0, 50) + '...'}${newInd}</h3>
+                const replies = sectionPosts.filter(p => p.parentId === thread.id).length;
+                const lastActivity = formatTime(Math.max(thread.time, ...sectionPosts.filter(p => p.parentId === thread.id).map(p => p.time)));
+                const newInd = isNew(thread.time) ? '<span class="new-indicator">ახალი</span>' : '';
+                const pinnedClass = thread.pinned ? ' pinned' : '';
+                const div = document.createElement('div');
+                div.className = `thread-card${pinnedClass}`;
+                div.innerHTML = `
+                    <h3>${escapeHtml(thread.title || thread.content.substring(0,60)+'...')}${newInd}</h3>
                     <div class="thread-info">
-                        <span>ავტორი: ${thread.author}</span>
-                        <span>პასუხები: ${replyCount}</span>
-                        <span>ბოლო აქტივობა: ${lastActivity}</span>
+                        <span>${thread.author}</span>
+                        <span>პასუხები: ${replies}</span>
+                        <span>${lastActivity}</span>
                     </div>
                     ${userData?.role === 'admin' ? `
-                        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
-                            <button class="btn btn-secondary" onclick="togglePin('${thread.id}')">${thread.pinned ? 'განპინება' : 'პინ'}</button>
-                            <button class="btn btn-secondary" style="background: var(--danger);" onclick="deleteThread('${thread.id}')">წაშლა</button>
+                        <div style="margin-top:8px;display:flex;gap:8px">
+                            <button class="btn btn-secondary" onclick="togglePin('${thread.id}')">${thread.pinned ? 'განპინება' : 'პინი'}</button>
+                            <button class="btn btn-secondary" style="background:var(--danger)" onclick="deleteThread('${thread.id}')">წაშლა</button>
                         </div>
                     ` : ''}
                 `;
-                threadDiv.addEventListener('click', (e) => {
-                    if (e.target.tagName === 'BUTTON') {
-                        e.stopPropagation();
-                        return;
-                    }
-                    openThread(thread.id, thread.title || thread.content.substring(0, 50));
-                });
-                threadsList.appendChild(threadDiv);
+                div.onclick = (e) => {
+                    if (e.target.tagName === 'BUTTON') return;
+                    openThread(thread.id, thread.title || thread.content.substring(0,60));
+                };
+                list.appendChild(div);
             });
-        }
-
-        function getLastActivity(thread) {
-            const replies = sectionPosts.filter(r => r.parentId === thread.id);
-            const times = [thread.time, ...replies.map(r => r.time)];
-            return Math.max(...times);
         }
 
         async function renderThread() {
             await fetchPosts();
-            const threadPostsDiv = document.getElementById('threadPosts');
-            threadPostsDiv.innerHTML = '';
+            const container = document.getElementById('threadPosts');
+            container.innerHTML = '';
             const thread = sectionPosts.find(p => p.id === currentThread);
-            if (!thread) return;
-            threadPostsDiv.appendChild(createPostElement(thread, false));
-            const replies = sectionPosts.filter(r => r.parentId === currentThread).sort((a, b) => a.time - b.time);
-            replies.forEach(reply => {
-                threadPostsDiv.appendChild(createPostElement(reply, true));
-            });
+            if (thread) container.appendChild(createPostElement(thread, false));
+            sectionPosts.filter(p => p.parentId === currentThread)
+                .sort((a,b) => a.time - b.time)
+                .forEach(p => container.appendChild(createPostElement(p, true)));
         }
 
         function createPostElement(post, isReply) {
-            const isPinned = post.pinned && !isReply ? ' pinned' : '';
-            const avatarStyle = post.avatar ? `background-image: url(${post.avatar}); background-size: cover; background-position: center;` : 'background: linear-gradient(135deg, var(--primary), var(--secondary));';
+            const avatarStyle = post.avatar ? `background-image:url(${post.avatar});background-size:cover;background-position:center;` : 'background:linear-gradient(135deg,var(--primary),var(--secondary));';
             const avatarText = post.avatar ? '' : post.author[0].toUpperCase();
             const liked = post.likes?.includes(currentUser) ? 'liked' : '';
-            const postDiv = document.createElement('div');
-            postDiv.className = `post${isPinned}`;
-            postDiv.innerHTML = `
+            const pinned = post.pinned && !isReply ? ' pinned' : '';
+            const div = document.createElement('div');
+            div.className = `post${pinned}`;
+            div.innerHTML = `
                 <div class="post-header">
                     <div class="user-avatar" style="${avatarStyle}">${avatarText}</div>
-                    <!-- Make username clickable -->
                     <span class="post-author" onclick="viewUserProfile('${post.author}')">${post.author}</span>
-                    <div class="user-badges">
-                        ${post.badges.map(b => renderBadge(b)).join('')}
-                    </div>
+                    <div class="user-badges">${post.badges.map(renderBadge).join('')}</div>
                     <span class="post-time">${formatTime(post.time)}</span>
                 </div>
-                ${!isReply ? `<h3>${post.title || ''}</h3>` : ''}
+                ${!isReply ? `<h3>${escapeHtml(post.title || '')}</h3>` : ''}
                 <div class="post-content">${escapeHtml(post.content).replace(/\n/g, '<br>')}</div>
                 <div class="post-actions">
                     <button class="like-btn ${liked}" onclick="toggleLike('${post.id}')"><i class="fas fa-heart"></i> ${post.likes?.length || 0}</button>
-                    ${userData?.role === 'admin' && !isReply ? `<button onclick="togglePin('${post.id}')">${post.pinned ? 'განპინება' : 'პინ'}</button>` : ''}
                 </div>
             `;
-            return postDiv;
+            return div;
         }
 
-        function openThread(threadId, title) {
-            currentThread = threadId;
+        function openThread(id, title) {
+            currentThread = id;
             document.getElementById('sectionView').style.display = 'none';
             document.getElementById('threadView').style.display = 'block';
             document.getElementById('threadTitle').textContent = title;
-            
-            // Show/hide reply form based on login status
-            const replyForm = document.getElementById('newReplyForm');
-            if (currentUser) {
-                replyForm.style.display = 'block';
-            } else {
-                replyForm.style.display = 'none';
-            }
-            
+            document.getElementById('newReplyForm').style.display = currentUser ? 'block' : 'none';
             updateBreadcrumbs('thread');
             renderThread();
             clearInterval(refreshInterval);
             refreshInterval = setInterval(renderThread, 30000);
         }
 
-        function updateBreadcrumbs(view) {
-            if (view === 'section') {
-                const section = document.querySelector(`.section[data-section="${currentSection}"]`);
-                if (!section) return;
-                const catHeader = section.closest('.cat').querySelector('.cat-header').textContent.trim();
-                const sectionTitle = section.querySelector('.sec-title').textContent.trim();
-                document.getElementById('sectionBreadcrumbs').innerHTML = 
-                    `<span onclick="backToForumFromSection()" style="cursor: pointer; color: var(--primary);">ფორუმი</span> > ${catHeader} > ${sectionTitle}`;
-            } else if (view === 'thread') {
-                const sectionBcr = document.getElementById('sectionBreadcrumbs').innerHTML;
+        function updateBreadcrumbs(type) {
+            if (type === 'section') {
+                const sectionEl = document.querySelector(`.section[data-section="${currentSection}"]`);
+                const cat = sectionEl.closest('.cat').querySelector('.cat-header').textContent.trim();
+                const sec = sectionEl.querySelector('.sec-title').textContent.trim();
+                document.getElementById('sectionBreadcrumbs').innerHTML = `<span onclick="backToForumFromSection()" style="cursor:pointer;color:var(--primary)">ფორუმი</span> > ${cat} > ${sec}`;
+            } else if (type === 'thread') {
                 const threadTitle = document.getElementById('threadTitle').textContent;
-                document.getElementById('threadBreadcrumbs').innerHTML = 
-                    `${sectionBcr} > <span style="color: var(--text-muted);">${threadTitle}</span>`;
+                document.getElementById('threadBreadcrumbs').innerHTML = document.getElementById('sectionBreadcrumbs').innerHTML + ` > ${threadTitle}`;
             }
         }
 
@@ -1434,536 +681,218 @@
             e.preventDefault();
             const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
-            if (!username || !password) return showToast('შეავსეთ ყველა ველი', 'error');
-            showLoading(true);
-            try {
-                const response = await fetch(`${API_URL}/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password })
-                });
-                if (response.ok) {
-                    userData = await response.json();
-                    currentUser = username;
-                    localData.user = userData;
-                    localData.username = username;
-                    saveLocal();
-                    updateUI();
-                    closeModal('loginModal');
-                    showToast('წარმატებული შესვლა');
-                    refreshUserData();
-                } else {
-                    showToast(await response.text(), 'error');
-                }
-            } catch (error) {
-                showToast('შეცდომა შესვლაში', 'error');
+            const res = await api('/login', {method: 'POST', body: JSON.stringify({username, password})});
+            if (res?.ok) {
+                const data = await res.json();
+                localData.token = data.token;
+                currentUser = data.user.username;
+                userData = data.user;
+                localStorage.setItem(storageKey, JSON.stringify(localData));
+                updateUI();
+                closeModal('loginModal');
+                showToast('შესვლა წარმატებით');
+                updateSectionStats();
+            } else {
+                showToast('არასწორი მონაცემები', 'error');
             }
-            showLoading(false);
-            e.target.reset();
         }
 
         async function handleRegister(e) {
             e.preventDefault();
             const username = document.getElementById('regUsername').value.trim();
             const email = document.getElementById('regEmail').value.trim();
-            const password = document.getElementById('regPassword').value.trim();
-            if (!username || !email || !password) return showToast('შეავსეთ ყველა ველი', 'error');
-            const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
-            showLoading(true);
+            const password = document.getElementById('regPassword').value;
+            if (password.length < 8) return showToast('პაროლი მინ. 8 სიმბოლო', 'error');
+
+            const code = String(Math.floor(10000000 + Math.random() * 90000000));
+
             try {
-                const sendResponse = await emailjs.send('service_uqvxc6o', 'Zaraticsregister9178', {
-                    to_email: email,
-                    to_name: username,
-                    code: verifyCode
-                });
-                if (sendResponse.status === 200) {
-                    const pending = { username, email, password, code: verifyCode };
-                    const response = await fetch(`${API_URL}/register`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(pending)
-                    });
-                    if (response.ok) {
-                        sessionStorage.setItem('pendingEmail', email);
-                        sessionStorage.setItem('pendingUsername', username);
-                        closeModal('registerModal');
-                        document.getElementById('verifyModal').classList.add('active');
-                    } else {
-                        showToast('შეცდომა რეგისტრაციაში', 'error');
-                    }
-                } else {
-                    showToast('ელფოსტის გაგზავნა ვერ მოხერხდა', 'error');
+                await emailjs.send('service_uqvxc6o', 'Zaraticsregister9178', {to_email: email, to_name: username, code});
+                const res = await api('/register', {method: 'POST', body: JSON.stringify({username, email, password, code})});
+                if (res?.ok) {
+                    sessionStorage.setItem('pendingEmail', email);
+                    closeModal('registerModal');
+                    document.getElementById('verifyModal').classList.add('active');
                 }
-            } catch (error) {
-                showToast('შეცდომა რეგისტრაციაში', 'error');
+            } catch {
+                showToast('რეგისტრაციის შეცდომა', 'error');
             }
-            showLoading(false);
-            e.target.reset();
         }
 
         async function handleVerify(e) {
             e.preventDefault();
-            const enteredCode = document.getElementById('verifyCode').value.trim();
+            const code = document.getElementById('verifyCode').value.trim();
             const email = sessionStorage.getItem('pendingEmail');
-            const pendingUsername = sessionStorage.getItem('pendingUsername');
-            
-            if (!enteredCode) return showToast('შეიყვანეთ კოდი', 'error');
-            showLoading(true);
-            try {
-                const response = await fetch(`${API_URL}/verify`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, code: enteredCode })
-                });
-                if (response.ok) {
-                    userData = await response.json();
-                    currentUser = pendingUsername;
-                    localData.user = userData;
-                    localData.username = pendingUsername;
-                    saveLocal();
-                    updateUI();
-                    closeModal('verifyModal');
-                    sessionStorage.removeItem('pendingEmail');
-                    sessionStorage.removeItem('pendingUsername');
-                    showToast('რეგისტრაცია დასრულებულია');
-                    refreshUserData();
-                } else {
-                    showToast(await response.text(), 'error');
-                }
-            } catch (error) {
-                showToast('შეცდომა ვერიფიკაციაში', 'error');
+            const res = await api('/verify', {method: 'POST', body: JSON.stringify({email, code})});
+            if (res?.ok) {
+                const data = await res.json();
+                localData.token = data.token;
+                currentUser = data.user.username;
+                userData = data.user;
+                localStorage.setItem(storageKey, JSON.stringify(localData));
+                updateUI();
+                closeModal('verifyModal');
+                sessionStorage.removeItem('pendingEmail');
+                showToast('რეგისტრაცია დასრულდა');
+                updateSectionStats();
+            } else {
+                showToast('კოდი არასწორია', 'error');
             }
-            showLoading(false);
-            e.target.reset();
-        }
-
-        async function refreshUserData() {
-            if (!currentUser) return;
-            showLoading(true);
-            try {
-                const response = await fetch(`${API_URL}/users/${currentUser}`);
-                if (response.ok) {
-                    userData = await response.json();
-                    localData.user = userData;
-                    localData.username = currentUser;
-                    saveLocal();
-                    updateUI();
-                } else {
-                    logout();
-                }
-            } catch (error) {
-                showToast('შეცდომა პროფილის განახლებაში', 'error');
-            }
-            showLoading(false);
-        }
-
-        function logout() {
-            currentUser = null;
-            userData = null;
-            localData.user = null;
-            localData.username = null;
-            saveLocal();
-            document.getElementById('navActions').innerHTML = `
-                <button class="btn btn-primary" onclick="showWelcomeModal()">შესვლა</button>
-                <button class="btn btn-secondary" onclick="showWelcomeModal()">რეგისტრაცია</button>
-            `;
-            updateSectionAccess();
-            backToForum();
-            backToForumFromSection();
-            backToSectionFromThread();
-            showToast('გამოსვლა წარმატებულია');
         }
 
         async function togglePin(postId) {
-            if (!userData || userData.role !== 'admin') return;
-            await fetchPosts();
-            const post = sectionPosts.find(p => p.id === postId);
-            if (!post) return;
-            post.pinned = !post.pinned;
-            showLoading(true);
-            try {
-                const response = await fetch(`${API_URL}/posts/${currentSection}/${postId}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ pinned: post.pinned })
-                });
-                if (response.ok) {
-                    if (currentThread) {
-                        renderThread();
-                    } else {
-                        renderThreads();
-                    }
-                    updateSectionStats();
-                    showToast('პინის სტატუსი შეცვლილია');
-                } else {
-                    showToast('შეცდომა პინში', 'error');
-                }
-            } catch (error) {
-                showToast('შეცდომა პინში', 'error');
+            if (userData?.role !== 'admin') return;
+            const res = await api(`/posts/${currentSection}/${postId}/pin`, {method: 'POST'});
+            if (res?.ok) {
+                currentThread ? renderThread() : renderThreads();
+                updateSectionStats();
             }
-            showLoading(false);
         }
 
         async function deleteThread(threadId) {
-            if (!userData || userData.role !== 'admin') return;
-            if (!confirm('ნამდვილად გსურთ ამ თრედის წაშლა? ეს მოქმედება შეუქცევადია.')) return;
-            
-            showLoading(true);
-            await fetchPosts();
-            
-            try {
-                const response = await fetch(`${API_URL}/posts/${currentSection}/delete`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ threadId })
-                });
-                
-                if (response.ok) {
-                    await fetchPosts();
-                    await renderThreads();
-                    await updateSectionStats();
-                    showToast('თრედი წაშლილია');
-                } else {
-                    showToast('შეცდომა წაშლაში', 'error');
-                }
-            } catch (error) {
-                showToast('შეცდომა წაშლაში', 'error');
+            if (userData?.role !== 'admin') return;
+            if (!confirm('დარწმუნებული ხართ?')) return;
+            const res = await api(`/posts/${currentSection}/delete`, {method: 'POST', body: JSON.stringify({threadId})});
+            if (res?.ok) {
+                await fetchPosts();
+                renderThreads();
+                updateSectionStats();
+                showToast('თრედი წაშლილია');
             }
-            showLoading(false);
         }
 
         async function toggleLike(postId) {
-            if (!currentUser) return showToast('ლაიქისთვის შესვლა საჭიროა', 'error');
-            await fetchPosts();
-            const post = sectionPosts.find(p => p.id === postId);
-            if (!post) return;
-            if (!post.likes) post.likes = [];
-            const index = post.likes.indexOf(currentUser);
-            if (index > -1) {
-                post.likes.splice(index, 1);
-            } else {
-                post.likes.push(currentUser);
+            const res = await api(`/posts/${currentSection}/${postId}/like`, {method: 'POST'});
+            if (res?.ok) {
+                currentThread ? renderThread() : renderThreads();
             }
-            showLoading(true);
-            try {
-                const response = await fetch(`${API_URL}/posts/${currentSection}/${postId}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ likes: post.likes })
-                });
-                if (response.ok) {
-                    if (currentThread) {
-                        renderThread();
-                    } else {
-                        renderThreads();
-                    }
-                    showToast('ლაიქი განახლებულია');
-                } else {
-                    showToast('შეცდომა ლაიქში', 'error');
-                }
-            } catch (error) {
-                showToast('შეცდომა ლაიქში', 'error');
-            }
-            showLoading(false);
         }
 
         async function handleNewThread(e) {
             e.preventDefault();
-            if (!currentUser) return showToast('თრედის შექმნისთვის შესვლა საჭიროა', 'error');
             const title = document.getElementById('threadTitleInput').value.trim();
             const content = document.getElementById('threadContent').value.trim();
-            if (!title || !content) return showToast('შეავსეთ სათაური და კონტენტი', 'error');
-            const post = {
-                title,
-                content,
-                author: currentUser,
-                avatar: userData.profile.avatar || '',
-                badges: [...userData.badges],
-                pinned: false,
-                likes: [],
-                parentId: null,
-                time: Date.now()
-            };
-            showLoading(true);
-            try {
-                const response = await fetch(`${API_URL}/posts/${currentSection}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(post)
-                });
-                if (response.ok) {
-                    closeModal('newThreadModal');
-                    await fetchPosts();
-                    await renderThreads();
-                    await updateSectionStats();
-                    showToast('თრედი შექმნილია');
-                } else {
-                    showToast('შეცდომა თრედის შექმნაში', 'error');
-                }
-            } catch (error) {
-                showToast('შეცდომა თრედის შექმნაში', 'error');
+            const res = await api(`/posts/${currentSection}`, {method: 'POST', body: JSON.stringify({title, content})});
+            if (res?.ok) {
+                closeModal('newThreadModal');
+                renderThreads();
+                updateSectionStats();
+                showToast('თრედი შეიქმნა');
             }
-            showLoading(false);
-            e.target.reset();
         }
 
         async function handleNewReply(e) {
             e.preventDefault();
-            if (!currentUser) return showToast('პასუხისთვის შესვლა საჭიროა', 'error');
             const content = document.getElementById('replyContent').value.trim();
-            if (!content) return showToast('შეავსეთ კონტენტი', 'error');
-            const post = {
-                content,
-                author: currentUser,
-                avatar: userData.profile.avatar || '',
-                badges: [...userData.badges],
-                pinned: false,
-                likes: [],
-                parentId: currentThread,
-                time: Date.now()
-            };
-            showLoading(true);
-            try {
-                const response = await fetch(`${API_URL}/posts/${currentSection}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(post)
-                });
-                if (response.ok) {
-                    document.getElementById('replyContent').value = '';
-                    await fetchPosts();
-                    await renderThread();
-                    await updateSectionStats();
-                    showToast('პასუხი გაგზავნილია');
-                } else {
-                    showToast('შეცდომა პასუხის გაგზავნაში', 'error');
-                }
-            } catch (error) {
-                showToast('შეცდომა პასუხის გაგზავნაში', 'error');
+            const res = await api(`/posts/${currentSection}`, {method: 'POST', body: JSON.stringify({content, parentId: currentThread})});
+            if (res?.ok) {
+                document.getElementById('replyContent').value = '';
+                renderThread();
+                updateSectionStats();
+                showToast('პასუხი გაგზავნილია');
             }
-            showLoading(false);
         }
 
         function previewAvatar(input) {
-            const preview = document.getElementById('avatarPreview');
-            if (input.files && input.files[0]) {
+            if (input.files[0]) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.style.backgroundImage = `url('${e.target.result}')`;
-                    preview.style.backgroundSize = 'cover';
-                    preview.style.backgroundPosition = 'center';
-                    preview.textContent = '';
-                };
+                reader.onload = e => document.getElementById('avatarPreview').style.backgroundImage = `url(${e.target.result})`;
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
         async function showProfile() {
-            await refreshUserData();
-            if (!userData) return;
+            const res = await api('/me');
+            if (!res?.ok) return;
+            const data = await res.json();
+            userData = data;
+            currentUser = data.username;
+
             document.getElementById('forumView').style.display = 'none';
             document.getElementById('sectionView').style.display = 'none';
             document.getElementById('threadView').style.display = 'none';
             document.getElementById('profileView').style.display = 'block';
 
-            const avatarStyle = userData.profile.avatar ? `background-image: url(${userData.profile.avatar}); background-size: cover; background-position: center;` : 'background: linear-gradient(135deg, var(--primary), var(--secondary));';
-            const avatarText = userData.profile.avatar ? '' : currentUser[0].toUpperCase();
+            const avatarStyle = data.profile.avatar ? `background-image:url(${data.profile.avatar});background-size:cover;background-position:center;` : 'background:linear-gradient(135deg,var(--primary),var(--secondary));';
             document.getElementById('profileAvatarLarge').style.cssText = avatarStyle;
-            document.getElementById('profileAvatarLarge').textContent = avatarText;
-
+            document.getElementById('profileAvatarLarge').textContent = data.profile.avatar ? '' : currentUser[0].toUpperCase();
             document.getElementById('profileUsername').textContent = currentUser;
-            document.getElementById('profileBadges').innerHTML = userData.badges.map(b => renderBadge(b)).join('');
+            document.getElementById('profileBadges').innerHTML = data.badges.map(renderBadge).join('');
 
-            document.getElementById('displayName').textContent = userData.profile.name || '-';
-            document.getElementById('displayEmail').textContent = userData.profile.email || '-';
-            document.getElementById('displayPhone').textContent = userData.profile.phone || '-';
-            document.getElementById('displayBio').textContent = userData.profile.bio || '-';
+            document.getElementById('displayName').textContent = data.profile.name || '-';
+            document.getElementById('displayEmail').textContent = data.profile.email || '-';
+            document.getElementById('displayPhone').textContent = data.profile.phone || '-';
+            document.getElementById('displayBio').textContent = data.profile.bio || '-';
 
-            document.getElementById('editName').value = userData.profile.name || '';
-            document.getElementById('editEmail').value = userData.profile.email || '';
-            document.getElementById('editPhone').value = userData.profile.phone || '';
-            document.getElementById('editBio').value = userData.profile.bio || '';
+            document.getElementById('editName').value = data.profile.name || '';
+            document.getElementById('editEmail').value = data.profile.email || '';
+            document.getElementById('editPhone').value = data.profile.phone || '';
+            document.getElementById('editBio').value = data.profile.bio || '';
 
-            const preview = document.getElementById('avatarPreview');
-            if (userData.profile.avatar) {
-                preview.style.backgroundImage = `url('${userData.profile.avatar}')`;
-                preview.style.backgroundSize = 'cover';
-                preview.style.backgroundPosition = 'center';
-                preview.textContent = '';
-            } else {
-                preview.style.backgroundImage = 'none';
-                preview.style.background = 'linear-gradient(135deg, var(--primary), var(--secondary))';
-                preview.textContent = currentUser[0].toUpperCase();
-            }
-
-            document.getElementById('adminTab').style.display = userData.role === 'admin' ? 'block' : 'none';
+            document.getElementById('adminTab').style.display = data.role === 'admin' ? 'block' : 'none';
         }
 
         async function handleProfileUpdate(e) {
             e.preventDefault();
-            if (!currentUser) return;
-            const avatarInput = document.getElementById('editAvatar');
-            let avatarPromise = Promise.resolve(userData.profile.avatar);
-            if (avatarInput.files && avatarInput.files[0]) {
-                avatarPromise = new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = (ev) => resolve(ev.target.result);
-                    reader.onerror = reject;
-                    reader.readAsDataURL(avatarInput.files[0]);
-                });
+            const formData = new FormData();
+            if (document.getElementById('editAvatar').files[0]) formData.append('avatar', document.getElementById('editAvatar').files[0]);
+            formData.append('name', document.getElementById('editName').value.trim());
+            formData.append('email', document.getElementById('editEmail').value.trim());
+            formData.append('phone', document.getElementById('editPhone').value.trim());
+            formData.append('bio', document.getElementById('editBio').value.trim());
+
+            const res = await fetch(API_URL + '/me', {
+                method: 'PUT',
+                headers: { 'Authorization': `Bearer ${localData.token}` },
+                body: formData
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                userData = data;
+                updateUI();
+                showProfile();
+                showToast('პროფილი განახლდა');
             }
-            userData.profile.name = document.getElementById('editName').value.trim();
-            userData.profile.email = document.getElementById('editEmail').value.trim();
-            userData.profile.phone = document.getElementById('editPhone').value.trim();
-            userData.profile.bio = document.getElementById('editBio').value.trim();
-            showLoading(true);
-            try {
-                userData.profile.avatar = await avatarPromise;
-                const response = await fetch(`${API_URL}/users/${currentUser}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(userData)
-                });
-                if (response.ok) {
-                    localData.user = userData;
-                    saveLocal();
-                    updateUI();
-                    showProfile();
-                    showToast('პროფილი განახლებულია');
-                } else {
-                    showToast('შეცდომა პროფილის განახლებაში', 'error');
-                }
-            } catch (error) {
-                showToast('შეცდომა პროფილის განახლებაში', 'error');
-            }
-            showLoading(false);
         }
 
         async function assignBadge() {
-            if (!userData || userData.role !== 'admin') {
-                return showToast('მხოლოდ ადმინებს შეუძლიათ', 'error');
-            }
-            
             const username = document.getElementById('badgeUsername').value.trim();
-            const customBadge = document.getElementById('customBadgeName').value.trim() || 
-                                document.getElementById('badgeType').value;
-            
-            if (!username || !customBadge) {
-                return showToast('შეავსეთ ყველა ველი', 'error');
-            }
-            
-            showLoading(true);
-            try {
-                // Get target user
-                const response = await fetch(`${API_URL}/users/${username}`);
-                if (!response.ok) {
-                    showToast('მომხმარებელი არ მოიძებნა', 'error');
-                    return;
-                }
-                
-                const targetUser = await response.json();
-                
-                // Check if badge already exists
-                if (targetUser.badges.includes(customBadge)) {
-                    showToast('უკვე აქვს ეს ბეჯი', 'error');
-                    return;
-                }
-                
-                // Add badge
-                targetUser.badges.push(customBadge);
-                
-                // If admin badge, also update role
-                if (customBadge === 'admin') {
-                    targetUser.role = 'admin';
-                }
-                
-                // Update user in database
-                const updateResponse = await fetch(`${API_URL}/users/${username}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(targetUser)
-                });
-                
-                if (updateResponse.ok) {
-                    showToast(`ბეჯი "${customBadge}" მინიჭებულია`);
-                    document.getElementById('badgeUsername').value = '';
-                    document.getElementById('customBadgeName').value = '';
-                    document.getElementById('badgeType').value = '';
-                }
-            } catch (error) {
-                showToast('შეცდომა ბეჯის მინიჭებაში', 'error');
-            }
-            showLoading(false);
+            const badge = document.getElementById('badgeName').value.trim();
+            const res = await api(`/admin/badge/${username}`, {method: 'POST', body: JSON.stringify({badge})});
+            if (res?.ok) showToast('ბეჯი მინიჭებულია');
         }
 
         async function removeBadge() {
-            if (!userData || userData.role !== 'admin') {
-                return showToast('მხოლოდ ადმინებს შეუძლიათ', 'error');
-            }
-            
             const username = document.getElementById('removeBadgeUsername').value.trim();
-            const badgeName = document.getElementById('removeBadgeName').value.trim();
-            
-            if (!username || !badgeName) {
-                return showToast('შეავსეთ ყველა ველი', 'error');
-            }
-            
-            if (!confirm(`ნამდვილად გსურთ "${badgeName}" ბეჯის წაშლა?`)) {
-                return;
-            }
-            
-            showLoading(true);
-            try {
-                const response = await fetch(`${API_URL}/users/${username}`);
-                if (!response.ok) {
-                    showToast('მომხმარებელი არ მოიძებნა', 'error');
-                    return;
-                }
-                
-                const targetUser = await response.json();
-                const index = targetUser.badges.indexOf(badgeName);
-                
-                if (index === -1) {
-                    showToast('ეს ბეჯი არ არსებობს', 'error');
-                    return;
-                }
-                
-                // Remove badge
-                targetUser.badges.splice(index, 1);
-                
-                // If removing admin badge, downgrade role
-                if (badgeName === 'admin' && targetUser.role === 'admin') {
-                    targetUser.role = 'player';
-                }
-                
-                // Update user
-                const updateResponse = await fetch(`${API_URL}/users/${username}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(targetUser)
-                });
-                
-                if (updateResponse.ok) {
-                    showToast(`ბეჯი "${badgeName}" წაშლილია`);
-                    document.getElementById('removeBadgeUsername').value = '';
-                    document.getElementById('removeBadgeName').value = '';
-                }
-            } catch (error) {
-                showToast('შეცდომა ბეჯის წაშლაში', 'error');
-            }
-            showLoading(false);
+            const badge = document.getElementById('removeBadgeName').value.trim();
+            const res = await api(`/admin/badge/${username}`, {method: 'DELETE', body: JSON.stringify({badge})});
+            if (res?.ok) showToast('ბეჯი წაშლილია');
+        }
+
+        function logout() {
+            localStorage.removeItem(storageKey);
+            localData = {token: null};
+            currentUser = null;
+            userData = null;
+            document.getElementById('navActions').innerHTML = `<button class="btn btn-primary" onclick="showWelcomeModal()">შესვლა</button><button class="btn btn-secondary" onclick="showWelcomeModal()">რეგისტრაცია</button>`;
+            backToForum();
+            showToast('გამოსვლა წარმატებული');
         }
 
         function backToForum() {
             document.getElementById('profileView').style.display = 'none';
+            document.getElementById('sectionView').style.display = 'none';
+            document.getElementById('threadView').style.display = 'none';
             document.getElementById('forumView').style.display = 'block';
+            clearInterval(refreshInterval);
         }
 
         function backToForumFromSection() {
             document.getElementById('sectionView').style.display = 'none';
             document.getElementById('forumView').style.display = 'block';
-            clearInterval(refreshInterval);
             currentSection = null;
+            clearInterval(refreshInterval);
         }
 
         function backToSectionFromThread() {
@@ -1975,113 +904,76 @@
             refreshInterval = setInterval(renderThreads, 30000);
         }
 
-        function switchTab(tabName) {
+        function switchTab(tab) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             event.target.classList.add('active');
-            document.getElementById(tabName + 'Tab').classList.add('active');
+            document.getElementById(tab + 'Tab').classList.add('active');
         }
 
-        function showLogin() {
-            closeModal('welcomeModal');
-            document.getElementById('loginModal').classList.add('active');
-        }
-
-        function showRegister() {
-            closeModal('welcomeModal');
-            document.getElementById('registerModal').classList.add('active');
-        }
+        function showLogin() { closeModal('welcomeModal'); document.getElementById('loginModal').classList.add('active'); }
+        function showRegister() { closeModal('welcomeModal'); document.getElementById('registerModal').classList.add('active'); }
 
         function showNewThreadModal() {
             const section = document.querySelector(`.section[data-section="${currentSection}"]`);
             const isViewOnly = section?.dataset.viewOnly === 'true';
-            
             if (isViewOnly && (!userData || userData.role !== 'admin')) {
-                showToast('მხოლოდ ადმინებს შეუძლიათ პოსტის დამატება', 'error');
+                showToast('ამ სექციაში მხოლოდ ადმინი ქმნის თრედებს', 'error');
                 return;
             }
             document.getElementById('newThreadModal').classList.add('active');
         }
 
         let currentSlide = 0;
-        const slides = [
-            {
-                title: 'მოგესალმებით',
-                description: 'თქვენ ეწვიეთ Zaratic RP\'ს ფორუმს, როგორც სტუმარი. იმისთვის რომ გაეცნოთ ყველა საკითხს სრულად, გთხოვთ გაიაროთ რეგისტრაცია ან ავტორიზაცია, თუ უკვე რეგისტრირებული ხართ.'
-            },
-            {
-                title: 'Zaratic RP',
-                description: 'შემოგვიერთდი და გახდი ჩვენი საზოგადოების ნაწილი. აღმოაჩინე უამრავი შესაძლებლობა და ისიამოვნე საუკეთესო როლ-პლეიით!'
-            }
-        ];
-
-        function showSlide(index) {
-            document.querySelectorAll('.carousel-slide').forEach((slide, i) => {
-                slide.classList.toggle('active', i === index);
-            });
-            document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
+        function showSlide(n) {
+            document.querySelectorAll('.carousel-slide').forEach((s,i) => s.classList.toggle('active', i===n));
+            document.querySelectorAll('.carousel-dot').forEach((d,i) => d.classList.toggle('active', i===n));
+            currentSlide = n;
         }
-
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % slides.length;
-            showSlide(currentSlide);
-        }
-
-        function prevSlide() {
-            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-            showSlide(currentSlide);
-        }
-
-        function showWelcomeModal() {
-            document.getElementById('welcomeModal').classList.add('active');
-            showSlide(0);
-        }
+        function nextSlide() { showSlide((currentSlide + 1) % 2); }
+        function prevSlide() { showSlide((currentSlide - 1 + 2) % 2); }
+        function showWelcomeModal() { document.getElementById('welcomeModal').classList.add('active'); showSlide(0); }
 
         async function viewUserProfile(username) {
-            showLoading(true);
-            try {
-                const response = await fetch(`${API_URL}/users/${username}`);
-                if (response.ok) {
-                    const targetUserData = await response.json();
-                    displayUserProfile(targetUserData, username);
-                } else {
-                    showToast('მომხმარებელი არ მოიძებნა', 'error');
-                }
-            } catch (error) {
-                showToast('შეცდომა პროფილის ჩატვირთვაში', 'error');
-            }
-            showLoading(false);
-        }
+            const res = await api(`/users/${username}`);
+            if (!res?.ok) return showToast('მომხმარებელი არ მოიძებნა', 'error');
+            const data = await res.json();
 
-        function displayUserProfile(userData, username) {
-            // Hide other views
             document.getElementById('forumView').style.display = 'none';
             document.getElementById('sectionView').style.display = 'none';
             document.getElementById('threadView').style.display = 'none';
             document.getElementById('profileView').style.display = 'block';
-            
-            // Populate profile data
+
             document.getElementById('profileUsername').textContent = username;
-            document.getElementById('profileBadges').innerHTML = userData.badges.map(b => renderBadge(b)).join('');
-            document.getElementById('displayName').textContent = userData.profile.name || '-';
-            document.getElementById('displayEmail').textContent = userData.profile.email || '-';
-            
-            // Hide edit tabs if viewing someone else's profile
-            const isOwnProfile = (username === currentUser);
-            document.getElementById('editTab').style.display = isOwnProfile ? 'block' : 'none';
-            document.querySelector('.tab[onclick*="edit"]').style.display = isOwnProfile ? 'block' : 'none';
+            document.getElementById('profileBadges').innerHTML = data.badges.map(renderBadge).join('');
+            document.getElementById('displayName').textContent = data.profile.name || '-';
+            document.getElementById('displayEmail').textContent = data.profile.email || '-';
+            document.getElementById('displayPhone').textContent = data.profile.phone || '-';
+            document.getElementById('displayBio').textContent = data.profile.bio || '-';
+
+            const avatarStyle = data.profile.avatar ? `background-image:url(${data.profile.avatar});background-size:cover;background-position:center;` : 'background:linear-gradient(135deg,var(--primary),var(--secondary));';
+            document.getElementById('profileAvatarLarge').style.cssText = avatarStyle;
+            document.getElementById('profileAvatarLarge').textContent = data.profile.avatar ? '' : username[0].toUpperCase();
+
+            const isOwn = username === currentUser;
+            document.querySelector('.tab[onclick*="edit"]').style.display = isOwn ? 'block' : 'none';
+            document.getElementById('editTab').style.display = isOwn ? 'block' : 'none';
+            document.getElementById('adminTab').style.display = 'none';
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
             await updateSectionStats();
-            updateSectionAccess();
-            if (localData.user) {
-                currentUser = localData.username;
-                userData = localData.user;
-                updateUI();
-                refreshUserData(); // background update
+            if (localData.token) {
+                const res = await api('/me');
+                if (res?.ok) {
+                    const data = await res.json();
+                    currentUser = data.username;
+                    userData = data;
+                    updateUI();
+                } else {
+                    localStorage.removeItem(storageKey);
+                    showWelcomeModal();
+                }
             } else {
                 showWelcomeModal();
             }
@@ -2089,39 +981,27 @@
             document.getElementById('loginForm').addEventListener('submit', handleLogin);
             document.getElementById('registerForm').addEventListener('submit', handleRegister);
             document.getElementById('verifyForm').addEventListener('submit', handleVerify);
-            document.getElementById('profileEditForm').addEventListener('submit', handleProfileUpdate);
             document.getElementById('newThreadForm').addEventListener('submit', handleNewThread);
             document.getElementById('newReplyForm').addEventListener('submit', handleNewReply);
+            document.getElementById('profileEditForm').addEventListener('submit', handleProfileUpdate);
 
-            document.querySelectorAll('.section').forEach(section => {
-                section.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    const isViewOnly = section.dataset.viewOnly === 'true';
-                    
-                    currentSection = section.dataset.section;
+            document.querySelectorAll('.section').forEach(el => {
+                el.addEventListener('click', async () => {
+                    currentSection = el.dataset.section;
                     document.getElementById('forumView').style.display = 'none';
                     document.getElementById('sectionView').style.display = 'block';
-                    document.getElementById('sectionTitle').textContent = section.querySelector('.sec-title').textContent;
+                    document.getElementById('sectionTitle').textContent = el.querySelector('.sec-title').textContent;
                     updateBreadcrumbs('section');
                     await renderThreads();
-                    
-                    // Hide "New Thread" button for view-only sections if not admin
                     const newThreadBtn = document.querySelector('#sectionView .btn-primary');
-                    if (isViewOnly && (!userData || userData.role !== 'admin')) {
-                        newThreadBtn.style.display = 'none';
-                    } else {
-                        newThreadBtn.style.display = 'block';
-                    }
-                    
+                    newThreadBtn.style.display = (el.dataset.viewOnly === 'true' && (!userData || userData.role !== 'admin')) ? 'none' : 'block';
                     clearInterval(refreshInterval);
                     refreshInterval = setInterval(renderThreads, 30000);
                 });
             });
-        });
 
-        window.onclick = (event) => {
-            if (event.target.classList.contains('modal')) closeModal(event.target.id);
-        };
+            window.onclick = e => { if (e.target.classList.contains('modal')) closeModal(e.target.id); };
+        });
     </script>
 </body>
 </html>
