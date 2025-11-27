@@ -1,8 +1,8 @@
 {
-  "name": "zaratic",
+  "name": "worker-name",
   "compatibility_date": "2025-11-27",
   "assets": {
-    "directory": "./black"
+    "directory": "./"
   },
   "observability": {
     "enabled": false,
