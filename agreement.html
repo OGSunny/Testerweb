@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>წესები და პირობები • Fanatic Role Play</title>
+    <title>წესები და პირობები • Zaratic Role Play</title>
     
     <link rel="icon" href="https://raw.githubusercontent.com/OGSunny/Testerweb/main/zaratic.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -13,7 +13,7 @@
     <style>
         :root {
             --primary: #e74c3c;
-            --primary-light: #ff6b57;
+            --primary-light: #ff6b6b;
             --primary-dark: #c0392b;
             --secondary: #2c3e50;
             --accent: #3498db;
@@ -45,17 +45,33 @@
         .orb-2 { width: 400px; height: 400px; background: var(--accent); top: 50%; right: 5%; animation: float 25s ease-in-out infinite reverse; }
         @keyframes float { 0%,100% { transform: translate(0,0); } 33% { transform: translate(50px,-50px); } 66% { transform: translate(-30px,30px); } }
 
-        header { position: fixed; top: 0; left: 0; width: 100%; padding: 20px 5%; background: var(--glass); backdrop-filter: blur(30px); border-bottom: 1px solid var(--border); z-index: 1000; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
-        .logo { display: flex; align-items: center; gap: 16px; font-size: 26px; font-weight: 900; color: white; text-decoration: none; letter-spacing: 1px; text-shadow: var(--neon-glow); }
-        .logo img { width: 50px; height: 50px; border-radius: 50%; box-shadow: var(--neon-glow); transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); object-fit: cover; }
-        .logo:hover img { transform: scale(1.15) rotate(8deg); box-shadow: 0 0 40px rgba(231,76,60,1); }
+        header { 
+            position: fixed; top: 0; left: 0; width: 100%; padding: 20px 5%; 
+            background: var(--glass); backdrop-filter: blur(30px); 
+            border-bottom: 1px solid var(--border); z-index: 1000; 
+            display: flex; justify-content: space-between; align-items: center; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6); 
+        }
+        .logo { 
+            display: flex; align-items: center; gap: 16px; font-size: 26px; font-weight: 900; 
+            color: white; text-decoration: none; letter-spacing: 1px; 
+        }
+        .logo img { width: 50px; height: 50px; border-radius: 50%; transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); object-fit: cover; }
+        .logo:hover img { transform: scale(1.15) rotate(8deg); box-shadow: var(--neon-glow); }
+
         .burger { display: flex; flex-direction: column; gap: 6px; cursor: pointer; z-index: 1001; }
-        .burger span { width: 28px; height: 2.5px; background: white; border-radius: 3px; transition: 0.5s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        .burger span { width: 28px; height: 2.5px; background: white; border-radius: 3px; transition: 0.5s cubic-bezier(0.34,1.56,0.64,1); }
         .burger.active span:nth-child(1) { transform: rotate(45deg) translate(10px,10px); }
         .burger.active span:nth-child(2) { opacity: 0; transform: translateX(15px); }
         .burger.active span:nth-child(3) { transform: rotate(-45deg) translate(8px,-8px); }
 
-        .slide-menu { position: fixed; top: 0; right: -100%; width: 350px; height: 100vh; background: linear-gradient(135deg, rgba(10,13,27,0.98), rgba(20,28,50,0.95)); backdrop-filter: blur(30px); border-left: 1px solid var(--border); padding: 100px 30px 40px; transition: right 0.6s cubic-bezier(0.34,1.56,0.64,1); z-index: 999; box-shadow: -15px 0 60px rgba(0,0,0,0.7); overflow-y: auto; }
+        .slide-menu { 
+            position: fixed; top: 0; right: -100%; width: 350px; height: 100vh; 
+            background: linear-gradient(135deg, rgba(10,13,27,0.98), rgba(20,28,50,0.95)); 
+            backdrop-filter: blur(30px); border-left: 1px solid var(--border); 
+            padding: 100px 30px 40px; transition: right 0.6s cubic-bezier(0.34,1.56,0.64,1); 
+            z-index: 999; box-shadow: -15px 0 60px rgba(0,0,0,0.7); overflow-y: auto; 
+        }
         .slide-menu.active { right: 0; }
         .menu-section-title { font-size: 10px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin: 28px 0 14px; font-weight: 700; letter-spacing: 1.5px; }
         .menu-item { padding: 16px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 16px; font-weight: 600; color: white; cursor: pointer; transition: all 0.4s; display: flex; align-items: center; gap: 14px; border-radius: 10px; }
@@ -103,8 +119,8 @@
 
     <header>
         <a href="index.html" class="logo">
-            <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/zaratic.png" alt="Fanatic RP">
-            <span>ZARATIC RP</span>
+            <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/zaratic.png" alt="Zaratic RP">
+            <span>Zaratic RP</span>
         </a>
         <div class="burger" onclick="toggleMenu()">
             <span></span><span></span><span></span>
@@ -114,7 +130,7 @@
     <div class="slide-menu">
         <div class="menu-section-title">ნავიგაცია</div>
         <div class="menu-item" onclick="navigate('index.html')"><i class="fas fa-home"></i> მთავარი</div>
-        <div class="menu-item" onclick="navigate('donation.html')"><i class="fas fa-shopping-cart"></i> დონაცია</div>
+        <div class="menu-item" onclick="navigate('donation.html')"><i class="fas fa-shopping-cart"></i> მაღაზია</div>
         <div class="menu-item" onclick="navigate('forum.html')"><i class="fas fa-comments"></i> ფორუმი</div>
 
         <div class="menu-section-title">ჩამოტვირთვა</div>
@@ -123,21 +139,21 @@
 
         <div class="menu-section-title">სოციალური ქსელები</div>
         <div class="social-icons">
-            <a href="https://discord.gg/uasS77WA" target="_blank" class="social-icon"><i class="fab fa-discord"></i></a>
-            <a href="https://www.youtube.com/@tormetitormeti2" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
-            <a href="https://www.tiktok.com/@fanaticroleplay777" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
-            <a href="https://www.facebook.com/groups/687009050835555/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.facebook.com/groups/geosampcommunityn1/?ref=share&mibextid=NSMWBT" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://youtube.com/@zaraticrp?si=xg97Xib7QIw4TDlz" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+            <a href="https://discord.gg/3d47R7tw" target="_blank" class="social-icon"><i class="fab fa-discord"></i></a>
+            <a href="https://www.tiktok.com/@zaratic.rp.official?_r=1&_t=ZS-91jJLvxRUff" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
         </div>
     </div>
 
     <div class="content-container">
         <h1 class="page-title">წესები და პირობები</h1>
-        <p class="last-updated">ბოლო განახლება: 20 ნოემბერი, 2025</p>
+        <p class="last-updated">ბოლო განახლება: 28 ნოემბერი, 2025</p>
 
         <div class="content-box">
             <div class="section">
                 <h2><i class="fas fa-file-contract"></i> ზოგადი დებულებები</h2>
-                <p>ZARATIC Role Play-ის სერვერზე თამაში და დონაციის განხორციელება ნიშნავს, რომ თქვენ ეთანხმებით შემდეგ წესებსა და პირობებს. გთხოვთ, ყურადღებით წაიკითხოთ ეს დოკუმენტი.</p>
+                <p>Zaratic Role Play-ის სერვერზე თამაში და დონაციის განხორციელება ნიშნავს, რომ თქვენ ეთანხმებით შემდეგ წესებსა და პირობებს. გთხოვთ, ყურადღებით წაიკითხოთ ეს დოკუმენტი.</p>
                 
                 <div class="highlight-box">
                     <p><i class="fas fa-exclamation-circle"></i> ამ წესების დარღვევამ შეიძლება გამოიწვიოს თქვენი ანგარიშის დაბლოკვა ან სხვა სანქციები.</p>
@@ -164,7 +180,7 @@
 
                 <h3>3. ბონუსები და პრივილეგიები</h3>
                 <ul>
-                    <li>დონაციით მიღებული ბონუსები ვალიდურია მხოლოდ Fanatic RP სერვერზე</li>
+                    <li>დონაციით მიღებული ბონუსები ვალიდურია მხოლოდ Zaratic RP სერვერზე</li>
                     <li>ადმინისტრაცია იტოვებს უფლებას შეცვალოს ბონუსების შემადგენლობა</li>
                     <li>VIP სტატუსები და პრივილეგიები არ გადადის სხვა ანგარიშებზე</li>
                 </ul>
@@ -192,7 +208,7 @@
 
             <div class="section">
                 <h2><i class="fas fa-balance-scale"></i> პასუხისმგებლობა</h2>
-                <p>Fanatic Role Play არ არის პასუხისმგებელი:</p>
+                <p>Zaratic Role Play არ არის პასუხისმგებელი:</p>
                 <ul>
                     <li>თამაშში მოთამაშეთა შორის კონფლიქტებზე</li>
                     <li>მონაცემების დაკარგვაზე ტექნიკური პრობლემების გამო</li>
@@ -215,9 +231,9 @@
                 <h2><i class="fas fa-phone-alt"></i> კონტაქტი</h2>
                 <p>თუ გაქვთ შეკითხვები ამ წესებთან დაკავშირებით, დაგვიკავშირდით:</p>
                 <ul>
-                    <li>Discord: <a href="https://discord.gg/uasS77WA" style="color: var(--primary);">Fanatic RP Discord</a></li>
-                    <li>Facebook: SAMP| Zaratic Role Play |Official</li>
-                 </ul>
+                    <li>Discord: <a href="https://discord.gg/3d47R7tw" style="color: var(--primary);">Zaratic RP Discord</a></li>
+                    <li>Facebook: <a href="https://www.facebook.com/groups/geosampcommunityn1/?ref=share&mibextid=NSMWBT" style="color: var(--primary);">Zaratic Role Play</a></li>
+                </ul>
             </div>
         </div>
     </div>
@@ -247,3 +263,4 @@
     </script>
 </body>
 </html>
+=== END FILE ===
