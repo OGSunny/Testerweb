@@ -1,4 +1,9 @@
 {
+  "name": "zaratic",
+  "compatibility_date": "2025-11-27",
+  "assets": {
+    "directory": "./dist"
+  },
   "observability": {
     "enabled": false,
     "head_sampling_rate": 1,
