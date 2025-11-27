@@ -2,7 +2,7 @@
   "name": "zaratic",
   "compatibility_date": "2025-11-27",
   "assets": {
-    "directory": "./dist"
+    "directory": "./black"
   },
   "observability": {
     "enabled": false,
