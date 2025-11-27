@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>კონფიდენციალურობის პოლიტიკა • Fanatic Role Play</title>
+    <title>კონფიდენციალურობის პოლიტიკა • Zaratic Role Play</title>
     
-    <link rel="icon" href="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" type="image/png">
+    <link rel="icon" href="https://raw.githubusercontent.com/OGSunny/Testerweb/main/zaratic.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700;900&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
@@ -13,7 +13,7 @@
     <style>
         :root {
             --primary: #e74c3c;
-            --primary-light: #ff6b57;
+            --primary-light: #ff6b6b;
             --primary-dark: #c0392b;
             --secondary: #2c3e50;
             --accent: #3498db;
@@ -45,17 +45,33 @@
         .orb-2 { width: 400px; height: 400px; background: var(--accent); top: 50%; right: 5%; animation: float 25s ease-in-out infinite reverse; }
         @keyframes float { 0%,100% { transform: translate(0,0); } 33% { transform: translate(50px,-50px); } 66% { transform: translate(-30px,30px); } }
 
-        header { position: fixed; top: 0; left: 0; width: 100%; padding: 20px 5%; background: var(--glass); backdrop-filter: blur(30px); border-bottom: 1px solid var(--border); z-index: 1000; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
-        .logo { display: flex; align-items: center; gap: 16px; font-size: 26px; font-weight: 900; color: white; text-decoration: none; letter-spacing: 1px; text-shadow: var(--neon-glow); }
-        .logo img { width: 50px; height: 50px; border-radius: 50%; box-shadow: var(--neon-glow); transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); object-fit: cover; }
-        .logo:hover img { transform: scale(1.15) rotate(8deg); box-shadow: 0 0 40px rgba(231,76,60,1); }
+        header { 
+            position: fixed; top: 0; left: 0; width: 100%; padding: 20px 5%; 
+            background: var(--glass); backdrop-filter: blur(30px); 
+            border-bottom: 1px solid var(--border); z-index: 1000; 
+            display: flex; justify-content: space-between; align-items: center; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6); 
+        }
+        .logo { 
+            display: flex; align-items: center; gap: 16px; font-size: 26px; font-weight: 900; 
+            color: white; text-decoration: none; letter-spacing: 1px; 
+        }
+        .logo img { width: 50px; height: 50px; border-radius: 50%; transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); object-fit: cover; }
+        .logo:hover img { transform: scale(1.15) rotate(8deg); box-shadow: var(--neon-glow); }
+
         .burger { display: flex; flex-direction: column; gap: 6px; cursor: pointer; z-index: 1001; }
-        .burger span { width: 28px; height: 2.5px; background: white; border-radius: 3px; transition: 0.5s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        .burger span { width: 28px; height: 2.5px; background: white; border-radius: 3px; transition: 0.5s cubic-bezier(0.34,1.56,0.64,1); }
         .burger.active span:nth-child(1) { transform: rotate(45deg) translate(10px,10px); }
         .burger.active span:nth-child(2) { opacity: 0; transform: translateX(15px); }
         .burger.active span:nth-child(3) { transform: rotate(-45deg) translate(8px,-8px); }
 
-        .slide-menu { position: fixed; top: 0; right: -100%; width: 350px; height: 100vh; background: linear-gradient(135deg, rgba(10,13,27,0.98), rgba(20,28,50,0.95)); backdrop-filter: blur(30px); border-left: 1px solid var(--border); padding: 100px 30px 40px; transition: right 0.6s cubic-bezier(0.34,1.56,0.64,1); z-index: 999; box-shadow: -15px 0 60px rgba(0,0,0,0.7); overflow-y: auto; }
+        .slide-menu { 
+            position: fixed; top: 0; right: -100%; width: 350px; height: 100vh; 
+            background: linear-gradient(135deg, rgba(10,13,27,0.98), rgba(20,28,50,0.95)); 
+            backdrop-filter: blur(30px); border-left: 1px solid var(--border); 
+            padding: 100px 30px 40px; transition: right 0.6s cubic-bezier(0.34,1.56,0.64,1); 
+            z-index: 999; box-shadow: -15px 0 60px rgba(0,0,0,0.7); overflow-y: auto; 
+        }
         .slide-menu.active { right: 0; }
         .menu-section-title { font-size: 10px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin: 28px 0 14px; font-weight: 700; letter-spacing: 1.5px; }
         .menu-item { padding: 16px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 16px; font-weight: 600; color: white; cursor: pointer; transition: all 0.4s; display: flex; align-items: center; gap: 14px; border-radius: 10px; }
@@ -103,8 +119,8 @@
 
     <header>
         <a href="index.html" class="logo">
-            <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/main-logo.png" alt="Fanatic RP">
-            <span>FANATIC RP</span>
+            <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/zaratic.png" alt="Zaratic RP">
+            <span>Zaratic RP</span>
         </a>
         <div class="burger" onclick="toggleMenu()">
             <span></span><span></span><span></span>
@@ -114,7 +130,7 @@
     <div class="slide-menu">
         <div class="menu-section-title">ნავიგაცია</div>
         <div class="menu-item" onclick="navigate('index.html')"><i class="fas fa-home"></i> მთავარი</div>
-        <div class="menu-item" onclick="navigate('donation.html')"><i class="fas fa-shopping-cart"></i> დონაცია</div>
+        <div class="menu-item" onclick="navigate('donation.html')"><i class="fas fa-shopping-cart"></i> მაღაზია</div>
         <div class="menu-item" onclick="navigate('forum.html')"><i class="fas fa-comments"></i> ფორუმი</div>
 
         <div class="menu-section-title">ჩამოტვირთვა</div>
@@ -123,29 +139,29 @@
 
         <div class="menu-section-title">სოციალური ქსელები</div>
         <div class="social-icons">
-            <a href="https://discord.gg/uasS77WA" target="_blank" class="social-icon"><i class="fab fa-discord"></i></a>
-            <a href="https://www.youtube.com/@tormetitormeti2" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
-            <a href="https://www.tiktok.com/@fanaticroleplay777" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
-            <a href="https://www.facebook.com/groups/687009050835555/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.facebook.com/groups/geosampcommunityn1/?ref=share&mibextid=NSMWBT" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://youtube.com/@zaraticrp?si=xg97Xib7QIw4TDlz" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+            <a href="https://discord.gg/3d47R7tw" target="_blank" class="social-icon"><i class="fab fa-discord"></i></a>
+            <a href="https://www.tiktok.com/@zaratic.rp.official?_r=1&_t=ZS-91jJLvxRUff" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
         </div>
     </div>
 
     <div class="content-container">
         <h1 class="page-title">კონფიდენციალურობის პოლიტიკა</h1>
-        <p class="last-updated">ბოლო განახლება: 20 ნოემბერი, 2025</p>
+        <p class="last-updated">ბოლო განახლება: 28 ნოემბერი, 2025</p>
 
         <div class="content-box">
             <div class="section">
-                <h2><i class="fas fa-shield-alt"></i> შესავალი</h2>
-                <p>Fanatic Role Play სერიოზულად უდგება თქვენი პირადი ინფორმაციის დაცვას. ეს კონფიდენციალურობის პოლიტიკა განმარტავს, თუ როგორ ვაგროვებთ, ვიყენებთ და ვიცავთ თქვენს მონაცემებს.</p>
+                <h2>შესავალი</h2>
+                <p>Zaratic Role Play სერიოზულად უდგება თქვენი პირადი ინფორმაციის დაცვას. ეს კონფიდენციალურობის პოლიტიკა განმარტავს, თუ როგორ ვაგროვებთ, ვიყენებთ და ვიცავთ თქვენს მონაცემებს.</p>
                 
                 <div class="highlight-box">
-                    <p><i class="fas fa-info-circle"></i> სერვერის გამოყენებით თქვენ ეთანხმებით ამ კონფიდენციალურობის პოლიტიკას.</p>
+                    <p>სერვერის გამოყენებით თქვენ ეთანხმებით ამ კონფიდენციალურობის პოლიტიკას.</p>
                 </div>
             </div>
 
             <div class="section">
-                <h2><i class="fas fa-database"></i> რა ინფორმაციას ვაგროვებთ</h2>
+                <h2>რა ინფორმაციას ვაგროვებთ</h2>
                 
                 <h3>1. რეგისტრაციის ინფორმაცია</h3>
                 <p>სერვერზე რეგისტრაციისას ჩვენ ვაგროვებთ:</p>
@@ -175,7 +191,7 @@
             </div>
 
             <div class="section">
-                <h2><i class="fas fa-cogs"></i> როგორ ვიყენებთ თქვენს ინფორმაციას</h2>
+                <h2>როგორ ვიყენებთ თქვენს ინფორმაციას</h2>
                 <p>ჩვენ ვიყენებთ შეგროვებულ ინფორმაციას შემდეგი მიზნებისთვის:</p>
                 <ul>
                     <li>სერვერის ფუნქციონირების უზრუნველსაყოფად</li>
@@ -189,8 +205,9 @@
             </div>
 
             <div class="section">
-                <h2><i class="fas fa-lock"></i> ინფორმაციის დაცვა</h2>
+                <h2>ინფორმაციის დაცვა</h2>
                 <p>ჩვენ ვიყენებთ სხვადასხვა უსაფრთხოების ზომებს თქვენი მონაცემების დასაცავად:</p>
+                <: 
                 <ul>
                     <li>პაროლები ინახება დაშიფრული სახით</li>
                     <li>გადახდის ინფორმაცია არ ინახება ჩვენს სერვერებზე</li>
@@ -200,12 +217,12 @@
                 </ul>
 
                 <div class="highlight-box">
-                    <p><i class="fas fa-exclamation-triangle"></i> არასოდეს გაუზიაროთ თქვენი პაროლი ადმინისტრაციის წარმომადგენლებს. ადმინები არასოდეს მოგთხოვენ პაროლს.</p>
+                    <p>არასოდეს გაუზიაროთ თქვენი პაროლი ადმინისტრაციის წარმომადგენლებს. ადმინები არასოდეს მოგთხოვენ პაროლს.</p>
                 </div>
             </div>
 
             <div class="section">
-                <h2><i class="fas fa-share-alt"></i> ინფორმაციის გაზიარება</h2>
+                <h2>ინფორმაციის გაზიარება</h2>
                 <p>ჩვენ არ ვყიდით და არ ვაწოდებთ თქვენს პირად ინფორმაციას მესამე მხარეებს, გარდა:</p>
                 <ul>
                     <li>კანონმდებლობით მოთხოვნილი შემთხვევებისა</li>
@@ -215,7 +232,7 @@
             </div>
 
             <div class="section">
-                <h2><i class="fas fa-cookie-bite"></i> Cookies და ტექნოლოგიები</h2>
+                <h2>Cookies და ტექნოლოგიები</h2>
                 <p>ჩვენი ვებსაიტი იყენებს cookies-ს:</p>
                 <ul>
                     <li>სესიის შესანარჩუნებლად</li>
@@ -225,11 +242,11 @@
             </div>
 
             <div class="section">
-                <h2><i class="fas fa-user-shield"></i> თქვენი უფლებები</h2>
+                <h2>თქვენი უფლებები</h2>
                 <p>თქვენ გაქვთ უფლება:</p>
                 <ul>
                     <li>მოითხოვოთ თქვენზე არსებული ინფორმაციის ასლი</li>
-                    <li>მოითხოვოთ თქვენი მონაცემების შესწორება</li>
+                    <li>მოითხოვოთ თქვენი მ onაცემების შესწორება</li>
                     <li>მოითხოვოთ თქვენი ანგარიშის წაშლა</li>
                     <li>უარი თქვათ მარკეტინგულ შეტყობინებებზე</li>
                 </ul>
@@ -238,29 +255,29 @@
             </div>
 
             <div class="section">
-                <h2><i class="fas fa-child"></i> ასაკობრივი შეზღუდვა</h2>
+                <h2>ასაკობრივი შეზღუდვა</h2>
                 <p>ჩვენი სერვისი განკუთვნილია 13 წელზე უფროსი პირებისთვის. თუ თქვენ 13 წლამდე ასაკის ხართ, გთხოვთ, სერვისის გამოყენებამდე მიიღოთ მშობლების ნებართვა.</p>
             </div>
 
             <div class="section">
-                <h2><i class="fas fa-sync-alt"></i> ცვლილებები პოლიტიკაში</h2>
+                <h2>ცვლილებები პოლიტიკაში</h2>
                 <p>ჩვენ ვიტოვებთ უფლებას შევცვალოთ ეს კონფიდენციალურობის პოლიტიკა ნებისმიერ დროს. ყველა ცვლილება გამოქვეყნდება ამ გვერდზე და ძალაშია დაუყოვნებლივ.</p>
             </div>
 
             <div class="section">
-                <h2><i class="fas fa-envelope"></i> დაგვიკავშირდით</h2>
+                <h2>დაგვიკავშირდით</h2>
                 <p>თუ გაქვთ შეკითხვები ამ კონფიდენციალურობის პოლიტიკასთან დაკავშირებით:</p>
                 <ul>
-                    <li>Discord: <a href="https://discord.gg/uasS77WA" style="color: var(--primary);">Fanatic RP Discord</a></li>
-                    <li>Facebook: Fanatic Role Play ოფიციალური გვერდი</li>
-                    <li>TikTok: @fanaticroleplay777</li>
+                    <li>Discord: <a href="https://discord.gg/3d47R7tw" style="color: var(--primary);">Zaratic RP Discord</a></li>
+                    <li>Facebook: <a href="https://www.facebook.com/groups/geosampcommunityn1/?ref=share&mibextid=NSMWBT" style="color: var(--primary);">Zaratic Role Play</a></li>
+                    <li>TikTok: <a href="https://www.tiktok.com/@zaratic.rp.official?_r=1&_t=ZS-91jJLvxRUff" style="color: var(--primary);">@zaratic.rp.official</a></li>
                 </ul>
             </div>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2025 Fanatic Role Play. ყველა უფლება დაცულია.</p>
+        <p>&copy; 2025 Zaratic Role Play. ყველა უფლება დაცულია.</p>
         <p><a href="agreement.html">წესები და პირობები</a> • <a href="privacypolicy.html">კონფიდენციალურობა</a></p>
     </footer>
 
@@ -284,3 +301,4 @@
     </script>
 </body>
 </html>
+=== END FILE ===
