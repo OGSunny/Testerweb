@@ -420,7 +420,7 @@
 
     <div id="registerModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header"><h2>რეგისტრ�</h2></div>
+            <div class="modal-header"><h2>რეგისტრაცია</h2></div>
             <form id="registerForm">
                 <div class="form-group">
                     <label>მომხმარებელი</label>
@@ -447,7 +447,7 @@
             <div class="modal-header"><h2>ელფოსტის ვერიფიკაცია</h2></div>
             <form id="verifyForm">
                 <div class="form-group">
-                    <label>ვერიფიკაციის კოდი (8 ციფ)</label>
+                    <label>ვერიფიკაციის კოდი (8 ციფრი)</label>
                     <input type="text" id="verifyCode" placeholder="12345678" maxlength="8" required>
                 </div>
                 <div class="form-actions">
@@ -493,15 +493,38 @@
         const storageKey = 'zaraticForum_v2';
         let localData = JSON.parse(localStorage.getItem(storageKey)) || { token: null };
 
+        // გაუმჯობესებული API ფუნქცია სრული ლოგირებით და error handling-ით
         async function api(path, options = {}) {
+            console.log(`API REQUEST → ${options.method || 'GET'} ${API_URL}${path}`);
             const headers = { 'Content-Type': 'application/json', ...options.headers };
             if (localData.token) headers['Authorization'] = `Bearer ${localData.token}`;
-            const res = await fetch(API_URL + path, { ...options, headers });
-            if (res.status === 401 || res.status === 403) {
-                logout();
-                showToast('სესია დასრულდა', 'error');
+
+            let res;
+            try {
+                res = await fetch(API_URL + path, { ...options, headers });
+                console.log(`API RESPONSE ← ${res.status} ${path}`);
+            } catch (err) {
+                console.error('ქსელის ან CORS შეცდომა:', err);
+                showToast('ინტერნეტთან კავშირის პრობლემა ან სერვერი მიუწვდომელია', 'error');
                 return null;
             }
+
+            if (res.status === 401 || res.status === 403) {
+                logout();
+                showToast('სესია დასრულდა. გთხოვთ თავიდან გაიაროთ ავტორიზაცია', 'error');
+                return res;
+            }
+
+            if (!res.ok) {
+                let errorMsg = res.statusText;
+                try {
+                    const errData = await res.clone().json();
+                    errorMsg = errData.message || errorMsg;
+                } catch {}
+                console.error(`API ERROR ${res.status} ${path}: ${errorMsg}`);
+                showToast(errorMsg || 'სერვერის შეცდომა', 'error');
+            }
+
             return res;
         }
 
@@ -514,7 +537,7 @@
             toast.textContent = message;
             toast.style.background = type === 'success' ? '#00ff00' : '#ff0000';
             toast.style.display = 'block';
-            setTimeout(() => toast.style.display = 'none', 3000);
+            setTimeout(() => toast.style.display = 'none', 4000);
         }
 
         function closeModal(id) {
@@ -542,10 +565,11 @@
 
         function getBadgeColor(name) {
             const colors = {admin: '#f59e0b', tech: '#3b82f6', player: '#6b7280', vip: '#fbbf24', moderator: '#10b981', helper: '#ec4899'};
-            if (colors[name.toLowerCase()]) return `linear-gradient(135deg, ${colors[name.toLowerCase()]} 0%, ${colors[name.toLowerCase()+'aa'} 100%)`;
+            name = name.toLowerCase();
+            if (colors[name]) return `linear-gradient(135deg, ${colors[name]} 0%, ${colors[name] + 'aa'} 100%)`;
             let hash = 0;
             for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
-            const hue = hash % 360;
+            const hue = Math.abs(hash) % 360;
             return `linear-gradient(135deg, hsl(${hue},70%,50%), hsl(${hue},70%,40%))`;
         }
 
@@ -569,18 +593,23 @@
 
         async function updateSectionStats() {
             const res = await api('/post-counts');
-            if (!res?.ok) return;
-            const counts = await res.json();
-            document.querySelectorAll('.section').forEach(el => {
-                const count = counts[el.dataset.section] || 0;
-                el.querySelector('.sec-stats').textContent = count;
-            });
+            if (res && res.ok) {
+                const counts = await res.json();
+                document.querySelectorAll('.section').forEach(el => {
+                    const count = counts[el.dataset.section] || 0;
+                    el.querySelector('.sec-stats').textContent = count;
+                });
+            }
         }
 
         async function fetchPosts() {
             const res = await api(`/posts/${currentSection}`);
-            if (!res?.ok) return [];
-            sectionPosts = await res.json();
+            if (res && res.ok) {
+                sectionPosts = await res.json();
+            } else {
+                sectionPosts = [];
+                console.warn(`პოსტების ჩატვირთვა ვერ მოხერხდა სექციისთვის: ${currentSection}`);
+            }
             return sectionPosts;
         }
 
@@ -590,11 +619,17 @@
             list.innerHTML = '';
             const threads = sectionPosts.filter(p => !p.parentId)
                 .sort((a, b) => b.pinned - a.pinned || b.time - a.time);
+
+            if (threads.length === 0) {
+                list.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:2rem">თრედები არ მოიძებნა</p>';
+            }
+
             threads.forEach(thread => {
                 const replies = sectionPosts.filter(p => p.parentId === thread.id).length;
-                const lastActivity = formatTime(Math.max(thread.time, ...sectionPosts.filter(p => p.parentId === thread.id).map(p => p.time)));
+                const lastActivity = formatTime(Math.max(thread.time, ...sectionPosts.filter(p => p.parentId === thread.id).map(p => p.time) || [thread.time]));
                 const newInd = isNew(thread.time) ? '<span class="new-indicator">ახალი</span>' : '';
                 const pinnedClass = thread.pinned ? ' pinned' : '';
+
                 const div = document.createElement('div');
                 div.className = `thread-card${pinnedClass}`;
                 div.innerHTML = `
@@ -606,14 +641,14 @@
                     </div>
                     ${userData?.role === 'admin' ? `
                         <div style="margin-top:8px;display:flex;gap:8px">
-                            <button class="btn btn-secondary" onclick="togglePin('${thread.id}')">${thread.pinned ? 'განპინება' : 'პინი'}</button>
-                            <button class="btn btn-secondary" style="background:var(--danger)" onclick="deleteThread('${thread.id}')">წაშლა</button>
+                            <button class="btn btn-secondary" onclick="event.stopPropagation(); togglePin('${thread.id}')">${thread.pinned ? 'განპინება' : 'დაფიქსირება'}</button>
+                            <button class="btn btn-secondary" style="background:var(--danger)" onclick="event.stopPropagation(); deleteThread('${thread.id}')">წაშლა</button>
                         </div>
                     ` : ''}
                 `;
                 div.onclick = (e) => {
                     if (e.target.tagName === 'BUTTON') return;
-                    openThread(thread.id, thread.title || thread.content.substring(0,60));
+                    openThread(thread.id, thread.title || thread.content.substring(0,60) + '...');
                 };
                 list.appendChild(div);
             });
@@ -624,7 +659,11 @@
             const container = document.getElementById('threadPosts');
             container.innerHTML = '';
             const thread = sectionPosts.find(p => p.id === currentThread);
-            if (thread) container.appendChild(createPostElement(thread, false));
+            if (!thread) {
+                container.innerHTML = '<p style="text-align:center;color:var(--text-muted)">თრედი ვერ მოიძებნა</p>';
+                return;
+            }
+            container.appendChild(createPostElement(thread, false));
             sectionPosts.filter(p => p.parentId === currentThread)
                 .sort((a,b) => a.time - b.time)
                 .forEach(p => container.appendChild(createPostElement(p, true)));
@@ -641,7 +680,7 @@
                 <div class="post-header">
                     <div class="user-avatar" style="${avatarStyle}">${avatarText}</div>
                     <span class="post-author" onclick="viewUserProfile('${post.author}')">${post.author}</span>
-                    <div class="user-badges">${post.badges.map(renderBadge).join('')}</div>
+                    <div class="user-badges">${(post.badges || []).map(renderBadge).join('')}</div>
                     <span class="post-time">${formatTime(post.time)}</span>
                 </div>
                 ${!isReply ? `<h3>${escapeHtml(post.title || '')}</h3>` : ''}
@@ -670,10 +709,10 @@
                 const sectionEl = document.querySelector(`.section[data-section="${currentSection}"]`);
                 const cat = sectionEl.closest('.cat').querySelector('.cat-header').textContent.trim();
                 const sec = sectionEl.querySelector('.sec-title').textContent.trim();
-                document.getElementById('sectionBreadcrumbs').innerHTML = `<span onclick="backToForumFromSection()" style="cursor:pointer;color:var(--primary)">ფორუმი</span> > ${cat} > ${sec}`;
+                document.getElementById('sectionBreadcrumbs').innerHTML = `<span onclick="backToForumFromSection()" style="cursor:pointer;color:var(--primary)">ფორუმი</span> → ${cat} → ${sec}`;
             } else if (type === 'thread') {
                 const threadTitle = document.getElementById('threadTitle').textContent;
-                document.getElementById('threadBreadcrumbs').innerHTML = document.getElementById('sectionBreadcrumbs').innerHTML + ` > ${threadTitle}`;
+                document.getElementById('threadBreadcrumbs').innerHTML = document.getElementById('sectionBreadcrumbs').innerHTML + ` → ${threadTitle}`;
             }
         }
 
@@ -681,20 +720,26 @@
             e.preventDefault();
             const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
-            const res = await api('/login', {method: 'POST', body: JSON.stringify({username, password})});
-            if (res?.ok) {
-                const data = await res.json();
-                localData.token = data.token;
-                currentUser = data.user.username;
-                userData = data.user;
-                localStorage.setItem(storageKey, JSON.stringify(localData));
-                updateUI();
-                closeModal('loginModal');
-                showToast('შესვლა წარმატებით');
-                updateSectionStats();
-            } else {
-                showToast('არასწორი მონაცემები', 'error');
+
+            const res = await api('/login', {
+                method: 'POST',
+                body: JSON.stringify({username, password})
+            });
+
+            if (!res || !res.ok) {
+                showToast('არასწორი მომხმარებელი ან პაროლი', 'error');
+                return;
             }
+
+            const data = await res.json();
+            localData.token = data.token;
+            currentUser = data.user.username;
+            userData = data.user;
+            localStorage.setItem(storageKey, JSON.stringify(localData));
+            updateUI();
+            closeModal('loginModal');
+            showToast('შესვლა წარმატებით');
+            updateSectionStats();
         }
 
         async function handleRegister(e) {
@@ -702,20 +747,39 @@
             const username = document.getElementById('regUsername').value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const password = document.getElementById('regPassword').value;
-            if (password.length < 8) return showToast('პაროლი მინ. 8 სიმბოლო', 'error');
+
+            if (password.length < 8) {
+                showToast('პაროლი უნდა იყოს მინიმუმ 8 სიმბოლო', 'error');
+                return;
+            }
 
             const code = String(Math.floor(10000000 + Math.random() * 90000000));
 
             try {
-                await emailjs.send('service_uqvxc6o', 'Zaraticsregister9178', {to_email: email, to_name: username, code});
-                const res = await api('/register', {method: 'POST', body: JSON.stringify({username, email, password, code})});
-                if (res?.ok) {
-                    sessionStorage.setItem('pendingEmail', email);
-                    closeModal('registerModal');
-                    document.getElementById('verifyModal').classList.add('active');
+                await emailjs.send('service_uqvxc6o', 'Zaraticsregister9178', {
+                    to_email: email,
+                    to_name: username,
+                    code: code
+                });
+                console.log('EmailJS წარმატებით გაიგზავნა');
+
+                const res = await api('/register', {
+                    method: 'POST',
+                    body: JSON.stringify({username, email, password, code})
+                });
+
+                if (!res || !res.ok) {
+                    showToast('რეგისტრაციის შეცდომა (შესაძლოა მომხმარებელი უკვე არსებობს)', 'error');
+                    return;
                 }
-            } catch {
-                showToast('რეგისტრაციის შეცდომა', 'error');
+
+                sessionStorage.setItem('pendingEmail', email);
+                closeModal('registerModal');
+                document.getElementById('verifyModal').classList.add('active');
+                showToast('კოდი გამოგზავნილია ელფოსტაზე');
+            } catch (err) {
+                console.error('EmailJS შეცდომა:', err);
+                showToast('ელფოსტის გაგზავნა ვერ მოხერხდა', 'error');
             }
         }
 
@@ -723,37 +787,47 @@
             e.preventDefault();
             const code = document.getElementById('verifyCode').value.trim();
             const email = sessionStorage.getItem('pendingEmail');
-            const res = await api('/verify', {method: 'POST', body: JSON.stringify({email, code})});
-            if (res?.ok) {
-                const data = await res.json();
-                localData.token = data.token;
-                currentUser = data.user.username;
-                userData = data.user;
-                localStorage.setItem(storageKey, JSON.stringify(localData));
-                updateUI();
-                closeModal('verifyModal');
-                sessionStorage.removeItem('pendingEmail');
-                showToast('რეგისტრაცია დასრულდა');
-                updateSectionStats();
-            } else {
-                showToast('კოდი არასწორია', 'error');
+
+            const res = await api('/verify', {
+                method: 'POST',
+                body: JSON.stringify({email, code})
+            });
+
+            if (!res || !res.ok) {
+                showToast('არასწორი კოდი', 'error');
+                return;
             }
+
+            const data = await res.json();
+            localData.token = data.token;
+            currentUser = data.user.username;
+            userData = data.user;
+            localStorage.setItem(storageKey, JSON.stringify(localData));
+            updateUI();
+            closeModal('verifyModal');
+            sessionStorage.removeItem('pendingEmail');
+            showToast('რეგისტრაცია წარმატებით დასრულდა!');
+            updateSectionStats();
         }
 
         async function togglePin(postId) {
             if (userData?.role !== 'admin') return;
             const res = await api(`/posts/${currentSection}/${postId}/pin`, {method: 'POST'});
-            if (res?.ok) {
+            if (res && res.ok) {
                 currentThread ? renderThread() : renderThreads();
-                updateSectionStats();
             }
         }
 
         async function deleteThread(threadId) {
             if (userData?.role !== 'admin') return;
-            if (!confirm('დარწმუნებული ხართ?')) return;
-            const res = await api(`/posts/${currentSection}/delete`, {method: 'POST', body: JSON.stringify({threadId})});
-            if (res?.ok) {
+            if (!confirm('ნამდვილად გსურთ თრედის წაშლა?')) return;
+
+            const res = await api(`/posts/${currentSection}/delete`, {
+                method: 'POST',
+                body: JSON.stringify({threadId})
+            });
+
+            if (res && res.ok) {
                 await fetchPosts();
                 renderThreads();
                 updateSectionStats();
@@ -763,7 +837,7 @@
 
         async function toggleLike(postId) {
             const res = await api(`/posts/${currentSection}/${postId}/like`, {method: 'POST'});
-            if (res?.ok) {
+            if (res && res.ok) {
                 currentThread ? renderThread() : renderThreads();
             }
         }
@@ -772,20 +846,32 @@
             e.preventDefault();
             const title = document.getElementById('threadTitleInput').value.trim();
             const content = document.getElementById('threadContent').value.trim();
-            const res = await api(`/posts/${currentSection}`, {method: 'POST', body: JSON.stringify({title, content})});
-            if (res?.ok) {
+
+            const res = await api(`/posts/${currentSection}`, {
+                method: 'POST',
+                body: JSON.stringify({title, content})
+            });
+
+            if (res && res.ok) {
                 closeModal('newThreadModal');
                 renderThreads();
                 updateSectionStats();
                 showToast('თრედი შეიქმნა');
+            } else {
+                showToast('თრედის შექმნა ვერ მოხერხდა', 'error');
             }
         }
 
         async function handleNewReply(e) {
             e.preventDefault();
             const content = document.getElementById('replyContent').value.trim();
-            const res = await api(`/posts/${currentSection}`, {method: 'POST', body: JSON.stringify({content, parentId: currentThread})});
-            if (res?.ok) {
+
+            const res = await api(`/posts/${currentSection}`, {
+                method: 'POST',
+                body: JSON.stringify({content, parentId: currentThread})
+            });
+
+            if (res && res.ok) {
                 document.getElementById('replyContent').value = '';
                 renderThread();
                 updateSectionStats();
@@ -803,7 +889,11 @@
 
         async function showProfile() {
             const res = await api('/me');
-            if (!res?.ok) return;
+            if (!res || !res.ok) {
+                logout();
+                return;
+            }
+
             const data = await res.json();
             userData = data;
             currentUser = data.username;
@@ -817,7 +907,7 @@
             document.getElementById('profileAvatarLarge').style.cssText = avatarStyle;
             document.getElementById('profileAvatarLarge').textContent = data.profile.avatar ? '' : currentUser[0].toUpperCase();
             document.getElementById('profileUsername').textContent = currentUser;
-            document.getElementById('profileBadges').innerHTML = data.badges.map(renderBadge).join('');
+            document.getElementById('profileBadges').innerHTML = (data.badges || []).map(renderBadge).join('');
 
             document.getElementById('displayName').textContent = data.profile.name || '-';
             document.getElementById('displayEmail').textContent = data.profile.email || '-';
@@ -853,21 +943,35 @@
                 updateUI();
                 showProfile();
                 showToast('პროფილი განახლდა');
+            } else {
+                showToast('პროფილის განახლება ვერ მოხერხდა', 'error');
             }
         }
 
         async function assignBadge() {
             const username = document.getElementById('badgeUsername').value.trim();
             const badge = document.getElementById('badgeName').value.trim();
-            const res = await api(`/admin/badge/${username}`, {method: 'POST', body: JSON.stringify({badge})});
-            if (res?.ok) showToast('ბეჯი მინიჭებულია');
+            if (!username || !badge) return showToast('შეავსეთ ყველა ველი', 'error');
+
+            const res = await api(`/admin/badge/${username}`, {
+                method: 'POST',
+                body: JSON.stringify({badge})
+            });
+
+            if (res && res.ok) showToast('ბეჯი მინიჭებულია');
         }
 
         async function removeBadge() {
             const username = document.getElementById('removeBadgeUsername').value.trim();
             const badge = document.getElementById('removeBadgeName').value.trim();
-            const res = await api(`/admin/badge/${username}`, {method: 'DELETE', body: JSON.stringify({badge})});
-            if (res?.ok) showToast('ბეჯი წაშლილია');
+            if (!username || !badge) return showToast('შეავსეთ ყველა ველი', 'error');
+
+            const res = await api(`/admin/badge/${username}`, {
+                method: 'DELETE',
+                body: JSON.stringify({badge})
+            });
+
+            if (res && res.ok) showToast('ბეჯი წაშლილია');
         }
 
         function logout() {
@@ -918,7 +1022,7 @@
             const section = document.querySelector(`.section[data-section="${currentSection}"]`);
             const isViewOnly = section?.dataset.viewOnly === 'true';
             if (isViewOnly && (!userData || userData.role !== 'admin')) {
-                showToast('ამ სექციაში მხოლოდ ადმინი ქმნის თრედებს', 'error');
+                showToast('ამ სექციაში მხოლოდ ადმინისტრაცია ქმნის თრედებს', 'error');
                 return;
             }
             document.getElementById('newThreadModal').classList.add('active');
@@ -932,11 +1036,18 @@
         }
         function nextSlide() { showSlide((currentSlide + 1) % 2); }
         function prevSlide() { showSlide((currentSlide - 1 + 2) % 2); }
-        function showWelcomeModal() { document.getElementById('welcomeModal').classList.add('active'); showSlide(0); }
+        function showWelcomeModal() { 
+            document.getElementById('welcomeModal').classList.add('active'); 
+            showSlide(0); 
+        }
 
         async function viewUserProfile(username) {
             const res = await api(`/users/${username}`);
-            if (!res?.ok) return showToast('მომხმარებელი არ მოიძებნა', 'error');
+            if (!res || !res.ok) {
+                showToast('მომხმარებელი ვერ მოიძებნა', 'error');
+                return;
+            }
+
             const data = await res.json();
 
             document.getElementById('forumView').style.display = 'none';
@@ -945,7 +1056,7 @@
             document.getElementById('profileView').style.display = 'block';
 
             document.getElementById('profileUsername').textContent = username;
-            document.getElementById('profileBadges').innerHTML = data.badges.map(renderBadge).join('');
+            document.getElementById('profileBadges').innerHTML = (data.badges || []).map(renderBadge).join('');
             document.getElementById('displayName').textContent = data.profile.name || '-';
             document.getElementById('displayEmail').textContent = data.profile.email || '-';
             document.getElementById('displayPhone').textContent = data.profile.phone || '-';
@@ -963,15 +1074,18 @@
 
         document.addEventListener('DOMContentLoaded', async () => {
             await updateSectionStats();
+
             if (localData.token) {
                 const res = await api('/me');
-                if (res?.ok) {
+                if (res && res.ok) {
                     const data = await res.json();
                     currentUser = data.username;
                     userData = data;
                     updateUI();
+                    updateSectionStats();
                 } else {
                     localStorage.removeItem(storageKey);
+                    localData.token = null;
                     showWelcomeModal();
                 }
             } else {
@@ -993,14 +1107,21 @@
                     document.getElementById('sectionTitle').textContent = el.querySelector('.sec-title').textContent;
                     updateBreadcrumbs('section');
                     await renderThreads();
+
                     const newThreadBtn = document.querySelector('#sectionView .btn-primary');
-                    newThreadBtn.style.display = (el.dataset.viewOnly === 'true' && (!userData || userData.role !== 'admin')) ? 'none' : 'block';
+                    const isViewOnly = el.dataset.viewOnly === 'true';
+                    newThreadBtn.style.display = (isViewOnly && (!userData || userData.role !== 'admin')) ? 'none' : 'block';
+
                     clearInterval(refreshInterval);
                     refreshInterval = setInterval(renderThreads, 30000);
                 });
             });
 
-            window.onclick = e => { if (e.target.classList.contains('modal')) closeModal(e.target.id); };
+            window.onclick = e => { 
+                if (e.target.classList.contains('modal') || e.target.classList.contains('fullscreen-modal')) {
+                    e.target.classList.remove('active');
+                }
+            };
         });
     </script>
 </body>
