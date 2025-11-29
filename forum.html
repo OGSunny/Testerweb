@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zaratic Role Play - Nexus Portal</title>
+    <title>Zaratic Role Play - Nexus Portal (Enhanced)</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -51,6 +51,16 @@
 
         .avatar-float { animation: float 4s ease-in-out infinite; }
         .animate-pulse-glow { animation: pulse-glow 2s infinite; }
+        
+        /* New: Fade In Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up-custom {
+            animation: fadeIn 0.5s ease-out;
+        }
+
 
         /* Glassmorphism Utilities */
         .glass-card {
@@ -159,7 +169,7 @@
             </div>
             
             <div id="navActions" class="flex items-center gap-4">
-                </div>
+            </div>
         </div>
     </nav>
 
@@ -167,11 +177,11 @@
         
         <div id="mainLoading" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden">
             <div class="text-cyan-400 text-xl font-bold flex items-center gap-3">
-                <i class="fas fa-circle-notch fa-spin text-3xl"></i> Loading Nexus...
+                <i class="fas fa-circle-notch fa-spin text-3xl"></i> Processing Command...
             </div>
         </div>
 
-        <div id="forumView" class="animate-fade-in-up">
+        <div id="forumView" class="animate-fade-in-up-custom">
             <header class="py-8 text-center">
                 <h2 class="text-4xl md:text-5xl font-black mb-2 gradient-text">Zaratic Nexus</h2>
                 <p class="text-cyan-200/60 font-mono text-sm">Official Communication Protocols & Archives</p>
@@ -186,19 +196,19 @@
                     <div class="space-y-3">
                         <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="rules" data-view-only="true">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-book-open mr-2 text-cyan-500"></i> წესდება</span>
+                                <span class="text-sm font-medium"><i class="fas fa-book-open mr-2 text-cyan-500"></i> წესდება (Rules)</span>
                                 <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
                             </div>
                         </a>
                         <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="news" data-view-only="true">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-broadcast-tower mr-2 text-cyan-500"></i> განცხადებები</span>
+                                <span class="text-sm font-medium"><i class="fas fa-broadcast-tower mr-2 text-cyan-500"></i> განცხადებები (Announcements)</span>
                                 <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
                             </div>
                         </a>
                         <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="updates" data-view-only="true">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-code-branch mr-2 text-cyan-500"></i> განახლებები</span>
+                                <span class="text-sm font-medium"><i class="fas fa-code-branch mr-2 text-cyan-500"></i> განახლებები (Updates)</span>
                                 <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
                             </div>
                         </a>
@@ -213,19 +223,19 @@
                     <div class="space-y-3">
                         <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="suggestions">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-hand-pointer mr-2 text-cyan-500"></i> წინადადებები</span>
+                                <span class="text-sm font-medium"><i class="fas fa-hand-pointer mr-2 text-cyan-500"></i> წინადადებები (Suggestions)</span>
                                 <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
                             </div>
                         </a>
                         <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="events">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-calendar-check mr-2 text-cyan-500"></i> ივენთები</span>
+                                <span class="text-sm font-medium"><i class="fas fa-calendar-check mr-2 text-cyan-500"></i> ივენთები (Events)</span>
                                 <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
                             </div>
                         </a>
                         <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="biographies">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-id-card mr-2 text-cyan-500"></i> ბიოგრაფიები</span>
+                                <span class="text-sm font-medium"><i class="fas fa-id-card mr-2 text-cyan-500"></i> ბიოგრაფიები (Biographies)</span>
                                 <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
                             </div>
                         </a>
@@ -240,19 +250,19 @@
                     <div class="space-y-3">
                          <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="complaints-admin">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-user-lock mr-2 text-orange-400"></i> გასაჩივრება (Admin)</span>
+                                <span class="text-sm font-medium"><i class="fas fa-user-lock mr-2 text-orange-400"></i> გასაჩივრება (Admin Appeal)</span>
                                 <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
                             </div>
                         </a>
                         <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="complaints-player">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-user-times mr-2 text-orange-400"></i> გასაჩივრება (Player)</span>
+                                <span class="text-sm font-medium"><i class="fas fa-user-times mr-2 text-orange-400"></i> გასაჩივრება (Player Report)</span>
                                 <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
                             </div>
                         </a>
                         <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="unban">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-key mr-2 text-green-400"></i> განბლოკვა</span>
+                                <span class="text-sm font-medium"><i class="fas fa-key mr-2 text-green-400"></i> განბლოკვა (Unban Request)</span>
                                 <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
                             </div>
                         </a>
@@ -267,13 +277,13 @@
                     <div class="space-y-3">
                         <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="vacancies-leaders">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-chess-king mr-2 text-cyan-500"></i> ლიდერობა</span>
+                                <span class="text-sm font-medium"><i class="fas fa-chess-king mr-2 text-cyan-500"></i> ლიდერობა (Leadership)</span>
                                 <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
                             </div>
                         </a>
                         <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="vacancies-admin">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-shield-alt mr-2 text-cyan-500"></i> ადმინისტრირება</span>
+                                <span class="text-sm font-medium"><i class="fas fa-shield-alt mr-2 text-cyan-500"></i> ადმინისტრირება (Administration)</span>
                                 <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
                             </div>
                         </a>
@@ -288,13 +298,13 @@
                     <div class="space-y-3">
                         <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="donation-help">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-hand-holding-usd mr-2 text-cyan-500"></i> დონაცია</span>
+                                <span class="text-sm font-medium"><i class="fas fa-hand-holding-usd mr-2 text-cyan-500"></i> დონაცია (Donation)</span>
                                 <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
                             </div>
                         </a>
                         <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="general">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-comments mr-2 text-cyan-500"></i> ზოგადი დისკუსია</span>
+                                <span class="text-sm font-medium"><i class="fas fa-comments mr-2 text-cyan-500"></i> ზოგადი დისკუსია (General Discussion)</span>
                                 <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
                             </div>
                         </a>
@@ -303,7 +313,7 @@
             </div>
         </div>
 
-        <div id="sectionView" class="hidden animate-fade-in-up">
+        <div id="sectionView" class="hidden animate-fade-in-up-custom">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                 <div>
                     <button onclick="backToForumFromSection()" class="btn-secondary px-4 py-2 rounded-lg text-sm mb-2 flex items-center gap-2">
@@ -318,10 +328,10 @@
             </div>
 
             <div id="threadsList" class="space-y-4">
-                </div>
+            </div>
         </div>
 
-        <div id="threadView" class="hidden animate-fade-in-up">
+        <div id="threadView" class="hidden animate-fade-in-up-custom">
             <div class="flex justify-between items-center mb-6">
                 <button onclick="backToSectionFromThread()" class="btn-secondary px-4 py-2 rounded-lg text-sm flex items-center gap-2">
                     <i class="fas fa-arrow-left"></i> Back to Section
@@ -334,14 +344,14 @@
             </div>
 
             <div id="threadPosts" class="space-y-6">
-                </div>
+            </div>
 
             <div class="glass-card p-6 md:p-8 rounded-2xl my-10">
                 <h3 class="text-xl font-bold mb-4 text-cyan-100">Post a Reply</h3>
                 <form id="newReplyForm">
                     <textarea id="replyContent" rows="4" class="w-full p-4 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:ring-2 focus:ring-cyan-500 transition-all text-gray-100 placeholder-gray-500" placeholder="Type your response here..." required></textarea>
                     <div class="mt-4 flex justify-end">
-                        <button type="submit" class="btn-gradient px-6 py-3 rounded-lg font-bold flex items-center gap-2">
+                        <button type="submit" id="submitReplyBtn" class="btn-gradient px-6 py-3 rounded-lg font-bold flex items-center gap-2">
                             <span class="relative z-10"><i class="fas fa-paper-plane"></i> Submit Reply</span>
                         </button>
                     </div>
@@ -349,7 +359,7 @@
             </div>
         </div>
 
-        <div id="profileView" class="hidden animate-fade-in-up">
+        <div id="profileView" class="hidden animate-fade-in-up-custom">
             <div class="glass-card p-8 rounded-3xl max-w-4xl mx-auto border-l-4 border-cyan-400">
                 <div class="flex flex-col md:flex-row items-center gap-8 mb-8 pb-8 border-b border-gray-700/50">
                     <div id="profileAvatarLarge" class="w-32 h-32 rounded-full border-4 border-cyan-400 shadow-[0_0_20px_rgba(0,255,255,0.4)] avatar-float flex items-center justify-center text-4xl font-bold bg-gray-800"></div>
@@ -389,7 +399,7 @@
                         <div>
                             <label class="block text-sm mb-1 text-gray-400">Avatar (Image URL or File)</label>
                             <div class="flex items-center gap-4">
-                                <div id="avatarPreview" class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center border border-cyan-500/50"></div>
+                                <div id="avatarPreview" class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center border border-cyan-500/50 bg-cover bg-center"></div>
                                 <input type="file" id="editAvatar" class="text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-900/50 file:text-cyan-400 hover:file:bg-cyan-900" accept="image/*" onchange="previewAvatar(this)">
                             </div>
                         </div>
@@ -407,17 +417,17 @@
                     <div class="p-6 rounded-xl bg-gray-900/50 border border-cyan-900">
                         <h4 class="text-cyan-400 font-bold mb-4">Grant Badge</h4>
                         <div class="flex flex-col md:flex-row gap-4">
-                            <input type="text" id="badgeUsername" placeholder="Username" class="flex-1 p-2 bg-black/50 border border-gray-700 rounded">
+                            <input type="text" id="badgeUsername" placeholder="Target Username" class="flex-1 p-2 bg-black/50 border border-gray-700 rounded">
                             <input type="text" id="badgeName" placeholder="Badge (e.g. VIP)" class="flex-1 p-2 bg-black/50 border border-gray-700 rounded">
-                            <button onclick="assignBadge()" class="btn-gradient px-4 py-2 rounded"><span class="relative z-10">Add</span></button>
+                            <button onclick="assignBadge(event)" class="btn-gradient px-4 py-2 rounded"><span class="relative z-10">Add</span></button>
                         </div>
                     </div>
                     <div class="p-6 rounded-xl bg-gray-900/50 border border-red-900/30">
                         <h4 class="text-orange-400 font-bold mb-4">Revoke Badge</h4>
                         <div class="flex flex-col md:flex-row gap-4">
-                            <input type="text" id="removeBadgeUsername" placeholder="Username" class="flex-1 p-2 bg-black/50 border border-gray-700 rounded">
+                            <input type="text" id="removeBadgeUsername" placeholder="Target Username" class="flex-1 p-2 bg-black/50 border border-gray-700 rounded">
                             <input type="text" id="removeBadgeName" placeholder="Badge Name" class="flex-1 p-2 bg-black/50 border border-gray-700 rounded">
-                            <button onclick="removeBadge()" class="bg-red-600 hover:bg-red-500 px-4 py-2 rounded text-white font-bold transition">Remove</button>
+                            <button onclick="removeBadge(event)" class="bg-red-600 hover:bg-red-500 px-4 py-2 rounded text-white font-bold transition">Remove</button>
                         </div>
                     </div>
                 </div>
@@ -440,13 +450,14 @@
     <div id="toast" class="fixed top-24 right-5 z-50 px-6 py-4 rounded-lg shadow-2xl transform translate-x-full transition-transform duration-300 font-bold flex items-center gap-3"></div>
 
     <script>
-        const API_URL = 'https://data7167.jemalagegidze.workers.dev';
+        // Use a descriptive variable name for the backend URL
+        const NEXUS_API_BASE_URL = 'https://data7167.jemalagegidze.workers.dev';
         // Initialize EmailJS
         emailjs.init('6mfdsM4fGZ9WWDFst');
 
         // Global State
-        let currentUser = null;
-        let userData = null;
+        let currentUser = null; // The logged-in username
+        let userData = null;    // Full user profile data
         let currentSection = null;
         let currentThread = null;
         let sectionPosts = [];
@@ -454,12 +465,12 @@
         const storageKey = 'zaraticForum_v2';
         let localData = JSON.parse(localStorage.getItem(storageKey)) || { token: null };
 
-        /* --- VISUAL EFFECTS --- */
-        
+        /* --- VISUAL EFFECTS & UTILITIES (KEPT AS IS) --- */
+
         // Spotlight Effect
         const spotlight = document.getElementById('spotlight');
         document.addEventListener('mousemove', (e) => {
-            if (Date.now() % 2 !== 0) return; // Throttle
+            if (Date.now() % 2 !== 0) return; 
             spotlight.style.opacity = '1';
             spotlight.style.left = `${e.clientX}px`;
             spotlight.style.top = `${e.clientY}px`;
@@ -482,8 +493,8 @@
         }
         document.querySelectorAll('.btn-gradient').forEach(b => b.addEventListener('click', addRipple));
 
-        /* --- UTILITIES --- */
-
+        // UTILITIES
+        
         function showLoading(show) {
             document.getElementById('mainLoading').classList.toggle('hidden', !show);
         }
@@ -497,54 +508,89 @@
             setTimeout(() => toast.classList.add('translate-x-full'), 3000);
         }
 
+        // IMPROVED: Strict sanitization to prevent XSS.
         function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
+            if (typeof text !== 'string') return '';
+            return text.replace(/[&<>"']/g, function(m) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                }[m];
+            });
         }
 
         function formatTime(time) {
             const diff = Date.now() - time;
-            if (diff < 60000) return 'Just now';
-            if (diff < 3600000) return `${Math.floor(diff/60000)}m ago`;
-            if (diff < 86400000) return `${Math.floor(diff/3600000)}h ago`;
-            if (diff < 604800000) return `${Math.floor(diff/86400000)}d ago`;
-            return new Date(time).toLocaleString('en-US'); // Changed to EN for Nexus theme
+            const s = 1000;
+            const m = 60 * s;
+            const h = 60 * m;
+            const d = 24 * h;
+            
+            if (diff < m) return 'Just now';
+            if (diff < h) return `${Math.floor(diff/m)}m ago`;
+            if (diff < d) return `${Math.floor(diff/h)}h ago`;
+            if (diff < 7 * d) return `${Math.floor(diff/d)}d ago`;
+            return new Date(time).toLocaleDateString('en-US'); 
         }
 
         function getBadgeHtml(name) {
+            const safeName = escapeHtml(name).toUpperCase();
             const colors = {
                 'ADMIN': 'bg-gradient-to-r from-cyan-400 to-blue-600 text-black',
                 'VIP': 'bg-gradient-to-r from-yellow-400 to-orange-500 text-black',
                 'MODERATOR': 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white',
                 'HELPER': 'bg-gradient-to-r from-green-400 to-emerald-600 text-black'
             };
-            const cls = colors[name.toUpperCase()] || 'bg-gray-700 text-white';
-            return `<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider badge-custom ${cls}">${name}</span>`;
+            const cls = colors[safeName] || 'bg-gray-700 text-white';
+            return `<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider badge-custom ${cls}">${safeName}</span>`;
         }
 
-        /* --- API & LOGIC --- */
+        /* --- API LAYER (IMPROVED ERROR HANDLING) --- */
 
         async function api(path, options = {}) {
             showLoading(true);
-            const headers = { 'Content-Type': 'application/json', ...options.headers };
+            const headers = { ...options.headers };
+            
+            // Set Content-Type only if a body is present and it's not FormData (for avatar uploads)
+            if (options.body && !(options.body instanceof FormData)) {
+                headers['Content-Type'] = 'application/json';
+            }
+
             if (localData.token) headers['Authorization'] = `Bearer ${localData.token}`;
 
             try {
-                const res = await fetch(API_URL + path, { ...options, headers });
+                const res = await fetch(NEXUS_API_BASE_URL + path, { ...options, headers });
                 showLoading(false);
+                
                 if (res.status === 401 || res.status === 403) {
-                     if (!['/me','/login','/register','/verify'].includes(path)) logout();
-                     return res;
+                     // Check if not trying to log in/register/verify
+                     if (!['/me','/login','/register','/verify'].includes(path) && currentUser) {
+                        showToast('Session expired. Please log in again.', 'error');
+                        logout();
+                     }
+                     return res; // Let auth handlers deal with their own 40x
                 }
-                if (!res.ok && path !== '/post-counts') { // Quiet fail for counts
-                    const errData = await res.clone().json().catch(() => ({}));
-                    showToast(errData.message || res.statusText, 'error');
+                
+                if (!res.ok) { 
+                    if (path !== '/post-counts') { // Quiet fail for counts
+                        let errData = { message: res.statusText || 'Unknown Error' };
+                        try {
+                            const clone = res.clone();
+                            if (res.headers.get('content-type')?.includes('application/json')) {
+                                errData = await clone.json();
+                            }
+                        } catch(e) {/* ignore json parse error */}
+                        showToast(errData.message || res.statusText || 'Operation Failed', 'error');
+                    }
                 }
                 return res;
             } catch (err) {
                 showLoading(false);
-                showToast('Connection Refused', 'error');
+                console.error('API Connection Error:', err);
+                showToast('Connection Refused or Network Error', 'error');
                 return null;
             }
         }
@@ -558,7 +604,6 @@
             
             body.innerHTML = htmlContent;
             container.classList.remove('hidden');
-            // Trigger transition
             setTimeout(() => {
                 container.classList.remove('opacity-0');
                 content.classList.remove('scale-95');
@@ -609,9 +654,9 @@
             openModal(`
                 <h2 class="text-2xl font-bold text-cyan-400 mb-4">Create Identity</h2>
                 <form onsubmit="handleRegister(event)" class="space-y-4">
-                    <input type="text" id="regUsername" placeholder="Username" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none text-white" required>
+                    <input type="text" id="regUsername" placeholder="Username" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none text-white" pattern="^[a-zA-Z0-9_]{3,20}$" title="Username must be 3-20 characters long and contain only letters, numbers, and underscores." required>
                     <input type="email" id="regEmail" placeholder="Email" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none text-white" required>
-                    <input type="password" id="regPassword" placeholder="Password (Min 8 chars)" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none text-white" required>
+                    <input type="password" id="regPassword" placeholder="Password (Min 8 chars, strong)" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none text-white" required>
                     <button type="submit" class="btn-gradient w-full py-2 rounded-lg mt-2"><span class="relative z-10">INITIATE</span></button>
                 </form>
             `);
@@ -631,73 +676,94 @@
         function showNewThreadModal() {
             if (!currentUser) return showLogin();
             
-            // Check view-only logic
             const sectionEl = document.querySelector(`a[data-section="${currentSection}"]`);
             if (sectionEl?.dataset.viewOnly === 'true' && userData?.role !== 'admin') {
-                return showToast('Restricted Protocol: Admin Only', 'error');
+                return showToast('Restricted Protocol: Admin Only Section', 'error');
             }
 
             openModal(`
                 <h2 class="text-2xl font-bold gradient-text mb-4">Initialize Thread</h2>
                 <form onsubmit="handleNewThread(event)" class="space-y-4">
-                    <input type="text" id="threadTitleInput" placeholder="Subject" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required>
+                    <input type="text" id="threadTitleInput" placeholder="Subject" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required maxlength="100">
                     <textarea id="threadContent" rows="5" placeholder="Transmission content..." class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required></textarea>
                     <div class="flex justify-end gap-3">
                         <button type="button" onclick="closeActiveModal()" class="text-gray-400 hover:text-white px-4">Cancel</button>
-                        <button type="submit" class="btn-gradient px-6 py-2 rounded-lg"><span class="relative z-10">TRANSMIT</span></button>
+                        <button type="submit" id="submitThreadBtn" class="btn-gradient px-6 py-2 rounded-lg"><span class="relative z-10">TRANSMIT</span></button>
                     </div>
                 </form>
             `);
         }
 
-        /* --- AUTH HANDLERS --- */
+        /* --- AUTH HANDLERS (IMPROVED VALIDATION) --- */
 
         async function handleLogin(e) {
             e.preventDefault();
-            const u = document.getElementById('loginUsername').value;
+            const u = document.getElementById('loginUsername').value.trim();
             const p = document.getElementById('loginPassword').value;
+            
             const res = await api('/login', { method: 'POST', body: JSON.stringify({username:u, password:p})});
             if(res && res.ok) {
                 const data = await res.json();
                 finishAuth(data);
                 closeActiveModal();
                 showToast(`Welcome back, ${u}`);
+            } else if (res && res.status === 401) {
+                showToast('Authentication Failed: Invalid credentials.', 'error');
             }
         }
 
         async function handleRegister(e) {
             e.preventDefault();
-            const u = document.getElementById('regUsername').value;
-            const em = document.getElementById('regEmail').value;
+            const u = document.getElementById('regUsername').value.trim();
+            const em = document.getElementById('regEmail').value.trim();
             const p = document.getElementById('regPassword').value;
-            if(p.length < 8) return showToast('Password too weak', 'error');
+
+            if (p.length < 8) return showToast('Password must be at least 8 characters.', 'error');
+            if (!/^[a-zA-Z0-9_]{3,20}$/.test(u)) return showToast('Username format invalid.', 'error');
 
             const code = String(Math.floor(10000000 + Math.random() * 90000000));
+            const submitBtn = document.getElementById('dynamicModalBody').querySelector('button[type="submit"]');
             
-            // Send Email
             try {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = 'Sending Code...';
+
+                // Send Email via EmailJS
                 await emailjs.send('service_uqvxc6o', 'Zaraticsregister9178', { to_email: em, to_name: u, code: code });
+                
+                // Register User (Code is stored in the simulated backend)
                 const res = await api('/register', { method: 'POST', body: JSON.stringify({username:u, email:em, password:p, code})});
+                
                 if(res && res.ok) {
                     sessionStorage.setItem('pendingEmail', em);
                     showVerify();
-                    showToast('Code sent to email');
+                    showToast('Verification Code Sent.');
                 }
             } catch(err) {
-                showToast('Comms Failure (EmailJS)', 'error');
+                console.error(err);
+                showToast('Comms Failure (EmailJS or API)', 'error');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<span class="relative z-10">INITIATE</span>';
+                }
             }
         }
 
         async function handleVerify(e) {
             e.preventDefault();
-            const code = document.getElementById('verifyCode').value;
+            const code = document.getElementById('verifyCode').value.trim();
             const email = sessionStorage.getItem('pendingEmail');
+            
             const res = await api('/verify', { method: 'POST', body: JSON.stringify({email, code})});
             if(res && res.ok) {
                 const data = await res.json();
                 finishAuth(data);
                 closeActiveModal();
                 showToast('Identity Verified');
+                sessionStorage.removeItem('pendingEmail');
+            } else if (res && res.status === 401) {
+                showToast('Verification Failed: Invalid Code.', 'error');
             }
         }
 
@@ -716,24 +782,26 @@
             userData = null;
             updateUI();
             backToForum();
+            clearInterval(refreshInterval);
             showWelcomeModal();
         }
 
-        /* --- UI UPDATES --- */
+        /* --- UI UPDATES & INITIALIZATION --- */
 
         function updateUI() {
             const nav = document.getElementById('navActions');
             if(currentUser) {
-                const avatar = userData.profile.avatar 
-                    ? `<img src="${userData.profile.avatar}" class="w-8 h-8 rounded-full border border-cyan-400">`
-                    : `<div class="w-8 h-8 rounded-full bg-cyan-900 flex items-center justify-center text-xs font-bold border border-cyan-400">${currentUser[0]}</div>`;
+                const avatarUrl = userData.profile.avatar;
+                const avatar = avatarUrl 
+                    ? `<img src="${escapeHtml(avatarUrl)}" class="w-8 h-8 rounded-full border border-cyan-400 object-cover">`
+                    : `<div class="w-8 h-8 rounded-full bg-cyan-900 flex items-center justify-center text-xs font-bold border border-cyan-400">${currentUser[0].toUpperCase()}</div>`;
                 
                 nav.innerHTML = `
                     <div class="flex items-center gap-2 cursor-pointer glass-card px-3 py-1 rounded-full hover:bg-cyan-900/30 transition" onclick="showProfile()">
                         ${avatar}
-                        <span class="text-sm font-semibold hidden sm:inline">${currentUser}</span>
+                        <span class="text-sm font-semibold hidden sm:inline">${escapeHtml(currentUser)}</span>
                     </div>
-                    <button onclick="logout()" class="text-gray-400 hover:text-red-400 transition"><i class="fas fa-sign-out-alt"></i></button>
+                    <button onclick="logout()" class="text-gray-400 hover:text-red-400 transition" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
                 `;
             } else {
                 nav.innerHTML = `
@@ -742,19 +810,30 @@
                 `;
             }
         }
+        
+        async function fetchPostCounts() {
+            if (!currentUser) return;
+            const countsRes = await api('/post-counts');
+            if(countsRes && countsRes.ok) {
+                const counts = await countsRes.json();
+                document.querySelectorAll('.section-link').forEach(el => {
+                    const c = counts[el.dataset.section] || 0;
+                    el.querySelector('.sec-stats').textContent = c;
+                });
+            }
+        }
 
         /* --- VIEW CONTROLLERS --- */
 
         function switchView(viewId) {
             ['forumView', 'sectionView', 'threadView', 'profileView'].forEach(id => {
                 const el = document.getElementById(id);
+                el.classList.add('hidden');
+                el.style.opacity = '0'; // Reset opacity for fade-in
                 if(id === viewId) {
                     el.classList.remove('hidden');
-                    // Small delay for fade-in
+                    // Trigger fade-in
                     setTimeout(() => el.style.opacity = '1', 10);
-                } else {
-                    el.classList.add('hidden');
-                    el.style.opacity = '0';
                 }
             });
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -769,12 +848,15 @@
 
         async function renderThreads() {
             const list = document.getElementById('threadsList');
-            // Skeleton Loader
+            if (currentSection === null) return; 
+
+            // Show Skeleton Loader
             list.innerHTML = `<div class="glass-card p-6 h-32 skeleton rounded-2xl"></div><div class="glass-card p-6 h-32 skeleton rounded-2xl"></div>`;
             
             sectionPosts = await fetchPosts();
-            list.innerHTML = '';
+            list.innerHTML = ''; // Clear skeleton
 
+            // Filter for only top-level threads
             const threads = sectionPosts.filter(p => !p.parentId).sort((a,b) => b.pinned - a.pinned || b.time - a.time);
             
             if(threads.length === 0) {
@@ -789,13 +871,16 @@
                 
                 const card = document.createElement('div');
                 card.className = `glass-card p-5 rounded-xl flex flex-col md:flex-row md:items-center justify-between cursor-pointer group ${isPinned}`;
-                card.onclick = (e) => { if(!e.target.closest('button')) openThread(thread.id, thread.title || thread.content.substring(0,30)) };
+                card.onclick = (e) => { 
+                    // Ensure the click didn't originate from the admin buttons
+                    if(!e.target.closest('button')) openThread(thread.id, thread.title || thread.content.substring(0,30)) 
+                };
 
                 card.innerHTML = `
                     <div class="flex-grow">
                         <h3 class="text-lg font-bold group-hover:text-cyan-400 transition-colors">${pinIcon}${escapeHtml(thread.title || 'Untitled')}</h3>
                         <div class="flex items-center gap-4 text-xs text-gray-400 mt-2 font-mono">
-                            <span class="flex items-center gap-1"><i class="fas fa-user"></i> ${thread.author}</span>
+                            <span class="flex items-center gap-1"><i class="fas fa-user"></i> ${escapeHtml(thread.author)}</span>
                             <span class="flex items-center gap-1"><i class="fas fa-clock"></i> ${formatTime(thread.time)}</span>
                         </div>
                     </div>
@@ -806,8 +891,8 @@
                         </div>
                         ${userData?.role === 'admin' ? `
                             <div class="flex gap-2">
-                                <button onclick="togglePin('${thread.id}')" class="p-2 bg-gray-800 rounded hover:bg-green-900/50 text-gray-400 hover:text-green-400 transition"><i class="fas fa-thumbtack"></i></button>
-                                <button onclick="deleteThread('${thread.id}')" class="p-2 bg-gray-800 rounded hover:bg-red-900/50 text-gray-400 hover:text-red-400 transition"><i class="fas fa-trash"></i></button>
+                                <button onclick="togglePin(event, '${thread.id}')" title="${thread.pinned ? 'Unpin' : 'Pin'}" class="p-2 bg-gray-800 rounded hover:bg-green-900/50 text-gray-400 hover:text-green-400 transition"><i class="fas fa-thumbtack"></i></button>
+                                <button onclick="deleteThread(event, '${thread.id}')" title="Delete Thread" class="p-2 bg-gray-800 rounded hover:bg-red-900/50 text-gray-400 hover:text-red-400 transition"><i class="fas fa-trash"></i></button>
                             </div>
                         ` : ''}
                     </div>
@@ -819,12 +904,13 @@
         // --- Threads ---
 
         async function renderThread() {
+            if (!currentThread) return;
             sectionPosts = await fetchPosts(); // Refresh data
             const container = document.getElementById('threadPosts');
             container.innerHTML = '';
 
             const op = sectionPosts.find(p => p.id === currentThread);
-            if(!op) return container.innerHTML = 'Thread lost in void.';
+            if(!op) return container.innerHTML = '<div class="text-center text-red-400 py-10">Thread lost in void.</div>';
 
             // Render OP
             container.appendChild(createPostEl(op, false));
@@ -841,15 +927,18 @@
             const borderClass = isAuthor ? 'border-cyan-500/30' : 'border-transparent';
             
             const badges = (post.badges || []).map(getBadgeHtml).join(' ');
-            const avatar = post.avatar 
-                ? `<img src="${post.avatar}" class="w-12 h-12 rounded-full border border-gray-600">`
-                : `<div class="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center font-bold text-xl text-cyan-500">${post.author[0]}</div>`;
+            const safeAuthor = escapeHtml(post.author);
+            const avatarUrl = post.avatar ? escapeHtml(post.avatar) : '';
+
+            const avatar = avatarUrl
+                ? `<img src="${avatarUrl}" class="w-12 h-12 rounded-full border border-gray-600 object-cover" alt="${safeAuthor[0]}">`
+                : `<div class="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center font-bold text-xl text-cyan-500">${safeAuthor[0].toUpperCase()}</div>`;
 
             div.className = `glass-card p-6 md:p-8 rounded-2xl flex gap-4 md:gap-6 border ${borderClass}`;
             div.innerHTML = `
                 <div class="flex-shrink-0 flex flex-col items-center gap-2">
-                    ${avatar}
-                    <div class="text-xs font-bold text-center mt-1 cursor-pointer hover:text-cyan-400" onclick="viewUserProfile('${post.author}')">${post.author}</div>
+                    <div class="cursor-pointer" onclick="viewUserProfile('${safeAuthor}')">${avatar}</div>
+                    <div class="text-xs font-bold text-center mt-1 cursor-pointer hover:text-cyan-400" onclick="viewUserProfile('${safeAuthor}')">${safeAuthor}</div>
                     <div class="flex flex-col gap-1 items-center">${badges}</div>
                 </div>
                 <div class="flex-grow min-w-0">
@@ -859,72 +948,116 @@
                     </div>
                     <div class="text-gray-200 leading-relaxed whitespace-pre-wrap break-words text-sm md:text-base">${escapeHtml(post.content)}</div>
                     <div class="mt-6 flex justify-end items-center gap-4 pt-4 border-t border-white/5">
-                        <button onclick="toggleLike('${post.id}')" class="text-sm flex items-center gap-2 text-gray-400 hover:text-pink-500 transition group">
+                        <button onclick="toggleLike('${post.id}')" class="text-sm flex items-center gap-2 text-gray-400 hover:text-pink-500 transition group" title="Like">
                             <i class="fas fa-heart group-hover:scale-125 transition-transform ${post.likes?.includes(currentUser) ? 'text-pink-500' : ''}"></i> 
                             ${post.likes?.length || 0}
                         </button>
-                        ${userData?.role === 'admin' ? `<button onclick="deleteThread('${post.id}')" class="text-xs text-red-400 hover:underline">Delete</button>` : ''}
+                        ${userData?.role === 'admin' ? `<button onclick="deletePost('${post.id}')" class="text-xs text-red-400 hover:underline" title="Delete Post">Delete</button>` : ''}
                     </div>
                 </div>
             `;
             return div;
         }
 
-        /* --- ACTIONS --- */
+        /* --- ACTIONS (IMPROVED) --- */
 
         async function handleNewThread(e) {
             e.preventDefault();
-            const title = document.getElementById('threadTitleInput').value;
-            const content = document.getElementById('threadContent').value;
+            if (!currentUser) return showLogin();
+            
+            const title = document.getElementById('threadTitleInput').value.trim();
+            const content = document.getElementById('threadContent').value.trim();
+            const submitBtn = document.getElementById('submitThreadBtn');
+            
+            submitBtn.disabled = true;
+
             const res = await api(`/posts/${currentSection}`, { method: 'POST', body: JSON.stringify({title, content})});
             if(res && res.ok) {
                 closeActiveModal();
                 renderThreads();
+                fetchPostCounts();
                 showToast('Thread Initialized');
             }
+            submitBtn.disabled = false;
         }
 
         document.getElementById('newReplyForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const content = document.getElementById('replyContent').value;
+            if (!currentUser) return showLogin();
+
+            const contentEl = document.getElementById('replyContent');
+            const content = contentEl.value.trim();
+            const submitBtn = document.getElementById('submitReplyBtn');
+
+            if (!content) return showToast('Reply cannot be empty.', 'error');
+
+            submitBtn.disabled = true;
+
             const res = await api(`/posts/${currentSection}`, { method: 'POST', body: JSON.stringify({content, parentId: currentThread})});
             if(res && res.ok) {
-                document.getElementById('replyContent').value = '';
+                contentEl.value = '';
                 renderThread();
+                fetchPostCounts();
+                showToast('Reply Transmitted');
             }
+            submitBtn.disabled = false;
         });
 
         async function toggleLike(id) {
             if(!currentUser) return showLogin();
             await api(`/posts/${currentSection}/${id}/like`, {method: 'POST'});
+            // Only re-render if we are currently in a thread.
             if(currentThread) renderThread();
         }
-
-        async function deleteThread(id) {
-            if(!confirm('Delete signal? Irreversible.')) return;
-            const res = await api(`/posts/${currentSection}/delete`, {method: 'POST', body: JSON.stringify({threadId: id})});
+        
+        // Function to delete a single post/reply
+        async function deletePost(id) {
+            if(!confirm('Delete this signal (post/reply)? Irreversible.')) return;
+            const res = await api(`/posts/${currentSection}/delete-post`, {method: 'POST', body: JSON.stringify({postId: id})});
             if(res && res.ok) {
-                if(currentThread === id) backToSectionFromThread();
-                else renderThreads();
+                // If the deleted post was the main thread, navigate back to section
+                if(id === currentThread) {
+                    backToSectionFromThread();
+                } else {
+                    renderThread();
+                }
+                fetchPostCounts();
                 showToast('Signal Purged');
             }
         }
 
-        async function togglePin(id) {
+        // Function to delete an entire thread (including replies)
+        async function deleteThread(e, id) {
+             e.stopPropagation(); // Stop navigation to thread view
+            if(!confirm('Delete this ENTIRE THREAD (including replies)? Irreversible.')) return;
+            const res = await api(`/posts/${currentSection}/delete-thread`, {method: 'POST', body: JSON.stringify({threadId: id})});
+            if(res && res.ok) {
+                renderThreads();
+                fetchPostCounts();
+                showToast('Thread & Replies Purged');
+            }
+        }
+
+        async function togglePin(e, id) {
+            e.stopPropagation(); // Stop navigation to thread view
             const res = await api(`/posts/${currentSection}/${id}/pin`, {method: 'POST'});
-            if(res && res.ok) renderThreads();
+            if(res && res.ok) {
+                renderThreads();
+                showToast('Pin Status Updated');
+            }
         }
 
         /* --- NAVIGATION LOGIC --- */
 
         function openThread(id, title) {
             currentThread = id;
-            document.getElementById('threadTitle').textContent = title;
+            document.getElementById('threadTitle').textContent = escapeHtml(title);
             updateBreadcrumbs('thread');
             switchView('threadView');
             renderThread();
             clearInterval(refreshInterval);
-            refreshInterval = setInterval(renderThread, 15000);
+            // Refresh thread every 15 seconds
+            refreshInterval = setInterval(renderThread, 15000); 
         }
 
         function backToForum() {
@@ -932,6 +1065,7 @@
             currentSection = null;
             currentThread = null;
             clearInterval(refreshInterval);
+            refreshInterval = null;
         }
 
         function backToForumFromSection() {
@@ -943,13 +1077,15 @@
             currentThread = null;
             renderThreads();
             clearInterval(refreshInterval);
-            refreshInterval = setInterval(renderThreads, 30000);
+            // Refresh section every 30 seconds
+            refreshInterval = setInterval(renderThreads, 30000); 
         }
 
         function updateBreadcrumbs(type) {
+            const sectionName = document.getElementById('sectionTitle')?.textContent || currentSection;
             const crumbs = type === 'section' 
-                ? `Nexus > ${currentSection}` 
-                : `Nexus > ${currentSection} > Thread`;
+                ? `Nexus > ${sectionName}` 
+                : `Nexus > ${sectionName} > Thread`;
             const el = type === 'section' ? 'sectionBreadcrumbs' : 'threadBreadcrumbs';
             document.getElementById(el).textContent = crumbs;
         }
@@ -972,6 +1108,8 @@
             if(res && res.ok) {
                 const data = await res.json();
                 renderProfileView(data, false);
+            } else if (res && res.status === 404) {
+                showToast('User profile not found.', 'error');
             }
         }
 
@@ -979,23 +1117,36 @@
             switchView('profileView');
             
             // Populate Header
-            const avatarStyle = data.profile.avatar ? `background-image:url(${data.profile.avatar});background-size:cover;` : '';
+            const avatarUrl = data.profile.avatar ? escapeHtml(data.profile.avatar) : '';
             const avatarDiv = document.getElementById('profileAvatarLarge');
-            avatarDiv.style = avatarStyle;
-            avatarDiv.textContent = data.profile.avatar ? '' : data.username[0];
             
-            document.getElementById('profileUsername').textContent = data.username;
+            avatarDiv.style.backgroundImage = avatarUrl ? `url(${avatarUrl})` : 'none';
+            avatarDiv.style.backgroundSize = 'cover';
+            avatarDiv.style.backgroundPosition = 'center';
+            avatarDiv.textContent = avatarUrl ? '' : data.username[0].toUpperCase();
+            
+            document.getElementById('profileUsername').textContent = escapeHtml(data.username);
             document.getElementById('profileBadges').innerHTML = (data.badges || []).map(getBadgeHtml).join('');
 
             // Populate Info
             ['Name', 'Email', 'Phone', 'Bio'].forEach(f => {
-                document.getElementById(`display${f}`).textContent = data.profile[f.toLowerCase()] || '-';
-                if(isOwner) document.getElementById(`edit${f}`).value = data.profile[f.toLowerCase()] || '';
+                const key = f.toLowerCase();
+                const displayValue = data.profile[key] ? escapeHtml(data.profile[key]) : '-';
+                document.getElementById(`display${f}`).textContent = displayValue;
+                
+                if(isOwner) {
+                    const editEl = document.getElementById(`edit${f}`);
+                    if (editEl) editEl.value = data.profile[key] || '';
+                }
             });
-
+            
+            // Populate Edit Avatar Preview
+            const previewEl = document.getElementById('avatarPreview');
+            previewEl.style.backgroundImage = avatarUrl ? `url(${avatarUrl})` : 'none';
+            previewEl.style.backgroundSize = 'cover';
+            
             // Handle Tabs logic
             const tabs = document.querySelectorAll('.tab-btn');
-            const contents = document.querySelectorAll('.tab-content');
             
             // Reset to first tab
             switchTab('info', tabs[0]);
@@ -1007,13 +1158,14 @@
 
         function switchTab(name, btn) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-            document.getElementById(`${name}Tab`).classList.remove('hidden');
+            const tabContent = document.getElementById(`${name}Tab`);
+            if (tabContent) tabContent.classList.remove('hidden');
             
             document.querySelectorAll('.tab-btn').forEach(b => {
                 b.classList.remove('text-cyan-400', 'border-b-2', 'border-cyan-400', 'font-bold');
-                b.classList.add('text-gray-400');
+                b.classList.add('text-gray-400', 'hover:text-cyan-200');
             });
-            btn.classList.remove('text-gray-400');
+            btn.classList.remove('text-gray-400', 'hover:text-cyan-200');
             btn.classList.add('text-cyan-400', 'border-b-2', 'border-cyan-400', 'font-bold');
         }
 
@@ -1021,17 +1173,22 @@
             e.preventDefault();
             const btn = document.getElementById('saveProfileBtn');
             const orig = btn.innerHTML;
+            
+            btn.disabled = true;
             btn.innerHTML = 'Saving...';
             
             const formData = new FormData();
             const file = document.getElementById('editAvatar').files[0];
             if(file) formData.append('avatar', file);
             
+            // Append profile data, allowing empty strings to clear fields
             ['Name', 'Email', 'Phone', 'Bio'].forEach(f => {
-                formData.append(f.toLowerCase(), document.getElementById(`edit${f}`).value);
+                const value = document.getElementById(`edit${f}`).value || '';
+                formData.append(f.toLowerCase(), value);
             });
 
-            const res = await fetch(API_URL + '/me', {
+            // Using the native fetch API with FormData is required for file uploads
+            const res = await fetch(NEXUS_API_BASE_URL + '/me', {
                 method: 'PUT',
                 headers: { 'Authorization': `Bearer ${localData.token}` },
                 body: formData
@@ -1039,53 +1196,84 @@
 
             if(res.ok) {
                 showToast('Profile Updated');
-                showProfile();
+                // Re-fetch profile data to refresh UI
+                await showProfile(); 
             } else {
-                showToast('Update Failed', 'error');
+                showToast('Update Failed. Check console.', 'error');
             }
+            btn.disabled = false;
             btn.innerHTML = orig;
         });
 
         function previewAvatar(input) {
+            const el = document.getElementById('avatarPreview');
             if(input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = e => {
-                    const el = document.getElementById('avatarPreview');
                     el.style.backgroundImage = `url(${e.target.result})`;
                     el.style.backgroundSize = 'cover';
+                    el.textContent = '';
                 };
                 reader.readAsDataURL(input.files[0]);
+            } else {
+                el.style.backgroundImage = 'none';
+                el.textContent = userData?.username[0].toUpperCase() || '';
             }
         }
 
-        /* --- ADMIN BADGES --- */
-        async function assignBadge() {
-            const u = document.getElementById('badgeUsername').value;
-            const b = document.getElementById('badgeName').value;
-            if(await api(`/admin/badge/${u}`, {method:'POST', body:JSON.stringify({badge:b})})) showToast('Badge Assigned');
+        /* --- ADMIN BADGES (IMPROVED FEEDBACK) --- */
+        async function assignBadge(e) {
+            e.preventDefault();
+            const u = document.getElementById('badgeUsername').value.trim();
+            const b = document.getElementById('badgeName').value.trim().toUpperCase();
+            
+            if (!u || !b) return showToast('Username and Badge Name are required.', 'error');
+            
+            const res = await api(`/admin/badge/${u}`, {method:'POST', body:JSON.stringify({badge:b})});
+            if(res && res.ok) {
+                showToast(`Badge ${b} Assigned to ${u}`);
+                document.getElementById('badgeUsername').value = '';
+                document.getElementById('badgeName').value = '';
+            }
         }
-        async function removeBadge() {
-            const u = document.getElementById('removeBadgeUsername').value;
-            const b = document.getElementById('removeBadgeName').value;
-            if(await api(`/admin/badge/${u}`, {method:'DELETE', body:JSON.stringify({badge:b})})) showToast('Badge Removed');
+        async function removeBadge(e) {
+            e.preventDefault();
+            const u = document.getElementById('removeBadgeUsername').value.trim();
+            const b = document.getElementById('removeBadgeName').value.trim().toUpperCase();
+            
+            if (!u || !b) return showToast('Username and Badge Name are required.', 'error');
+
+            const res = await api(`/admin/badge/${u}`, {method:'DELETE', body:JSON.stringify({badge:b})});
+            if(res && res.ok) {
+                showToast(`Badge ${b} Removed from ${u}`);
+                document.getElementById('removeBadgeUsername').value = '';
+                document.getElementById('removeBadgeName').value = '';
+            }
         }
 
         /* --- INITIALIZATION --- */
         document.addEventListener('DOMContentLoaded', async () => {
+            // Setup section link click handlers
             document.querySelectorAll('.section-link').forEach(el => {
                 el.addEventListener('click', (e) => {
                     e.preventDefault();
+                    if (!currentUser) return showLogin();
+                    
                     currentSection = el.dataset.section;
-                    document.getElementById('sectionTitle').textContent = el.querySelector('span.text-sm').textContent;
+                    // Extract name from the inner span, stripping the (English) part.
+                    const name = el.querySelector('span.text-sm').textContent.split('(')[0].trim();
+                    document.getElementById('sectionTitle').textContent = name;
                     updateBreadcrumbs('section');
                     switchView('sectionView');
                     renderThreads();
                     
                     const btn = document.getElementById('createThreadBtn');
                     const viewOnly = el.dataset.viewOnly === 'true';
+                    // Only Admin can create in 'view-only' sections
                     btn.style.display = (viewOnly && userData?.role !== 'admin') ? 'none' : 'flex';
 
                     clearInterval(refreshInterval);
+                    // Start refreshing threads list
                     refreshInterval = setInterval(renderThreads, 30000);
                 });
             });
@@ -1099,15 +1287,10 @@
                         userData = data;
                         updateUI();
                         // Update stats
-                        const countsRes = await api('/post-counts');
-                        if(countsRes && countsRes.ok) {
-                            const counts = await countsRes.json();
-                            document.querySelectorAll('.section-link').forEach(el => {
-                                const c = counts[el.dataset.section] || 0;
-                                el.querySelector('.sec-stats').textContent = c;
-                            });
-                        }
-                    } else logout();
+                        fetchPostCounts();
+                    } else {
+                        logout(); // Token invalid or other error
+                    }
                 });
             } else {
                 showWelcomeModal();
