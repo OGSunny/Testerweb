@@ -64,7 +64,7 @@
             /* Animated Gradient Mesh Background (Particle Effect 6) */
             background-image:linear-gradient(135deg, #070d14, #101e30, #070d14);
             background-size:400% 400%;
-            animation:gradientShift 20s ease infinite;
+            animation:gradientShift 20s ease infinite, pageLoad 0.5s ease-out; /* ENHANCEMENT 10: Page Load Animation */
         }
         body::before{
             content:'';position:fixed;top:0;left:0;width:100%;height:100%;
@@ -72,6 +72,22 @@
             background:radial-gradient(circle at 10% 20%, rgba(0,255,255,0.05) 0%, transparent 10%),
                        radial-gradient(circle at 90% 80%, rgba(0,102,255,0.05) 0%, transparent 10%);
             pointer-events:none;z-index:-1;
+        }
+        /* ENHANCEMENT 14: Additional Particle Effect */
+        body::after {
+            content: '';
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 102, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(0, 255, 255, 0.02) 0%, transparent 50%);
+            animation: particleFloat 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
         }
         
         /* ANIMATIONS */
@@ -96,11 +112,29 @@
             0%, 100% { box-shadow: 0 0 5px currentColor; }
             50% { box-shadow: 0 0 20px currentColor; }
         }
+        /* ENHANCEMENT 13: Better Profile Avatar Float */
         @keyframes floating {
             0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-5px) rotate(1deg); }
+            25% { transform: translateY(-8px) rotate(2deg); }
+            50% { transform: translateY(-5px) rotate(-1deg); }
+            75% { transform: translateY(-10px) rotate(1deg); }
         }
         @keyframes scale-in {from{opacity:0;transform:scale(0.8)} to{opacity:1;transform:scale(1)}}
+        @keyframes pageLoad { /* ENHANCEMENT 10: Page Load Animation */
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes toastSlideIn { /* ENHANCEMENT 11: Toast Slide In */
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes spin { /* ENHANCEMENT 12: Loading Spinner */
+            to { transform: rotate(360deg); }
+        }
+        @keyframes particleFloat { /* ENHANCEMENT 14: Particle Float */
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
 
         /* Navbar - Glassmorphism & Sticky Blur */
         .navbar{
@@ -110,7 +144,7 @@
             padding:1rem 0;position:sticky;top:0;z-index:1000;box-shadow:var(--shadow-lg);
             transition:var(--transition-fast); /* Smooth scroll-triggered blur increase */
         }
-        /* FIXED: Added .nav-content styling */
+        /* CRITICAL FIX 1: Add .nav-content styling */
         .nav-content {
             max-width: 1400px;
             margin: 0 auto;
@@ -140,6 +174,7 @@
             box-shadow:0 0 15px var(--primary);
         }
 
+        /* CRITICAL FIX 1: Add .nav-actions styling */
         .nav-actions{
             display: flex;
             align-items: center;
@@ -189,7 +224,6 @@
         .badge{
             padding:0.3rem 0.7rem;border-radius:4px; /* Slightly softer corners */
             border:1px solid rgba(255,255,255,0.4);
-            color:var(--badge-text);
             box-shadow:var(--shadow-sm);
             transition:all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
             background-size:200% auto;
@@ -209,23 +243,32 @@
             cursor:help;
         }
         /* Specific badge colors already defined in :root */
-        .badge[data-name="ADMIN"]{color:#000; box-shadow: 0 0 10px rgba(0,255,255,0.7);}
-        .badge[data-name="VIP"]{color:#000; box-shadow: 0 0 10px rgba(255,195,0,0.7);}
-        .badge[data-name="MODERATOR"]{color:#fff; box-shadow: 0 0 10px rgba(153,102,255,0.7);}
-        .badge[data-name="HELPER"]{color:#000; box-shadow: 0 0 10px rgba(57,255,20,0.7);}
+        /* These are now mostly handled by inline style from renderBadge function. */
+        .badge[data-name="ADMIN"]{box-shadow: 0 0 10px rgba(0,255,255,0.7);}
+        .badge[data-name="VIP"]{box-shadow: 0 0 10px rgba(255,195,0,0.7);}
+        .badge[data-name="MODERATOR"]{box-shadow: 0 0 10px rgba(153,102,255,0.7);}
+        .badge[data-name="HELPER"]{box-shadow: 0 0 10px rgba(57,255,20,0.7);}
         /* End Badge Fixes */
 
         .container{
             max-width:1400px;margin:2.5rem auto;padding:0 1.5rem;
             /* Fade-in-up for main content */
-            animation:fadeInUp 1s ease-out; 
+            /* Animation controlled by JS for view transitions now */ 
+        }
+
+        /* CRITICAL FIX 1: Add .breadcrumbs styling */
+        .breadcrumbs {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
         }
         
         /* CATEGORIES - GLASSMORHPISM CARD */
+        /* CRITICAL FIX 5: Fix Categories Grid */
         .categories{
-            display: grid;
-            gap: 1.5rem;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            display: flex;
+            flex-direction: column;
+            gap: 2rem; 
         }
 
         .cat{
@@ -268,7 +311,6 @@
         .section:last-child{
             border-bottom: none;
         }
-        /* FIXED: Added .sec-info styling */
         .sec-info {
             display: flex;
             align-items: center;
@@ -280,6 +322,7 @@
         .sec-info i {
             color: var(--primary);
             font-size: 1.2rem;
+            transition: var(--transition-fast); /* For hover effect */
         }
         .sec-stats {
             background: rgba(0, 255, 255, 0.1);
@@ -296,6 +339,12 @@
             background:rgba(21, 35, 51, 0.8); /* Darker hover */
             border-left: 3px solid var(--primary);
             padding-left: calc(1.5rem - 3px); /* Compensate padding for border */
+        }
+
+        /* CRITICAL FIX 4: Section Hover Effect */
+        .section:hover .sec-info i {
+            color: var(--primary);
+            transform: scale(1.2);
         }
         
         /* THREADS & POSTS - GLASSMORHPISM CARD */
@@ -316,8 +365,10 @@
             border-radius: 6px;
             cursor: pointer;
         }
-        .thread-card:hover{
-            transform:translateY(-8px) scale(1.01); /* Enhanced card hover animation */
+        /* ENHANCEMENT 8: Enhanced Thread Card Hover with Tilt */
+        .thread-card:hover {
+            transform: translateY(-8px) rotateX(2deg);
+            transform-style: preserve-3d;
             box-shadow:var(--shadow-hover);
             border-color:rgba(0,255,255,0.6);
         }
@@ -360,8 +411,9 @@
             clip-path: polygon(100% 0, 100% 100%, 0 0);
             z-index: 10;
         }
+        /* ENHANCEMENT 9: Better New Indicator Animation */
         .new-indicator{
-            animation:pulse 1.5s infinite; /* Pulse animation for new indicator */
+            animation: pulse 1.5s infinite, glow 2s infinite alternate;
             background:var(--accent-orange);
             color:var(--dark);
             padding: 0.2rem 0.5rem;
@@ -399,6 +451,12 @@
             font-size: 1.1rem;
             color: var(--primary);
             cursor: pointer;
+            transition: var(--transition-fast);
+        }
+        /* CRITICAL FIX 4: Post Author Hover Effect */
+        .post-author:hover {
+            text-shadow: 0 0 10px var(--primary);
+            text-decoration: underline;
         }
         .post-time {
             color: var(--text-muted);
@@ -430,7 +488,6 @@
         }
 
         /* FORMS - INSET SHADOWS & GRADIENT BORDERS */
-        /* FIXED: Added .form-group styling */
         .form-group {
             margin-bottom: 1.5rem;
         }
@@ -456,10 +513,10 @@
             resize: vertical;
             min-height: 150px;
         }
+        /* ENHANCEMENT 7: Add Glow to Input Focus */
         textarea:focus,input:focus{
-            border:1px solid;
-            border-image:var(--gradient-primary) 1; /* Animated border on focus */
-            box-shadow:0 0 15px rgba(0,255,255,0.8); /* Focus glow */
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.6), inset 0 0 10px rgba(0, 255, 255, 0.1);
             outline:none;background:rgba(0,0,0,0.7);
         }
         
@@ -497,14 +554,15 @@
             box-shadow:0 0 10px rgba(0,255,255,0.4);
         }
 
-        /* Ripple Effect (Micro-interaction 1) - CSS Simulation */
+        /* Ripple Effect (Micro-interaction 1) */
         .btn::after {
             content: '';
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 5px;
-            height: 5px;
+            /* ENHANCEMENT 6: Better Button Ripple Effect */
+            width: 10px;
+            height: 10px;
             background: rgba(255, 255, 255, 0.6);
             border-radius: 50%;
             opacity: 0;
@@ -514,19 +572,37 @@
             z-index: 2;
         }
         .btn:active::after {
-            transform: translate(-50%, -50%) scale(150); /* Increased scale for better effect */
+            /* ENHANCEMENT 6: Much larger scale for better effect */
+            transform: translate(-50%, -50%) scale(50);
             opacity: 1;
             transition: all 0.3s ease-in;
         }
+        
+        /* CRITICAL FIX 1: Add .form-actions styling */
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .form-actions .btn {
+            flex: 1;
+        }
+        /* ENHANCEMENT 4: Carousel Button Min Width */
+        .carousel-actions .btn {
+            min-width: 180px;
+        }
 
-        /* MODALS - GLASSMORHPISM & ENTRANCE ANIMATION (FIXED: Added active state for modals) */
+
+        /* MODALS - GLASSMORHPISM & ENTRANCE ANIMATION */
         .modal, .fullscreen-modal{
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background:var(--modal-bg); /* Deeper black overlay */
+            /* CRITICAL FIX 3: Improve Modal Backdrop */
+            background: rgba(0, 0, 0, 0.95); /* Much darker */
+            backdrop-filter: blur(5px); /* Add blur to background */
             display: none; /* Default hidden */
             align-items: center;
             justify-content: center;
@@ -567,11 +643,7 @@
             background-clip: text;
             text-shadow:0 0 5px rgba(0,255,255,0.8); /* Neon glow on modal title */
         }
-        .form-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 1.5rem;
-        }
+        /* .form-actions { MOVED TO CRITICAL FIX 1 - KEEP HERE FOR REFERENCE } */
 
         /* CAROUSEL - GLASSMORHPISM (for welcome modal) */
         .modal-carousel{
@@ -648,7 +720,6 @@
         .carousel-nav.prev{left: 15px;}
         .carousel-nav.next{right: 15px;}
 
-        /* FIXED: Added .carousel-dots styling */
         .carousel-dots {
             display: flex;
             gap: 0.5rem;
@@ -706,7 +777,7 @@
             transition:var(--transition-fast);
             box-shadow:0 0 15px rgba(0,255,255,0.7);
             border:3px solid var(--primary);
-            animation:floating 4s infinite ease-in-out; /* Floating animation for avatar */
+            animation:floating 4s infinite ease-in-out; /* Better Floating animation for avatar */
         }
         .profile-details h2 {
             font-size: 2rem;
@@ -788,29 +859,57 @@
             margin-bottom: 0.5rem;
             opacity: 0.7;
         }
+        /* ENHANCEMENT 12: Add Loading Spinner */
         #loading{
             background:var(--gradient-primary);
             background-size:200% 200%;
             animation:gradientShift 2s ease infinite; /* Gradient spinner/loading */
+            display: flex;
+            align-items: center;
+        }
+        #loading::before {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 0, 0, 0.3);
+            border-top-color: var(--dark);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 10px;
+        }
+        #toast {
+            animation: toastSlideIn 0.5s ease-out; /* ENHANCEMENT 11: Toast Slide In */
         }
 
+
         /* Additional scroll/view transition classes */
-        .view-transition-exit {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.4s ease-out; /* Adjusted transition speed to match JS timing */
+        /* These are now primarily handled by the improved JS logic for smooth transitions (ENHANCEMENT 15) */
+        .view-transition-exit, .view-transition-enter {
+            transition: none !important; /* Disable CSS-based classes to rely on JS */
         }
-        .view-transition-enter {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.7s ease-out 0.2s forwards;
-        }
+        
 
         @media (max-width:768px){
             .navbar{backdrop-filter: blur(15px);}
             .logo span { display: none; } /* Hide text logo on small screens */
             .thread-info { display: block; }
             .thread-info span { display: block; margin-top: 0.5rem; }
+            /* CRITICAL FIX 1: Form actions stack vertically */
+            .form-actions {
+                flex-direction: column;
+            }
+            .form-actions .btn {
+                flex: none;
+                width: 100%;
+            }
+            .carousel-actions {
+                flex-direction: column;
+            }
+            .carousel-actions .btn {
+                min-width: unset;
+                width: 100%;
+            }
         }
 
     </style>
@@ -830,7 +929,7 @@
         </div>
     </nav>
 
-    <div class="container view-transition-enter" id="mainContainer">
+    <div class="container" id="mainContainer">
         <div id="forumView">
             <div class="categories">
                 <div class="cat">
@@ -963,8 +1062,8 @@
             </div>
         </div>
 
-        <div id="sectionView" class="view-transition-exit" style="display:none">
-            <div class="breadcrumbs" id="sectionBreadcrumbs" style="color:var(--text-muted); margin-bottom:1rem;"></div>
+        <div id="sectionView" style="display:none">
+            <div class="breadcrumbs" id="sectionBreadcrumbs"></div>
             <button class="btn btn-secondary" onclick="backToForumFromSection()"><i class="fas fa-arrow-left"></i> უკან</button>
             <h2 id="sectionTitle" style="margin:1rem 0; color:var(--primary);"></h2>
             <button class="btn btn-primary" onclick="showNewThreadModal()">ახალი თრედი</button>
@@ -972,8 +1071,8 @@
                 </div>
         </div>
 
-        <div id="threadView" class="view-transition-exit" style="display:none">
-            <div class="breadcrumbs" id="threadBreadcrumbs" style="color:var(--text-muted); margin-bottom:1rem;"></div>
+        <div id="threadView" style="display:none">
+            <div class="breadcrumbs" id="threadBreadcrumbs"></div>
             <button class="btn btn-secondary" onclick="backToSectionFromThread()"><i class="fas fa-arrow-left"></i> უკან</button>
             <h2 id="threadTitle" style="margin:1rem 0; color:var(--primary);"></h2>
             <div class="posts-container" id="threadPosts"></div>
@@ -985,7 +1084,7 @@
             </form>
         </div>
 
-        <div id="profileView" class="view-transition-exit" style="display:none">
+        <div id="profileView" style="display:none">
             <div class="profile-section">
                 <div class="profile-header">
                     <div class="profile-avatar-large" id="profileAvatarLarge"></div>
@@ -1184,7 +1283,7 @@
         </div>
     </div>
 
-    <div id="loading" style="position:fixed;bottom:20px;right:20px;background:var(--primary);color:var(--dark);padding:10px 20px;border-radius:4px;font-weight:700;box-shadow:var(--shadow-md);z-index:3000;display:none;">იტვირთება...</div>
+    <div id="loading" style="position:fixed;bottom:20px;right:20px;color:var(--dark);padding:10px 20px;border-radius:4px;font-weight:700;box-shadow:var(--shadow-md);z-index:3000;display:none;">იტვირთება...</div>
     <div id="toast" style="position:fixed;top:20px;right:20px;padding:10px 20px;border-radius:4px;color:var(--dark);font-weight:700;box-shadow:var(--shadow-md);z-index:3000;display:none;"></div>
 
     <script>
@@ -1200,26 +1299,34 @@
         const storageKey = 'zaraticForum_v2';
         let localData = JSON.parse(localStorage.getItem(storageKey)) || { token: null };
 
-        // --- ENHANCED TRANSITION LOGIC ---
+        // ENHANCEMENT 15: Improved View Transition Logic
         function applyViewTransition(fromId, toId, animate = true) {
             const fromEl = document.getElementById(fromId);
             const toEl = document.getElementById(toId);
 
-            if (fromEl.style.display === 'none' && fromId !== 'threadView' && fromId !== 'sectionView') {
-                animate = false; // Prevent animation if already hidden (e.g. initial load)
-            }
-            
-            if (animate) {
-                fromEl.classList.remove('view-transition-enter');
-                fromEl.classList.add('view-transition-exit');
+            if (animate && fromEl.style.display !== 'none') {
+                // Apply exit style
+                fromEl.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
+                fromEl.style.opacity = '0';
+                fromEl.style.transform = 'translateY(20px)';
                 
                 setTimeout(() => {
                     fromEl.style.display = 'none';
-                    fromEl.classList.remove('view-transition-exit');
+                    fromEl.style.opacity = '';
+                    fromEl.style.transform = '';
+                    fromEl.style.transition = 'none';
                     
+                    // Apply enter style after display change
                     toEl.style.display = 'block';
-                    toEl.classList.add('view-transition-enter');
-                }, 400); // Wait for exit transition (0.4s)
+                    toEl.style.opacity = '0';
+                    toEl.style.transform = 'translateY(20px)';
+                    
+                    requestAnimationFrame(() => {
+                        toEl.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                        toEl.style.opacity = '1';
+                        toEl.style.transform = 'translateY(0)';
+                    });
+                }, 300); // Wait for exit transition (0.3s)
             } else {
                 fromEl.style.display = 'none';
                 toEl.style.display = 'block';
@@ -1270,7 +1377,7 @@
         }
 
         function showLoading(show) {
-            document.getElementById('loading').style.display = show ? 'block' : 'none';
+            document.getElementById('loading').style.display = show ? 'flex' : 'none'; // Changed to flex for spinner alignment
         }
 
         function showToast(message, type = 'success') {
@@ -1283,12 +1390,15 @@
             toast.style.background = type === 'success' ? successBg : errorBg;
             toast.style.display = 'block';
             toast.style.opacity = 1;
+            toast.style.animation = 'toastSlideIn 0.5s ease-out'; // Re-apply animation
+
             setTimeout(() => {
                 toast.style.transition = 'opacity 0.5s ease-out';
                 toast.style.opacity = 0;
                 setTimeout(() => {
                     toast.style.display = 'none';
                     toast.style.transition = 'none';
+                    toast.style.animation = 'none';
                 }, 500);
             }, 4000);
         }
@@ -1339,11 +1449,17 @@
             const hue = Math.abs(hash) % 360;
             return `linear-gradient(135deg, hsl(${hue},90%,60%), hsl(${hue + 30},70%,40%))`;
         }
-
+        
+        // CRITICAL FIX 2: Fixed Badge Backgrounds
         function renderBadge(name) {
-            // Added data-name for specific styling and title for tooltip
-            return `<span class="badge" data-name="${name.toUpperCase()}" style="background:${getBadgeColor(name)}; color:${name.toUpperCase() === 'MODERATOR' ? '#fff' : '#000'}" title="${name.toUpperCase()}">${name.toUpperCase()}</span>`;
+            const upperName = name.toUpperCase();
+            let bgStyle = getBadgeColor(name);
+            let textColor = '#000';
+            if (upperName === 'MODERATOR') textColor = '#fff'; // Ensure MODERATOR badge is readable
+            
+            return `<span class="badge" data-name="${upperName}" style="background:${bgStyle}; color:${textColor};" title="${upperName}">${upperName}</span>`;
         }
+
 
         function updateUI() {
             if (!userData) return;
@@ -1353,7 +1469,7 @@
                 <div class="user-info" onclick="showProfile()">
                     <div class="user-avatar" style="${avatarStyle}">${avatarText}</div>
                     <span>${currentUser}</span>
-                    <div class="user-badges">${userData.badges.map(renderBadge).join('')}</div>
+                    <div class="user-badges">${(userData.badges || []).map(renderBadge).join('')}</div>
                 </div>
                 <button class="btn btn-secondary" onclick="logout()"><i class="fas fa-sign-out-alt"></i> გასვლა</button>
             `;
@@ -1410,7 +1526,6 @@
 
                 const div = document.createElement('div');
                 div.className = `thread-card${pinnedClass}`;
-                // Tilt effect on hover will be applied via CSS transform
                 div.innerHTML = `
                     <h3>${escapeHtml(thread.title || thread.content.substring(0,60)+'...')}${newInd}</h3>
                     <div class="thread-info">
@@ -1705,7 +1820,8 @@
             userData = data;
             currentUser = data.username;
 
-            applyViewTransition(document.querySelector('.container > div:not([style*="display: none"])').id, 'profileView');
+            const currentActiveViewId = document.querySelector('.container > div:not([style*="display: none"])')?.id || 'forumView';
+            applyViewTransition(currentActiveViewId, 'profileView');
 
             const avatarStyle = data.profile.avatar ? `background-image:url(${data.profile.avatar});background-size:cover;background-position:center;` : 'background:var(--primary-dark);';
             document.getElementById('profileAvatarLarge').style.cssText = avatarStyle;
@@ -1730,6 +1846,9 @@
 
 
             document.getElementById('adminTab').style.display = data.role === 'admin' ? 'block' : 'none';
+
+            // Show edit tab for owner, hide for others on initial profile view
+            document.querySelector('.tab[onclick*="edit"]').style.display = 'block';
 
             // Reset tabs to info
             switchTab(null, 'info');
@@ -1831,7 +1950,7 @@
         }
 
         function backToForum(animate = true) {
-            const currentViewId = document.querySelector('.container > div:not([style*="display: none"])').id;
+            const currentViewId = document.querySelector('.container > div:not([style*="display: none"])')?.id || 'forumView';
             if (currentViewId !== 'forumView') {
                 applyViewTransition(currentViewId, 'forumView', animate);
             }
@@ -1918,7 +2037,7 @@
             const data = await res.json();
             
             // Get current active view for transition
-            const currentViewId = document.querySelector('.container > div:not([style*="display: none"])').id;
+            const currentViewId = document.querySelector('.container > div:not([style*="display: none"])')?.id || 'forumView';
             applyViewTransition(currentViewId, 'profileView');
 
             document.getElementById('profileUsername').textContent = username;
@@ -1936,15 +2055,17 @@
             document.querySelector('.tab[onclick*="edit"]').style.display = 'none';
             document.getElementById('adminTab').style.display = 'none';
 
-            // Hide edit form inputs (not strictly necessary since tab is hidden, but good practice)
-            document.getElementById('editTab').innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:2rem">ამ მომხმარებლის პროფილის რედაქტირების უფლება არ გაქვთ.</p>';
+            // Show placeholder for edit tab to prevent errors if clicked
+            const editTabContent = document.getElementById('editTab');
+            editTabContent.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:2rem">ამ მომხმარებლის პროფილის რედაქტირების უფლება არ გაქვთ.</p>';
+
 
             // Reset tabs to info view
             switchTab(null, 'info');
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
-            document.getElementById('loading').style.display = 'block'; // Initial loading state
+            document.getElementById('loading').style.display = 'flex'; // Initial loading state
             await updateSectionStats();
             document.getElementById('loading').style.display = 'none';
 
