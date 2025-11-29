@@ -7,7 +7,6 @@
 
     <link rel="icon" href="https://raw.githubusercontent.com/OGSunny/Testerweb/main/zaratic.png" type="image/png">
 
-    <!-- Fonts & Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
@@ -285,8 +284,8 @@
                     <h2 id="sectionTitle" class="text-3xl font-extrabold gradient-text"></h2>
                     <div id="sectionBreadcrumbs" class="text-sm text-gray-400 mt-1 font-mono"></div>
                 </div>
-                <button onclick="showNewThreadModal()" id="createThreadBtn" class="btn-gradient px-6 py-2 rounded-lg shadow-lg flex items-center gap-2">
-                    <span class="relative z-10"><i class="fas fa-plus"></i> ახალი თემა</span>
+                <button onclick="openFormModalForCurrentSection()" id="createThreadBtn" class="btn-gradient px-6 py-2 rounded-lg shadow-lg flex items-center gap-2">
+                    <span class="relative z-10"><i class="fas fa-plus"></i> ახალი მოთხოვნა</span>
                 </button>
             </div>
 
@@ -1240,6 +1239,142 @@
             }
         }
 
+        /* --- EMAIL FORM LOGIC --- */
+        
+        // 1. Master function to open form modal based on section
+        function openFormModalForCurrentSection() {
+            if (!currentUser) return showLogin();
+            
+            const email = userData?.profile?.email;
+            if (!email || !email.includes('@')) {
+                return showToast('გთხოვთ, დაამატოთ ვალიდური ელფოსტა თქვენს პროფილში, რათა შეძლოთ მოთხოვნების გაგზავნა.', 'error');
+            }
+
+            const sectionsRequiringEmail = {
+                'suggestions': { title: 'ახალი შემოთავაზება', formType: 'შემოთავაზება', fields: `
+                    <input type="text" id="suggestionTitle" placeholder="სათაური" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required maxlength="100">
+                    <textarea id="suggestionContent" rows="5" placeholder="შემოთავაზების დეტალური აღწერა" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required></textarea>
+                `},
+                'complaints-admin': { title: 'საჩივარი ადმინისტრატორზე', formType: 'საჩივარი ადმინზე', fields: `
+                    <input type="text" id="adminUsername" placeholder="ადმინისტრატორის სახელი" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required maxlength="50">
+                    <input type="text" id="complaintReason" placeholder="მოკლე აღწერა/სათაური" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required maxlength="100">
+                    <textarea id="complaintDetails" rows="5" placeholder="დეტალურად აღწერეთ ინციდენტი, დრო და ადგილი" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required></textarea>
+                    <input type="url" id="complaintEvidence" placeholder="დამამტკიცებელი მასალის ლინკი (YouTube/Imgur)" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none">
+                `},
+                'vacancies-leaders': { title: 'განაცხადი ლიდერობაზე', formType: 'ლიდერობის განაცხადი', fields: `
+                    <input type="text" id="factionName" placeholder="სასურველი ფრაქცია/პოზიცია" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required maxlength="100">
+                    <textarea id="motivationLetter" rows="5" placeholder="მოკლედ თქვენს გამოცდილებაზე და მოტივაციაზე" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required></textarea>
+                `},
+                'donation-help': { title: 'დახმარება დონაციაზე', formType: 'დახმარება დონაციაზე', fields: `
+                    <input type="text" id="paymentMethod" placeholder="გადახდის მეთოდი (მაგ: ბარათი, PayBox)" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required maxlength="50">
+                    <input type="text" id="transactionId" placeholder="ტრანზაქციის ID (თუ გაქვთ)" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none">
+                    <textarea id="issueDescription" rows="5" placeholder="დეტალურად აღწერეთ პრობლემა (მაგ: თანხა ჩამოიჭრა და არაფერი არ დაერიცხა)" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required></textarea>
+                `}
+            };
+
+            const formInfo = sectionsRequiringEmail[currentSection];
+
+            // If it's a regular thread section, show the thread modal instead
+            if (!formInfo) {
+                return showNewThreadModal();
+            }
+
+            // Otherwise, show the email form modal
+            openModal(`
+                <h2 class="text-2xl font-bold gradient-text mb-4">${formInfo.title}</h2>
+                <p class="text-sm text-gray-400 mb-4">დადასტურება გამოგეგზავნებათ თქვენს ელფოსტაზე: <strong>${escapeHtml(email)}</strong></p>
+                <form onsubmit="handleEmailFormSubmit(event, '${formInfo.formType}')" class="space-y-4">
+                    ${formInfo.fields}
+                    <div class="flex justify-end gap-3">
+                        <button type="button" onclick="closeActiveModal()" class="text-gray-400 hover:text-white px-4">გაუქმება</button>
+                        <button type="submit" id="submitEmailFormBtn" class="btn-gradient px-6 py-2 rounded-lg"><span class="relative z-10"><i class="fas fa-paper-plane"></i> გაგზავნა</span></button>
+                    </div>
+                </form>
+            `);
+        }
+        
+        // 2. Main handler for email form submissions (POST to /submit-form)
+        async function handleEmailFormSubmit(event, formType) {
+            event.preventDefault();
+            
+            // Re-check auth and email for safety
+            if (!currentUser) return showLogin();
+            
+            const userEmail = userData?.profile?.email;
+            if (!userEmail || !userEmail.includes('@')) {
+                return showToast('გთხოვთ დაამატოთ ელფოსტა თქვენს პროფილში', 'error');
+            }
+            
+            let formData = {};
+            const form = event.target;
+            
+            // Logic to collect dynamic form data based on formType
+            if (formType === 'შემოთავაზება') {
+                formData = {
+                    'შემოთავაზების სათაური': form.querySelector('#suggestionTitle').value,
+                    'დეტალები': form.querySelector('#suggestionContent').value
+                };
+            } else if (formType === 'საჩივარი ადმინზე') {
+                formData = {
+                    'ადმინისტრატორის სახელი': form.querySelector('#adminUsername').value,
+                    'სათაური': form.querySelector('#complaintReason').value,
+                    'დეტალები': form.querySelector('#complaintDetails').value,
+                    'დამამტკიცებელი მასალა': form.querySelector('#complaintEvidence').value || 'არ არის'
+                };
+            } else if (formType === 'ლიდერობის განაცხადი') {
+                formData = {
+                    'სასურველი ფრაქცია': form.querySelector('#factionName').value,
+                    'მოტივაცია/გამოცდილება': form.querySelector('#motivationLetter').value
+                };
+            } else if (formType === 'დახმარება დონაციაზე') {
+                formData = {
+                    'გადახდის მეთოდი': form.querySelector('#paymentMethod').value,
+                    'ტრანზაქციის ID': form.querySelector('#transactionId').value || 'არ არის',
+                    'პრობლემის აღწერა': form.querySelector('#issueDescription').value
+                };
+            } else {
+                 return showToast('ფორმის ტიპი არასწორია', 'error');
+            }
+
+            const submitBtn = document.getElementById('submitEmailFormBtn');
+            submitBtn.disabled = true;
+
+            showLoading(true);
+            
+            const response = await fetch(FORUM_API_BASE_URL + '/submit-form', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localData.token}`
+                },
+                body: JSON.stringify({
+                    formType: formType,
+                    formData: formData,
+                    userInfo: {
+                        username: currentUser,
+                        email: userEmail
+                    }
+                })
+            });
+            
+            showLoading(false);
+            submitBtn.disabled = false;
+            
+            if (response.ok) {
+                const result = await response.json();
+                showToast(result.message || 'მოთხოვნა წარმატებით გაიგზავნა!');
+                closeActiveModal();
+                // Optional: Clear form fields
+                form.reset();
+            } else {
+                const error = await response.json();
+                showToast(error.message || 'შეცდომა გაგზავნისას', 'error');
+            }
+        }
+        
+        // 3. Adjust the existing 'createThreadBtn' logic on the section view
+        // The HTML element's onClick is now 'openFormModalForCurrentSection()'
+
         /* --- ინიციალიზაცია / Init --- */
         document.addEventListener('DOMContentLoaded', async () => {
             document.querySelectorAll('.section-link').forEach(el => {
@@ -1257,7 +1392,22 @@
                     
                     const btn = document.getElementById('createThreadBtn');
                     const viewOnly = el.dataset.viewOnly === 'true';
-                    btn.style.display = (viewOnly && userData?.role !== 'admin') ? 'none' : 'flex';
+                    
+                    // Sections that use the email form instead of regular threads
+                    const emailFormSections = ['suggestions', 'complaints-admin', 'vacancies-leaders', 'donation-help'];
+
+                    // If it's an email form section, update the button text and check only for email/login
+                    if(emailFormSections.includes(currentSection)) {
+                        btn.innerHTML = '<span class="relative z-10"><i class="fas fa-paper-plane"></i> გაგზავნა</span>';
+                        btn.onclick = openFormModalForCurrentSection; // Set to the new email form function
+                        btn.style.display = 'flex'; // Always show form button if logged in
+                    }
+                    // If it's a regular thread section
+                    else {
+                        btn.innerHTML = '<span class="relative z-10"><i class="fas fa-plus"></i> ახალი თემა</span>';
+                        btn.onclick = showNewThreadModal; // Set back to original thread function
+                        btn.style.display = (viewOnly && userData?.role !== 'admin') ? 'none' : 'flex';
+                    }
 
                     clearInterval(refreshInterval);
                     refreshInterval = setInterval(renderThreads, 30000);
