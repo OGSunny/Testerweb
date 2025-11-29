@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zaratic Role Play - FORUM  </title>
+    <title>Zaratic Role Play - FORUM v2.1</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -33,26 +33,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-3px) rotate(1deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
-        }
-        
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 5px currentColor; }
-            50% { box-shadow: 0 0 20px currentColor; }
-        }
-
-        @keyframes shimmer {
-            0% { background-position: -1000px 0; }
-            100% { background-position: 1000px 0; }
-        }
-
-        .avatar-float { animation: float 4s ease-in-out infinite; }
-        .animate-pulse-glow { animation: pulse-glow 2s infinite; }
-        
-        /* New: Fade In Animation */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -61,8 +41,7 @@
             animation: fadeIn 0.5s ease-out;
         }
 
-
-        /* GlassmoFORUMhism Utilities */
+        /* Glassmorphism */
         .glass-card {
             backdrop-filter: blur(15px) saturate(180%);
             background: rgba(14, 23, 34, 0.7);
@@ -72,8 +51,7 @@
         }
 
         .glass-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 255, 255, 0.4);
+            transform: translateY(-2px);
             border-color: rgba(0, 255, 255, 0.6);
         }
 
@@ -85,14 +63,13 @@
             background-size: 200% 200%;
             animation: gradientShift 3s ease infinite;
             transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 15px rgba(0, 255, 255, 0.4);
             color: #070d14;
             font-weight: 700;
         }
-
-        .btn-gradient:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(0, 255, 255, 0.6);
+        .btn-gradient:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            filter: grayscale(0.8);
         }
 
         .btn-secondary {
@@ -101,42 +78,15 @@
             color: #00ffff;
             transition: all 0.3s ease;
         }
-        .btn-secondary:hover {
-            background: rgba(0, 255, 255, 0.1);
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-        }
 
-        /* Ripple Effect */
-        .ripple {
-            position: absolute;
-            border-radius: 50%;
-            transform: scale(0);
-            background: rgba(255, 255, 255, 0.5);
-            pointer-events: none;
-            animation: ripple-effect 0.6s linear;
-        }
-        @keyframes ripple-effect { to { transform: scale(4); opacity: 0; } }
-
-        /* Background Effects */
-        .animated-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
-            background: radial-gradient(circle at 10% 20%, #0c141d, #0d1117 70%);
-        }
-        .spotlight-cursor {
-            pointer-events: none; position: fixed; width: 400px; height: 400px;
-            border-radius: 50%; background: radial-gradient(circle at center, rgba(0, 255, 255, 0.08) 0%, transparent 70%);
-            transform: translate(-50%, -50%); transition: opacity 0.3s ease; z-index: -1;
-        }
-
-        /* Typography */
+        /* Utilities */
         .gradient-text {
             background-image: linear-gradient(45deg, #00ffff, #0066ff, #79ff70);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
-
-        /* Badges */
+        
         .badge-custom {
             box-shadow: 0 1px 3px rgba(0,0,0,0.3);
             text-shadow: 0 0 2px rgba(0,0,0,0.5);
@@ -146,30 +96,17 @@
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #070d14; }
         ::-webkit-scrollbar-thumb { background: #0066ff; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #00ffff; }
-
-        /* Skeleton */
-        .skeleton {
-            background: linear-gradient(90deg, #1f2a37 25%, #293847 50%, #1f2a37 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite linear;
-        }
     </style>
 </head>
 <body class="min-h-screen text-gray-100 selection:bg-cyan-500 selection:text-black">
     
-    <div class="animated-bg"></div>
-    <div id="spotlight" class="spotlight-cursor opacity-0"></div>
-
     <nav class="sticky top-0 z-40 p-4 border-b border-cyan-500/20 glass-card rounded-b-xl backdrop-blur-xl">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.reload()">
                 <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/zaratic.png" class="h-10 w-10 border-2 border-cyan-400 rounded hover:rotate-6 transition-transform duration-300">
-                <h1 class="text-2xl font-extrabold tracking-widest gradient-text hidden sm:block">ZARATIC FORUM</h1>
+                <h1 class="text-2xl font-extrabold tracking-widest gradient-text hidden sm:block">ZARATIC FORUM <span class="text-xs text-white/50 align-top">v2.1</span></h1>
             </div>
-            
-            <div id="navActions" class="flex items-center gap-4">
-            </div>
+            <div id="navActions" class="flex items-center gap-4"></div>
         </div>
     </nav>
 
@@ -177,39 +114,33 @@
         
         <div id="mainLoading" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden">
             <div class="text-cyan-400 text-xl font-bold flex items-center gap-3">
-                <i class="fas fa-circle-notch fa-spin text-3xl"></i> Processing Command...
+                <i class="fas fa-circle-notch fa-spin text-3xl"></i> Processing...
             </div>
         </div>
 
         <div id="forumView" class="animate-fade-in-up-custom">
             <header class="py-8 text-center">
                 <h2 class="text-4xl md:text-5xl font-black mb-2 gradient-text">Zaratic FORUM</h2>
-                <p class="text-cyan-200/60 font-mono text-sm">ოფიციალური კომუნიკაციის პროტოკოლები და არქივები</p>
+                <p class="text-cyan-200/60 font-mono text-sm">Official Communication Protocols</p>
             </header>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                 <div class="glass-card p-6 rounded-2xl group">
                     <div class="flex items-center gap-3 mb-4 pb-3 border-b border-white/10">
                         <i class="fas fa-server text-cyan-400 text-xl"></i>
-                        <h3 class="text-xl font-bold text-cyan-100">სერვერის ოპერაციები</h3>
+                        <h3 class="text-xl font-bold text-cyan-100">Server Operations</h3>
                     </div>
                     <div class="space-y-3">
-                        <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="rules" data-view-only="true">
+                        <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all" data-section="rules" data-view-only="true">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-book-open mr-2 text-cyan-500"></i> წესდება (Rules)</span>
-                                <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
+                                <span class="text-sm font-medium"><i class="fas fa-book-open mr-2 text-cyan-500"></i> Rules</span>
+                                <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded">0</span>
                             </div>
                         </a>
-                        <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="news" data-view-only="true">
+                        <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all" data-section="news" data-view-only="true">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-broadcast-tower mr-2 text-cyan-500"></i> განცხადებები (Announcements)</span>
-                                <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
-                            </div>
-                        </a>
-                        <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="updates" data-view-only="true">
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-code-branch mr-2 text-cyan-500"></i> განახლებები (Updates)</span>
-                                <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
+                                <span class="text-sm font-medium"><i class="fas fa-broadcast-tower mr-2 text-cyan-500"></i> Announcements</span>
+                                <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded">0</span>
                             </div>
                         </a>
                     </div>
@@ -218,25 +149,19 @@
                 <div class="glass-card p-6 rounded-2xl group">
                     <div class="flex items-center gap-3 mb-4 pb-3 border-b border-white/10">
                         <i class="fas fa-users-cog text-cyan-400 text-xl"></i>
-                        <h3 class="text-xl font-bold text-cyan-100">ინტერაქცია</h3>
+                        <h3 class="text-xl font-bold text-cyan-100">Community</h3>
                     </div>
                     <div class="space-y-3">
-                        <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="suggestions">
+                        <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all" data-section="general">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-hand-pointer mr-2 text-cyan-500"></i> წინადადებები (Suggestions)</span>
-                                <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
+                                <span class="text-sm font-medium"><i class="fas fa-comments mr-2 text-cyan-500"></i> General Discussion</span>
+                                <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded">0</span>
                             </div>
                         </a>
-                        <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="events">
+                        <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all" data-section="suggestions">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-calendar-check mr-2 text-cyan-500"></i> ივენთები (Events)</span>
-                                <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
-                            </div>
-                        </a>
-                        <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="biographies">
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-id-card mr-2 text-cyan-500"></i> ბიოგრაფიები (Biographies)</span>
-                                <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
+                                <span class="text-sm font-medium"><i class="fas fa-lightbulb mr-2 text-cyan-500"></i> Suggestions</span>
+                                <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded">0</span>
                             </div>
                         </a>
                     </div>
@@ -245,67 +170,19 @@
                 <div class="glass-card p-6 rounded-2xl group">
                     <div class="flex items-center gap-3 mb-4 pb-3 border-b border-white/10">
                         <i class="fas fa-exclamation-triangle text-orange-400 text-xl"></i>
-                        <h3 class="text-xl font-bold text-cyan-100">ინციდენტები</h3>
+                        <h3 class="text-xl font-bold text-cyan-100">Appeals & Reports</h3>
                     </div>
                     <div class="space-y-3">
-                         <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="complaints-admin">
+                        <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all" data-section="complaints-player">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-user-lock mr-2 text-orange-400"></i> გასაჩივრება (Admin Appeal)</span>
-                                <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
+                                <span class="text-sm font-medium"><i class="fas fa-user-times mr-2 text-orange-400"></i> Player Reports</span>
+                                <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded">0</span>
                             </div>
                         </a>
-                        <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="complaints-player">
+                        <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all" data-section="unban">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-user-times mr-2 text-orange-400"></i> გასაჩივრება (Player Report)</span>
-                                <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
-                            </div>
-                        </a>
-                        <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="unban">
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-key mr-2 text-green-400"></i> განბლოკვა (Unban Request)</span>
-                                <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="glass-card p-6 rounded-2xl group">
-                    <div class="flex items-center gap-3 mb-4 pb-3 border-b border-white/10">
-                        <i class="fas fa-briefcase text-cyan-400 text-xl"></i>
-                        <h3 class="text-xl font-bold text-cyan-100">კადრები</h3>
-                    </div>
-                    <div class="space-y-3">
-                        <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="vacancies-leaders">
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-chess-king mr-2 text-cyan-500"></i> ლიდერობა (Leadership)</span>
-                                <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
-                            </div>
-                        </a>
-                        <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="vacancies-admin">
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-shield-alt mr-2 text-cyan-500"></i> ადმინისტრირება (Administration)</span>
-                                <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="glass-card p-6 rounded-2xl group col-span-1 md:col-span-2 lg:col-span-1">
-                    <div class="flex items-center gap-3 mb-4 pb-3 border-b border-white/10">
-                        <i class="fas fa-cogs text-cyan-400 text-xl"></i>
-                        <h3 class="text-xl font-bold text-cyan-100">დახმარება & სხვა</h3>
-                    </div>
-                    <div class="space-y-3">
-                        <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="donation-help">
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-hand-holding-usd mr-2 text-cyan-500"></i> დონაცია (Donation)</span>
-                                <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
-                            </div>
-                        </a>
-                        <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="general">
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium"><i class="fas fa-comments mr-2 text-cyan-500"></i> ზოგადი დისკუსია (General Discussion)</span>
-                                <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
+                                <span class="text-sm font-medium"><i class="fas fa-key mr-2 text-green-400"></i> Unban Requests</span>
+                                <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded">0</span>
                             </div>
                         </a>
                     </div>
@@ -316,8 +193,8 @@
         <div id="sectionView" class="hidden animate-fade-in-up-custom">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                 <div>
-                    <button onclick="backToForumFromSection()" class="btn-secondary px-4 py-2 rounded-lg text-sm mb-2 flex items-center gap-2">
-                        <i class="fas fa-arrow-left"></i> Forums
+                    <button onclick="backToForum()" class="btn-secondary px-4 py-2 rounded-lg text-sm mb-2 flex items-center gap-2">
+                        <i class="fas fa-arrow-left"></i> Main Index
                     </button>
                     <h2 id="sectionTitle" class="text-3xl font-extrabold gradient-text"></h2>
                     <div id="sectionBreadcrumbs" class="text-sm text-gray-400 mt-1 font-mono"></div>
@@ -326,9 +203,7 @@
                     <span class="relative z-10"><i class="fas fa-plus"></i> New Thread</span>
                 </button>
             </div>
-
-            <div id="threadsList" class="space-y-4">
-            </div>
+            <div id="threadsList" class="space-y-4"></div>
         </div>
 
         <div id="threadView" class="hidden animate-fade-in-up-custom">
@@ -339,18 +214,18 @@
             </div>
 
             <div class="glass-card p-6 rounded-2xl mb-8">
-                <h2 id="threadTitle" class="text-3xl font-extrabold mb-2 gradient-text"></h2>
+                <h2 id="threadTitle" class="text-3xl font-extrabold mb-2 gradient-text break-words"></h2>
                 <div id="threadBreadcrumbs" class="text-sm text-gray-400 font-mono"></div>
             </div>
 
-            <div id="threadPosts" class="space-y-6">
-            </div>
+            <div id="threadPosts" class="space-y-6"></div>
 
             <div class="glass-card p-6 md:p-8 rounded-2xl my-10">
                 <h3 class="text-xl font-bold mb-4 text-cyan-100">Post a Reply</h3>
                 <form id="newReplyForm">
                     <textarea id="replyContent" rows="4" class="w-full p-4 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:ring-2 focus:ring-cyan-500 transition-all text-gray-100 placeholder-gray-500" placeholder="Type your response here..." required></textarea>
-                    <div class="mt-4 flex justify-end">
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-xs text-gray-500" id="replyCharCount">0/5000</span>
                         <button type="submit" id="submitReplyBtn" class="btn-gradient px-6 py-3 rounded-lg font-bold flex items-center gap-2">
                             <span class="relative z-10"><i class="fas fa-paper-plane"></i> Submit Reply</span>
                         </button>
@@ -360,89 +235,27 @@
         </div>
 
         <div id="profileView" class="hidden animate-fade-in-up-custom">
-            <div class="glass-card p-8 rounded-3xl max-w-4xl mx-auto border-l-4 border-cyan-400">
-                <div class="flex flex-col md:flex-row items-center gap-8 mb-8 pb-8 border-b border-gray-700/50">
-                    <div id="profileAvatarLarge" class="w-32 h-32 rounded-full border-4 border-cyan-400 shadow-[0_0_20px_rgba(0,255,255,0.4)] avatar-float flex items-center justify-center text-4xl font-bold bg-gray-800"></div>
-                    <div class="text-center md:text-left">
-                        <h2 id="profileUsername" class="text-4xl font-black gradient-text mb-2"></h2>
-                        <div id="profileBadges" class="flex flex-wrap gap-2 justify-center md:justify-start"></div>
+             <div class="glass-card p-8 rounded-3xl max-w-4xl mx-auto">
+                 <button onclick="backToForum()" class="mb-4 text-gray-400 hover:text-white flex items-center gap-2"><i class="fas fa-arrow-left"></i> Back</button>
+                 <div class="flex items-center gap-6 mb-6">
+                    <div id="profileAvatarLarge" class="w-24 h-24 rounded-full bg-gray-800 border-4 border-cyan-400 flex items-center justify-center text-3xl font-bold"></div>
+                    <div>
+                        <h2 id="profileUsername" class="text-3xl font-bold"></h2>
+                        <div id="profileBadges" class="flex gap-2 mt-2"></div>
                     </div>
-                </div>
-
-                <div class="flex gap-4 border-b border-gray-700/50 mb-6">
-                    <button class="px-4 py-2 text-cyan-400 border-b-2 border-cyan-400 font-bold tab-btn" onclick="switchTab('info', this)">Info</button>
-                    <button class="px-4 py-2 text-gray-400 hover:text-cyan-200 tab-btn" onclick="switchTab('edit', this)">Edit</button>
-                    <button id="adminTabBtn" class="px-4 py-2 text-red-400 hover:text-red-300 hidden tab-btn" onclick="switchTab('admin', this)">Admin</button>
-                </div>
-
-                <div id="infoTab" class="tab-content grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-gray-900/40 p-4 rounded-xl border border-gray-700">
-                        <label class="block text-xs text-cyan-500 font-mono mb-1">DISPLAY NAME</label>
-                        <div id="displayName" class="text-lg">-</div>
-                    </div>
-                    <div class="bg-gray-900/40 p-4 rounded-xl border border-gray-700">
-                        <label class="block text-xs text-cyan-500 font-mono mb-1">EMAIL</label>
-                        <div id="displayEmail" class="text-lg">-</div>
-                    </div>
-                    <div class="bg-gray-900/40 p-4 rounded-xl border border-gray-700">
-                        <label class="block text-xs text-cyan-500 font-mono mb-1">PHONE</label>
-                        <div id="displayPhone" class="text-lg">-</div>
-                    </div>
-                    <div class="bg-gray-900/40 p-4 rounded-xl border border-gray-700 md:col-span-2">
-                        <label class="block text-xs text-cyan-500 font-mono mb-1">BIO</label>
-                        <div id="displayBio" class="text-lg italic text-gray-300">-</div>
-                    </div>
-                </div>
-
-                <div id="editTab" class="hidden tab-content">
-                    <form id="profileEditForm" class="space-y-4">
-                        <div>
-                            <label class="block text-sm mb-1 text-gray-400">Avatar (Image URL or File)</label>
-                            <div class="flex items-center gap-4">
-                                <div id="avataFORUMreview" class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center border border-cyan-500/50 bg-cover bg-center"></div>
-                                <input type="file" id="editAvatar" class="text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-900/50 file:text-cyan-400 hover:file:bg-cyan-900" accept="image/*" onchange="previewAvatar(this)">
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <input type="text" id="editName" placeholder="Display Name" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none">
-                            <input type="email" id="editEmail" placeholder="Email" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none">
-                            <input type="tel" id="editPhone" placeholder="Phone" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none">
-                        </div>
-                        <input type="text" id="editBio" placeholder="Bio" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none">
-                        <button type="submit" id="saveProfileBtn" class="btn-gradient px-6 py-2 rounded-lg mt-4"><span class="relative z-10">Save Changes</span></button>
-                    </form>
-                </div>
-
-                <div id="adminTab" class="hidden tab-content space-y-6">
-                    <div class="p-6 rounded-xl bg-gray-900/50 border border-cyan-900">
-                        <h4 class="text-cyan-400 font-bold mb-4">Grant Badge</h4>
-                        <div class="flex flex-col md:flex-row gap-4">
-                            <input type="text" id="badgeUsername" placeholder="Target Username" class="flex-1 p-2 bg-black/50 border border-gray-700 rounded">
-                            <input type="text" id="badgeName" placeholder="Badge (e.g. VIP)" class="flex-1 p-2 bg-black/50 border border-gray-700 rounded">
-                            <button onclick="assignBadge(event)" class="btn-gradient px-4 py-2 rounded"><span class="relative z-10">Add</span></button>
-                        </div>
-                    </div>
-                    <div class="p-6 rounded-xl bg-gray-900/50 border border-red-900/30">
-                        <h4 class="text-orange-400 font-bold mb-4">Revoke Badge</h4>
-                        <div class="flex flex-col md:flex-row gap-4">
-                            <input type="text" id="removeBadgeUsername" placeholder="Target Username" class="flex-1 p-2 bg-black/50 border border-gray-700 rounded">
-                            <input type="text" id="removeBadgeName" placeholder="Badge Name" class="flex-1 p-2 bg-black/50 border border-gray-700 rounded">
-                            <button onclick="removeBadge(event)" class="bg-red-600 hover:bg-red-500 px-4 py-2 rounded text-white font-bold transition">Remove</button>
-                        </div>
-                    </div>
-                </div>
-
-                <button onclick="backToForum()" class="mt-8 text-gray-400 hover:text-white flex items-center gap-2">
-                    <i class="fas fa-arrow-left"></i> Return to FORUM
-                </button>
-            </div>
+                 </div>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-300">
+                    <div class="bg-gray-900/50 p-4 rounded"><span>Email:</span> <span id="displayEmail" class="text-white ml-2"></span></div>
+                    <div class="bg-gray-900/50 p-4 rounded"><span>Joined:</span> <span id="displayJoin" class="text-white ml-2"></span></div>
+                 </div>
+             </div>
         </div>
+
     </main>
 
     <div id="modalContainer" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
         <div id="modalContent" class="glass-card w-full max-w-lg p-8 rounded-2xl scale-95 transition-transform duration-300 relative">
             <button onclick="closeActiveModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
-            
             <div id="dynamicModalBody"></div>
         </div>
     </div>
@@ -450,51 +263,30 @@
     <div id="toast" class="fixed top-24 right-5 z-50 px-6 py-4 rounded-lg shadow-2xl transform translate-x-full transition-transform duration-300 font-bold flex items-center gap-3"></div>
 
     <script>
-        // Use a descriptive variable name for the backend URL
         const FORUM_API_BASE_URL = 'https://data7167.jemalagegidze.workers.dev';
-        // Initialize EmailJS
+        // Initialize EmailJS (Keep your ID)
         emailjs.init('6mfdsM4fGZ9WWDFst');
 
-        // Global State
-        let currentUser = null; // The logged-in username
-        let userData = null;    // Full user profile data
+        // State & Config
+        let currentUser = null; 
+        let userData = null;
         let currentSection = null;
         let currentThread = null;
         let sectionPosts = [];
         let refreshInterval = null;
-        const storageKey = 'zaraticForum_v2';
+        let lastActionTime = 0; // Rate Limiting
+        const storageKey = 'zaraticForum_v2.1';
         let localData = JSON.parse(localStorage.getItem(storageKey)) || { token: null };
 
-        /* --- VISUAL EFFECTS & UTILITIES (KEPT AS IS) --- */
+        // --- Core Utilities ---
 
-        // Spotlight Effect
-        const spotlight = document.getElementById('spotlight');
-        document.addEventListener('mousemove', (e) => {
-            if (Date.now() % 2 !== 0) return; 
-            spotlight.style.opacity = '1';
-            spotlight.style.left = `${e.clientX}px`;
-            spotlight.style.top = `${e.clientY}px`;
-        });
-        document.addEventListener('mouseleave', () => spotlight.style.opacity = '0');
-
-        // Ripple Effect
-        function addRipple(e) {
-            const button = e.currentTarget;
-            const existing = button.querySelector('.ripple');
-            if (existing) existing.remove();
-            
-            const circle = document.createElement('span');
-            const d = Math.max(button.clientWidth, button.clientHeight);
-            circle.style.width = circle.style.height = `${d}px`;
-            circle.style.left = `${e.clientX - button.getBoundingClientRect().left - d/2}px`;
-            circle.style.top = `${e.clientY - button.getBoundingClientRect().top - d/2}px`;
-            circle.classList.add('ripple');
-            button.appendChild(circle);
+        function stopAutoRefresh() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+                refreshInterval = null;
+            }
         }
-        document.querySelectorAll('.btn-gradient').forEach(b => b.addEventListener('click', addRipple));
 
-        // UTILITIES
-        
         function showLoading(show) {
             document.getElementById('mainLoading').classList.toggle('hidden', !show);
         }
@@ -502,415 +294,143 @@
         function showToast(msg, type = 'success') {
             const toast = document.getElementById('toast');
             toast.textContent = msg;
-            toast.className = `fixed top-24 right-5 z-50 px-6 py-4 rounded-lg shadow-2xl transition-transform duration-300 font-bold flex items-center gap-3 transform ${type === 'success' ? 'bg-gradient-to-r from-green-600 to-green-800 text-white' : 'bg-gradient-to-r from-orange-600 to-red-800 text-white'}`;
-            
+            toast.className = `fixed top-24 right-5 z-50 px-6 py-4 rounded-lg shadow-2xl transition-transform duration-300 font-bold flex items-center gap-3 transform ${type === 'success' ? 'bg-green-900 border border-green-500 text-white' : 'bg-red-900 border border-red-500 text-white'}`;
             requestAnimationFrame(() => toast.classList.remove('translate-x-full'));
             setTimeout(() => toast.classList.add('translate-x-full'), 3000);
         }
 
-        // IMPROVED: Strict sanitization to prevent XSS.
         function escapeHtml(text) {
             if (typeof text !== 'string') return '';
-            return text.replace(/[&<>"']/g, function(m) {
-                return {
-                    '&': '&amp;',
-                    '<': '&lt;',
-                    '>': '&gt;',
-                    '"': '&quot;',
-                    "'": '&#39;'
-                }[m];
-            });
+            return text.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;','\'':'&#39;'}[m]));
         }
 
         function formatTime(time) {
             const diff = Date.now() - time;
-            const s = 1000;
-            const m = 60 * s;
-            const h = 60 * m;
-            const d = 24 * h;
-            
-            if (diff < m) return 'Just now';
-            if (diff < h) return `${Math.floor(diff/m)}m ago`;
-            if (diff < d) return `${Math.floor(diff/h)}h ago`;
-            if (diff < 7 * d) return `${Math.floor(diff/d)}d ago`;
-            return new Date(time).toLocaleDateString('en-US'); 
+            if (diff < 60000) return 'Just now';
+            if (diff < 3600000) return `${Math.floor(diff/60000)}m ago`;
+            if (diff < 86400000) return `${Math.floor(diff/3600000)}h ago`;
+            return new Date(time).toLocaleDateString(); 
         }
 
-        function getBadgeHtml(name) {
-            const safeName = escapeHtml(name).toUpperCase();
-            const colors = {
-                'ADMIN': 'bg-gradient-to-r from-cyan-400 to-blue-600 text-black',
-                'VIP': 'bg-gradient-to-r from-yellow-400 to-orange-500 text-black',
-                'MODERATOR': 'bg-gradient-to-r from-puFORUMle-500 to-indigo-600 text-white',
-                'HELPER': 'bg-gradient-to-r from-green-400 to-emerald-600 text-black'
-            };
-            const cls = colors[safeName] || 'bg-gray-700 text-white';
-            return `<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider badge-custom ${cls}">${safeName}</span>`;
+        function validateInput(text, min = 2, max = 5000) {
+            if (!text || text.length < min) return `Content too short (min ${min} chars).`;
+            if (text.length > max) return `Content too long (max ${max} chars).`;
+            // Spam Check: All Caps
+            if (text.length > 20 && text === text.toUpperCase()) return "Please stop shouting (Turn off Caps Lock).";
+            return null;
         }
 
-        /* --- API LAYER (IMPROVED ERROR HANDLING) --- */
+        function checkRateLimit() {
+            const now = Date.now();
+            if (now - lastActionTime < 5000) { // 5 Seconds
+                showToast(`Rate Limit: Please wait ${Math.ceil((5000 - (now - lastActionTime))/1000)}s`, 'error');
+                return false;
+            }
+            return true;
+        }
+
+        // --- API ---
 
         async function api(path, options = {}) {
             showLoading(true);
-            const headers = { ...options.headers };
-            
-            // Set Content-Type only if a body is present and it's not FormData (for avatar uploads)
-            if (options.body && !(options.body instanceof FormData)) {
-                headers['Content-Type'] = 'application/json';
-            }
-
+            const headers = { ...options.headers, 'Content-Type': 'application/json' };
             if (localData.token) headers['Authorization'] = `Bearer ${localData.token}`;
 
             try {
                 const res = await fetch(FORUM_API_BASE_URL + path, { ...options, headers });
                 showLoading(false);
                 
-                if (res.status === 401 || res.status === 403) {
-                     // Check if not trying to log in/register/verify
-                     if (!['/me','/login','/register','/verify'].includes(path) && currentUser) {
-                        showToast('Session expired. Please log in again.', 'error');
-                        logout();
-                     }
-                     return res; // Let auth handlers deal with their own 40x
+                if (res.status === 401 && currentUser) {
+                    showToast('Session Expired', 'error');
+                    logout();
+                    return null;
                 }
-                
-                if (!res.ok) { 
-                    if (path !== '/post-counts') { // Quiet fail for counts
-                        let errData = { message: res.statusText || 'Unknown Error' };
-                        try {
-                            const clone = res.clone();
-                            if (res.headers.get('content-type')?.includes('application/json')) {
-                                errData = await clone.json();
-                            }
-                        } catch(e) {/* ignore json parse error */}
-                        showToast(errData.message || res.statusText || 'Operation Failed', 'error');
-                    }
+                if (!res.ok && path !== '/post-counts') {
+                    const err = await res.json().catch(() => ({}));
+                    showToast(err.message || 'Operation Failed', 'error');
                 }
                 return res;
             } catch (err) {
                 showLoading(false);
-                console.error('API Connection Error:', err);
-                showToast('Connection Refused or Network Error', 'error');
+                console.error(err);
+                showToast('Connection Error', 'error');
                 return null;
             }
         }
 
-        /* --- AUTH VIEWS (MODALS) --- */
-
-        function openModal(htmlContent) {
-            const container = document.getElementById('modalContainer');
-            const content = document.getElementById('modalContent');
-            const body = document.getElementById('dynamicModalBody');
-            
-            body.innerHTML = htmlContent;
-            container.classList.remove('hidden');
-            setTimeout(() => {
-                container.classList.remove('opacity-0');
-                content.classList.remove('scale-95');
-                content.classList.add('scale-100');
-            }, 10);
-        }
-
-        function closeActiveModal() {
-            const container = document.getElementById('modalContainer');
-            const content = document.getElementById('modalContent');
-            
-            container.classList.add('opacity-0');
-            content.classList.remove('scale-100');
-            content.classList.add('scale-95');
-            
-            setTimeout(() => container.classList.add('hidden'), 300);
-        }
-
-        // --- Render Templates for Modals ---
-        
-        function showWelcomeModal() {
-            if(currentUser) return;
-            openModal(`
-                <div class="text-center">
-                    <h2 class="text-3xl font-black gradient-text mb-4">ACCESS RESTRICTED</h2>
-                    <p class="text-gray-300 mb-6">You are accessing the Zaratic FORUM as a guest. Authenticate to proceed.</p>
-                    <div class="flex flex-col gap-3">
-                        <button onclick="showLogin()" class="btn-gradient w-full py-3 rounded-lg"><span class="relative z-10">AUTHENTICATE (LOGIN)</span></button>
-                        <button onclick="showRegister()" class="btn-secondary w-full py-3 rounded-lg">NEW IDENTITY (REGISTER)</button>
-                    </div>
-                </div>
-            `);
-        }
-
-        function showLogin() {
-            openModal(`
-                <h2 class="text-2xl font-bold text-cyan-400 mb-4">Identity Verification</h2>
-                <form onsubmit="handleLogin(event)" class="space-y-4">
-                    <input type="text" id="loginUsername" placeholder="Username" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none text-white" required>
-                    <input type="password" id="loginPassword" placeholder="Password" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none text-white" required>
-                    <button type="submit" class="btn-gradient w-full py-2 rounded-lg mt-2"><span class="relative z-10">CONNECT</span></button>
-                    <p class="text-center text-xs text-gray-500 mt-2 cursor-pointer hover:text-cyan-400" onclick="showRegister()">Create new identity</p>
-                </form>
-            `);
-        }
-
-        function showRegister() {
-            openModal(`
-                <h2 class="text-2xl font-bold text-cyan-400 mb-4">Create Identity</h2>
-                <form onsubmit="handleRegister(event)" class="space-y-4">
-                    <input type="text" id="regUsername" placeholder="Username" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none text-white" pattern="^[a-zA-Z0-9_]{3,20}$" title="Username must be 3-20 characters long and contain only letters, numbers, and underscores." required>
-                    <input type="email" id="regEmail" placeholder="Email" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none text-white" required>
-                    <input type="password" id="regPassword" placeholder="Password (Min 8 chars, strong)" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none text-white" required>
-                    <button type="submit" class="btn-gradient w-full py-2 rounded-lg mt-2"><span class="relative z-10">INITIATE</span></button>
-                </form>
-            `);
-        }
-
-        function showVerify() {
-            openModal(`
-                <h2 class="text-2xl font-bold text-green-400 mb-4">Email Verification</h2>
-                <p class="text-sm text-gray-400 mb-4">A code has been sent to your comms channel.</p>
-                <form onsubmit="handleVerify(event)" class="space-y-4">
-                    <input type="text" id="verifyCode" placeholder="8-Digit Code" maxlength="8" class="w-full p-3 bg-gray-900/50 rounded-lg border border-green-500/30 focus:border-green-400 outline-none text-center tracking-widest text-xl font-mono" required>
-                    <button type="submit" class="btn-gradient w-full py-2 rounded-lg"><span class="relative z-10">CONFIRM</span></button>
-                </form>
-            `);
-        }
-
-        function showNewThreadModal() {
-            if (!currentUser) return showLogin();
-            
-            const sectionEl = document.querySelector(`a[data-section="${currentSection}"]`);
-            if (sectionEl?.dataset.viewOnly === 'true' && userData?.role !== 'admin') {
-                return showToast('Restricted Protocol: Admin Only Section', 'error');
-            }
-
-            openModal(`
-                <h2 class="text-2xl font-bold gradient-text mb-4">Initialize Thread</h2>
-                <form onsubmit="handleNewThread(event)" class="space-y-4">
-                    <input type="text" id="threadTitleInput" placeholder="Subject" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required maxlength="100">
-                    <textarea id="threadContent" rows="5" placeholder="Transmission content..." class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required></textarea>
-                    <div class="flex justify-end gap-3">
-                        <button type="button" onclick="closeActiveModal()" class="text-gray-400 hover:text-white px-4">Cancel</button>
-                        <button type="submit" id="submitThreadBtn" class="btn-gradient px-6 py-2 rounded-lg"><span class="relative z-10">TRANSMIT</span></button>
-                    </div>
-                </form>
-            `);
-        }
-
-        /* --- AUTH HANDLERS (IMPROVED VALIDATION) --- */
-
-        async function handleLogin(e) {
-            e.preventDefault();
-            const u = document.getElementById('loginUsername').value.trim();
-            const p = document.getElementById('loginPassword').value;
-            
-            const res = await api('/login', { method: 'POST', body: JSON.stringify({username:u, password:p})});
-            if(res && res.ok) {
-                const data = await res.json();
-                finishAuth(data);
-                closeActiveModal();
-                showToast(`Welcome back, ${u}`);
-            } else if (res && res.status === 401) {
-                showToast('Authentication Failed: Invalid credentials.', 'error');
-            }
-        }
-
-        async function handleRegister(e) {
-            e.preventDefault();
-            const u = document.getElementById('regUsername').value.trim();
-            const em = document.getElementById('regEmail').value.trim();
-            const p = document.getElementById('regPassword').value;
-
-            if (p.length < 8) return showToast('Password must be at least 8 characters.', 'error');
-            if (!/^[a-zA-Z0-9_]{3,20}$/.test(u)) return showToast('Username format invalid.', 'error');
-
-            const code = String(Math.floor(10000000 + Math.random() * 90000000));
-            const submitBtn = document.getElementById('dynamicModalBody').querySelector('button[type="submit"]');
-            
-            try {
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = 'Sending Code...';
-
-                // Send Email via EmailJS
-                await emailjs.send('service_uqvxc6o', 'Zaraticsregister9178', { to_email: em, to_name: u, code: code });
-                
-                // Register User (Code is stored in the simulated backend)
-                const res = await api('/register', { method: 'POST', body: JSON.stringify({username:u, email:em, password:p, code})});
-                
-                if(res && res.ok) {
-                    sessionStorage.setItem('pendingEmail', em);
-                    showVerify();
-                    showToast('Verification Code Sent.');
-                }
-            } catch(err) {
-                console.error(err);
-                showToast('Comms Failure (EmailJS or API)', 'error');
-            } finally {
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = '<span class="relative z-10">INITIATE</span>';
-                }
-            }
-        }
-
-        async function handleVerify(e) {
-            e.preventDefault();
-            const code = document.getElementById('verifyCode').value.trim();
-            const email = sessionStorage.getItem('pendingEmail');
-            
-            const res = await api('/verify', { method: 'POST', body: JSON.stringify({email, code})});
-            if(res && res.ok) {
-                const data = await res.json();
-                finishAuth(data);
-                closeActiveModal();
-                showToast('Identity Verified');
-                sessionStorage.removeItem('pendingEmail');
-            } else if (res && res.status === 401) {
-                showToast('Verification Failed: Invalid Code.', 'error');
-            }
-        }
-
-        function finishAuth(data) {
-            localData.token = data.token;
-            currentUser = data.user.username;
-            userData = data.user;
-            localStorage.setItem(storageKey, JSON.stringify(localData));
-            updateUI();
-        }
-
-        function logout() {
-            localStorage.removeItem(storageKey);
-            localData = { token: null };
-            currentUser = null;
-            userData = null;
-            updateUI();
-            backToForum();
-            clearInterval(refreshInterval);
-            showWelcomeModal();
-        }
-
-        /* --- UI UPDATES & INITIALIZATION --- */
-
-        function updateUI() {
-            const nav = document.getElementById('navActions');
-            if(currentUser) {
-                const avatarUrl = userData.profile.avatar;
-                const avatar = avatarUrl 
-                    ? `<img src="${escapeHtml(avatarUrl)}" class="w-8 h-8 rounded-full border border-cyan-400 object-cover">`
-                    : `<div class="w-8 h-8 rounded-full bg-cyan-900 flex items-center justify-center text-xs font-bold border border-cyan-400">${currentUser[0].toUpperCase()}</div>`;
-                
-                nav.innerHTML = `
-                    <div class="flex items-center gap-2 cursor-pointer glass-card px-3 py-1 rounded-full hover:bg-cyan-900/30 transition" onclick="showProfile()">
-                        ${avatar}
-                        <span class="text-sm font-semibold hidden sm:inline">${escapeHtml(currentUser)}</span>
-                    </div>
-                    <button onclick="logout()" class="text-gray-400 hover:text-red-400 transition" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
-                `;
-            } else {
-                nav.innerHTML = `
-                    <button onclick="showLogin()" class="btn-gradient px-4 py-1.5 rounded-lg text-sm"><span class="relative z-10">Login</span></button>
-                    <button onclick="showRegister()" class="text-sm text-gray-300 hover:text-white px-2">Register</button>
-                `;
-            }
-        }
-        
-        async function fetchPostCounts() {
-            if (!currentUser) return;
-            const countsRes = await api('/post-counts');
-            if(countsRes && countsRes.ok) {
-                const counts = await countsRes.json();
-                document.querySelectorAll('.section-link').forEach(el => {
-                    const c = counts[el.dataset.section] || 0;
-                    el.querySelector('.sec-stats').textContent = c;
-                });
-            }
-        }
-
-        /* --- VIEW CONTROLLERS --- */
+        // --- Views & Rendering ---
 
         function switchView(viewId) {
+            stopAutoRefresh(); // Critical Fix: Stop previous intervals
             ['forumView', 'sectionView', 'threadView', 'profileView'].forEach(id => {
                 const el = document.getElementById(id);
                 el.classList.add('hidden');
-                el.style.opacity = '0'; // Reset opacity for fade-in
                 if(id === viewId) {
                     el.classList.remove('hidden');
-                    // Trigger fade-in
-                    setTimeout(() => el.style.opacity = '1', 10);
+                    window.scrollTo({top:0});
                 }
             });
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // --- Sections ---
-
-        async function fetchPosts() {
-            const res = await api(`/posts/${currentSection}`);
-            return (res && res.ok) ? await res.json() : [];
-        }
-
+        // Render Thread List (Section View)
         async function renderThreads() {
+            if (!currentSection) return;
             const list = document.getElementById('threadsList');
-            if (currentSection === null) return; 
-
-            // Show Skeleton Loader
-            list.innerHTML = `<div class="glass-card p-6 h-32 skeleton rounded-2xl"></div><div class="glass-card p-6 h-32 skeleton rounded-2xl"></div>`;
+            const res = await api(`/posts/${currentSection}`);
+            if (res && res.ok) sectionPosts = await res.json();
             
-            sectionPosts = await fetchPosts();
-            list.innerHTML = ''; // Clear skeleton
-
-            // Filter for only top-level threads
+            list.innerHTML = '';
             const threads = sectionPosts.filter(p => !p.parentId).sort((a,b) => b.pinned - a.pinned || b.time - a.time);
-            
-            if(threads.length === 0) {
-                list.innerHTML = `<div class="text-center text-gray-500 py-10">No signals detected in this sector.</div>`;
+
+            if (threads.length === 0) {
+                list.innerHTML = '<div class="text-center text-gray-500 py-10">No threads in this section.</div>';
                 return;
             }
 
             threads.forEach(thread => {
                 const replies = sectionPosts.filter(p => p.parentId === thread.id).length;
-                const isPinned = thread.pinned ? 'border-l-4 border-green-400' : '';
-                const pinIcon = thread.pinned ? '<i class="fas fa-thumbtack text-green-400 mr-2"></i>' : '';
-                
-                const card = document.createElement('div');
-                card.className = `glass-card p-5 rounded-xl flex flex-col md:flex-row md:items-center justify-between cursor-pointer group ${isPinned}`;
-                card.onclick = (e) => { 
-                    // Ensure the click didn't originate from the admin buttons
-                    if(!e.target.closest('button')) openThread(thread.id, thread.title || thread.content.substring(0,30)) 
-                };
+                const isAuthor = thread.author === currentUser;
+                const isAdmin = userData?.role === 'admin';
+                const canDelete = isAuthor || isAdmin;
 
+                const card = document.createElement('div');
+                card.className = `glass-card p-5 rounded-xl flex flex-col md:flex-row md:items-center justify-between group ${thread.pinned ? 'border-l-4 border-green-400' : ''}`;
                 card.innerHTML = `
-                    <div class="flex-grow">
-                        <h3 class="text-lg font-bold group-hover:text-cyan-400 transition-colors">${pinIcon}${escapeHtml(thread.title || 'Untitled')}</h3>
+                    <div class="flex-grow cursor-pointer" onclick="openThread('${thread.id}', '${escapeHtml(thread.title)}')">
+                        <h3 class="text-lg font-bold group-hover:text-cyan-400 transition-colors">
+                            ${thread.pinned ? '<i class="fas fa-thumbtack text-green-400 mr-2"></i>' : ''}
+                            ${escapeHtml(thread.title)}
+                        </h3>
                         <div class="flex items-center gap-4 text-xs text-gray-400 mt-2 font-mono">
-                            <span class="flex items-center gap-1"><i class="fas fa-user"></i> ${escapeHtml(thread.author)}</span>
-                            <span class="flex items-center gap-1"><i class="fas fa-clock"></i> ${formatTime(thread.time)}</span>
+                            <span><i class="fas fa-user"></i> ${escapeHtml(thread.author)}</span>
+                            <span><i class="fas fa-clock"></i> ${formatTime(thread.time)}</span>
                         </div>
                     </div>
                     <div class="mt-4 md:mt-0 flex items-center gap-4">
-                        <div class="text-right hidden md:block">
+                        <div class="text-right">
                             <div class="text-2xl font-bold text-cyan-600">${replies}</div>
                             <div class="text-[10px] text-gray-500 uppercase">Replies</div>
                         </div>
-                        ${userData?.role === 'admin' ? `
-                            <div class="flex gap-2">
-                                <button onclick="togglePin(event, '${thread.id}')" title="${thread.pinned ? 'Unpin' : 'Pin'}" class="p-2 bg-gray-800 rounded hover:bg-green-900/50 text-gray-400 hover:text-green-400 transition"><i class="fas fa-thumbtack"></i></button>
-                                <button onclick="deleteThread(event, '${thread.id}')" title="Delete Thread" class="p-2 bg-gray-800 rounded hover:bg-red-900/50 text-gray-400 hover:text-red-400 transition"><i class="fas fa-trash"></i></button>
-                            </div>
-                        ` : ''}
+                        ${isAdmin ? `<button onclick="togglePin(event, '${thread.id}')" class="p-2 text-gray-400 hover:text-green-400"><i class="fas fa-thumbtack"></i></button>` : ''}
+                        ${canDelete ? `<button onclick="deleteThread(event, '${thread.id}', '${escapeHtml(thread.author)}')" class="p-2 text-gray-400 hover:text-red-400" title="Delete"><i class="fas fa-trash"></i></button>` : ''}
                     </div>
                 `;
                 list.appendChild(card);
             });
         }
 
-        // --- Threads ---
-
+        // Render Single Thread (Thread View)
         async function renderThread() {
             if (!currentThread) return;
-            sectionPosts = await fetchPosts(); // Refresh data
+            // Fetch fresh data
+            const res = await api(`/posts/${currentSection}`);
+            if (res && res.ok) sectionPosts = await res.json();
+            
             const container = document.getElementById('threadPosts');
             container.innerHTML = '';
 
             const op = sectionPosts.find(p => p.id === currentThread);
-            if(!op) return container.innerHTML = '<div class="text-center text-red-400 py-10">Thread lost in void.</div>';
+            if(!op) return container.innerHTML = '<div class="text-red-500">Thread not found.</div>';
 
             // Render OP
             container.appendChild(createPostEl(op, false));
@@ -923,379 +443,293 @@
 
         function createPostEl(post, isReply) {
             const div = document.createElement('div');
-            const isAuthor = post.author === userData?.username;
-            const borderClass = isAuthor ? 'border-cyan-500/30' : 'border-transparent';
+            const isAuthor = post.author === currentUser;
+            const isAdmin = userData?.role === 'admin';
+            const canDelete = isAuthor || isAdmin;
+
+            div.className = `glass-card p-6 md:p-8 rounded-2xl flex gap-4 md:gap-6 border ${isAuthor ? 'border-cyan-500/30' : 'border-transparent'}`;
             
-            const badges = (post.badges || []).map(getBadgeHtml).join(' ');
-            const safeAuthor = escapeHtml(post.author);
-            const avatarUrl = post.avatar ? escapeHtml(post.avatar) : '';
+            // Avatar Generation
+            const avatarHtml = post.avatar 
+                ? `<img src="${escapeHtml(post.avatar)}" class="w-12 h-12 rounded-full object-cover">`
+                : `<div class="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center font-bold text-cyan-500">${escapeHtml(post.author)[0].toUpperCase()}</div>`;
 
-            const avatar = avatarUrl
-                ? `<img src="${avatarUrl}" class="w-12 h-12 rounded-full border border-gray-600 object-cover" alt="${safeAuthor[0]}">`
-                : `<div class="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center font-bold text-xl text-cyan-500">${safeAuthor[0].toUpperCase()}</div>`;
+            // Badges
+            const badgeHtml = (post.badges || []).map(b => `<span class="px-2 py-0.5 bg-gray-700 text-[10px] rounded font-bold">${escapeHtml(b)}</span>`).join(' ');
 
-            div.className = `glass-card p-6 md:p-8 rounded-2xl flex gap-4 md:gap-6 border ${borderClass}`;
             div.innerHTML = `
                 <div class="flex-shrink-0 flex flex-col items-center gap-2">
-                    <div class="cursor-pointer" onclick="viewUseFORUMrofile('${safeAuthor}')">${avatar}</div>
-                    <div class="text-xs font-bold text-center mt-1 cursor-pointer hover:text-cyan-400" onclick="viewUseFORUMrofile('${safeAuthor}')">${safeAuthor}</div>
-                    <div class="flex flex-col gap-1 items-center">${badges}</div>
+                    ${avatarHtml}
+                    <div class="text-xs font-bold text-center mt-1">${escapeHtml(post.author)}</div>
+                    <div class="flex flex-col gap-1 items-center">${badgeHtml}</div>
                 </div>
                 <div class="flex-grow min-w-0">
                     <div class="flex justify-between items-start mb-4 pb-2 border-b border-white/5">
                         <span class="text-xs text-gray-500 font-mono">${formatTime(post.time)}</span>
-                        ${!isReply ? '<span class="px-2 py-0.5 bg-cyan-900/30 text-cyan-400 text-xs rounded border border-cyan-500/30">OP</span>' : ''}
+                        ${!isReply ? '<span class="px-2 py-0.5 bg-cyan-900/30 text-cyan-400 text-xs rounded">OP</span>' : ''}
                     </div>
                     <div class="text-gray-200 leading-relaxed whitespace-pre-wrap break-words text-sm md:text-base">${escapeHtml(post.content)}</div>
                     <div class="mt-6 flex justify-end items-center gap-4 pt-4 border-t border-white/5">
-                        <button onclick="toggleLike('${post.id}')" class="text-sm flex items-center gap-2 text-gray-400 hover:text-pink-500 transition group" title="Like">
-                            <i class="fas fa-heart group-hover:scale-125 transition-transform ${post.likes?.includes(currentUser) ? 'text-pink-500' : ''}"></i> 
-                            ${post.likes?.length || 0}
+                        <button onclick="toggleLike(this, '${post.id}')" class="text-sm flex items-center gap-2 text-gray-400 hover:text-pink-500 transition group" data-likes="${post.likes?.length||0}" data-liked="${post.likes?.includes(currentUser)}">
+                            <i class="fas fa-heart ${post.likes?.includes(currentUser) ? 'text-pink-500' : ''}"></i> 
+                            <span class="like-count">${post.likes?.length || 0}</span>
                         </button>
-                        ${userData?.role === 'admin' ? `<button onclick="deletePost('${post.id}')" class="text-xs text-red-400 hover:underline" title="Delete Post">Delete</button>` : ''}
+                        ${canDelete ? `<button onclick="deletePost('${post.id}', ${isReply})" class="text-xs text-red-400 hover:underline">Delete</button>` : ''}
                     </div>
                 </div>
             `;
             return div;
         }
 
-        /* --- ACTIONS (IMPROVED) --- */
+        // --- Actions & Logic ---
 
-        async function handleNewThread(e) {
-            e.preventDefault();
-            if (!currentUser) return showLogin();
-            
-            const title = document.getElementById('threadTitleInput').value.trim();
-            const content = document.getElementById('threadContent').value.trim();
-            const submitBtn = document.getElementById('submitThreadBtn');
-            
-            submitBtn.disabled = true;
-
-            const res = await api(`/posts/${currentSection}`, { method: 'POST', body: JSON.stringify({title, content})});
-            if(res && res.ok) {
-                closeActiveModal();
-                renderThreads();
-                fetchPostCounts();
-                showToast('Thread Initialized');
-            }
-            submitBtn.disabled = false;
-        }
-
-        document.getElementById('newReplyForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (!currentUser) return showLogin();
-
-            const contentEl = document.getElementById('replyContent');
-            const content = contentEl.value.trim();
-            const submitBtn = document.getElementById('submitReplyBtn');
-
-            if (!content) return showToast('Reply cannot be empty.', 'error');
-
-            submitBtn.disabled = true;
-
-            const res = await api(`/posts/${currentSection}`, { method: 'POST', body: JSON.stringify({content, parentId: currentThread})});
-            if(res && res.ok) {
-                contentEl.value = '';
-                renderThread();
-                fetchPostCounts();
-                showToast('Reply Transmitted');
-            }
-            submitBtn.disabled = false;
-        });
-
-        async function toggleLike(id) {
-            if(!currentUser) return showLogin();
-            await api(`/posts/${currentSection}/${id}/like`, {method: 'POST'});
-            // Only re-render if we are currently in a thread.
-            if(currentThread) renderThread();
-        }
-        
-        // Function to delete a single post/reply
-        async function deletePost(id) {
-            if(!confirm('Delete this signal (post/reply)? Irreversible.')) return;
-            const res = await api(`/posts/${currentSection}/delete-post`, {method: 'POST', body: JSON.stringify({postId: id})});
-            if(res && res.ok) {
-                // If the deleted post was the main thread, navigate back to section
-                if(id === currentThread) {
-                    backToSectionFromThread();
-                } else {
-                    renderThread();
-                }
-                fetchPostCounts();
-                showToast('Signal Purged');
-            }
-        }
-
-        // Function to delete an entire thread (including replies)
-        async function deleteThread(e, id) {
-             e.stopPropagation(); // Stop navigation to thread view
-            if(!confirm('Delete this ENTIRE THREAD (including replies)? Irreversible.')) return;
-            const res = await api(`/posts/${currentSection}/delete-thread`, {method: 'POST', body: JSON.stringify({threadId: id})});
-            if(res && res.ok) {
-                renderThreads();
-                fetchPostCounts();
-                showToast('Thread & Replies Purged');
-            }
-        }
-
-        async function togglePin(e, id) {
-            e.stopPropagation(); // Stop navigation to thread view
-            const res = await api(`/posts/${currentSection}/${id}/pin`, {method: 'POST'});
-            if(res && res.ok) {
-                renderThreads();
-                showToast('Pin Status Updated');
-            }
-        }
-
-        /* --- NAVIGATION LOGIC --- */
-
+        // 1. Navigation Actions
         function openThread(id, title) {
             currentThread = id;
-            document.getElementById('threadTitle').textContent = escapeHtml(title);
-            updateBreadcrumbs('thread');
+            document.getElementById('threadTitle').textContent = title;
+            document.getElementById('threadBreadcrumbs').textContent = `Forum > ${currentSection} > Thread`;
             switchView('threadView');
             renderThread();
-            clearInterval(refreshInterval);
-            // Refresh thread every 15 seconds
-            refreshInterval = setInterval(renderThread, 15000); 
+            refreshInterval = setInterval(renderThread, 15000); // Auto-refresh thread
         }
 
         function backToForum() {
             switchView('forumView');
             currentSection = null;
-            currentThread = null;
-            clearInterval(refreshInterval);
-            refreshInterval = null;
-        }
-
-        function backToForumFromSection() {
-            backToForum();
         }
 
         function backToSectionFromThread() {
             switchView('sectionView');
             currentThread = null;
             renderThreads();
-            clearInterval(refreshInterval);
-            // Refresh section every 30 seconds
-            refreshInterval = setInterval(renderThreads, 30000); 
+            refreshInterval = setInterval(renderThreads, 30000); // Auto-refresh list
         }
 
-        function updateBreadcrumbs(type) {
-            const sectionName = document.getElementById('sectionTitle')?.textContent || currentSection;
-            const crumbs = type === 'section' 
-                ? `FORUM > ${sectionName}` 
-                : `FORUM > ${sectionName} > Thread`;
-            const el = type === 'section' ? 'sectionBreadcrumbs' : 'threadBreadcrumbs';
-            document.getElementById(el).textContent = crumbs;
-        }
-
-        /* --- PROFILE --- */
-
-        async function showProfile() {
-            const res = await api('/me');
-            if(res && res.ok) {
-                const data = await res.json();
-                currentUser = data.username;
-                userData = data;
-                rendeFORUMrofileView(data, true);
-            }
-        }
-
-        async function viewUseFORUMrofile(username) {
-            if(username === currentUser) return showProfile();
-            const res = await api(`/users/${username}`);
-            if(res && res.ok) {
-                const data = await res.json();
-                rendeFORUMrofileView(data, false);
-            } else if (res && res.status === 404) {
-                showToast('User profile not found.', 'error');
-            }
-        }
-
-        function rendeFORUMrofileView(data, isOwner) {
-            switchView('profileView');
-            
-            // Populate Header
-            const avatarUrl = data.profile.avatar ? escapeHtml(data.profile.avatar) : '';
-            const avatarDiv = document.getElementById('profileAvatarLarge');
-            
-            avatarDiv.style.backgroundImage = avatarUrl ? `url(${avatarUrl})` : 'none';
-            avatarDiv.style.backgroundSize = 'cover';
-            avatarDiv.style.backgroundPosition = 'center';
-            avatarDiv.textContent = avatarUrl ? '' : data.username[0].toUpperCase();
-            
-            document.getElementById('profileUsername').textContent = escapeHtml(data.username);
-            document.getElementById('profileBadges').innerHTML = (data.badges || []).map(getBadgeHtml).join('');
-
-            // Populate Info
-            ['Name', 'Email', 'Phone', 'Bio'].forEach(f => {
-                const key = f.toLowerCase();
-                const displayValue = data.profile[key] ? escapeHtml(data.profile[key]) : '-';
-                document.getElementById(`display${f}`).textContent = displayValue;
-                
-                if(isOwner) {
-                    const editEl = document.getElementById(`edit${f}`);
-                    if (editEl) editEl.value = data.profile[key] || '';
-                }
-            });
-            
-            // Populate Edit Avatar Preview
-            const previewEl = document.getElementById('avataFORUMreview');
-            previewEl.style.backgroundImage = avatarUrl ? `url(${avatarUrl})` : 'none';
-            previewEl.style.backgroundSize = 'cover';
-            
-            // Handle Tabs logic
-            const tabs = document.querySelectorAll('.tab-btn');
-            
-            // Reset to first tab
-            switchTab('info', tabs[0]);
-
-            // Show/Hide Edit & Admin
-            tabs[1].style.display = isOwner ? 'block' : 'none';
-            document.getElementById('adminTabBtn').style.display = (isOwner && data.role === 'admin') ? 'block' : 'none';
-        }
-
-        function switchTab(name, btn) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-            const tabContent = document.getElementById(`${name}Tab`);
-            if (tabContent) tabContent.classList.remove('hidden');
-            
-            document.querySelectorAll('.tab-btn').forEach(b => {
-                b.classList.remove('text-cyan-400', 'border-b-2', 'border-cyan-400', 'font-bold');
-                b.classList.add('text-gray-400', 'hover:text-cyan-200');
-            });
-            btn.classList.remove('text-gray-400', 'hover:text-cyan-200');
-            btn.classList.add('text-cyan-400', 'border-b-2', 'border-cyan-400', 'font-bold');
-        }
-
-        document.getElementById('profileEditForm').addEventListener('submit', async (e) => {
+        // 2. Creation Actions
+        async function handleNewThread(e) {
             e.preventDefault();
-            const btn = document.getElementById('saveProfileBtn');
-            const orig = btn.innerHTML;
+            if(!checkRateLimit()) return;
+
+            const title = document.getElementById('threadTitleInput').value.trim();
+            const content = document.getElementById('threadContent').value.trim();
             
+            const error = validateInput(content);
+            if (error) return showToast(error, 'error');
+
+            const btn = document.getElementById('submitThreadBtn');
             btn.disabled = true;
-            btn.innerHTML = 'Saving...';
-            
-            const formData = new FormData();
-            const file = document.getElementById('editAvatar').files[0];
-            if(file) formData.append('avatar', file);
-            
-            // Append profile data, allowing empty strings to clear fields
-            ['Name', 'Email', 'Phone', 'Bio'].forEach(f => {
-                const value = document.getElementById(`edit${f}`).value || '';
-                formData.append(f.toLowerCase(), value);
+
+            const res = await api(`/posts/${currentSection}`, { 
+                method: 'POST', 
+                body: JSON.stringify({title, content})
             });
 
-            // Using the native fetch API with FormData is required for file uploads
-            const res = await fetch(FORUM_API_BASE_URL + '/me', {
-                method: 'PUT',
-                headers: { 'Authorization': `Bearer ${localData.token}` },
-                body: formData
-            });
-
-            if(res.ok) {
-                showToast('Profile Updated');
-                // Re-fetch profile data to refresh UI
-                await showProfile(); 
-            } else {
-                showToast('Update Failed. Check console.', 'error');
+            if(res && res.ok) {
+                lastActionTime = Date.now();
+                closeActiveModal();
+                showToast('Thread created');
+                renderThreads();
             }
             btn.disabled = false;
-            btn.innerHTML = orig;
+        }
+
+        document.getElementById('newReplyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if(!checkRateLimit()) return;
+
+            const content = document.getElementById('replyContent').value.trim();
+            const error = validateInput(content);
+            if (error) return showToast(error, 'error');
+
+            const btn = document.getElementById('submitReplyBtn');
+            btn.disabled = true;
+
+            const res = await api(`/posts/${currentSection}`, { 
+                method: 'POST', 
+                body: JSON.stringify({content, parentId: currentThread})
+            });
+
+            if(res && res.ok) {
+                lastActionTime = Date.now();
+                document.getElementById('replyContent').value = '';
+                showToast('Reply sent');
+                renderThread();
+            }
+            btn.disabled = false;
         });
 
-        function previewAvatar(input) {
-            const el = document.getElementById('avataFORUMreview');
-            if(input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = e => {
-                    el.style.backgroundImage = `url(${e.target.result})`;
-                    el.style.backgroundSize = 'cover';
-                    el.textContent = '';
-                };
-                reader.readAsDataURL(input.files[0]);
+        // 3. Like System (Optimistic UI)
+        async function toggleLike(btn, id) {
+            if(!currentUser) return showLogin();
+            
+            // UI Optimistic Update
+            const icon = btn.querySelector('i');
+            const countSpan = btn.querySelector('.like-count');
+            let count = parseInt(btn.dataset.likes);
+            const isLiked = btn.dataset.liked === 'true';
+
+            // Toggle Visuals immediately
+            if (isLiked) {
+                count--;
+                icon.classList.remove('text-pink-500');
+                btn.dataset.liked = 'false';
             } else {
-                el.style.backgroundImage = 'none';
-                el.textContent = userData?.username[0].toUpperCase() || '';
+                count++;
+                icon.classList.add('text-pink-500');
+                btn.dataset.liked = 'true';
             }
+            countSpan.textContent = count;
+            btn.dataset.likes = count;
+
+            // Background API Call
+            await api(`/posts/${currentSection}/${id}/like`, {method: 'POST'});
+            // We don't re-render immediately to prevent flicker, let the interval handle it or do it silently
         }
 
-        /* --- ADMIN BADGES (IMPROVED FEEDBACK) --- */
-        async function assignBadge(e) {
-            e.preventDefault();
-            const u = document.getElementById('badgeUsername').value.trim();
-            const b = document.getElementById('badgeName').value.trim().toUpperCase();
+        // 4. Deletion Logic (Priority 2)
+        async function deletePost(id, isReply) {
+            if(!confirm('Are you sure you want to delete this post? This cannot be undone.')) return;
             
-            if (!u || !b) return showToast('Username and Badge Name are required.', 'error');
-            
-            const res = await api(`/admin/badge/${u}`, {method:'POST', body:JSON.stringify({badge:b})});
+            const res = await api(`/posts/${currentSection}/delete-post`, {
+                method: 'POST', 
+                body: JSON.stringify({postId: id})
+            });
+
             if(res && res.ok) {
-                showToast(`Badge ${b} Assigned to ${u}`);
-                document.getElementById('badgeUsername').value = '';
-                document.getElementById('badgeName').value = '';
+                showToast('Post deleted');
+                if(!isReply) backToSectionFromThread(); // Deleted OP
+                else renderThread(); // Deleted Reply
             }
         }
-        async function removeBadge(e) {
-            e.preventDefault();
-            const u = document.getElementById('removeBadgeUsername').value.trim();
-            const b = document.getElementById('removeBadgeName').value.trim().toUpperCase();
-            
-            if (!u || !b) return showToast('Username and Badge Name are required.', 'error');
 
-            const res = await api(`/admin/badge/${u}`, {method:'DELETE', body:JSON.stringify({badge:b})});
+        async function deleteThread(e, id, author) {
+            e.stopPropagation();
+            const msg = `Delete thread by ${author}?\nWarning: This will delete ALL replies inside it.`;
+            if(!confirm(msg)) return;
+
+            const res = await api(`/posts/${currentSection}/delete-thread`, {
+                method: 'POST', 
+                body: JSON.stringify({threadId: id})
+            });
+
             if(res && res.ok) {
-                showToast(`Badge ${b} Removed from ${u}`);
-                document.getElementById('removeBadgeUsername').value = '';
-                document.getElementById('removeBadgeName').value = '';
+                showToast('Thread deleted');
+                renderThreads();
             }
         }
 
-        /* --- INITIALIZATION --- */
+        async function togglePin(e, id) {
+            e.stopPropagation();
+            await api(`/posts/${currentSection}/${id}/pin`, {method: 'POST'});
+            renderThreads();
+        }
+
+        // --- Auth & Profile (Condensed) ---
+        
+        function updateUI() {
+            const nav = document.getElementById('navActions');
+            if(currentUser) {
+                nav.innerHTML = `
+                    <div class="flex items-center gap-2 cursor-pointer glass-card px-3 py-1 rounded-full" onclick="showProfile()">
+                        <span class="text-sm font-semibold">${escapeHtml(currentUser)}</span>
+                    </div>
+                    <button onclick="logout()" class="text-gray-400 hover:text-red-400"><i class="fas fa-sign-out-alt"></i></button>
+                `;
+            } else {
+                nav.innerHTML = `<button onclick="showLogin()" class="btn-gradient px-4 py-1.5 rounded-lg text-sm"><span class="relative z-10">Login</span></button>`;
+            }
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('loginUsername').value;
+            const p = document.getElementById('loginPassword').value;
+            const res = await api('/login', { method: 'POST', body: JSON.stringify({username:u, password:p})});
+            if(res && res.ok) {
+                const data = await res.json();
+                localData.token = data.token;
+                currentUser = data.user.username;
+                userData = data.user;
+                localStorage.setItem(storageKey, JSON.stringify(localData));
+                closeActiveModal();
+                updateUI();
+                showToast(`Welcome ${u}`);
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem(storageKey);
+            location.reload();
+        }
+
+        // --- Modals ---
+        
+        function closeActiveModal() {
+            document.getElementById('modalContainer').classList.add('hidden');
+        }
+
+        function openModal(html) {
+            document.getElementById('dynamicModalBody').innerHTML = html;
+            document.getElementById('modalContainer').classList.remove('hidden');
+            setTimeout(() => document.getElementById('modalContainer').classList.remove('opacity-0'), 10);
+        }
+
+        function showLogin() {
+            openModal(`
+                <h2 class="text-2xl font-bold mb-4">Login</h2>
+                <form onsubmit="handleLogin(event)" class="space-y-4">
+                    <input type="text" id="loginUsername" placeholder="Username" class="w-full p-3 bg-gray-900 rounded border border-gray-700 text-white" required>
+                    <input type="password" id="loginPassword" placeholder="Password" class="w-full p-3 bg-gray-900 rounded border border-gray-700 text-white" required>
+                    <button type="submit" class="btn-gradient w-full py-2 rounded">Login</button>
+                </form>
+            `);
+        }
+
+        function showNewThreadModal() {
+            openModal(`
+                <h2 class="text-2xl font-bold mb-4">New Thread</h2>
+                <form onsubmit="handleNewThread(event)" class="space-y-4">
+                    <input type="text" id="threadTitleInput" placeholder="Subject" class="w-full p-3 bg-gray-900 rounded border border-gray-700 text-white" required maxlength="100">
+                    <textarea id="threadContent" rows="5" placeholder="Content..." class="w-full p-3 bg-gray-900 rounded border border-gray-700 text-white" required></textarea>
+                    <div class="flex justify-end gap-2">
+                        <button type="button" onclick="closeActiveModal()" class="text-gray-400">Cancel</button>
+                        <button type="submit" id="submitThreadBtn" class="btn-gradient px-4 py-2 rounded">Post</button>
+                    </div>
+                </form>
+            `);
+        }
+
+        // --- Initialization ---
+        
         document.addEventListener('DOMContentLoaded', async () => {
-            // Setup section link click handlers
             document.querySelectorAll('.section-link').forEach(el => {
                 el.addEventListener('click', (e) => {
                     e.preventDefault();
-                    if (!currentUser) return showLogin();
-                    
                     currentSection = el.dataset.section;
-                    // Extract name from the inner span, stripping the (English) part.
-                    const name = el.querySelector('span.text-sm').textContent.split('(')[0].trim();
+                    const name = el.querySelector('span').innerText;
                     document.getElementById('sectionTitle').textContent = name;
-                    updateBreadcrumbs('section');
+                    document.getElementById('sectionBreadcrumbs').textContent = `Forum > ${name}`;
+                    
+                    const viewOnly = el.dataset.viewOnly === 'true';
+                    document.getElementById('createThreadBtn').style.display = (viewOnly && userData?.role !== 'admin') ? 'none' : 'flex';
+                    
                     switchView('sectionView');
                     renderThreads();
-                    
-                    const btn = document.getElementById('createThreadBtn');
-                    const viewOnly = el.dataset.viewOnly === 'true';
-                    // Only Admin can create in 'view-only' sections
-                    btn.style.display = (viewOnly && userData?.role !== 'admin') ? 'none' : 'flex';
-
-                    clearInterval(refreshInterval);
-                    // Start refreshing threads list
                     refreshInterval = setInterval(renderThreads, 30000);
                 });
             });
 
-            // Auth Check
             if(localData.token) {
-                await api('/me').then(async res => {
-                    if(res && res.ok) {
-                        const data = await res.json();
-                        currentUser = data.username;
-                        userData = data;
-                        updateUI();
-                        // Update stats
-                        fetchPostCounts();
-                    } else {
-                        logout(); // Token invalid or other error
-                    }
-                });
-            } else {
-                showWelcomeModal();
+                const res = await api('/me');
+                if(res && res.ok) {
+                    const data = await res.json();
+                    currentUser = data.username;
+                    userData = data;
+                    updateUI();
+                } else logout();
             }
         });
+
     </script>
 </body>
 </html>
