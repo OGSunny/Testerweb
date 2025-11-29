@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
+    <script src="https://www.google.com/recaptcha/api.js?render=6Leb8hssAAAAAI8gLARQyLz_91BRCNM1TEMdU6YR"></script>
+
     <style>
         /* საბაზისო კონფიგურაცია / Base Configuration */
         :root {
@@ -583,6 +585,7 @@
                 <form onsubmit="handleLogin(event)" class="space-y-4">
                     <input type="text" id="loginUsername" placeholder="მომხმარებელი" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none text-white" required>
                     <input type="password" id="loginPassword" placeholder="პაროლი" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none text-white" required>
+                    <input type="hidden" id="loginRecaptchaToken">
                     <button type="submit" class="btn-gradient w-full py-2 rounded-lg mt-2"><span class="relative z-10">შესვლა</span></button>
                     <p class="text-center text-xs text-gray-500 mt-2 cursor-pointer hover:text-cyan-400" onclick="showRegister()">არ გაქვთ ანგარიში? რეგისტრაცია</p>
                 </form>
@@ -596,6 +599,7 @@
                     <input type="text" id="regUsername" placeholder="მომხმარებელი (3-20 სიმბოლო)" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none text-white" pattern="^[a-zA-Z0-9_]{3,20}$" title="Username must be 3-20 characters long and contain only letters, numbers, and underscores." required>
                     <input type="email" id="regEmail" placeholder="ელფოსტა" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none text-white" required>
                     <input type="password" id="regPassword" placeholder="პაროლი (მინ. 8 სიმბოლო)" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none text-white" required>
+                    <input type="hidden" id="regRecaptchaToken">
                     <button type="submit" class="btn-gradient w-full py-2 rounded-lg mt-2"><span class="relative z-10">რეგისტრაცია</span></button>
                 </form>
             `);
@@ -633,14 +637,41 @@
             `);
         }
 
+        /* --- RECAPTCHA HELPER --- */
+        
+        // Generate reCAPTCHA Token
+        async function getRecaptchaToken(action) {
+            return new Promise((resolve) => {
+                grecaptcha.ready(function() {
+                    grecaptcha.execute('6Leb8hssAAAAAI8gLARQyLz_91BRCNM1TEMdU6YR', { action: action }).then(function(token) {
+                        resolve(token);
+                    });
+                });
+            });
+        }
+
+
         /* --- ავტორიზაციის ლოგიკა / Auth Handlers --- */
 
         async function handleLogin(e) {
             e.preventDefault();
+            
+            // Get reCAPTCHA token
+            const recaptchaToken = await getRecaptchaToken('login');
+            document.getElementById('loginRecaptchaToken').value = recaptchaToken; // Set to hidden field (optional, for debugging)
+            
             const u = document.getElementById('loginUsername').value.trim();
             const p = document.getElementById('loginPassword').value;
             
-            const res = await api('/login', { method: 'POST', body: JSON.stringify({username:u, password:p})});
+            const res = await api('/login', { 
+                method: 'POST', 
+                body: JSON.stringify({
+                    username: u, 
+                    password: p,
+                    recaptchaToken: recaptchaToken // Send token to backend
+                })
+            });
+            
             if(res && res.ok) {
                 const data = await res.json();
                 finishAuth(data);
@@ -651,6 +682,11 @@
 
         async function handleRegister(e) {
             e.preventDefault();
+            
+            // Get reCAPTCHA token
+            const recaptchaToken = await getRecaptchaToken('register');
+            document.getElementById('regRecaptchaToken').value = recaptchaToken; // Set to hidden field (optional, for debugging)
+            
             const u = document.getElementById('regUsername').value.trim();
             const em = document.getElementById('regEmail').value.trim();
             const p = document.getElementById('regPassword').value;
@@ -667,7 +703,16 @@
 
                 await emailjs.send('service_uqvxc6o', 'Zaraticsregister9178', { to_email: em, to_name: u, code: code });
                 
-                const res = await api('/register', { method: 'POST', body: JSON.stringify({username:u, email:em, password:p, code})});
+                const res = await api('/register', { 
+                    method: 'POST', 
+                    body: JSON.stringify({
+                        username: u, 
+                        email: em, 
+                        password: p, 
+                        code,
+                        recaptchaToken: recaptchaToken // Send token to backend
+                    })
+                });
                 
                 if(res && res.ok) {
                     sessionStorage.setItem('pendingEmail', em);
