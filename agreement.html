@@ -252,8 +252,18 @@
         function navigate(page) { window.location.href = page; }
         
         function downloadLauncher(type) {
-            alert(type === 'pc' ? 'PC ლაუნჩერის ჩამოტვირთვა მალე...' : 'Mobile ლაუნჩერის ჩამოტვირთვა მალე...');
-        }
+    if (type === 'pc') {
+        // Create a temporary link and trigger download
+        const link = document.createElement('a');
+        link.href = 'http://wh28451.web3.maze-tech.ru/launcher/ZARATICRP_Installer.exe';
+        link.download = 'ZARATICRP_Installer.exe';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } else {
+        alert('Mobile ლაუნჩერის ჩამოტვირთვა მალე...');
+    }
+}
 
         particlesJS('particles-js', {
             particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: "#e74c3c" }, shape: { type: "circle" }, opacity: { value: 0.3, random: true }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#e74c3c", opacity: 0.2, width: 1 }, move: { enable: true, speed: 2, direction: "none", random: false, straight: false, out_mode: "out" } },
