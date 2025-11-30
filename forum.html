@@ -116,6 +116,17 @@
             background-size: 200% 100%;
             animation: shimmer 1.5s infinite linear;
         }
+
+        /* Custom styles for post content (from backend sanitizer) */
+        .post-content pre {
+            background-color: #1a202c;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
     </style>
 </head>
 <body class="min-h-screen text-gray-100 selection:bg-cyan-500 selection:text-black">
@@ -124,12 +135,15 @@
 
     <nav class="sticky top-0 z-40 p-4 border-b border-cyan-500/20 glass-card rounded-b-xl backdrop-blur-xl">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.reload()">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="backToForum()">
                 <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/zaratic.png" class="h-10 w-10 border-2 border-cyan-400 rounded hover:rotate-6 transition-transform duration-300">
                 <h1 class="text-2xl font-extrabold tracking-widest gradient-text hidden sm:block">Zaratic RP</h1>
             </div>
             
             <div id="navActions" class="flex items-center gap-4">
+                <button id="navProfileBtn" onclick="showProfile()" class="hidden w-10 h-10 rounded-full bg-gray-700 border-2 border-cyan-500 text-cyan-400 font-bold flex items-center justify-center text-sm hover:ring-2 ring-cyan-500 transition-all" title="პროფილი"></button>
+                <button id="navLoginBtn" onclick="showLogin()" class="btn-gradient px-4 py-2 rounded-lg text-sm font-bold">შესვლა</button>
+                <button id="navLogoutBtn" onclick="logout()" class="hidden btn-secondary px-4 py-2 rounded-lg text-sm font-bold">გასვლა</button>
                 </div>
         </div>
     </nav>
@@ -165,6 +179,12 @@
                         <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="news" data-view-only="true">
                             <div class="flex justify-between items-center">
                                 <span class="text-sm font-medium"><i class="fas fa-broadcast-tower mr-2 text-cyan-500"></i> სერვერის განახლებები</span>
+                                <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
+                            </div>
+                        </a>
+                         <a href="#" class="section-link block p-3 rounded-lg hover:bg-white/5 transition-all border border-transparent hover:border-cyan-500/30" data-section="updates" data-view-only="true">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-medium"><i class="fas fa-bullhorn mr-2 text-cyan-500"></i> ადმინ განახლებები</span>
                                 <span class="sec-stats bg-cyan-900/50 text-cyan-400 text-xs px-2 py-1 rounded border border-cyan-500/30">0</span>
                             </div>
                         </a>
@@ -408,6 +428,20 @@
             <div id="dynamicModalBody"></div>
         </div>
     </div>
+    
+    <div id="editPostModal" class="glass-card w-full max-w-lg p-8 rounded-2xl scale-95 transition-transform duration-300 relative hidden">
+        <button onclick="closeActiveModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+        <h2 class="text-2xl font-bold gradient-text mb-4">პოსტის რედაქტირება</h2>
+        <form id="editPostForm" class="space-y-4">
+            <input type="hidden" id="editPostId">
+            <input type="text" id="editPostTitle" placeholder="თემა (სათაური)" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none hidden" maxlength="100">
+            <textarea id="editPostContent" rows="5" placeholder="ტექსტი..." class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required></textarea>
+            <div class="flex justify-end gap-3">
+                <button type="button" onclick="closeActiveModal()" class="text-gray-400 hover:text-white px-4">გაუქმება</button>
+                <button type="submit" id="submitEditPostBtn" class="btn-gradient px-6 py-2 rounded-lg"><span class="relative z-10">განახლება</span></button>
+            </div>
+        </form>
+    </div>
 
     <div id="toast" class="fixed top-24 right-5 z-50 px-6 py-4 rounded-lg shadow-2xl transform translate-x-full transition-transform duration-300 font-bold flex items-center gap-3"></div>
 
@@ -492,6 +526,39 @@
             const cls = colors[safeName] || 'bg-gray-700 text-white';
             return `<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider badge-custom ${cls}">${safeName}</span>`;
         }
+        
+        function logout() {
+            localData.token = null;
+            currentUser = null;
+            userData = null;
+            localStorage.removeItem(storageKey);
+            updateUI();
+            backToForum();
+            showWelcomeModal();
+        }
+        
+        function updateUI() {
+            const loggedIn = localData.token !== null && currentUser !== null;
+            
+            document.getElementById('navLoginBtn').classList.toggle('hidden', loggedIn);
+            document.getElementById('navLogoutBtn').classList.toggle('hidden', !loggedIn);
+            document.getElementById('navProfileBtn').classList.toggle('hidden', !loggedIn);
+            
+            if (loggedIn) {
+                const avatar = userData?.profile?.avatar;
+                const initial = currentUser[0].toUpperCase();
+                const btn = document.getElementById('navProfileBtn');
+                
+                if (avatar) {
+                    btn.style.backgroundImage = `url(${avatar})`;
+                    btn.style.backgroundSize = 'cover';
+                    btn.textContent = '';
+                } else {
+                    btn.style.backgroundImage = 'none';
+                    btn.textContent = initial;
+                }
+            }
+        }
 
         /* --- API კავშირი / API Layer --- */
 
@@ -509,13 +576,12 @@
                 const res = await fetch(FORUM_API_BASE_URL + path, { ...options, headers });
                 showLoading(false);
                 
-                if (res.status === 401 || res.status === 403) {
-                     if (!['/me','/login','/register','/verify'].includes(path) && currentUser) {
+                if (res.status === 401 || (res.status === 403 && (res.url.includes('/login') || res.url.includes('/verify') || res.url.includes('/me')))) {
+                     if (!['/login','/register','/verify'].includes(path) && currentUser) {
                         // თუ სესია ვადაგასულია
                         showToast('სესია ვადაგასულია. გთხოვთ გაიაროთ ავტორიზაცია.', 'error');
                         logout();
                      }
-                     // Let specific handlers deal with 403 (banned)
                      return res; 
                 }
                 
@@ -524,10 +590,11 @@
                         let errData = { message: res.statusText || 'Unknown Error' };
                         try {
                             const clone = res.clone();
+                            // Check if content is JSON before trying to parse
                             if (res.headers.get('content-type')?.includes('application/json')) {
                                 errData = await clone.json();
                             }
-                        } catch(e) {}
+                        } catch(e) { /* Ignore non-json response */ }
                         showToast(errData.message || 'ოპერაცია ვერ შესრულდა', 'error');
                     }
                 }
@@ -536,36 +603,65 @@
                 showLoading(false);
                 console.error('API Error:', err);
                 showToast('კავშირის შეცდომა', 'error');
-                return null;
+                // Return a mock error response to prevent further processing as success
+                return { ok: false, status: 503, json: async () => ({ message: 'კავშირის შეცდომა' }) }; 
             }
         }
 
         /* --- მოდალური ფანჯრები / Modals --- */
+        
+        let activeModalBodyId = 'dynamicModalBody'; // Track which body to update
 
-        function openModal(htmlContent) {
+        function openModal(htmlContent, isEditModal = false) {
             const container = document.getElementById('modalContainer');
             const content = document.getElementById('modalContent');
-            const body = document.getElementById('dynamicModalBody');
+            const editModal = document.getElementById('editPostModal');
+
+            // Hide all potential modal bodies first
+            document.getElementById('dynamicModalBody').innerHTML = '';
+            editModal.classList.add('hidden');
+            content.classList.remove('hidden');
+
+            if (isEditModal) {
+                content.classList.add('hidden');
+                editModal.classList.remove('hidden');
+                activeModalBodyId = 'editPostModal';
+            } else {
+                document.getElementById('dynamicModalBody').innerHTML = htmlContent;
+                activeModalBodyId = 'dynamicModalBody';
+            }
             
-            body.innerHTML = htmlContent;
             container.classList.remove('hidden');
             setTimeout(() => {
                 container.classList.remove('opacity-0');
-                content.classList.remove('scale-95');
-                content.classList.add('scale-100');
+                if (activeModalBodyId === 'dynamicModalBody') {
+                    content.classList.remove('scale-95');
+                    content.classList.add('scale-100');
+                } else {
+                    editModal.classList.remove('scale-95');
+                    editModal.classList.add('scale-100');
+                }
             }, 10);
         }
 
         function closeActiveModal() {
             const container = document.getElementById('modalContainer');
             const content = document.getElementById('modalContent');
+            const editModal = document.getElementById('editPostModal');
             
             container.classList.add('opacity-0');
-            content.classList.remove('scale-100');
-            content.classList.add('scale-95');
+            
+            if (activeModalBodyId === 'dynamicModalBody') {
+                content.classList.remove('scale-100');
+                content.classList.add('scale-95');
+            } else {
+                editModal.classList.remove('scale-100');
+                editModal.classList.add('scale-95');
+            }
             
             setTimeout(() => container.classList.add('hidden'), 300);
         }
+
 
         function showWelcomeModal() {
             if(currentUser) return;
@@ -608,10 +704,12 @@
         }
 
         function showVerify() {
+            const email = sessionStorage.getItem('pendingEmail') || 'თქვენს ელფოსტაზე';
             openModal(`
                 <h2 class="text-2xl font-bold text-green-400 mb-4">ელფოსტის დადასტურება</h2>
-                <p class="text-sm text-gray-400 mb-4">კოდი გამოგზავნილია თქვენს ელფოსტაზე.</p>
+                <p class="text-sm text-gray-400 mb-4">კოდი გამოგზავნილია ${email}-ზე. თუ კოდი ვერ მიიღეთ, გადაამოწმეთ სპამი.</p>
                 <form onsubmit="handleVerify(event)" class="space-y-4">
+                    <input type="text" id="verifyEmail" placeholder="ელფოსტა" value="${email === 'თქვენს ელფოსტაზე' ? '' : email}" class="w-full p-3 bg-gray-900/50 rounded-lg border border-green-500/30 focus:border-green-400 outline-none text-white" required>
                     <input type="text" id="verifyCode" placeholder="8-ნიშნა კოდი" maxlength="8" class="w-full p-3 bg-gray-900/50 rounded-lg border border-green-500/30 focus:border-green-400 outline-none text-center tracking-widest text-xl font-mono" required>
                     <button type="submit" class="btn-gradient w-full py-2 rounded-lg"><span class="relative z-10">დადასტურება</span></button>
                 </form>
@@ -638,6 +736,62 @@
                 </form>
             `);
         }
+        
+        function showEditPostModal(post) {
+            if (!currentUser || post.author !== currentUser && userData?.role !== 'admin') {
+                return showToast('თქვენ არ გაქვთ ამ პოსტის რედაქტირების უფლება.', 'error');
+            }
+            
+            openModal(null, true); // Open the dedicated edit modal
+            
+            document.getElementById('editPostId').value = post.id;
+            document.getElementById('editPostContent').value = post.content;
+            
+            const titleInput = document.getElementById('editPostTitle');
+            if (post.parentId === null) {
+                // Main thread post
+                titleInput.value = post.title || '';
+                titleInput.classList.remove('hidden');
+            } else {
+                // Reply post
+                titleInput.classList.add('hidden');
+            }
+        }
+        
+        document.getElementById('editPostForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const postId = document.getElementById('editPostId').value;
+            const content = document.getElementById('editPostContent').value.trim();
+            const title = document.getElementById('editPostTitle').value.trim();
+            const submitBtn = document.getElementById('submitEditPostBtn');
+            
+            if (!content) return showToast('ტექსტი ცარიელია.', 'error');
+            
+            submitBtn.disabled = true;
+            
+            const body = { postId, content };
+            // Only send title if the input is visible (i.e., it's a main thread post)
+            if (!document.getElementById('editPostTitle').classList.contains('hidden')) {
+                body.title = title;
+            }
+
+            const res = await api(`/posts/${currentSection}`, { 
+                method: 'PUT', 
+                body: JSON.stringify(body)
+            });
+            
+            if(res && res.ok) {
+                closeActiveModal();
+                showToast('პოსტი განახლებულია');
+                if(currentThread) {
+                    renderThread();
+                } else {
+                    renderThreads();
+                }
+            }
+            submitBtn.disabled = false;
+        });
+
 
         /* --- RECAPTCHA HELPER (FIXED) --- */
         
@@ -645,12 +799,17 @@
             // Check if reCAPTCHA is loaded
             if (typeof grecaptcha === 'undefined') {
                 console.error('reCAPTCHA not loaded!');
-                throw new Error('reCAPTCHA not loaded');
+                // Wait for a moment and check again
+                await new Promise(r => setTimeout(r, 500));
+                if (typeof grecaptcha === 'undefined') {
+                    throw new Error('reCAPTCHA not loaded after delay');
+                }
             }
             
             return new Promise((resolve, reject) => {
                 try {
                     grecaptcha.ready(function() {
+                        // NOTE: Ensure the sitekey here is correct (should match the one in the script tag)
                         grecaptcha.execute('6Leb8hssAAAAAI8gLARQyLz_91BRCNM1TEMdU6YR', { action: action })
                             .then(function(token) {
                                 if (!token) {
@@ -673,84 +832,177 @@
 
 
         /* --- ავტორიზაციის ლოგიკა / Auth Handlers (FIXED) --- */
+        
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            let recaptchaToken;
+            try {
+                recaptchaToken = await getRecaptchaToken('login');
+            } catch (error) {
+                console.error('reCAPTCHA failed:', error);
+                showToast('უსაფრთხოების შემოწმება ვერ ჩაიტვირთა.', 'error');
+                return;
+            }
+
+            const u = document.getElementById('loginUsername').value.trim();
+            const p = document.getElementById('loginPassword').value;
+
+            const submitBtn = document.getElementById('dynamicModalBody').querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'შესვლა...';
+
+            const res = await api('/login', { 
+                method: 'POST', 
+                body: JSON.stringify({
+                    username: u, 
+                    password: p, 
+                    recaptchaToken: recaptchaToken
+                })
+            });
+            
+            if (res) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span class="relative z-10">შესვლა</span>';
+
+                if(res.ok) {
+                    const data = await res.json();
+                    localData.token = data.token;
+                    currentUser = data.user.username;
+                    userData = data.user;
+                    localStorage.setItem(storageKey, JSON.stringify(localData));
+                    closeActiveModal();
+                    updateUI();
+                    fetchPostCounts();
+                    showToast('ავტორიზაცია წარმატებულია');
+                } else if (res.status === 403) {
+                    const data = await res.json();
+                    if (data.message.includes('დაადასტუროთ')) {
+                         sessionStorage.setItem('pendingEmail', document.getElementById('loginUsername').value.trim());
+                         showVerify();
+                    }
+                }
+            }
+        }
+
 
         async function handleRegister(e) {
-    e.preventDefault();
-    
-    let recaptchaToken;
-    try {
-        recaptchaToken = await getRecaptchaToken('register');
-        document.getElementById('regRecaptchaToken').value = recaptchaToken;
-    } catch (error) {
-        console.error('reCAPTCHA failed:', error);
-        showToast('უსაფრთხოების შემოწმება ვერ ჩაიტვირთა. გთხოვთ განაახლოთ გვერდი.', 'error');
-        return;
-    }
+            e.preventDefault();
+            
+            let recaptchaToken;
+            try {
+                recaptchaToken = await getRecaptchaToken('register');
+            } catch (error) {
+                console.error('reCAPTCHA failed:', error);
+                showToast('უსაფრთხოების შემოწმება ვერ ჩაიტვირთა. გთხოვთ განაახლოთ გვერდი.', 'error');
+                return;
+            }
 
-    const u = document.getElementById('regUsername').value.trim();
-    const em = document.getElementById('regEmail').value.trim();
-    const p = document.getElementById('regPassword').value;
+            const u = document.getElementById('regUsername').value.trim();
+            const em = document.getElementById('regEmail').value.trim();
+            const p = document.getElementById('regPassword').value;
 
-    if (p.length < 8) return showToast('პაროლი უნდა იყოს მინიმუმ 8 სიმბოლო.', 'error');
-    if (!/^[a-zA-Z0-9_]{3,20}$/.test(u)) return showToast('მომხმარებლის სახელი არასწორია.', 'error');
-    
-    // Validate email format
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) {
-        return showToast('ელფოსტის ფორმატი არასწორია.', 'error');
-    }
+            if (p.length < 8) return showToast('პაროლი უნდა იყოს მინიმუმ 8 სიმბოლო.', 'error');
+            if (!/^[a-zA-Z0-9_]{3,20}$/.test(u)) return showToast('მომხმარებლის სახელი არასწორია.', 'error');
+            
+            // Validate email format
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) {
+                return showToast('ელფოსტის ფორმატი არასწორია.', 'error');
+            }
 
-    const code = String(Math.floor(10000000 + Math.random() * 90000000));
-    const submitBtn = document.getElementById('dynamicModalBody').querySelector('button[type="submit"]');
-    
-    try {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = 'იგზავნება...';
+            // Client generates code and sends it via emailJS
+            const code = String(Math.floor(10000000 + Math.random() * 90000000));
+            const submitBtn = document.getElementById('dynamicModalBody').querySelector('button[type="submit"]');
+            
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = 'იგზავნება...';
 
-        // ✅ CORRECT: Use emailjs.send() with 4 parameters
-        const emailResponse = await emailjs.send(
-            'service_ctcaqad',           // 1. Service ID
-            'template_1vs7kad',          // 2. Template ID
-            {                             // 3. Template parameters (plain object)
-                to_email: em,
-                to_name: u,
-                verification_code: code
-            },
-            'uQH9b9PES4f2ONCNq'          // 4. Public Key (User ID)
-        );
-        
-        console.log('✅ Email sent successfully:', emailResponse);
-        
-        // Then register with backend
-        const res = await api('/register', { 
-            method: 'POST', 
-            body: JSON.stringify({
-                username: u, 
-                email: em, 
-                password: p, 
-                code,
-                recaptchaToken: recaptchaToken
-            })
-        });
-        
-        if(res && res.ok) {
-            sessionStorage.setItem('pendingEmail', em);
-            showVerify();
-            showToast('დადასტურების კოდი გაიგზავნა.');
+                // 1. Send verification email
+                const emailResponse = await emailjs.send(
+                    'service_ctcaqad',           // Service ID
+                    'template_1vs7kad',          // Template ID
+                    {                             // Template parameters
+                        to_email: em,
+                        to_name: u,
+                        verification_code: code
+                    },
+                    'uQH9b9PES4f2ONCNq'          // Public Key
+                );
+                
+                console.log('✅ Email sent successfully:', emailResponse);
+                
+                // 2. Register with backend, including the code
+                const res = await api('/register', { 
+                    method: 'POST', 
+                    body: JSON.stringify({
+                        username: u, 
+                        email: em, 
+                        password: p, 
+                        code, // Send the code to the backend
+                        recaptchaToken: recaptchaToken
+                    })
+                });
+                
+                if(res && res.ok) {
+                    sessionStorage.setItem('pendingEmail', em);
+                    showVerify();
+                    showToast('დადასტურების კოდი გაიგზავნა.');
+                }
+            } catch(err) {
+                // B6 FIX: If email fails, don't try to register or show success
+                console.error('❌ Email sending or Registration error:', err);
+                let errorMsg = 'უცნობი შეცდომა';
+                if (err instanceof Error) {
+                    errorMsg = err.message;
+                } else if (err.text) {
+                    errorMsg = err.text;
+                }
+                showToast(`ელფოსტის გაგზავნა ვერ მოხერხდა: ${errorMsg}`, 'error');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<span class="relative z-10">რეგისტრაცია</span>';
+                }
+            }
         }
-    } catch(err) {
-        console.error('❌ Email sending error:', err);
-        const errorMsg = err.text || err.message || 'უცნობი შეცდომა';
-        showToast(`ელფოსტის გაგზავნა ვერ მოხერხდა: ${errorMsg}`, 'error');
-    } finally {
-        if (submitBtn) {
+        
+        async function handleVerify(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('verifyEmail').value.trim();
+            const code = document.getElementById('verifyCode').value.trim();
+
+            if (!email || !code) return showToast('გთხოვთ შეავსოთ ველები.', 'error');
+
+            const submitBtn = document.getElementById('dynamicModalBody').querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'დადასტურება...';
+
+            const res = await api('/verify', { 
+                method: 'POST', 
+                body: JSON.stringify({ email, code })
+            });
+            
+            if (res && res.ok) {
+                const data = await res.json();
+                localData.token = data.token;
+                currentUser = data.user.username;
+                userData = data.user;
+                localStorage.setItem(storageKey, JSON.stringify(localData));
+                sessionStorage.removeItem('pendingEmail');
+                closeActiveModal();
+                updateUI();
+                fetchPostCounts();
+                showToast('ელფოსტა წარმატებით დადასტურდა!');
+            }
+            
             submitBtn.disabled = false;
-            submitBtn.innerHTML = '<span class="relative z-10">რეგისტრაცია</span>';
+            submitBtn.innerHTML = '<span class="relative z-10">დადასტურება</span>';
         }
-    }
-}
-        
+
         async function fetchPostCounts() {
-            if (!currentUser) return;
+            // Note: Removed currentUser check here as post-counts is a public path
             const countsRes = await api('/post-counts');
             if(countsRes && countsRes.ok) {
                 const counts = await countsRes.json();
@@ -802,10 +1054,12 @@
                 const replies = sectionPosts.filter(p => p.parentId === thread.id).length;
                 const isPinned = thread.pinned ? 'border-l-4 border-green-400' : '';
                 const pinIcon = thread.pinned ? '<i class="fas fa-thumbtack text-green-400 mr-2"></i>' : '';
+                const isAuthor = thread.author === currentUser;
                 
                 const card = document.createElement('div');
                 card.className = `glass-card p-5 rounded-xl flex flex-col md:flex-row md:items-center justify-between cursor-pointer group ${isPinned}`;
                 card.onclick = (e) => { 
+                    // Prevent thread opening if clicking on an action button
                     if(!e.target.closest('button')) openThread(thread.id, thread.title || thread.content.substring(0,30)) 
                 };
 
@@ -822,16 +1076,25 @@
                             <div class="text-2xl font-bold text-cyan-600">${replies}</div>
                             <div class="text-[10px] text-gray-500 uppercase">პასუხები</div>
                         </div>
-                        ${userData?.role === 'admin' ? `
-                            <div class="flex gap-2">
+                        <div class="flex gap-2">
+                             ${(isAuthor || userData?.role === 'admin') ? `
+                                <button onclick="handleEditThread(event, '${thread.id}')" title="რედაქტირება" class="p-2 bg-gray-800 rounded hover:bg-yellow-900/50 text-gray-400 hover:text-yellow-400 transition"><i class="fas fa-edit"></i></button>
+                             ` : ''}
+                            ${userData?.role === 'admin' ? `
                                 <button onclick="togglePin(event, '${thread.id}')" title="პინი/ანპინი" class="p-2 bg-gray-800 rounded hover:bg-green-900/50 text-gray-400 hover:text-green-400 transition"><i class="fas fa-thumbtack"></i></button>
                                 <button onclick="deleteThread(event, '${thread.id}')" title="თემის წაშლა" class="p-2 bg-gray-800 rounded hover:bg-red-900/50 text-gray-400 hover:text-red-400 transition"><i class="fas fa-trash"></i></button>
-                            </div>
-                        ` : ''}
+                            ` : ''}
+                        </div>
                     </div>
                 `;
                 list.appendChild(card);
             });
+        }
+        
+        function handleEditThread(e, postId) {
+            e.stopPropagation();
+            const post = sectionPosts.find(p => p.id === postId);
+            if (post) showEditPostModal(post);
         }
 
         async function renderThread() {
@@ -841,7 +1104,11 @@
             container.innerHTML = '';
 
             const op = sectionPosts.find(p => p.id === currentThread);
-            if(!op) return container.innerHTML = '<div class="text-center text-red-400 py-10">თემა ვერ მოიძებნა.</div>';
+            if(!op) {
+                // If the thread is deleted while viewing
+                backToSectionFromThread();
+                return;
+            }
 
             container.appendChild(createPostEl(op, false));
 
@@ -852,7 +1119,7 @@
 
         function createPostEl(post, isReply) {
             const div = document.createElement('div');
-            const isAuthor = post.author === userData?.username;
+            const isAuthor = post.author === currentUser;
             const borderClass = isAuthor ? 'border-cyan-500/30' : 'border-transparent';
             
             const badges = (post.badges || []).map(getBadgeHtml).join(' ');
@@ -875,13 +1142,16 @@
                         <span class="text-xs text-gray-500 font-mono">${formatGeorgianDate(post.time)}</span>
                         ${!isReply ? '<span class="px-2 py-0.5 bg-cyan-900/30 text-cyan-400 text-xs rounded border border-cyan-500/30">ავტორი</span>' : ''}
                     </div>
-                    <div class="text-gray-200 leading-relaxed whitespace-pre-wrap break-words text-sm md:text-base">${escapeHtml(post.content)}</div>
+                    <div class="text-gray-200 leading-relaxed whitespace-pre-wrap break-words text-sm md:text-base post-content">${post.content}</div>
                     <div class="mt-6 flex justify-end items-center gap-4 pt-4 border-t border-white/5">
                         <button onclick="toggleLike('${post.id}')" class="text-sm flex items-center gap-2 text-gray-400 hover:text-pink-500 transition group" title="Like">
                             <i class="fas fa-heart group-hover:scale-125 transition-transform ${post.likes?.includes(currentUser) ? 'text-pink-500' : ''}"></i> 
                             ${post.likes?.length || 0}
                         </button>
-                        ${userData?.role === 'admin' ? `<button onclick="deletePost('${post.id}')" class="text-xs text-red-400 hover:underline" title="წაშლა">წაშლა</button>` : ''}
+                        ${(isAuthor || userData?.role === 'admin') ? 
+                          `<button onclick="showEditPostModal(${JSON.stringify(post).replace(/'/g, "\\'")})" class="text-xs text-yellow-400 hover:underline" title="რედაქტირება">რედაქტირება</button>` : ''}
+                        ${userData?.role === 'admin' ? 
+                          `<button onclick="deletePost('${post.id}')" class="text-xs text-red-400 hover:underline" title="წაშლა">წაშლა</button>` : ''}
                     </div>
                 </div>
             `;
@@ -933,9 +1203,10 @@
         });
 
         async function toggleLike(id) {
-            if(!currentUser) return showLogin();
-            await api(`/posts/${currentSection}/${id}/like`, {method: 'POST'});
-            if(currentThread) renderThread();
+            // B7 FIX: Use currentUser for check
+            if(!currentUser) return showLogin(); 
+            const res = await api(`/posts/${currentSection}/${id}/like`, {method: 'POST'});
+            if(res && res.ok && currentThread) renderThread();
         }
         
         async function deletePost(id) {
@@ -990,6 +1261,7 @@
             currentThread = null;
             clearInterval(refreshInterval);
             refreshInterval = null;
+            fetchPostCounts();
         }
 
         function backToForumFromSection() {
@@ -1022,6 +1294,9 @@
                 currentUser = data.username;
                 userData = data;
                 renderProfileView(data, true);
+                switchView('profileView');
+            } else {
+                 showToast('პროფილის ჩატვირთვა ვერ მოხერხდა', 'error');
             }
         }
 
@@ -1031,13 +1306,13 @@
             if(res && res.ok) {
                 const data = await res.json();
                 renderProfileView(data, false);
+                switchView('profileView');
             } else if (res && res.status === 404) {
                 showToast('მომხმარებელი ვერ მოიძებნა.', 'error');
             }
         }
 
         function renderProfileView(data, isOwner) {
-            switchView('profileView');
             
             const avatarUrl = data.profile.avatar ? escapeHtml(data.profile.avatar) : '';
             const avatarDiv = document.getElementById('profileAvatarLarge');
@@ -1064,11 +1339,14 @@
             const previewEl = document.getElementById('avatarPreview');
             previewEl.style.backgroundImage = avatarUrl ? `url(${avatarUrl})` : 'none';
             previewEl.style.backgroundSize = 'cover';
+            previewEl.style.backgroundPosition = 'center';
+            previewEl.textContent = avatarUrl ? '' : data.username[0].toUpperCase();
             
             const tabs = document.querySelectorAll('.tab-btn');
             switchTab('info', tabs[0]);
 
-            tabs[1].style.display = isOwner ? 'block' : 'none';
+            const editTabBtn = tabs[1];
+            editTabBtn.style.display = isOwner ? 'block' : 'none';
             document.getElementById('adminTabBtn').style.display = (isOwner && data.role === 'admin') ? 'block' : 'none';
         }
 
@@ -1098,21 +1376,28 @@
             if(file) formData.append('avatar', file);
             
             ['Name', 'Email', 'Phone', 'Bio'].forEach(f => {
+                // Ensure all fields are sent to handle clearing values
                 const value = document.getElementById(`edit${f}`).value || '';
                 formData.append(f.toLowerCase(), value);
             });
 
+            // Use fetch directly for multipart/form-data
             const res = await fetch(FORUM_API_BASE_URL + '/me', {
                 method: 'PUT',
+                // Content-Type header is omitted when using FormData, as fetch sets it automatically (multipart/form-data)
                 headers: { 'Authorization': `Bearer ${localData.token}` },
                 body: formData
             });
 
             if(res.ok) {
                 showToast('პროფილი განახლებულია');
-                await showProfile(); 
+                const data = await res.json();
+                userData = data; // Update local user data
+                renderProfileView(data, true); // Re-render with new data
+                updateUI(); // Update nav avatar
             } else {
-                showToast('განახლება ვერ მოხერხდა.', 'error');
+                const errData = await res.json().catch(() => ({ message: 'უცნობი შეცდომა' }));
+                showToast(errData.message || 'განახლება ვერ მოხერხდა.', 'error');
             }
             btn.disabled = false;
             btn.innerHTML = orig;
@@ -1147,6 +1432,8 @@
                 showToast(`ბეჯი ${b} მიენიჭა ${u}-ს`);
                 document.getElementById('badgeUsername').value = '';
                 document.getElementById('badgeName').value = '';
+                // If admin assigns a badge to themselves, update profile view
+                if (u === currentUser) showProfile();
             }
         }
         async function removeBadge(e) {
@@ -1161,10 +1448,12 @@
                 showToast(`ბეჯი ${b} წაიშალა ${u}-სგან`);
                 document.getElementById('removeBadgeUsername').value = '';
                 document.getElementById('removeBadgeName').value = '';
+                // If admin removes a badge from themselves, update profile view
+                if (u === currentUser) showProfile();
             }
         }
 
-        /* --- EMAIL FORM LOGIC --- */
+        /* --- EMAIL FORM LOGIC (CORRECTED) --- */
         
         // 1. Master function to open form modal based on section
         function openFormModalForCurrentSection() {
@@ -1222,7 +1511,6 @@
         async function handleEmailFormSubmit(event, formType) {
             event.preventDefault();
             
-            // Re-check auth and email for safety
             if (!currentUser) return showLogin();
             
             const userEmail = userData?.profile?.email;
@@ -1266,12 +1554,8 @@
 
             showLoading(true);
             
-            const response = await fetch(FORUM_API_BASE_URL + '/submit-form', {
+            const res = await api('/submit-form', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localData.token}`
-                },
                 body: JSON.stringify({
                     formType: formType,
                     formData: formData,
@@ -1285,21 +1569,16 @@
             showLoading(false);
             submitBtn.disabled = false;
             
-            if (response.ok) {
-                const result = await response.json();
+            if (res && res.ok) {
+                const result = await res.json();
                 showToast(result.message || 'მოთხოვნა წარმატებით გაიგზავნა!');
                 closeActiveModal();
-                // Optional: Clear form fields
                 form.reset();
             } else {
-                const error = await response.json();
-                showToast(error.message || 'შეცდომა გაგზავნისას', 'error');
+                 // Error already handled by api() function
             }
         }
         
-        // 3. Adjust the existing 'createThreadBtn' logic on the section view
-        // The HTML element's onClick is now 'openFormModalForCurrentSection()'
-
         /* --- ინიციალიზაცია / Init --- */
         document.addEventListener('DOMContentLoaded', async () => {
             document.querySelectorAll('.section-link').forEach(el => {
@@ -1320,16 +1599,20 @@
                     
                     // Sections that use the email form instead of regular threads
                     const emailFormSections = ['suggestions', 'complaints-admin', 'vacancies-leaders', 'donation-help'];
-
+                    
+                    // Get base text from the original span to ensure correctness on switch
+                    const baseThreadText = 'ახალი თემა';
+                    const baseFormText = 'ახალი მოთხოვნა';
+                    
                     // If it's an email form section, update the button text and check only for email/login
                     if(emailFormSections.includes(currentSection)) {
-                        btn.innerHTML = '<span class="relative z-10"><i class="fas fa-paper-plane"></i> გაგზავნა</span>';
+                        btn.innerHTML = `<span class="relative z-10"><i class="fas fa-paper-plane"></i> გაგზავნა</span>`;
                         btn.onclick = openFormModalForCurrentSection; // Set to the new email form function
-                        btn.style.display = 'flex'; // Always show form button if logged in
+                        btn.style.display = 'flex'; 
                     }
                     // If it's a regular thread section
                     else {
-                        btn.innerHTML = '<span class="relative z-10"><i class="fas fa-plus"></i> ახალი თემა</span>';
+                        btn.innerHTML = `<span class="relative z-10"><i class="fas fa-plus"></i> ${baseThreadText}</span>`;
                         btn.onclick = showNewThreadModal; // Set back to original thread function
                         btn.style.display = (viewOnly && userData?.role !== 'admin') ? 'none' : 'flex';
                     }
@@ -1348,6 +1631,7 @@
                         updateUI();
                         fetchPostCounts();
                     } else {
+                        // If token is invalid/expired, log out
                         logout();
                     }
                 });
