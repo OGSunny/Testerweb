@@ -413,7 +413,7 @@
 
     <script>
         const FORUM_API_BASE_URL = 'https://data7167.jemalagegidze.workers.dev';
-        emailjs.init('6mfdsM4fGZ9WWDFst');
+        emailjs.init('uQH9b9PES4f2ONCNq');
 
         // გლობალური ცვლადები / Global Variables
         let currentUser = null; 
@@ -737,7 +737,12 @@
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = 'იგზავნება...';
 
-                await emailjs.send('service_uqvxc6o', 'Zaraticsregister9178', { to_email: em, to_name: u, code: code });
+                // THIS LINE HAS BEEN UPDATED WITH YOUR CREDENTIALS:
+                await emailjs.send('service_ctcaqad', 'template_nwsmd5p', { 
+                    to_email: em, 
+                    to_name: u, 
+                    code: code 
+                });
                 
                 // 2. Send token to backend
                 const res = await api('/register', { 
