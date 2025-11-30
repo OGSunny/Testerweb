@@ -693,6 +693,11 @@
 
     if (p.length < 8) return showToast('პაროლი უნდა იყოს მინიმუმ 8 სიმბოლო.', 'error');
     if (!/^[a-zA-Z0-9_]{3,20}$/.test(u)) return showToast('მომხმარებლის სახელი არასწორია.', 'error');
+    
+    // Validate email format
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) {
+        return showToast('ელფოსტის ფორმატი არასწორია.', 'error');
+    }
 
     const code = String(Math.floor(10000000 + Math.random() * 90000000));
     const submitBtn = document.getElementById('dynamicModalBody').querySelector('button[type="submit"]');
@@ -701,19 +706,19 @@
         submitBtn.disabled = true;
         submitBtn.innerHTML = 'იგზავნება...';
 
-    const emailResponse = await emailjs.sendForm(
-    'service_ctcaqad',
-    'template_nwsmd5p',
-    {
-        to_email: em,
-        to_name: u,
-        verification_code: code,
-        reply_to: em
-    },
-    {
-        publicKey: 'uQH9b9PES4f2ONCNq'  // ✅ Passed as options object
-    }
-);
+        // ✅ CORRECT: Use emailjs.send() with 4 parameters
+        const emailResponse = await emailjs.send(
+            'service_ctcaqad',           // 1. Service ID
+            'template_nwsmd5p',          // 2. Template ID
+            {                             // 3. Template parameters (plain object)
+                to_email: em,
+                to_name: u,
+                verification_code: code
+            },
+            'uQH9b9PES4f2ONCNq'          // 4. Public Key (User ID)
+        );
+        
+        console.log('✅ Email sent successfully:', emailResponse);
         
         // Then register with backend
         const res = await api('/register', { 
@@ -733,8 +738,9 @@
             showToast('დადასტურების კოდი გაიგზავნა.');
         }
     } catch(err) {
-        console.error('Email sending error:', err);
-        showToast(`ელფოსტის გაგზავნა ვერ მოხერხდა: ${err.text || err.message}`, 'error');
+        console.error('❌ Email sending error:', err);
+        const errorMsg = err.text || err.message || 'უცნობი შეცდომა';
+        showToast(`ელფოსტის გაგზავნა ვერ მოხერხდა: ${errorMsg}`, 'error');
     } finally {
         if (submitBtn) {
             submitBtn.disabled = false;
