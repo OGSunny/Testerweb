@@ -737,13 +737,12 @@
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = 'იგზავნება...';
 
-                // CRITICAL FIX: Added the missing comma before reply_to
                 await emailjs.send('service_ctcaqad', 'template_nwsmd5p', { 
-                    to_email: em, 
-                    to_name: u, 
-                    code: code,      // ✅ FIXED: Added comma here
-                    reply_to: em
-                });
+        to_email: em,     // Matches {{to_email}}
+        to_name: u,       // Matches {{to_name}}
+        code: code,       // Matches {{code}} - ✅ COMMA ADDED
+        email: em         // Matches {{email}} in Reply To field
+    });
                 
                 // 2. Send token to backend
                 const res = await api('/register', { 
