@@ -674,41 +674,6 @@
 
         /* --- ავტორიზაციის ლოგიკა / Auth Handlers (FIXED) --- */
 
-        async function handleLogin(e) {
-            e.preventDefault();
-            
-            let recaptchaToken;
-            try {
-                // 1. Get reCAPTCHA token safely
-                recaptchaToken = await getRecaptchaToken('login');
-                document.getElementById('loginRecaptchaToken').value = recaptchaToken; // For visibility/debugging
-            } catch (error) {
-                console.error('reCAPTCHA failed:', error);
-                showToast('უსაფრთხოების შემოწმება ვერ ჩაიტვირთა. გთხოვთ განაახლოთ გვერდი.', 'error');
-                return; // STOP EXECUTION
-            }
-            
-            const u = document.getElementById('loginUsername').value.trim();
-            const p = document.getElementById('loginPassword').value;
-            
-            // 2. Send token to backend
-            const res = await api('/login', { 
-                method: 'POST', 
-                body: JSON.stringify({
-                    username: u, 
-                    password: p,
-                    recaptchaToken: recaptchaToken // Send token to backend
-                })
-            });
-            
-            if(res && res.ok) {
-                const data = await res.json();
-                finishAuth(data);
-                closeActiveModal();
-                showToast(`მოგესალმებით, ${u}`);
-            }
-        }
-
         async function handleRegister(e) {
     e.preventDefault();
     
@@ -736,13 +701,12 @@
         submitBtn.disabled = true;
         submitBtn.innerHTML = 'იგზავნება...';
 
-        // Send email with EmailJS
+        // ✅ FIXED: Send email with correct parameters
         await emailjs.send('service_ctcaqad', 'template_nwsmd5p', { 
-    to_email: em,
-    to_name: u,
-    code: code,    // ← Comma added here
-    email: em      // ← Changed from reply_to to email
-});
+            to_email: em,      // ✅ Recipient email
+            to_name: u,        // ✅ Username
+            code: code         // ✅ Verification code
+        });
         
         // Then register with backend
         const res = await api('/register', { 
@@ -770,7 +734,7 @@
             submitBtn.innerHTML = '<span class="relative z-10">რეგისტრაცია</span>';
         }
     }
-} // ✅ THIS CLOSING BRACE WAS MISSING!
+}
         
         async function fetchPostCounts() {
             if (!currentUser) return;
