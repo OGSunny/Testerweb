@@ -737,11 +737,11 @@
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = 'იგზავნება...';
 
-                // THIS LINE HAS BEEN UPDATED WITH YOUR CREDENTIALS:
+                // CRITICAL FIX: Added the missing comma before reply_to
                 await emailjs.send('service_ctcaqad', 'template_nwsmd5p', { 
                     to_email: em, 
                     to_name: u, 
-                    code: code 
+                    code: code,      // ✅ FIXED: Added comma here
                     reply_to: em
                 });
                 
