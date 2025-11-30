@@ -701,12 +701,19 @@
         submitBtn.disabled = true;
         submitBtn.innerHTML = 'იგზავნება...';
 
-        // ✅ FIXED: Send email with correct parameters
-        await emailjs.send('service_ctcaqad', 'template_nwsmd5p', { 
-            to_email: em,      // ✅ Recipient email
-            to_name: u,        // ✅ Username
-            code: code         // ✅ Verification code
-        });
+    const emailResponse = await emailjs.sendForm(
+    'service_ctcaqad',
+    'template_nwsmd5p',
+    {
+        to_email: em,
+        to_name: u,
+        verification_code: code,
+        reply_to: em
+    },
+    {
+        publicKey: 'uQH9b9PES4f2ONCNq'  // ✅ Passed as options object
+    }
+);
         
         // Then register with backend
         const res = await api('/register', { 
