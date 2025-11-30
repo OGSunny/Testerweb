@@ -734,43 +734,44 @@
             const submitBtn = document.getElementById('dynamicModalBody').querySelector('button[type="submit"]');
             
             try {
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = 'იგზავნება...';
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = 'იგზავნება...';
 
-    // Send email with EmailJS
-    await emailjs.send('service_ctcaqad', 'template_nwsmd5p', { 
-        to_email: em,     // Matches {{to_email}}
-        to_name: u,       // Matches {{to_name}}
-        code: code,       // Matches {{code}} - ✅ COMMA ADDED
-        email: em         // Matches {{email}} in Reply To field
-    });
-    
-    // Then register with backend
-    const res = await api('/register', { 
-        method: 'POST', 
-        body: JSON.stringify({
-            username: u, 
-            email: em, 
-            password: p, 
-            code,
-            recaptchaToken: recaptchaToken
-        })
-    });
-    
-    if(res && res.ok) {
-        sessionStorage.setItem('pendingEmail', em);
-        showVerify();
-        showToast('დადასტურების კოდი გაიგზავნა.');
-    }
-} catch(err) {
-    console.error('Email sending error:', err);
-    showToast(`ელფოსტის გაგზავნა ვერ მოხერხდა: ${err.text || err.message}`, 'error');
-} finally {
-    if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<span class="relative z-10">რეგისტრაცია</span>';
-    }
-}
+                // Send email with EmailJS
+                await emailjs.send('service_ctcaqad', 'template_nwsmd5p', { 
+                    to_email: em,     // Matches {{to_email}}
+                    to_name: u,       // Matches {{to_name}}
+                    code: code,       // Matches {{code}} - ✅ COMMA ADDED
+                    email: em         // Matches {{email}} in Reply To field
+                });
+                
+                // Then register with backend
+                const res = await api('/register', { 
+                    method: 'POST', 
+                    body: JSON.stringify({
+                        username: u, 
+                        email: em, 
+                        password: p, 
+                        code,
+                        recaptchaToken: recaptchaToken
+                    })
+                });
+                
+                if(res && res.ok) {
+                    sessionStorage.setItem('pendingEmail', em);
+                    showVerify();
+                    showToast('დადასტურების კოდი გაიგზავნა.');
+                }
+            } catch(err) {
+                console.error('Email sending error:', err);
+                showToast(`ელფოსტის გაგზავნა ვერ მოხერხდა: ${err.text || err.message}`, 'error');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<span class="relative z-10">რეგისტრაცია</span>';
+                }
+            }
+        } // ✅ MISSING CLOSING BRACE WAS HERE!
 
         async function handleVerify(e) {
             e.preventDefault();
