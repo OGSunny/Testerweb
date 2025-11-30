@@ -738,11 +738,11 @@
 
         // Send email with EmailJS
         await emailjs.send('service_ctcaqad', 'template_nwsmd5p', { 
-            to_email: em,
-            to_name: u,
-            code: code,
-            email: em
-        });
+    to_email: em,
+    to_name: u,
+    code: code,    // ← Comma added here
+    email: em      // ← Changed from reply_to to email
+});
         
         // Then register with backend
         const res = await api('/register', { 
