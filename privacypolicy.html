@@ -7,7 +7,7 @@
     
     <link rel="icon" href="https://raw.githubusercontent.com/OGSunny/Testerweb/main/zaratic.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700;900&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
     <style>
@@ -19,94 +19,106 @@
             --accent: #3498db;
             --dark: #0a0d1b;
             --darker: #050609;
-            --glass: rgba(15, 20, 40, 0.85);
-            --glass-light: rgba(20, 28, 50, 0.6);
-            --border: rgba(231, 76, 60, 0.3);
+            --glass: rgba(15, 20, 40, 0.95);
+            --glass-light: rgba(20, 28, 50, 0.7);
+            --border: rgba(231, 76, 60, 0.4);
             --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.8);
-            --neon-glow: 0 0 10px #e74c3c, 0 0 20px #e74c3c, 0 0 30px #e74c3c;
+            --text-secondary: rgba(255, 255, 255, 0.75);
+            --neon-glow: 0 0 8px var(--primary-light), 0 0 15px var(--primary);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Noto Sans Georgian', sans-serif;
             background: #000000;
             color: var(--text-primary);
             overflow-x: hidden;
             min-height: 100vh;
         }
 
-        #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -2; background: radial-gradient(ellipse at top, #1a1f3a 0%, #000000 50%); }
+        /* BACKGROUND */
+        #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -2; background: radial-gradient(ellipse at top, #1a1f3a 0%, #000000 70%); }
         .glow-orbs { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; overflow: hidden; pointer-events: none; }
-        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.2; }
-        .orb-1 { width: 500px; height: 500px; background: var(--primary); top: -10%; left: 10%; animation: float 20s ease-in-out infinite; }
-        .orb-2 { width: 400px; height: 400px; background: var(--accent); top: 50%; right: 5%; animation: float 25s ease-in-out infinite reverse; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.15; }
+        .orb-1 { width: 450px; height: 450px; background: var(--primary); top: -10%; left: 10%; animation: float 20s ease-in-out infinite; }
+        .orb-2 { width: 380px; height: 380px; background: var(--accent); top: 50%; right: 5%; animation: float 25s ease-in-out infinite reverse; }
         @keyframes float { 0%,100% { transform: translate(0,0); } 33% { transform: translate(50px,-50px); } 66% { transform: translate(-30px,30px); } }
 
+        /* HEADER & MENU (Consistent with index.html) */
         header { 
-            position: fixed; top: 0; left: 0; width: 100%; padding: 20px 5%; 
-            background: var(--glass); backdrop-filter: blur(30px); 
+            position: fixed; top: 0; left: 0; width: 100%; padding: 15px 5%; 
+            background: var(--glass); backdrop-filter: blur(20px); 
             border-bottom: 1px solid var(--border); z-index: 1000; 
             display: flex; justify-content: space-between; align-items: center; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6); 
+            box-shadow: 0 5px 25px rgba(0,0,0,0.7); 
         }
-        .logo { 
-            display: flex; align-items: center; gap: 16px; font-size: 26px; font-weight: 900; 
-            color: white; text-decoration: none; letter-spacing: 1px; 
-        }
-        .logo img { width: 50px; height: 50px; border-radius: 50%; transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); object-fit: cover; }
-        .logo:hover img { transform: scale(1.15) rotate(8deg); box-shadow: var(--neon-glow); }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 900; color: white; text-decoration: none; letter-spacing: 1px; }
+        .logo img { width: 45px; height: 45px; border-radius: 50%; transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); object-fit: cover; }
+        .logo:hover img { transform: scale(1.1) rotate(360deg); box-shadow: 0 0 15px rgba(255, 215, 0, 0.7); }
 
+        /* BURGER MENU (Same as index.html) */
         .burger { display: flex; flex-direction: column; gap: 6px; cursor: pointer; z-index: 1001; }
-        .burger span { width: 28px; height: 2.5px; background: white; border-radius: 3px; transition: 0.5s cubic-bezier(0.34,1.56,0.64,1); }
-        .burger.active span:nth-child(1) { transform: rotate(45deg) translate(10px,10px); }
+        .burger span { width: 25px; height: 2px; background: white; border-radius: 3px; transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .burger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
         .burger.active span:nth-child(2) { opacity: 0; transform: translateX(15px); }
-        .burger.active span:nth-child(3) { transform: rotate(-45deg) translate(8px,-8px); }
+        .burger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
+        /* SLIDE MENU (Same as index.html) */
         .slide-menu { 
-            position: fixed; top: 0; right: -100%; width: 350px; height: 100vh; 
+            position: fixed; top: 0; right: -100%; width: min(300px, 90vw); height: 100vh; 
             background: linear-gradient(135deg, rgba(10,13,27,0.98), rgba(20,28,50,0.95)); 
-            backdrop-filter: blur(30px); border-left: 1px solid var(--border); 
-            padding: 100px 30px 40px; transition: right 0.6s cubic-bezier(0.34,1.56,0.64,1); 
-            z-index: 999; box-shadow: -15px 0 60px rgba(0,0,0,0.7); overflow-y: auto; 
+            backdrop-filter: blur(25px); border-left: 1px solid var(--border); 
+            padding: 80px 20px 30px; transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+            z-index: 999; box-shadow: -8px 0 30px rgba(0,0,0,0.6); overflow-y: auto; 
         }
         .slide-menu.active { right: 0; }
-        .menu-section-title { font-size: 10px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin: 28px 0 14px; font-weight: 700; letter-spacing: 1.5px; }
-        .menu-item { padding: 16px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 16px; font-weight: 600; color: white; cursor: pointer; transition: all 0.4s; display: flex; align-items: center; gap: 14px; border-radius: 10px; }
-        .menu-item i { font-size: 18px; color: var(--primary); width: 20px; }
-        .menu-item:hover { color: var(--primary); padding-left: 20px; background: rgba(231,76,60,0.1); box-shadow: var(--neon-glow); }
-        .social-icons { display: flex; gap: 12px; margin-top: 35px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; }
-        .social-icon { width: 44px; height: 44px; background: rgba(231,76,60,0.1); border: 1.5px solid rgba(231,76,60,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; transition: all 0.4s; text-decoration: none; }
-        .social-icon:hover { background: var(--primary); border-color: var(--primary); transform: translateY(-5px) scale(1.1); box-shadow: var(--neon-glow); }
+        .menu-section-title { font-size: 10px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin: 24px 0 10px; font-weight: 700; letter-spacing: 1.5px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px; }
+        .menu-item { padding: 12px 10px; font-size: 15px; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 12px; border-radius: 6px; }
+        .menu-item i { font-size: 15px; color: var(--primary); width: 18px; }
+        .menu-item:hover { color: var(--primary-light); padding-left: 15px; background: rgba(231,76,60,0.1); }
+        .social-icons { display: flex; gap: 8px; margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.07); flex-wrap: wrap; }
+        .social-icon { width: 36px; height: 36px; background: rgba(231,76,60,0.1); border: 1px solid rgba(231,76,60,0.25); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; transition: all 0.3s; text-decoration: none; }
+        .social-icon:hover { background: var(--primary); border-color: var(--primary); transform: translateY(-2px) scale(1.05); box-shadow: var(--neon-glow); }
 
-        .content-container { padding: 150px 5% 80px; max-width: 1000px; margin: 0 auto; position: relative; z-index: 2; }
-        .page-title { font-size: clamp(48px,8vw,70px); font-weight: 900; text-align: center; margin-bottom: 20px; background: linear-gradient(135deg,#e74c3c 0%,#ff8c7a 50%,var(--primary-light) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 2px; filter: drop-shadow(0 5px 20px rgba(231,76,60,0.4)); }
-        .last-updated { text-align: center; font-size: 14px; color: var(--text-secondary); margin-bottom: 50px; }
+        /* CONTENT */
+        .content-container { padding: 120px 5% 80px; max-width: 900px; margin: 0 auto; position: relative; z-index: 2; }
+        .page-title { 
+            font-size: clamp(40px,7vw,60px); font-weight: 900; text-align: center; margin-bottom: 15px; 
+            background: linear-gradient(135deg,#e74c3c 0%,#ff8c7a 50%,var(--primary-light) 100%); 
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+            background-clip: text; letter-spacing: 1.5px; 
+            filter: drop-shadow(0 3px 10px rgba(231,76,60,0.4)); 
+            font-family: 'Space Mono', monospace;
+        }
+        .last-updated { text-align: center; font-size: 14px; color: var(--text-secondary); margin-bottom: 40px; }
 
-        .content-box { background: var(--glass); backdrop-filter: blur(30px); border-radius: 25px; padding: 50px; border: 2px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,0.4), var(--neon-glow); }
+        .content-box { 
+            background: var(--glass); backdrop-filter: blur(20px); 
+            border-radius: 20px; padding: clamp(35px, 6vw, 45px); 
+            border: 1px solid var(--border); 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4), 0 0 10px rgba(231,76,60,0.2); 
+        }
 
-        .section { margin-bottom: 40px; }
-        .section h2 { font-size: 28px; color: var(--primary); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
-        .section h2 i { font-size: 24px; }
-        .section h3 { font-size: 20px; color: var(--primary-light); margin: 25px 0 15px; }
-        .section p { font-size: 16px; line-height: 1.8; color: var(--text-secondary); margin-bottom: 15px; }
-        .section ul { margin-left: 30px; }
-        .section ul li { font-size: 16px; line-height: 1.8; color: var(--text-secondary); margin-bottom: 10px; }
+        .section { margin-bottom: 35px; }
+        .section h2 { font-size: 26px; color: var(--primary-light); margin-bottom: 18px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid rgba(255,255,255,0.05); padding-bottom: 8px; font-weight: 700;}
+        .section h2 i { font-size: 22px; color: var(--primary); }
+        .section h3 { font-size: 18px; color: var(--text-primary); margin: 20px 0 10px; font-weight: 600; }
+        .section p { font-size: 15px; line-height: 1.7; color: var(--text-secondary); margin-bottom: 15px; }
+        .section ul { margin-left: 25px; padding-left: 5px; list-style-type: none;}
+        .section ul li { font-size: 15px; line-height: 1.7; color: var(--text-secondary); margin-bottom: 8px; position: relative;}
+        .section ul li::before { content: '•'; color: var(--accent); font-weight: bold; display: inline-block; width: 1em; margin-left: -1em; }
 
-        .highlight-box { background: rgba(52,152,219,0.1); border-left: 4px solid var(--accent); padding: 20px; border-radius: 10px; margin: 25px 0; }
-        .highlight-box p { margin: 0; color: var(--text-primary); font-weight: 500; }
 
-        footer { background: linear-gradient(135deg,rgba(5,6,9,0.95),rgba(10,13,27,0.95)); backdrop-filter: blur(20px); padding: 60px 5% 40px; text-align: center; border-top: 2px solid var(--border); margin-top: 80px; }
-        footer p { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 15px; }
+        .highlight-box { background: rgba(52,152,219,0.1); border-left: 4px solid var(--accent); padding: 15px; border-radius: 8px; margin: 20px 0; }
+        .highlight-box p { margin: 0; color: var(--text-primary); font-weight: 500; font-size: 15px; }
+        .highlight-box i { margin-right: 5px; color: var(--accent); }
+
+        footer { background: linear-gradient(135deg,rgba(5,6,9,0.95),rgba(10,13,27,0.95)); backdrop-filter: blur(10px); padding: 40px 5% 30px; text-align: center; border-top: 1px solid var(--border); margin-top: 50px; }
+        footer p { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 10px; }
         footer a { color: var(--primary); text-decoration: none; transition: all 0.3s; }
         footer a:hover { color: var(--primary-light); text-decoration: underline; }
-
-        @media (max-width: 768px) {
-            .content-box { padding: 35px 25px; }
-            .section h2 { font-size: 24px; }
-        }
     </style>
 </head>
 <body>
@@ -152,16 +164,16 @@
 
         <div class="content-box">
             <div class="section">
-                <h2>შესავალი</h2>
+                <h2><i class="fas fa-info-circle"></i> შესავალი</h2>
                 <p>Zaratic Role Play სერიოზულად უდგება თქვენი პირადი ინფორმაციის დაცვას. ეს კონფიდენციალურობის პოლიტიკა განმარტავს, თუ როგორ ვაგროვებთ, ვიყენებთ და ვიცავთ თქვენს მონაცემებს.</p>
                 
                 <div class="highlight-box">
-                    <p>სერვერის გამოყენებით თქვენ ეთანხმებით ამ კონფიდენციალურობის პოლიტიკას.</p>
+                    <p><i class="fas fa-shield-alt"></i> სერვერის გამოყენებით თქვენ ეთანხმებით ამ კონფიდენციალურობის პოლიტიკას.</p>
                 </div>
             </div>
 
             <div class="section">
-                <h2>რა ინფორმაციას ვაგროვებთ</h2>
+                <h2><i class="fas fa-database"></i> რა ინფორმაციას ვაგროვებთ</h2>
                 
                 <h3>1. რეგისტრაციის ინფორმაცია</h3>
                 <p>სერვერზე რეგისტრაციისას ჩვენ ვაგროვებთ:</p>
@@ -191,7 +203,7 @@
             </div>
 
             <div class="section">
-                <h2>როგორ ვიყენებთ თქვენს ინფორმაციას</h2>
+                <h2><i class="fas fa-cogs"></i> როგორ ვიყენებთ თქვენს ინფორმაციას</h2>
                 <p>ჩვენ ვიყენებთ შეგროვებულ ინფორმაციას შემდეგი მიზნებისთვის:</p>
                 <ul>
                     <li>სერვერის ფუნქციონირების უზრუნველსაყოფად</li>
@@ -205,9 +217,8 @@
             </div>
 
             <div class="section">
-                <h2>ინფორმაციის დაცვა</h2>
+                <h2><i class="fas fa-lock"></i> ინფორმაციის დაცვა</h2>
                 <p>ჩვენ ვიყენებთ სხვადასხვა უსაფრთხოების ზომებს თქვენი მონაცემების დასაცავად:</p>
-                <: 
                 <ul>
                     <li>პაროლები ინახება დაშიფრული სახით</li>
                     <li>გადახდის ინფორმაცია არ ინახება ჩვენს სერვერებზე</li>
@@ -217,12 +228,12 @@
                 </ul>
 
                 <div class="highlight-box">
-                    <p>არასოდეს გაუზიაროთ თქვენი პაროლი ადმინისტრაციის წარმომადგენლებს. ადმინები არასოდეს მოგთხოვენ პაროლს.</p>
+                    <p><i class="fas fa-user-secret"></i> არასოდეს გაუზიაროთ თქვენი პაროლი ადმინისტრაციის წარმომადგენლებს. ადმინები არასოდეს მოგთხოვენ პაროლს.</p>
                 </div>
             </div>
 
             <div class="section">
-                <h2>ინფორმაციის გაზიარება</h2>
+                <h2><i class="fas fa-share-alt"></i> ინფორმაციის გაზიარება</h2>
                 <p>ჩვენ არ ვყიდით და არ ვაწოდებთ თქვენს პირად ინფორმაციას მესამე მხარეებს, გარდა:</p>
                 <ul>
                     <li>კანონმდებლობით მოთხოვნილი შემთხვევებისა</li>
@@ -232,7 +243,7 @@
             </div>
 
             <div class="section">
-                <h2>Cookies და ტექნოლოგიები</h2>
+                <h2><i class="fas fa-cookie-bite"></i> Cookies და ტექნოლოგიები</h2>
                 <p>ჩვენი ვებსაიტი იყენებს cookies-ს:</p>
                 <ul>
                     <li>სესიის შესანარჩუნებლად</li>
@@ -242,11 +253,11 @@
             </div>
 
             <div class="section">
-                <h2>თქვენი უფლებები</h2>
+                <h2><i class="fas fa-gavel"></i> თქვენი უფლებები</h2>
                 <p>თქვენ გაქვთ უფლება:</p>
                 <ul>
                     <li>მოითხოვოთ თქვენზე არსებული ინფორმაციის ასლი</li>
-                    <li>მოითხოვოთ თქვენი მ onაცემების შესწორება</li>
+                    <li>მოითხოვოთ თქვენი მონაცემების შესწორება</li>
                     <li>მოითხოვოთ თქვენი ანგარიშის წაშლა</li>
                     <li>უარი თქვათ მარკეტინგულ შეტყობინებებზე</li>
                 </ul>
@@ -255,17 +266,17 @@
             </div>
 
             <div class="section">
-                <h2>ასაკობრივი შეზღუდვა</h2>
+                <h2><i class="fas fa-child"></i> ასაკობრივი შეზღუდვა</h2>
                 <p>ჩვენი სერვისი განკუთვნილია 13 წელზე უფროსი პირებისთვის. თუ თქვენ 13 წლამდე ასაკის ხართ, გთხოვთ, სერვისის გამოყენებამდე მიიღოთ მშობლების ნებართვა.</p>
             </div>
 
             <div class="section">
-                <h2>ცვლილებები პოლიტიკაში</h2>
+                <h2><i class="fas fa-edit"></i> ცვლილებები პოლიტიკაში</h2>
                 <p>ჩვენ ვიტოვებთ უფლებას შევცვალოთ ეს კონფიდენციალურობის პოლიტიკა ნებისმიერ დროს. ყველა ცვლილება გამოქვეყნდება ამ გვერდზე და ძალაშია დაუყოვნებლივ.</p>
             </div>
 
             <div class="section">
-                <h2>დაგვიკავშირდით</h2>
+                <h2><i class="fas fa-headset"></i> დაგვიკავშირდით</h2>
                 <p>თუ გაქვთ შეკითხვები ამ კონფიდენციალურობის პოლიტიკასთან დაკავშირებით:</p>
                 <ul>
                     <li>Discord: <a href="https://discord.gg/3d47R7tw" style="color: var(--primary);">Zaratic RP Discord</a></li>
@@ -277,7 +288,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2025 Zaratic Role Play. ყველა უფლება დაცულია.</p>
+        <p>© 2025 Zaratic Role Play. ყველა უფლება დაცულია.</p>
         <p><a href="agreement.html">წესები და პირობები</a> • <a href="privacypolicy.html">კონფიდენციალურობა</a></p>
     </footer>
 
@@ -287,18 +298,22 @@
             document.querySelector('.slide-menu').classList.toggle('active');
         }
 
-        function navigate(page) { window.location.href = page; }
+        function navigate(page) { 
+            document.querySelector('.slide-menu').classList.remove('active');
+            document.querySelector('.burger').classList.remove('active');
+            setTimeout(() => window.location.href = page, 300);
+        }
         
         function downloadLauncher(type) {
-    if (type === 'pc') {
-        alert('PC ლაუნჩერი მალე გამოვა...');
-    } else {
-        alert('Mobile ლაუნჩერის ჩამოტვირთვა მალე...');
-    }
-}
+            if (type === 'pc') {
+                alert('PC ლაუნჩერი მალე გამოვა...');
+            } else {
+                alert('Mobile ლაუნჩერის ჩამოტვირთვა მალე...');
+            }
+        }
 
         particlesJS('particles-js', {
-            particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: "#e74c3c" }, shape: { type: "circle" }, opacity: { value: 0.3, random: true }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#e74c3c", opacity: 0.2, width: 1 }, move: { enable: true, speed: 2, direction: "none", random: false, straight: false, out_mode: "out" } },
+            particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: "#e74c3c" }, shape: { type: "circle" }, opacity: { value: 0.3, random: true }, size: { value: 2.5, random: true }, line_linked: { enable: true, distance: 130, color: "#e74c3c", opacity: 0.2, width: 0.9 }, move: { enable: true, speed: 1.8, direction: "none", random: false, straight: false, out_mode: "out" } },
             interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true } },
             retina_detect: true
         });
