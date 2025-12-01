@@ -6,508 +6,295 @@
     <title>Zaratic Role Play • ერთ-ერთი საუკეთესო SA-MP სერვერი საქართველოში</title>
     
     <link rel="icon" href="https://raw.githubusercontent.com/OGSunny/Testerweb/main/zaratic.png" type="image/png">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@300;400;500;700;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;700;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <style>
         :root {
-            /* Refined Color Palette */
-            --primary: #e74c3c; /* Red */
-            --primary-light: #ff6b6b;
-            --primary-dark: #c0392b;
-            --accent: #3498db; /* Blue/Cyan Accent */
-            --highlight: #f1c40f; /* Yellow/Gold Accent for Status */
-            --dark: #0a0d1b;
-            --darker: #050609;
-            --glass: rgba(15, 20, 40, 0.88); /* Increased Opacity for Better Depth */
-            --glass-light: rgba(20, 28, 50, 0.75);
-            --border: rgba(231, 76, 60, 0.4); /* Stronger Border */
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.7); /* Improved contrast */
-            --neon-glow: 0 0 8px var(--primary-light), 0 0 20px var(--primary);
-            --christmas-green: #0f7d3f;
-            --christmas-red: #c41e3a;
-            --christmas-gold: #ffd700;
+            --primary: #e74c3c;
+            --primary-glow: #ff4560;
+            --primary-dark: #c41e3a;
+            --accent-purple: #9d4edd;
+            --accent-cyan: #00f2ff;
+            --dark: #0d0f1c;
+            --darker: #05071a;
+            --glass: rgba(15, 20, 45, 0.92);
+            --glass-light: rgba(25, 35, 70, 0.7);
+            --border-glow: rgba(231, 76, 60, 0.4);
+            --text: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.75);
+            --neon-red: 0 0 20px #e74c3c, 0 0 40px #e74c3c, 0 0 80px #e74c3c;
+            --neon-purple: 0 0 15px #9d4edd, 0 0 30px #9d4edd;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-
         body {
             font-family: 'Noto Sans Georgian', 'Montserrat', sans-serif;
-            background: #000000;
-            color: var(--text-primary);
+            background: #000;
+            color: var(--text);
             overflow-x: hidden;
             min-height: 100vh;
-            line-height: 1.6;
+            background: radial-gradient(circle at top, #1a1f3a 0%, #000 60%);
         }
 
-        /* TYPOGRAPHY OVERHAUL */
-        h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; line-height: 1.2; letter-spacing: 1px; }
-        p, a, li, button { font-family: 'Noto Sans Georgian', sans-serif; font-weight: 400; }
-        
-        /* SCROLLBAR STYLING */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-thumb { background: var(--primary-dark); border-radius: 5px; }
-        ::-webkit-scrollbar-track { background: var(--darker); }
-
-        /* SNOW EFFECT - IMPROVED */
+        /* SNOWFALL - Optimized & Realistic */
         .snow-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden;
-            filter: blur(0.5px); /* Subtle Depth */
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5;
         }
-        
         .snowflake {
-            position: absolute; top: -10px; color: #ffffff; font-size: 1.4em; font-weight: bold;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.6); opacity: 0.8;
-            animation: snowfall linear infinite;
+            position: absolute; color: #fff; font-size: 1.2em; opacity: 0.8;
+            text-shadow: 0 0 8px rgba(255,255,255,0.6);
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
         }
 
-        @keyframes snowfall {
-            to { transform: translateY(100vh) translateX(var(--drift)); opacity: 0; }
+        /* CHRISTMAS LIGHTS - Realistic Glow */
+        .christmas-lights {
+            position: absolute; top: -35px; left: 0; right: 0; height: 60px; pointer-events: none; z-index: 10;
         }
+        .light-bulb {
+            position: absolute; width: 18px; height: 18px; border-radius: 50%; top: 20px;
+            box-shadow: 0 0 30px 8px currentColor, inset 0 0 10px rgba(255,255,255,0.5);
+            animation: glow 4s ease-in-out infinite alternate;
+        }
+        .light-bulb::before { content: ''; position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+            width: 4px; height: 16px; background: #333; border-radius: 2px;
+        }
+        .light-bulb:nth-child(odd) { background: #e74c3c; color: #ff4560; }
+        .light-bulb:nth-child(even) { background: #00ff7f; color: #00ff7f; }
+        @keyframes glow { from { opacity: 0.8; } to { opacity: 1; box-shadow: 0 0 40px 12px currentColor; } }
 
-        /* LOADER - ENHANCED */
+        /* LOADER */
         #loader {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000000;
-            display: flex; align-items: center; justify-content: center; z-index: 9999;
-            transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 9999;
+            display: flex; align-items: center; justify-content: center; transition: opacity 1s;
         }
         #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-        .loader-logo { filter: drop-shadow(var(--neon-glow)); animation: logoFloat 4s cubic-bezier(0.43, 0.13, 0.23, 0.96) infinite; }
-        .loader-dots { gap: 8px; }
-        .dot { width: 16px; height: 16px; box-shadow: var(--neon-glow); }
-        .loader-text { color: var(--primary); text-shadow: var(--neon-glow); }
-        
-        /* BACKGROUND - DARK MODE DEPTH */
-        #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -2; background: radial-gradient(ellipse at top, #1a1f3a 0%, #000000 70%); }
-        .glow-orbs { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; overflow: hidden; pointer-events: none; }
-        .orb { filter: blur(120px); opacity: 0.18; }
 
-        /* HEADER & MENU */
-        header { border-bottom: 2px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.7); }
-        .logo { gap: 10px; }
-        .logo img { width: 45px; height: 45px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
-        .logo:hover img { box-shadow: 0 0 20px rgba(255, 215, 0, 0.7); transform: scale(1.05) rotate(5deg); }
-        
-        .toggle-wrap { padding: 8px; }
-        .slide-menu { transition: right 0.5s cubic-bezier(0.68,-0.55,0.26,1.55); background: linear-gradient(135deg, rgba(10,13,27,0.99), rgba(20,28,50,0.98)); }
-        .menu-item:hover { transform: scale(1.02); box-shadow: 0 0 15px rgba(231,76,60,0.3); }
+        /* HEADER */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%; padding: 18px 5%; backdrop-filter: blur(30px);
+            background: rgba(10, 12, 28, 0.95); border-bottom: 1px solid var(--border-glow); z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
+        .logo {
+            display: flex; align-items: center; gap: 14px; font-size: 28px; font-weight: 900; color: white;
+            text-decoration: none; letter-spacing: 1.5px;
+        }
+        .logo img { width: 60px; height: 60px; border-radius: 50%; transition: 0.6s; }
+        .logo:hover img { transform: scale(1.15) rotate(360deg); box-shadow: var(--neon-red); }
 
-        /* CHRISTMAS LIGHTS - ENHANCED */
-        .christmas-lights-string { top: -20px; }
-        .lights-wire { top: 15px; height: 3px; background: #34495e; }
-        .light-bulb { width: 18px; height: 18px; top: 6px; }
-        .light-bulb::before { top: -8px; height: 10px; width: 4px; }
-        @keyframes flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.75; } 25%, 75% { opacity: 0.85; } }
+        /* PLAYER COUNT WIDGET - Variant C (Floating Premium Card) */
+        .player-count-widget {
+            position: fixed; top: 100px; right: 20px; width: 260px; background: var(--glass);
+            backdrop-filter: blur(20px); border: 1.5px solid var(--border-glow); border-radius: 20px;
+            padding: 20px; z-index: 900; box-shadow: 0 20px 50px rgba(0,0,0,0.5), var(--neon-red);
+            animation: floatWidget 6s ease-in-out infinite; color: white; font-family: 'Space Mono', monospace;
+        }
+        .live-dot {
+            width: 12px; height: 12px; background: #00ff7f; border-radius: 50%; display: inline-block;
+            box-shadow: 0 0 20px #00ff7f; animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+        .player-numbers { font-size: 36px; font-weight: 900; letter-spacing: 2px; margin: 10px 0; }
+        .player-numbers #currentPlayers { color: var(--primary-glow); text-shadow: var(--neon-red); }
+        #maxPlayers { color: rgba(255,255,255,0.6); }
+        .separator { color: #666; margin: 0 8px; }
+        .widget-footer { font-size: 13px; opacity: 0.8; display: flex; align-items: center; gap: 8px; }
+        @keyframes floatWidget { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        /* HERO - MORE IMPACTFUL */
-        .hero { min-height: 85vh; padding: 120px 5% 50px; align-items: center; }
-        .hero-content { max-width: 55%; gap: 30px; }
-        .hero h1 { font-size: clamp(50px,10vw,100px); letter-spacing: 5px; }
-        .hero-subtitle { font-size: clamp(18px,3vw,28px); font-weight: 500; letter-spacing: 1.5px; }
-        .ip-btn { 
-            font-size: clamp(20px,3vw,32px); 
-            padding: 25px 70px; 
-            box-shadow: 0 15px 50px rgba(255,255,255,0.5); 
-            text-transform: uppercase;
+        /* HERO - Cinematic Redesign */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            padding: 0 5%; position: relative; overflow: hidden;
         }
-        .ip-btn:hover { transform: translateY(-8px) scale(1.05); }
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.7), rgba(0,0,0,0.3));
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative; z-index: 3; text-align: center; max-width: 1200px;
+        }
+        .hero h1 {
+            font-size: clamp(60px, 10vw, 120px); font-weight: 900; line-height: 1;
+            background: linear-gradient(135deg, #fff, var(--primary-glow), #9d4edd);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            margin-bottom: 20px; animation: titleGlow 4s ease-in-out infinite;
+        }
+        @keyframes titleGlow {
+            0%,100% { filter: drop-shadow(0 0 30px rgba(231,76,60,0.8)); }
+            50% { filter: drop-shadow(0 0 60px rgba(231,76,60,1)); }
+        }
+        .hero-subtitle { font-size: clamp(20px, 4vw, 32px); margin-bottom: 40px; color: var(--text-muted); }
+        .ip-card {
+            background: var(--glass); backdrop-filter: blur(20px); border: 1.5px solid var(--border-glow);
+            padding: 30px 60px; border-radius: 50px; display: inline-block; box-shadow: var(--neon-red);
+            animation: ipPulse 3s infinite;
+        }
+        .ip-card button {
+            background: white; color: black; border: none; padding: 20px 70px; border-radius: 50px;
+            font-size: 28px; font-weight: 900; cursor: pointer; font-family: 'Space Mono', monospace;
+            box-shadow: 0 15px 40px rgba(255,255,255,0.4); transition: 0.5s;
+        }
+        .ip-card button:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 30px 80px rgba(255,255,255,0.8); }
+        @keyframes ipPulse { 0%,100% { box-shadow: 0 0 20px rgba(231,76,60,0.6); } 50% { box-shadow: 0 0 40px rgba(231,76,60,1); } }
 
-        /* LIVE PLAYER COUNT WIDGET - CRITICAL NEW ADDITION */
-        #player-count-widget {
-            position: relative;
-            z-index: 5;
-            background: var(--glass-light);
-            backdrop-filter: blur(25px);
-            border: 2px solid var(--border);
-            border-radius: 18px;
-            padding: 25px 30px;
-            text-align: center;
-            margin-top: 30px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5), 0 0 25px rgba(231,76,60,0.3);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            max-width: 320px;
-            align-self: flex-start;
-            transition: all 0.5s ease;
+        /* SECTIONS & CARDS */
+        section { padding: 100px 5%; }
+        .title {
+            font-size: clamp(48px, 8vw, 80px); text-align: center; margin-bottom: 60px;
+            background: linear-gradient(135deg, var(--primary), #ff8c7a, var(--accent-purple));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            font-weight: 900; letter-spacing: 2px;
         }
+        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1400px; margin: 0 auto; }
+        .card {
+            background: var(--glass); backdrop-filter: blur(20px); border: 1.5px solid var(--border-glow);
+            border-radius: 24px; padding: 50px 30px; text-align: center; transition: 0.6s; position: relative; overflow: hidden;
+        }
+        .card:hover { transform: translateY(-20px) scale(1.03); box-shadow: var(--neon-red), 0 30px 80px rgba(0,0,0,0.6); }
+        .card i { font-size: 70px; color: var(--primary-glow); margin-bottom: 20px; filter: drop-shadow(var(--neon-red)); transition: 0.5s; }
+        .card:hover i { transform: scale(1.3) rotate(15deg); }
 
-        .player-status {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--highlight);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .status-indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #2ecc71; /* Green for Online */
-            box-shadow: 0 0 10px #2ecc71, 0 0 20px #2ecc71;
-            transition: all 0.4s;
-            animation: pulse-online 1.5s infinite ease-out;
-        }
-        .offline .status-indicator {
-            background: var(--primary-dark);
-            box-shadow: none;
-            animation: none;
-        }
-        .offline .player-status {
-            color: var(--primary-dark);
-        }
+        footer { padding: 80px 5%; text-align: center; background: rgba(5,6,9,0.95); backdrop-filter: blur(20px); border-top: 1px solid var(--border-glow); }
 
-        @keyframes pulse-online {
-            0% { transform: scale(0.9); opacity: 0.8; }
-            50% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(0.9); opacity: 0.8; }
-        }
-
-        .player-counter {
-            font-size: 48px;
-            font-weight: 900;
-            color: var(--primary);
-            text-shadow: var(--neon-glow);
-            font-family: 'Space Mono', monospace;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .player-counter i {
-            font-size: 40px;
-            color: var(--highlight);
-        }
-
-        .counter-label {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .widget-loading {
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* SECTIONS & CARDS - DEPTH & INTERACTIVITY */
-        section { padding: clamp(80px,10vw,120px) 5%; }
-        .title { font-size: clamp(40px,8vw,75px); margin-bottom: clamp(50px,7vw,80px); letter-spacing: 2px; }
-        .card { 
-            border-radius: 25px; 
-            box-shadow: 0 15px 50px rgba(0,0,0,0.5); 
-            background: linear-gradient(145deg, var(--glass), var(--darker)); 
-            border-width: 2px;
-        }
-        .card:hover { transform: translateY(-10px) scale(1.01); border-color: var(--primary-light); }
-        .card i { font-size: clamp(50px,8vw,80px); }
-        .card h3 { font-size: clamp(22px,4vw,30px); margin-bottom: 16px; }
-        .card p { font-size: clamp(15px,2.5vw,18px); }
-
-        #about p { max-width: 1000px; font-size: clamp(16px,2.5vw,20px); }
-
-        footer { border-top: 3px solid var(--border); }
-        
-        /* Media Queries - Player Widget adjustments */
-        @media (max-width: 968px) {
-            .hero-img { display: none !important; }
-            .hero-content { max-width: 100%; align-items: center; text-align: center; }
-            #player-count-widget { align-self: center; max-width: 90%; }
-        }
-        @media (max-width: 480px) {
-            .hero h1 { letter-spacing: 3px; }
-            .player-counter { font-size: 40px; }
-            .player-counter i { font-size: 30px; }
-            #player-count-widget { padding: 20px; }
-            .ip-btn { padding: 16px 35px; font-size: clamp(16px,3vw,24px); }
+        /* MOBILE */
+        @media (max-width: 768px) {
+            .player-count-widget { top: auto; bottom: 20px; right: 20px; width: 220px; padding: 16px; }
+            .hero h1 { font-size: 70px; }
+            .ip-card { padding: 20px 40px; }
+            .ip-card button { padding: 16px 50px; font-size: 22px; }
         }
     </style>
 </head>
 <body>
 
     <div class="snow-container" id="snowContainer"></div>
-
-    <div class="glow-orbs">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
     <div id="particles-js"></div>
 
+    <!-- CHRISTMAS LIGHTS -->
+    <div class="christmas-lights">
+        <div class="light-bulb" style="left:8%"></div>
+        <div class="light-bulb" style="left:18%"></div>
+        <div class="light-bulb" style="left:28%"></div>
+        <div class="light-bulb" style="left:38%"></div>
+        <div class="light-bulb" style="left:48%"></div>
+        <div class="light-bulb" style="left:58%"></div>
+        <div class="light-bulb" style="left:68%"></div>
+        <div class="light-bulb" style="left:78%"></div>
+        <div class="light-bulb" style="left:88%"></div>
+        <div class="light-bulb" style="left:98%"></div>
+    </div>
+
+    <!-- LOADER -->
     <div id="loader">
-        <div class="loader-content">
-            <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/zaratic.png" alt="Zaratic RP" class="loader-logo">
-            <div class="loader-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-            <div class="loader-text">იტვირთება...</div>
-        </div>
+        <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/zaratic.png" width="150" class="loader-logo">
     </div>
 
     <header>
         <a href="index.html" class="logo">
-            <div class="christmas-lights-string">
-                <div class="lights-wire"></div>
-                <div class="light-bulb"></div><div class="light-bulb"></div><div class="light-bulb"></div><div class="light-bulb"></div>
-                <div class="light-bulb"></div><div class="light-bulb"></div><div class="light-bulb"></div><div class="light-bulb"></div>
-                <div class="light-bulb"></div><div class="light-bulb"></div>
-            </div>
             <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/zaratic.png" alt="Zaratic RP">
             <span>Zaratic RP</span>
         </a>
-        <div class="toggle-wrap" onclick="toggleMenu(this)">
-            <span class="toggle-bar"></span>
-        </div>
     </header>
 
-    <div class="slide-menu">
-        <div class="menu-section-title">ნავიგაცია</div>
-        <div class="menu-item" onclick="navigate('index.html')"><i class="fas fa-home"></i> მთავარი</div>
-        <div class="menu-item" onclick="navigate('donation.html')"><i class="fas fa-shopping-cart"></i> მაღაზია</div>
-        <div class="menu-item" onclick="navigate('forum.html')"><i class="fas fa-comments"></i> ფორუმი</div>
-
-        <div class="menu-section-title">ჩამოტვირთვა</div>
-        <div class="menu-item" onclick="downloadLauncher('pc')"><i class="fas fa-desktop"></i> PC ლაუნჩერი</div>
-        <div class="menu-item" onclick="downloadLauncher('mobile')"><i class="fas fa-mobile-alt"></i> Mobile ლაუნჩერი</div>
-
-        <div class="menu-section-title">Web Development Team</div>
-        <div class="team-member"><i class="fas fa-code"></i> ზვიადი გეგიძე</div>
-        <div class="team-member"><i class="fas fa-code"></i> ნიკა გეორგაძე</div>
-
-        <div class="menu-section-title">სოციალური ქსელები</div>
-        <div class="social-icons">
-            <a href="https://www.facebook.com/groups/geosampcommunityn1/?ref=share&mibextid=NSMWBT" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://youtube.com/@zaraticrp?si=xg97Xib7QIw4TDlz" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
-            <a href="https://discord.gg/3d47R7tw" target="_blank" class="social-icon"><i class="fab fa-discord"></i></a>
-            <a href="https://www.tiktok.com/@zaratic.rp.official?_r=1&_t=ZS-91jJLvxRUff" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
+    <!-- PLAYER COUNT WIDGET -->
+    <div class="player-count-widget" id="playerWidget">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+            <i class="fas fa-signal"></i>
+            <span class="live-dot"></span>
+            <span style="font-size:14px; font-weight:700;">LIVE</span>
+        </div>
+        <div class="player-numbers">
+            <span id="currentPlayers">--</span><span class="separator">/</span><span id="maxPlayers">100</span>
+        </div>
+        <div class="widget-footer">
+            <i class="fas fa-users"></i> მოთამაშეები ონლაინ
         </div>
     </div>
 
-    <section class="hero" id="home">
+    <section class="hero">
         <div class="hero-content">
-            <h1><span class="Zaratic">Zaratic</span> <span class="roleplay">ROLE PLAY</span></h1>
+            <h1><span style="color:#fff">Zaratic</span> <span style="color:var(--primary-glow)">ROLE PLAY</span></h1>
             <p class="hero-subtitle">ერთ-ერთი საუკეთესო SA-MP სერვერი საქართველოში • 2025</p>
-            <button class="ip-btn" onclick="copyIP()">დაკავშირება</button>
-        </div>
-        
-        <div id="player-count-widget">
-            <div class="player-status online" id="server-status">
-                <span class="status-indicator"></span>
-                <span id="status-text">ონლაინ</span>
+            <div class="ip-card">
+                <button onclick="copyIP()">94.23.168.153:8777</button>
             </div>
-            <div class="player-counter">
-                <i class="fas fa-users"></i>
-                <span id="current-players" class="count-number">...</span>
-                <span>/</span>
-                <span id="max-players">...</span>
-            </div>
-            <div class="counter-label">მიმდინარე მოთამაშეები</div>
-        </div>
-        <div class="hero-img">
-            <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/PSX_20251120_171438.png" alt="GTA Character" id="hero-main-img">
         </div>
     </section>
 
     <section id="features">
-        <h2 class="title" data-scroll>რატომ ჩვენ?</h2>
+        <h2 class="title">რატომ ჩვენ?</h2>
         <div class="cards">
-            <div class="card" data-scroll><i class="fas fa-rocket"></i><h3>უნიკალური სისტემები</h3><p>განსხვავებული და ინოვაციური თამაშის სისტემები, რომლებიც არსად ვერ იხილავთ.</p></div>
-            <div class="card" data-scroll><i class="fas fa-crown"></i><h3>პროფესიონალი გუნდი</h3><p>ჩვენი გუნდი მუდმივად მზადაა თქვენი დახმარებისთვის 24/7 რეჟიმში.</p></div>
-            <div class="card" data-scroll><i class="fas fa-fire"></i><h3>24/7 აქტიური</h3><p>სერვერი მუშაობს მთელი დღე-ღამის განმავლობაში სტაბილურად.</p></div>
+            <div class="card"><i class="fas fa-rocket"></i><h3>უნიკალური სისტემები</h3><p>ინოვაციური ფუნქციები, რომლებიც არსად ვერ იხილავთ.</p></div>
+            <div class="card"><i class="fas fa-crown"></i><h3>პროფესიონალი გუნდი</h3><p>24/7 მხარდაჭერა და სტაბილურობა.</p></div>
+            <div class="card"><i class="fas fa-fire"></i><h3>აქტიური საზოგადოება</h3><p>მუდმივად მზარდი და ენერგიული მოთამაშეები.</p></div>
         </div>
     </section>
 
-    <section id="about">
-        <h2 class="title" data-scroll>ჩვენს შესახებ</h2>
-        <p data-scroll>Zaratic Role Play არის საქართველოს ერთ-ერთი საუკეთესო SA-MP სერვერი, რომელიც გთავაზობთ უნიკალურ როლურ გამოცდილებას. ჩვენ ვქმნით საუკეთესო გარემოს მოთამაშეებისთვის, სადაც თქვენ შეგიძლიათ იყოთ ნებისმიერი ვინც გინდათ — პოლიციელი, ბიზნესმენი, კრიმინალი ან უბრალოდ მშვიდი მოქალაქე. შემოგვიერთდით და გახდით ნაწილი ჩვენი დიდი ოჯახისა!</p>
-    </section>
-
     <footer>
-        <p>© 2025 Zaratic Role Play. ყველა უფლება დაცულია.</p>
+        <p>&copy; 2025 Zaratic Role Play. ყველა უფლება დაცულია.</p>
     </footer>
 
-    <div id="toast" class="toast">IP დაკოპირებული!</div>
+    <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--primary);color:white;padding:16px 40px;border-radius:50px;font-weight:700;z-index:10000;opacity:0;transition:0.4s;">IP დაკოპირებული!</div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script>
-        // --- LIVE PLAYER COUNT LOGIC ---
-        const SERVER_IP = '94.23.168.153:8777';
-        const MOCK_MAX_PLAYERS = 100; // SA-MP Max capacity
-        const PLAYER_COUNT_ENDPOINT = 'MOCK_API_URL'; // Replace with your actual SA-MP query API later
-
-        let currentPlayers = 0;
-
-        function fetchPlayerCount() {
-            const widget = document.getElementById('player-count-widget');
-            const statusText = document.getElementById('status-text');
-            const statusIndicator = widget.querySelector('.status-indicator');
-            const currentCountElement = document.getElementById('current-players');
-            const maxCountElement = document.getElementById('max-players');
-            maxCountElement.textContent = MOCK_MAX_PLAYERS;
-            
-            // Set Loading State
-            widget.classList.add('widget-loading');
-            currentCountElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            statusText.textContent = 'იტვირთება...';
-            widget.classList.remove('online', 'offline');
-
-            // MOCK DATA FETCH (Replace with real fetch from PLAYER_COUNT_ENDPOINT)
-            setTimeout(() => {
-                widget.classList.remove('widget-loading');
-                const isOnline = Math.random() > 0.1; // 90% chance of being online in mock data
-                let newPlayerCount = isOnline ? Math.floor(Math.random() * MOCK_MAX_PLAYERS * 0.4) + 10 : 0;
-                
-                if (isOnline) {
-                    widget.classList.add('online');
-                    statusText.textContent = 'ონლაინ';
-                    
-                    // Animated Counter (GSAP for smooth number transition)
-                    gsap.to({ count: currentPlayers }, {
-                        count: newPlayerCount,
-                        duration: 1.5,
-                        onUpdate: function() {
-                            currentCountElement.textContent = Math.round(this.targets()[0].count);
-                        },
-                        ease: "power2.out"
-                    });
-                    currentPlayers = newPlayerCount;
-
-                } else {
-                    widget.classList.add('offline');
-                    statusText.textContent = 'ოფლაინ';
-                    currentCountElement.textContent = '0';
-                    currentPlayers = 0;
-                }
-
-                if (!isOnline) {
-                    // Fallback Display when Offline
-                    statusIndicator.style.background = 'var(--primary-dark)';
-                    statusIndicator.style.boxShadow = 'none';
-                } else {
-                     // Glowing effect when online
-                    statusIndicator.style.background = '#2ecc71'; 
-                    statusIndicator.style.boxShadow = '0 0 10px #2ecc71, 0 0 20px #2ecc71';
-                }
-
-            }, 2500); // Simulated API latency
-
+        // Snow
+        function createSnow() {
+            const s = document.createElement('div'); s.classList.add('snowflake'); s.textContent = '❄';
+            s.style.left = Math.random() * 100 + 'vw';
+            s.style.animationDuration = 8 + Math.random() * 10 + 's';
+            s.style.fontSize = 0.8 + Math.random() * 1.2 + 'em';
+            document.getElementById('snowContainer').appendChild(s);
+            setTimeout(() => s.remove(), 18000);
         }
+        setInterval(createSnow, 300);
 
-        // Initialize and setup auto-refresh
-        fetchPlayerCount();
-        setInterval(fetchPlayerCount, 30000); // Auto-refresh every 30 seconds (30000ms)
+        // Player Count (Replace with real SA-MP query later)
+        async function updatePlayerCount() {
+            const widget = document.getElementById('playerWidget');
+            const currentEl = document.getElementById('currentPlayers');
+            try {
+                // Mock API - Replace with real SA-MP query
+                const res = await fetch('https://api.mcsrvstat.us/2/94.23.168.153:8777');
+                const data = await res.json();
+                const players = data.players?.online || 0;
+                const max = data.players?.max || 100;
 
-        // --- GLOBAL FUNCTIONS & ANIMATIONS ---
-        
-        // Snow Effect
-        function createSnowflakes() {
-            const snowContainer = document.getElementById('snowContainer');
-            const snowflakeCount = window.innerWidth > 768 ? 80 : 40;
-            for (let i = 0; i < snowflakeCount; i++) {
-                const snowflake = document.createElement('div');
-                snowflake.classList.add('snowflake');
-                snowflake.textContent = '❄';
-                const left = Math.random() * 100 + '%';
-                const delay = Math.random() * 5;
-                const duration = 10 + Math.random() * 8;
-                const drift = (Math.random() - 0.5) * 150;
-                snowflake.style.left = left;
-                snowflake.style.animationDelay = delay + 's';
-                snowflake.style.animationDuration = duration + 's';
-                snowflake.style.setProperty('--drift', drift + 'px');
-                snowflake.style.fontSize = (0.6 + Math.random() * 1.0) + 'em';
-                snowContainer.appendChild(snowflake);
+                if (players !== parseInt(currentEl.textContent)) {
+                    currentEl.style.animation = 'none';
+                    setTimeout(() => currentEl.style.animation = 'countUp 1s ease-out', 10);
+                    currentEl.textContent = players;
+                }
+                document.getElementById('maxPlayers').textContent = max;
+                widget.style.borderColor = players > 0 ? '#00ff7f' : '#e74c3c';
+            } catch (e) {
+                currentEl.textContent = '??';
+                widget.style.borderColor = '#e74c3c';
             }
         }
-        createSnowflakes();
-
-        function toggleMenu(e) {
-            e.classList.toggle('active');
-            document.querySelector('.slide-menu').classList.toggle('active');
-        }
+        updatePlayerCount();
+        setInterval(updatePlayerCount, 40000);
 
         function copyIP() {
-            navigator.clipboard.writeText(SERVER_IP).then(() => {
-                const toast = document.getElementById('toast');
-                toast.textContent = 'IP ' + SERVER_IP + ' დაკოპირებული!';
-                toast.classList.add('show');
-                setTimeout(() => toast.classList.remove('show'), 2500);
-            });
+            navigator.clipboard.writeText('94.23.168.153:8777');
+            const toast = document.querySelector('#toast');
+            toast.style.opacity = 1; toast.style.bottom = '50px';
+            setTimeout(() => { toast.style.opacity = 0; toast.style.bottom = '30px'; }, 2000);
         }
 
-        function navigate(page) { window.location.href = page; }
+        window.onload = () => setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1000);
 
-        function downloadLauncher(type) {
-            if (type === 'pc') {
-                alert('PC ლაუნჩერი მალე გამოვა...');
-            } else {
-                alert('Mobile ლაუნჩერის ჩამოტვირთვა მალე...');
-            }
-        }
-        
-        // Loader Hide
-        window.addEventListener('load', () => setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1200));
-
-        // Particles.js Init
-        particlesJS('particles-js', {
-            particles: { number: { value: window.innerWidth > 768 ? 80 : 40, density: { enable: true, value_area: 800 } }, color: { value: "#e74c3c" }, shape: { type: "circle" }, opacity: { value: 0.3, random: true }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 140, color: "#e74c3c", opacity: 0.2, width: 1 }, move: { enable: true, speed: 1.8, direction: "none", random: false, straight: false, out_mode: "out" } },
-            interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true } },
-            retina_detect: true
-        });
-
-        // GSAP Scroll Animations
-        gsap.registerPlugin(ScrollTrigger);
-        
-        // Hero image subtle 3D/ambient effect
-        gsap.from("#hero-main-img", { 
-            y: 100, 
-            opacity: 0, 
-            rotation: 5,
-            duration: 1.5, 
-            ease: "power3.out" 
-        });
-
-        // Card and Section Scroll-Triggered Fade-In
-        gsap.utils.toArray('[data-scroll]').forEach(el => {
-            gsap.from(el, {
-                y: 50,
-                opacity: 0,
-                scale: 0.95,
-                duration: 1,
-                ease: "power2.out",
-                scrollTrigger: {
-                    trigger: el,
-                    start: 'top 90%', // Start animation when the element top is 90% down the viewport
-                    toggleActions: 'play none none reverse' // Play on enter, reverse on leave
-                }
-            });
-        });
-        
-        // IP Button Pulsing Glow
-        gsap.fromTo('.ip-btn', { boxShadow: '0 15px 50px rgba(255,255,255,0.4)' }, { boxShadow: '0 15px 50px rgba(255,255,255,0.7), 0 0 30px rgba(255,255,255,0.5)', duration: 2, repeat: -1, yoyo: true, ease: "sine.inOut" });
-
-        // Player Widget Hover Micro-Interaction
-        document.getElementById('player-count-widget').addEventListener('mouseenter', () => {
-            gsap.to('#player-count-widget', { scale: 1.05, duration: 0.3 });
-        });
-        document.getElementById('player-count-widget').addEventListener('mouseleave', () => {
-            gsap.to('#player-count-widget', { scale: 1, duration: 0.3 });
-        });
-
+        particlesJS('particles-js', { particles: { number: { value: 80 }, color: { value: '#e74c3c' }, opacity: { value: 0.3 }, size: { value: 3 }, line_linked: { enable: true, color: '#e74c3c', opacity: 0.2 }, move: { speed: 2 } }, interactivity: { events: { onhover: { enable: true, mode: 'repulse' } } } });
     </script>
+    <style>
+        @keyframes countUp { from { transform: scale(1.4); color: #00ff7f; } to { transform: scale(1); } }
+    </style>
 </body>
 </html>
