@@ -33,7 +33,7 @@
         .snowflake { position: absolute; top: -10px; color: #fff; font-size: 1em; opacity: 0.6; animation: snowfall linear infinite; }
         @keyframes snowfall { to { transform: translateY(100vh) translateX(var(--drift)); opacity: 0; } }
 
-        /* Loader - unchanged */
+        /* Loader */
         #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; display: flex; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.8s, visibility 0.8s; }
         #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
         .loader-content { text-align: center; }
@@ -46,7 +46,7 @@
         @keyframes logoFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
         @keyframes dotScaleColor { 0%,80%,100% { transform: scale(1); opacity: .6; } 40% { transform: scale(1.3); opacity: 1; } }
 
-        /* Background Orbs - unchanged */
+        /* Background Orbs */
         #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -2; background: radial-gradient(ellipse at top, #1a1f3a 0%, #000 70%); }
         .glow-orbs { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; pointer-events: none; }
         .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.15; }
@@ -60,7 +60,7 @@
         .logo { display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 900; color: white; text-decoration: none; }
         .logo img { width: 40px; height: 40px; border-radius: 50%; box-shadow: 0 0 5px rgba(255,255,255,0.2); }
 
-        /* Hamburger Toggle - simplified for cleanliness */
+        /* Hamburger Toggle */
         .toggle-wrap { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .toggle-bar { position: relative; width: 25px; height: 3px; background: white; transition: background .3s; }
         .toggle-bar::before, .toggle-bar::after { content: ""; position: absolute; width: 25px; height: 3px; background: white; left: 0; transition: transform .3s, top .3s; }
@@ -83,21 +83,16 @@
         /* Hero */
         .hero { min-height: 80vh; display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 120px 5% 50px; position: relative; }
         .hero-content { z-index: 3; display: flex; flex-direction: column; gap: 30px; max-width: 55%; }
-        .hero h1 { font-size: clamp(55px,10vw,100px); font-weight: 900; line-height: 1; margin-bottom: 15px; text-transform: uppercase; }
+        .hero h1 { font-size: clamp(55px,10vw,100px); font-weight: 900; line-height: 1; text-transform: uppercase; }
         .Zaratic { color: #fff; } .roleplay { color: var(--primary); text-shadow: var(--neon-glow); }
         .hero-subtitle { font-size: clamp(16px,3vw,24px); color: var(--text-secondary); font-weight: 300; }
 
-        /* Play Button (Re-introduced) */
-        .play-btn { background: var(--primary); color: white; border: none; padding: 15px 40px; border-radius: 8px; font-size: 20px; font-weight: 700; cursor: pointer; transition: background .3s, transform .2s, box-shadow .3s; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; max-width: 300px; }
-        .play-btn:hover { background: var(--primary-light); box-shadow: 0 5px 20px rgba(231, 76, 60, 0.6); transform: translateY(-3px); }
-        .play-btn i { font-size: 22px; }
-
         .hero-img { position: relative; z-index: 2; }
-        .hero-img img { max-height: 80vh; filter: drop-shadow(0 0 20px rgba(0,0,0,0.8)); transform: scaleX(-1); /* Flip the image */ }
+        .hero-img img { max-height: 80vh; filter: drop-shadow(0 0 20px rgba(0,0,0,0.8)); transform: scaleX(-1); }
 
         /* Status Card */
         #status { padding: 30px 5%; margin-top: -30px; }
-        .status-card-container { max-width: 1200px; margin: 0 auto; background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 18px; padding: 25px 35px; display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .status-card-container { max-width: 1200px; margin: 0 auto; background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 18px; padding: 25px 35px; display: flex; justify-content: center; /* Changed to center content */ align-items: center; flex-wrap: wrap; gap: 40px; /* Increased gap */ box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .status-item { text-align: center; padding: 10px; }
         .status-icon { font-size: 32px; color: var(--primary); transition: color .3s; }
         .status-label { font-size: 14px; text-transform: uppercase; color: var(--text-secondary); margin-top: 5px; }
@@ -129,12 +124,8 @@
         footer { padding: 40px 5%; text-align: center; background: rgba(5,6,9,0.95); border-top: 1px solid var(--border); margin-top: 50px; }
         footer p { color: var(--text-secondary); font-size: 14px; }
 
-        /* Toast */
-        .toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); 
-            background: linear-gradient(90deg,var(--primary-dark),var(--primary-light)); color: white; 
-            padding: 12px 30px; border-radius: 30px; transition: bottom .4s; z-index: 10000; font-weight: 500;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
-        .toast.show { bottom: 30px; }
+        /* Toast is now irrelevant as copyIP is not used, but kept for future use */
+        .toast { display: none; } 
 
         /* Media Queries */
         @media (max-width: 968px) {
@@ -142,7 +133,6 @@
             .hero-content { max-width: 100%; gap: 20px; }
             .hero-img { display: none; }
             .status-card-container { flex-direction: column; }
-            .play-btn { max-width: 100%; width: 100%; justify-content: center; }
         }
     </style>
 </head>
@@ -186,8 +176,7 @@
         <div class="hero-content">
             <h1><span class="Zaratic">Zaratic</span> <span class="roleplay">RP</span></h1>
             <p class="hero-subtitle">ერთ-ერთი საუკეთესო SA-MP სერვერი საქართველოში • 2025</p>
-            <button class="play-btn" onclick="copyIP()"><i class="fas fa-play"></i> თამაში</button>
-        </div>
+            </div>
         <div class="hero-img">
             <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/PSX_20251120_171438.png" alt="GTA Character">
         </div>
@@ -205,12 +194,7 @@
                 <div class="status-label">მოთამაშეები</div>
                 <div class="status-value" id="playerCount"><span class="online-players">0</span> / <span class="max-players">0</span></div>
             </div>
-            <div class="status-item">
-                <i class="fas fa-server status-icon"></i>
-                <div class="status-label">IP მისამართი</div>
-                <div class="status-value" onclick="copyIP()" style="cursor:pointer;" title="Click to Copy">94.23.168.153:8777</div>
             </div>
-        </div>
     </section>
 
     <section id="features">
@@ -237,26 +221,29 @@
         function createSnowflake() {
             const s = document.createElement('div'); s.classList.add('snowflake'); s.textContent = '❄';
             s.style.left = Math.random()*innerWidth + 'px';
-            s.style.animationDuration = 10+Math.random()*15 + 's'; /* Slower snow */
+            s.style.animationDuration = 10+Math.random()*15 + 's'; 
             s.style.setProperty('--drift', (Math.random()-0.5)*100 + 'px');
             document.getElementById('snowContainer').appendChild(s);
             setTimeout(() => s.remove(), 25000);
         }
-        for(let i=0;i<60;i++) createSnowflake(); /* Fewer snowflakes */
+        for(let i=0;i<60;i++) createSnowflake(); 
         setInterval(createSnowflake, 800);
 
         function toggleMenu(el) { el.classList.toggle('active'); document.querySelector('.slide-menu').classList.toggle('active'); }
         function navigate(url) { window.location.href = url; }
 
+        // copyIP ფუნქცია აღარ გამოიყენება, მაგრამ დატოვებულია მომავალი გამოყენებისთვის
+        /*
         function copyIP() {
             navigator.clipboard.writeText('94.23.168.153:8777');
             const t = document.getElementById('toast'); t.classList.add('show');
             setTimeout(() => t.classList.remove('show'), 2500);
         }
+        */
 
-        // Fake player count (changed to make it dynamic)
+        // Fake player count 
         function updatePlayerCount() {
-            const online = Math.floor(Math.random() * (60 - 30 + 1)) + 30; /* Fake 30-60 players */
+            const online = Math.floor(Math.random() * (60 - 30 + 1)) + 30;
             const max = 150;
             document.querySelector('#playerCount').innerHTML = `<span class="online-players" style="color:#2ecc71">${online}</span> / <span class="max-players">${max}</span>`;
         }
