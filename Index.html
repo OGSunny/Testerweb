@@ -8,47 +8,32 @@
     <link rel="icon" href="https://raw.githubusercontent.com/OGSunny/Testerweb/main/zaratic.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
     <style>
         :root {
-            --primary: #e74c3c; --primary-light: #ff6b6b; --primary-dark: #c0392b;
+            --primary: #e74c3c; /* Red */ --primary-light: #ff6b6b; --primary-dark: #c0392b;
             --secondary: #2c3e50; --accent: #3498db; --dark: #0a0d1b; --darker: #050609;
-            --glass: rgba(15, 20, 40, 0.95); --glass-light: rgba(20, 28, 50, 0.7);
-            --border: rgba(231, 76, 60, 0.4); --text-primary: #ffffff; --text-secondary: rgba(255, 255, 255, 0.75);
-            --neon-glow: 0 0 8px var(--primary-light), 0 0 15px var(--primary);
+            --glass: rgba(15, 20, 40, 0.9); /* Darker glass for better contrast */
+            --glass-light: rgba(20, 28, 50, 0.7);
+            --border: rgba(231, 76, 60, 0.4); 
+            --text-primary: #ffffff; --text-secondary: rgba(255, 255, 255, 0.7);
+            --neon-glow: 0 0 5px var(--primary-light), 0 0 10px var(--primary);
             --success-color: #2ecc71;
-            /* Added spacing variable for consistency */
+            /* Section Spacing */
             --section-padding: 80px 5%;
         }
 
-        /* === Base Styles === */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body { font-family: 'Noto Sans Georgian', sans-serif; background: #000; color: #fff; overflow-x: hidden; min-height: 100vh; }
-        a { text-decoration: none; color: inherit; }
 
-        /* === Utilities === */
-        .title { font-size: clamp(36px,7vw,55px); font-weight: 900; text-align: center; background: linear-gradient(135deg,var(--primary),var(--primary-light),var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 40px; }
-
-        /* === Background & Effects === */
         /* Snow */
-        .snow-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-        .snowflake { position: absolute; top: -10px; color: #fff; font-size: 1.2em; opacity: 0.7; animation: snowfall linear infinite; }
+        .snow-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; opacity: 0.8; }
+        .snowflake { position: absolute; top: -10px; color: #fff; font-size: 1em; opacity: 0.6; animation: snowfall linear infinite; }
         @keyframes snowfall { to { transform: translateY(100vh) translateX(var(--drift)); opacity: 0; } }
 
-        /* Particles & Orbs */
-        #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -2; background: radial-gradient(ellipse at top, #1a1f3a 0%, #000 70%); }
-        .glow-orbs { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; pointer-events: none; }
-        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.15; }
-        .orb-1 { width: 450px; height: 450px; background: var(--primary); top: -10%; left: 10%; animation: float 25s infinite; }
-        .orb-2 { width: 380px; height: 380px; background: var(--accent); top: 50%; right: 5%; animation: float 30s infinite reverse; }
-        .orb-3 { width: 420px; height: 420px; background: #9b59b6; bottom: 10%; left: 40%; animation: float 35s infinite; }
-        @keyframes float { 0%,100% { transform: translate(0,0); } 33% { transform: translate(40px,-40px); } 66% { transform: translate(-25px,25px); } }
-
-
-        /* === Loader === */
+        /* Loader - unchanged */
         #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; display: flex; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.8s, visibility 0.8s; }
         #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
         .loader-content { text-align: center; }
@@ -57,80 +42,107 @@
         .dot { width: 12px; height: 12px; background: var(--primary); border-radius: 50%; animation: dotScaleColor 1.5s infinite; }
         .dot:nth-child(2) { animation-delay: .3s; } .dot:nth-child(3) { animation-delay: .6s; }
         .loader-text { font-weight: 700; letter-spacing: 2px; color: var(--primary); text-transform: uppercase; }
+
         @keyframes logoFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
         @keyframes dotScaleColor { 0%,80%,100% { transform: scale(1); opacity: .6; } 40% { transform: scale(1.3); opacity: 1; } }
 
+        /* Background Orbs - unchanged */
+        #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -2; background: radial-gradient(ellipse at top, #1a1f3a 0%, #000 70%); }
+        .glow-orbs { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; pointer-events: none; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.15; }
+        .orb-1 { width: 450px; height: 450px; background: var(--primary); top: -10%; left: 10%; animation: float 25s infinite; }
+        .orb-2 { width: 380px; height: 380px; background: var(--accent); top: 50%; right: 5%; animation: float 30s infinite reverse; }
+        .orb-3 { width: 420px; height: 420px; background: #9b59b6; bottom: 10%; left: 40%; animation: float 35s infinite; }
+        @keyframes float { 0%,100% { transform: translate(0,0); } 33% { transform: translate(40px,-40px); } 66% { transform: translate(-25px,25px); } }
 
-        /* === Header & Menu === */
+        /* Header */
         header { position: fixed; top: 0; left: 0; width: 100%; padding: 15px 5%; background: var(--glass); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); z-index: 1000; display: flex; justify-content: space-between; align-items: center; }
-        .logo { display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 900; color: white; text-decoration: none; }
-        .logo img { width: 45px; height: 45px; border-radius: 50%; }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 900; color: white; text-decoration: none; }
+        .logo img { width: 40px; height: 40px; border-radius: 50%; box-shadow: 0 0 5px rgba(255,255,255,0.2); }
 
-        /* Menu Toggle */
-        .toggle-wrap { cursor: pointer; }
-        .toggle-bar { width: 25px; height: 2px; background: white; margin: 5px 0; position: relative; transition: all 0.3s ease; }
-        .toggle-bar::before, .toggle-bar::after { content: ""; position: absolute; width: 25px; height: 2px; background: white; left: 0; transition: all 0.3s ease; }
+        /* Hamburger Toggle - simplified for cleanliness */
+        .toggle-wrap { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .toggle-bar { position: relative; width: 25px; height: 3px; background: white; transition: background .3s; }
+        .toggle-bar::before, .toggle-bar::after { content: ""; position: absolute; width: 25px; height: 3px; background: white; left: 0; transition: transform .3s, top .3s; }
         .toggle-bar::before { top: -8px; } .toggle-bar::after { top: 8px; }
         .toggle-wrap.active .toggle-bar { background: transparent; }
         .toggle-wrap.active .toggle-bar::before { transform: translateY(8px) rotate(45deg); }
         .toggle-wrap.active .toggle-bar::after { transform: translateY(-8px) rotate(-45deg); }
 
         /* Slide Menu */
-        .slide-menu { position: fixed; top: 0; right: -100%; width: min(300px,90vw); height: 100vh; background: linear-gradient(135deg,rgba(10,13,27,.98),rgba(20,28,50,.95)); backdrop-filter: blur(25px); padding: 80px 20px 30px; transition: right .4s; z-index: 999; display: flex; flex-direction: column; gap: 10px; }
+        .slide-menu { position: fixed; top: 0; right: -100%; width: min(300px,90vw); height: 100vh; 
+            background: rgba(10,13,27,0.98); backdrop-filter: blur(25px); 
+            padding: 90px 20px 30px; transition: right .4s cubic-bezier(0.25, 0.46, 0.45, 0.94); z-index: 999;
+            box-shadow: -5px 0 30px rgba(0,0,0,0.5); }
         .slide-menu.active { right: 0; }
-        .menu-section-title { color: var(--text-secondary); margin-bottom: 10px; padding: 10px; font-size: 14px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
-        .menu-item { display: flex; align-items: center; gap: 15px; padding: 15px 10px; border-radius: 8px; color: var(--text-primary); cursor: pointer; transition: background .3s, color .3s; font-weight: 500; }
-        .menu-item:hover { background: rgba(231, 76, 60, 0.1); color: var(--primary-light); }
+        .menu-section-title { font-size: 12px; color: var(--text-secondary); margin: 20px 0 10px; text-transform: uppercase; letter-spacing: 1px; padding-left: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
+        .menu-item { display: flex; align-items: center; gap: 15px; padding: 15px 10px; color: var(--text-primary); font-weight: 500; cursor: pointer; transition: background .2s, color .2s; border-radius: 8px; }
+        .menu-item:hover { background: rgba(231, 76, 60, 0.15); color: var(--primary-light); }
         .menu-item i { font-size: 18px; color: var(--primary); }
-        
-        /* === Hero Section === */
-        .hero { min-height: 55vh; display: flex; flex-direction: row; align-items: flex-end; justify-content: space-between; padding: 100px 5% 50px; position: relative; }
-        .hero-content { z-index: 3; display: flex; flex-direction: column; gap: 20px; max-width: 55%; /* Added to control layout better */ }
-        .hero h1 { font-size: clamp(48px,10vw,85px); font-weight: 900; font-family: 'Space Mono', monospace; line-height: 1.1; }
+
+        /* Hero */
+        .hero { min-height: 80vh; display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 120px 5% 50px; position: relative; }
+        .hero-content { z-index: 3; display: flex; flex-direction: column; gap: 30px; max-width: 55%; }
+        .hero h1 { font-size: clamp(55px,10vw,100px); font-weight: 900; line-height: 1; margin-bottom: 15px; text-transform: uppercase; }
         .Zaratic { color: #fff; } .roleplay { color: var(--primary); text-shadow: var(--neon-glow); }
-        .hero-subtitle { font-size: clamp(15px,3vw,22px); color: rgba(255,255,255,.7); }
-        .hero-img { display: flex; align-items: flex-end; }
-        .hero-img img { max-height: 80vh; max-width: 100%; height: auto; filter: drop-shadow(0 0 15px rgba(0,0,0,.8)); }
+        .hero-subtitle { font-size: clamp(16px,3vw,24px); color: var(--text-secondary); font-weight: 300; }
 
-        /* === Status Card === */
+        /* Play Button (Re-introduced) */
+        .play-btn { background: var(--primary); color: white; border: none; padding: 15px 40px; border-radius: 8px; font-size: 20px; font-weight: 700; cursor: pointer; transition: background .3s, transform .2s, box-shadow .3s; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; max-width: 300px; }
+        .play-btn:hover { background: var(--primary-light); box-shadow: 0 5px 20px rgba(231, 76, 60, 0.6); transform: translateY(-3px); }
+        .play-btn i { font-size: 22px; }
+
+        .hero-img { position: relative; z-index: 2; }
+        .hero-img img { max-height: 80vh; filter: drop-shadow(0 0 20px rgba(0,0,0,0.8)); transform: scaleX(-1); /* Flip the image */ }
+
+        /* Status Card */
         #status { padding: 30px 5%; margin-top: -30px; }
-        .status-card-container { max-width: 1200px; margin: 0 auto; background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 18px; padding: 25px 35px; display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .status-card-container { max-width: 1200px; margin: 0 auto; background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 18px; padding: 25px 35px; display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .status-item { text-align: center; padding: 10px; }
-        .status-icon { font-size: 28px; color: var(--primary); transition: color 0.3s; }
-        .status-label { font-size: 13px; text-transform: uppercase; color: var(--text-secondary); }
-        .status-value { font-size: 24px; font-weight: 900; font-family: 'Space Mono', monospace; }
+        .status-icon { font-size: 32px; color: var(--primary); transition: color .3s; }
+        .status-label { font-size: 14px; text-transform: uppercase; color: var(--text-secondary); margin-top: 5px; }
+        .status-value { font-size: 26px; font-weight: 900; font-family: 'Space Mono', monospace; margin-top: 2px; }
         .status-online .status-value, .status-online .status-icon { color: var(--success-color); }
-        .status-item:hover .status-icon { transform: scale(1.1); } /* Added hover effect */
+        .status-online .status-value span { display: inline-block; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.8; } }
 
-        /* === Content Sections (Features, About) === */
+        /* Sections and Cards */
         section { padding: var(--section-padding); max-width: 1400px; margin: 0 auto; }
+        #about { text-align: center; max-width: 800px; }
+        #about p { font-size: 18px; line-height: 1.6; color: var(--text-secondary); margin-top: 20px; }
         
-        /* Features Cards */
-        #features { margin-top: 50px; }
-        .cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
-        .card { background: var(--glass-light); border: 1px solid var(--border); border-radius: 16px; padding: 40px; text-align: center; transition: .4s; }
-        .card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: var(--neon-glow); }
-        .card i { font-size: 40px; color: var(--primary-light); margin-bottom: 15px; }
-        .card h3 { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
-        .card p { color: var(--text-secondary); }
+        .title { font-size: clamp(40px,7vw,60px); font-weight: 900; text-align: center; margin-bottom: 50px;
+            background: linear-gradient(135deg,#e74c3c,#ff8c7a,var(--primary-light)); -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; text-shadow: 0 0 10px rgba(231, 76, 60, 0.3); }
+        
+        .cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .card { background: var(--glass-light); border: 1px solid var(--border); border-radius: 16px; padding: 40px; text-align: center; 
+            transition: .4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; }
+        .card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(231,76,60,0.05) 0%, transparent 70%); transition: transform 0.6s; }
+        .card:hover::before { transform: scale(1.1); }
+        .card:hover { transform: translateY(-15px); border-color: var(--primary); box-shadow: 0 15px 30px rgba(0,0,0,0.5), var(--neon-glow); }
+        .card i { font-size: 45px; color: var(--primary-light); margin-bottom: 20px; text-shadow: var(--neon-glow); }
+        .card h3 { font-size: 24px; font-weight: 700; margin-bottom: 10px; color: var(--text-primary); }
+        .card p { color: var(--text-secondary); font-size: 15px; }
 
-        /* About Section */
-        #about p { max-width: 800px; margin: 0 auto; text-align: center; font-size: 18px; line-height: 1.6; color: var(--text-secondary); }
+        /* Footer */
+        footer { padding: 40px 5%; text-align: center; background: rgba(5,6,9,0.95); border-top: 1px solid var(--border); margin-top: 50px; }
+        footer p { color: var(--text-secondary); font-size: 14px; }
 
-        /* === Footer & Toast === */
-        footer { padding: 50px 5%; text-align: center; background: rgba(5,6,9,.95); border-top: 1px solid var(--border); margin-top: 50px; }
-        footer p { color: var(--text-secondary); }
-
-        .toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: linear-gradient(90deg,var(--primary),var(--primary-light)); color: white; padding: 15px 35px; border-radius: 30px; transition: bottom .4s; z-index: 10000; font-weight: 500; }
+        /* Toast */
+        .toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); 
+            background: linear-gradient(90deg,var(--primary-dark),var(--primary-light)); color: white; 
+            padding: 12px 30px; border-radius: 30px; transition: bottom .4s; z-index: 10000; font-weight: 500;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
         .toast.show { bottom: 30px; }
 
-        /* === Media Queries (Responsiveness) === */
+        /* Media Queries */
         @media (max-width: 968px) {
-            .hero { flex-direction: column; text-align: center; align-items: center; }
-            .hero-content { max-width: 100%; padding-bottom: 30px; }
-            .hero-img { display: none; /* Hide image on smaller screens */ }
+            .hero { flex-direction: column; text-align: center; align-items: center; min-height: 60vh; padding-top: 100px; }
+            .hero-content { max-width: 100%; gap: 20px; }
+            .hero-img { display: none; }
             .status-card-container { flex-direction: column; }
-            .hero h1 { font-size: clamp(40px, 10vw, 65px); }
+            .play-btn { max-width: 100%; width: 100%; justify-content: center; }
         }
     </style>
 </head>
@@ -142,7 +154,7 @@
 
     <div id="loader">
         <div class="loader-content">
-            <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/zaratic.png" class="loader-logo" alt="Zaratic RP Logo">
+            <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/zaratic.png" class="loader-logo" alt="Zaratic Logo">
             <div class="loader-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
             <div class="loader-text">იტვირთება...</div>
         </div>
@@ -150,7 +162,7 @@
 
     <header>
         <a href="#" class="logo">
-            <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/zaratic.png" alt="Zaratic RP Logo">
+            <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/zaratic.png" alt="Zaratic RP Icon">
             <span>Zaratic RP</span>
         </a>
         <div class="toggle-wrap" onclick="toggleMenu(this)"><span class="toggle-bar"></span></div>
@@ -158,161 +170,104 @@
 
     <div class="slide-menu">
         <div class="menu-section-title">ნავიგაცია</div>
-        <a class="menu-item" href="#hero"><i class="fas fa-home"></i> მთავარი</a>
-        <a class="menu-item" href="#features"><i class="fas fa-cogs"></i> სისტემები</a>
-        <a class="menu-item" href="#about"><i class="fas fa-info-circle"></i> ჩვენს შესახებ</a>
+        <div class="menu-item" onclick="navigate('index.html')"><i class="fas fa-home"></i> მთავარი</div>
         <div class="menu-item" onclick="navigate('donation.html')"><i class="fas fa-shopping-cart"></i> მაღაზია</div>
         <div class="menu-item" onclick="navigate('forum.html')"><i class="fas fa-comments"></i> ფორუმი</div>
+        <div class="menu-item" onclick="navigate('rules.html')"><i class="fas fa-gavel"></i> წესები</div>
+        <div class="menu-item" onclick="navigate('team.html')"><i class="fas fa-users-gear"></i> ადმინისტრაცია</div>
+        
+        <div class="menu-section-title">სოციალური მედია</div>
+        <div class="menu-item"><i class="fab fa-facebook"></i> Facebook</div>
+        <div class="menu-item"><i class="fab fa-discord"></i> Discord</div>
+        <div class="menu-item"><i class="fab fa-youtube"></i> YouTube</div>
     </div>
 
-    <main>
-        <section class="hero" id="hero">
-            <div class="hero-content">
-                <h1 class="gsap-item"><span class="Zaratic">Zaratic</span> <span class="roleplay">RP</span></h1>
-                <p class="hero-subtitle gsap-item">ერთ-ერთი საუკეთესო SA-MP სერვერი საქართველოში • 2025</p>
-            </div>
-            <div class="hero-img gsap-item">
-                <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/PSX_20251120_171438.png" alt="GTA Character">
-            </div>
-        </section>
+    <section class="hero">
+        <div class="hero-content">
+            <h1><span class="Zaratic">Zaratic</span> <span class="roleplay">RP</span></h1>
+            <p class="hero-subtitle">ერთ-ერთი საუკეთესო SA-MP სერვერი საქართველოში • 2025</p>
+            <button class="play-btn" onclick="copyIP()"><i class="fas fa-play"></i> თამაში</button>
+        </div>
+        <div class="hero-img">
+            <img src="https://raw.githubusercontent.com/OGSunny/Testerweb/main/PSX_20251120_171438.png" alt="GTA Character">
+        </div>
+    </section>
 
-        <section id="status">
-            <div class="status-card-container">
-                <div class="status-item status-online">
-                    <i class="fas fa-globe status-icon"></i>
-                    <div class="status-label">სერვერის სტატუსი</div>
-                    <div class="status-value" id="serverStatus"><i class="fas fa-check-circle"></i> <span>ონლაინ</span></div>
-                </div>
-                <div class="status-item">
-                    <i class="fas fa-users status-icon"></i>
-                    <div class="status-label">მოთამაშეები</div>
-                    <div class="status-value" id="playerCount"><span class="online-players">0</span> / <span class="max-players">0</span></div>
-                </div>
-                
-                <div class="status-item">
-                    <button class="join-button" onclick="copyIP()">
-                        <i class="fas fa-play"></i> შემოერთდი
-                    </button>
-                </div>
+    <section id="status">
+        <div class="status-card-container">
+            <div class="status-item status-online">
+                <i class="fas fa-globe status-icon"></i>
+                <div class="status-label">სერვერის სტატუსი</div>
+                <div class="status-value" id="serverStatus"><i class="fas fa-check-circle"></i> <span>ონლაინ</span></div>
             </div>
-        </section>
-        
-        <style>
-            /* New Join Button Style */
-            .join-button {
-                background: var(--primary);
-                color: white;
-                border: none;
-                padding: 12px 25px;
-                border-radius: 5px;
-                font-weight: 700;
-                cursor: pointer;
-                font-family: 'Noto Sans Georgian', sans-serif;
-                font-size: 16px;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
-            }
-            .join-button:hover {
-                background: var(--primary-light);
-                transform: translateY(-2px);
-                box-shadow: var(--neon-glow);
-            }
-        </style>
-
-        <section id="features">
-            <h2 class="title">რატომ ჩვენ?</h2>
-            <div class="cards">
-                <div class="card"><i class="fas fa-rocket"></i><h3>უნიკალური სისტემები</h3><p>განსხვავებული და ინოვაციური თამაშის სისტემები.</p></div>
-                <div class="card"><i class="fas fa-crown"></i><h3>პროფესიონალი გუნდი</h3><p>24/7 დახმარება და სამართლიანი თამაშის გარანტია.</p></div>
-                <div class="card"><i class="fas fa-fire"></i><h3>24/7 აქტიური</h3><p>სერვერი მუშაობს უწყვეტად და გთავაზობთ მუდმივ აქტივობას.</p></div>
-                <div class="card"><i class="fas fa-car-side"></i><h3>რეალისტური ეკონომიკა</h3><p>დაბალანსებული ფასები და როლური თამაშის ლოგიკა.</p></div>
+            <div class="status-item">
+                <i class="fas fa-users status-icon"></i>
+                <div class="status-label">მოთამაშეები</div>
+                <div class="status-value" id="playerCount"><span class="online-players">0</span> / <span class="max-players">0</span></div>
             </div>
-        </section>
+            <div class="status-item">
+                <i class="fas fa-server status-icon"></i>
+                <div class="status-label">IP მისამართი</div>
+                <div class="status-value" onclick="copyIP()" style="cursor:pointer;" title="Click to Copy">94.23.168.153:8777</div>
+            </div>
+        </div>
+    </section>
 
-        <section id="about">
-            <h2 class="title">ჩვენს შესახებ</h2>
-            <p>Zaratic Role Play არის საქართველოს ერთ-ერთი საუკეთესო SA-MP სერვერი, რომელიც გთავაზობთ უნიკალურ როლურ გამოცდილებას. ჩვენი მთავარი მიზანია შევქმნათ მეგობრული და პროფესიონალური გარემო, სადაც თითოეული მოთამაშე შეძლებს საკუთარი როლური ისტორიის განვითარებას. შეუერთდი ჩვენს საზოგადოებას და დაიწყე შენი მოგზაურობა!
-            </p>
-        </section>
-    </main>
+    <section id="features">
+        <h2 class="title">რატომ ჩვენ?</h2>
+        <div class="cards">
+            <div class="card"><i class="fas fa-rocket"></i><h3>უნიკალური სისტემები</h3><p>განსხვავებული და ინოვაციური თამაშის სისტემები, რომლებიც თამაშს საინტერესოს ხდის.</p></div>
+            <div class="card"><i class="fas fa-crown"></i><h3>პროფესიონალი გუნდი</h3><p>გამოცდილი და მეგობრული ადმინისტრაციის გუნდი, რომელიც გთავაზობთ 24/7 დახმარებას.</p></div>
+            <div class="card"><i class="fas fa-fire"></i><h3>24/7 აქტიური</h3><p>სერვერი მუშაობს უწყვეტად, მაღალი ხარისხის ჰოსტინგზე.</p></div>
+            <div class="card"><i class="fas fa-shield-alt"></i><h3>უსაფრთხოება</h3><p>ძლიერი ანტი-ჩეთი და სისტემები, რაც უზრუნველყოფს სამართლიან თამაშს.</p></div>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2 class="title">ჩვენს შესახებ</h2>
+        <p>Zaratic Role Play არის საქართველოს ერთ-ერთი საუკეთესო SA-MP სერვერი, რომელიც გთავაზობთ უნიკალურ როლურ გამოცდილებას. ჩვენ ვცდილობთ შევქმნათ თბილი, მეგობრული და პროფესიონალური გარემო ყველა მოთამაშისთვის. შემოგვიერთდით დღესვე და გახდით ჩვენი მზარდი საზოგადოების ნაწილი!</p>
+    </section>
 
     <footer><p>© 2025 Zaratic Role Play. ყველა უფლება დაცულია.</p></footer>
     <div id="toast" class="toast">IP დაკოპირებულია!</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script>
-        // === Animation & Effects ===
-
-        // 1. Snowfall Effect (Same as original)
+        // Snow
         function createSnowflake() {
             const s = document.createElement('div'); s.classList.add('snowflake'); s.textContent = '❄';
             s.style.left = Math.random()*innerWidth + 'px';
-            s.style.animationDuration = 8+Math.random()*10 + 's';
-            s.style.setProperty('--drift', (Math.random()-0.5)*150 + 'px');
+            s.style.animationDuration = 10+Math.random()*15 + 's'; /* Slower snow */
+            s.style.setProperty('--drift', (Math.random()-0.5)*100 + 'px');
             document.getElementById('snowContainer').appendChild(s);
-            setTimeout(() => s.remove(), 18000);
+            setTimeout(() => s.remove(), 25000);
         }
-        for(let i=0;i<80;i++) createSnowflake();
-        setInterval(createSnowflake, 600);
-        
-        // 2. Menu Toggle
-        function toggleMenu(el) { 
-            el.classList.toggle('active'); 
-            document.querySelector('.slide-menu').classList.toggle('active'); 
-        }
+        for(let i=0;i<60;i++) createSnowflake(); /* Fewer snowflakes */
+        setInterval(createSnowflake, 800);
 
-        // 3. Navigation (handles external links and scroll for internal)
-        function navigate(url) {
-            window.location.href = url;
-        }
+        function toggleMenu(el) { el.classList.toggle('active'); document.querySelector('.slide-menu').classList.toggle('active'); }
+        function navigate(url) { window.location.href = url; }
 
-        // 4. Copy IP (Same as original, but updated toast message)
         function copyIP() {
-            navigator.clipboard.writeText('94.23.168.153:8777'); // Use your actual IP
-            const t = document.getElementById('toast'); 
-            t.classList.add('show');
+            navigator.clipboard.writeText('94.23.168.153:8777');
+            const t = document.getElementById('toast'); t.classList.add('show');
             setTimeout(() => t.classList.remove('show'), 2500);
         }
 
-        // 5. Fake player count (replace with real query later if you want)
+        // Fake player count (changed to make it dynamic)
         function updatePlayerCount() {
-            // Placeholder: Generates a random number between 30 and 80
-            const randomPlayers = Math.floor(Math.random() * (80 - 30 + 1)) + 30;
-            document.querySelector('#playerCount').innerHTML = `<span class="online-players" style="color:#2ecc71">${randomPlayers}</span> / <span class="max-players">150</span>`;
-        }
-        
-        // 6. GSAP Hero Intro Animation
-        function animateHero() {
-            gsap.from(".hero-content .gsap-item", {
-                duration: 1, 
-                y: 50, 
-                opacity: 0, 
-                stagger: 0.3,
-                ease: "power3.out"
-            });
-            gsap.from(".hero-img .gsap-item, .hero-img img", {
-                duration: 1.5,
-                x: 100,
-                opacity: 0,
-                ease: "power3.out",
-                delay: 0.5
-            });
+            const online = Math.floor(Math.random() * (60 - 30 + 1)) + 30; /* Fake 30-60 players */
+            const max = 150;
+            document.querySelector('#playerCount').innerHTML = `<span class="online-players" style="color:#2ecc71">${online}</span> / <span class="max-players">${max}</span>`;
         }
 
-        // 7. On Load
         window.onload = () => {
             updatePlayerCount();
-            // Hide loader after a delay
-            setTimeout(() => {
-                document.getElementById('loader').classList.add('hidden');
-                animateHero(); // Start the hero animation after the loader is gone
-            }, 1000); 
+            setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1000);
         };
 
-        // 8. Particles (Same as original)
-        particlesJS('particles-js', { particles: { number: { value: 60 }, color: { value: "#e74c3c" }, size: { value: 2 }, line_linked: { enable: true, color: "#e74c3c", opacity: 0.15 } }, interactivity: { events: { onhover: { enable: true, mode: "repulse" } } } });
+        // Particles
+        particlesJS('particles-js', { particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: "#e74c3c" }, shape: { type: "circle" }, opacity: { value: 0.3, random: true }, size: { value: 2, random: true }, line_linked: { enable: true, distance: 150, color: "#e74c3c", opacity: 0.15, width: 1 }, move: { enable: true, speed: 2, direction: "none", random: false, straight: false, out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: false } } }, retine: true });
     </script>
 </body>
 </html>
