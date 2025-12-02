@@ -497,7 +497,7 @@
             const minutes = date.getMinutes().toString().padStart(2, '0');
 
             // Format: "5 დეკემბერი, 14:30"
-            return `\( {day} \){georgianMonths[monthIndex]}, \( {hours}: \){minutes}`;
+            return `${day} ${georgianMonths[monthIndex]}, ${hours}:${minutes}`;
         }
 
         function formatTimeRelative(time) {
@@ -524,7 +524,7 @@
                 'OWNER': 'bg-gradient-to-r from-red-500 to-red-800 text-white'
             };
             const cls = colors[safeName] || 'bg-gray-700 text-white';
-            return `<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider badge-custom \( {cls}"> \){safeName}</span>`;
+            return `<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider badge-custom ${cls}">${safeName}</span>`;
         }
         
         function logout() {
@@ -878,6 +878,7 @@
                 } else if (res.status === 403) {
                     const data = await res.json();
                     if (data.message.includes('დაადასტუროთ')) {
+                         sessionStorage.setItem('pendingEmail', document.getElementById('loginUsername').value.trim());
                          showVerify();
                     }
                 }
@@ -909,15 +910,29 @@
                 return showToast('ელფოსტის ფორმატი არასწორია.', 'error');
             }
 
-            // Client generates code
+            // Client generates code and sends it via emailJS
             const code = String(Math.floor(10000000 + Math.random() * 90000000));
             const submitBtn = document.getElementById('dynamicModalBody').querySelector('button[type="submit"]');
             
             try {
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = 'რეგისტრაცია...';
+                submitBtn.innerHTML = 'იგზავნება...';
 
-                // 1. Register first (with code)
+                // 1. Send verification email
+                const emailResponse = await emailjs.send(
+                    'service_ctcaqad',           // Service ID
+                    'template_1vs7kad',          // Template ID
+                    {                             // Template parameters
+                        to_email: em,
+                        to_name: u,
+                        verification_code: code
+                    },
+                    'uQH9b9PES4f2ONCNq'          // Public Key
+                );
+                
+                console.log('✅ Email sent successfully:', emailResponse);
+                
+                // 2. Register with backend, including the code
                 const res = await api('/register', { 
                     method: 'POST', 
                     body: JSON.stringify({
@@ -930,33 +945,20 @@
                 });
                 
                 if(res && res.ok) {
-                    // 2. Send verification email after successful registration
-                    const emailResponse = await emailjs.send(
-                        'service_ctcaqad',           // Service ID
-                        'template_1vs7kad',          // Template ID
-                        {                             // Template parameters
-                            to_email: em,
-                            to_name: u,
-                            verification_code: code
-                        },
-                        'uQH9b9PES4f2ONCNq'          // Public Key
-                    );
-                    
-                    console.log('✅ Email sent successfully:', emailResponse);
-                    
                     sessionStorage.setItem('pendingEmail', em);
                     showVerify();
                     showToast('დადასტურების კოდი გაიგზავნა.');
                 }
             } catch(err) {
-                console.error('❌ Registration or Email sending error:', err);
+                // B6 FIX: If email fails, don't try to register or show success
+                console.error('❌ Email sending or Registration error:', err);
                 let errorMsg = 'უცნობი შეცდომა';
                 if (err instanceof Error) {
                     errorMsg = err.message;
                 } else if (err.text) {
                     errorMsg = err.text;
                 }
-                showToast(`რეგისტრაცია ვერ მოხერხდა: ${errorMsg}`, 'error');
+                showToast(`ელფოსტის გაგზავნა ვერ მოხერხდა: ${errorMsg}`, 'error');
             } finally {
                 if (submitBtn) {
                     submitBtn.disabled = false;
@@ -1063,7 +1065,7 @@
 
                 card.innerHTML = `
                     <div class="flex-grow">
-                        <h3 class="text-lg font-bold group-hover:text-cyan-400 transition-colors">\( {pinIcon} \){escapeHtml(thread.title || 'Untitled')}</h3>
+                        <h3 class="text-lg font-bold group-hover:text-cyan-400 transition-colors">${pinIcon}${escapeHtml(thread.title || 'Untitled')}</h3>
                         <div class="flex items-center gap-4 text-xs text-gray-400 mt-2 font-mono">
                             <span class="flex items-center gap-1"><i class="fas fa-user"></i> ${escapeHtml(thread.author)}</span>
                             <span class="flex items-center gap-1"><i class="fas fa-clock"></i> ${formatTimeRelative(thread.time)}</span>
@@ -1125,14 +1127,14 @@
             const avatarUrl = post.avatar ? escapeHtml(post.avatar) : '';
 
             const avatar = avatarUrl
-                ? `<img src="\( {avatarUrl}" class="w-12 h-12 rounded-full border border-gray-600 object-cover" alt=" \){safeAuthor[0]}">`
+                ? `<img src="${avatarUrl}" class="w-12 h-12 rounded-full border border-gray-600 object-cover" alt="${safeAuthor[0]}">`
                 : `<div class="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center font-bold text-xl text-cyan-500">${safeAuthor[0].toUpperCase()}</div>`;
 
             div.className = `glass-card p-6 md:p-8 rounded-2xl flex gap-4 md:gap-6 border ${borderClass}`;
             div.innerHTML = `
                 <div class="flex-shrink-0 flex flex-col items-center gap-2">
-                    <div class="cursor-pointer" onclick="viewUserProfile('\( {safeAuthor}')"> \){avatar}</div>
-                    <div class="text-xs font-bold text-center mt-1 cursor-pointer hover:text-cyan-400" onclick="viewUserProfile('\( {safeAuthor}')"> \){safeAuthor}</div>
+                    <div class="cursor-pointer" onclick="viewUserProfile('${safeAuthor}')">${avatar}</div>
+                    <div class="text-xs font-bold text-center mt-1 cursor-pointer hover:text-cyan-400" onclick="viewUserProfile('${safeAuthor}')">${safeAuthor}</div>
                     <div class="flex flex-col gap-1 items-center">${badges}</div>
                 </div>
                 <div class="flex-grow min-w-0">
@@ -1203,7 +1205,7 @@
         async function toggleLike(id) {
             // B7 FIX: Use currentUser for check
             if(!currentUser) return showLogin(); 
-            const res = await api(`/posts/\( {currentSection}/ \){id}/like`, {method: 'POST'});
+            const res = await api(`/posts/${currentSection}/${id}/like`, {method: 'POST'});
             if(res && res.ok && currentThread) renderThread();
         }
         
@@ -1234,7 +1236,7 @@
 
         async function togglePin(e, id) {
             e.stopPropagation(); 
-            const res = await api(`/posts/\( {currentSection}/ \){id}/pin`, {method: 'POST'});
+            const res = await api(`/posts/${currentSection}/${id}/pin`, {method: 'POST'});
             if(res && res.ok) {
                 renderThreads();
                 showToast('სტატუსი განახლდა');
@@ -1427,7 +1429,7 @@
             
             const res = await api(`/admin/badge/${u}`, {method:'POST', body:JSON.stringify({badge:b})});
             if(res && res.ok) {
-                showToast(`ბეჯი \( {b} მიენიჭა \){u}-ს`);
+                showToast(`ბეჯი ${b} მიენიჭა ${u}-ს`);
                 document.getElementById('badgeUsername').value = '';
                 document.getElementById('badgeName').value = '';
                 // If admin assigns a badge to themselves, update profile view
@@ -1443,7 +1445,7 @@
 
             const res = await api(`/admin/badge/${u}`, {method:'DELETE', body:JSON.stringify({badge:b})});
             if(res && res.ok) {
-                showToast(`ბეჯი \( {b} წაიშალა \){u}-სგან`);
+                showToast(`ბეჯი ${b} წაიშალა ${u}-სგან`);
                 document.getElementById('removeBadgeUsername').value = '';
                 document.getElementById('removeBadgeName').value = '';
                 // If admin removes a badge from themselves, update profile view
@@ -1463,21 +1465,21 @@
             }
 
             const sectionsRequiringEmail = {
-                'suggestions': { title: 'ახალი შემოთავაზება', formType: 'suggestions', fields: `
+                'suggestions': { title: 'ახალი შემოთავაზება', formType: 'შემოთავაზება', fields: `
                     <input type="text" id="suggestionTitle" placeholder="სათაური" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required maxlength="100">
                     <textarea id="suggestionContent" rows="5" placeholder="შემოთავაზების დეტალური აღწერა" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required></textarea>
                 `},
-                'complaints-admin': { title: 'საჩივარი ადმინისტრატორზე', formType: 'complaints-admin', fields: `
+                'complaints-admin': { title: 'საჩივარი ადმინისტრატორზე', formType: 'საჩივარი ადმინზე', fields: `
                     <input type="text" id="adminUsername" placeholder="ადმინისტრატორის სახელი" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required maxlength="50">
                     <input type="text" id="complaintReason" placeholder="მოკლე აღწერა/სათაური" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required maxlength="100">
                     <textarea id="complaintDetails" rows="5" placeholder="დეტალურად აღწერეთ ინციდენტი, დრო და ადგილი" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required></textarea>
                     <input type="url" id="complaintEvidence" placeholder="დამამტკიცებელი მასალის ლინკი (YouTube/Imgur)" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none">
                 `},
-                'vacancies-leaders': { title: 'განაცხადი ლიდერობაზე', formType: 'vacancies-leaders', fields: `
+                'vacancies-leaders': { title: 'განაცხადი ლიდერობაზე', formType: 'ლიდერობის განაცხადი', fields: `
                     <input type="text" id="factionName" placeholder="სასურველი ფრაქცია/პოზიცია" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required maxlength="100">
                     <textarea id="motivationLetter" rows="5" placeholder="მოკლედ თქვენს გამოცდილებაზე და მოტივაციაზე" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required></textarea>
                 `},
-                'donation-help': { title: 'დახმარება დონაციაზე', formType: 'donation-help', fields: `
+                'donation-help': { title: 'დახმარება დონაციაზე', formType: 'დახმარება დონაციაზე', fields: `
                     <input type="text" id="paymentMethod" placeholder="გადახდის მეთოდი (მაგ: ბარათი, PayBox)" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required maxlength="50">
                     <input type="text" id="transactionId" placeholder="ტრანზაქციის ID (თუ გაქვთ)" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none">
                     <textarea id="issueDescription" rows="5" placeholder="დეტალურად აღწერეთ პრობლემა (მაგ: თანხა ჩამოიჭრა და არაფერი არ დაერიცხა)" class="w-full p-3 bg-gray-900/50 rounded-lg border border-cyan-500/30 focus:border-cyan-400 outline-none" required></textarea>
@@ -1520,24 +1522,24 @@
             const form = event.target;
             
             // Logic to collect dynamic form data based on formType
-            if (formType === 'suggestions') {
+            if (formType === 'შემოთავაზება') {
                 formData = {
                     'შემოთავაზების სათაური': form.querySelector('#suggestionTitle').value,
                     'დეტალები': form.querySelector('#suggestionContent').value
                 };
-            } else if (formType === 'complaints-admin') {
+            } else if (formType === 'საჩივარი ადმინზე') {
                 formData = {
                     'ადმინისტრატორის სახელი': form.querySelector('#adminUsername').value,
                     'სათაური': form.querySelector('#complaintReason').value,
                     'დეტალები': form.querySelector('#complaintDetails').value,
                     'დამამტკიცებელი მასალა': form.querySelector('#complaintEvidence').value || 'არ არის'
                 };
-            } else if (formType === 'vacancies-leaders') {
+            } else if (formType === 'ლიდერობის განაცხადი') {
                 formData = {
                     'სასურველი ფრაქცია': form.querySelector('#factionName').value,
                     'მოტივაცია/გამოცდილება': form.querySelector('#motivationLetter').value
                 };
-            } else if (formType === 'donation-help') {
+            } else if (formType === 'დახმარება დონაციაზე') {
                 formData = {
                     'გადახდის მეთოდი': form.querySelector('#paymentMethod').value,
                     'ტრანზაქციის ID': form.querySelector('#transactionId').value || 'არ არის',
@@ -1639,4 +1641,4 @@
         });
     </script>
 </body>
-</html>
+                                                            </html>
