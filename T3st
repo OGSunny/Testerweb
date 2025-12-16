@@ -1,0 +1,205 @@
+-- Da7mu Key System - FIXED & COMPLETE (Works in All Executors 2025)
+
+local API_BASE = "https://broad-base-cf81.gegiddezviad05.workers.dev"
+
+local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+
+-- Get HWID
+local function getHWID()
+    local success, hwid = pcall(function()
+        return game:GetService("RbxAnalyticsService"):GetClientId()
+    end)
+    if success and hwid ~= "" then
+        return hwid
+    end
+    return tostring(game.JobId) .. "_" .. tostring(Players.LocalPlayer.UserId)
+end
+
+-- API Request
+local function apiRequest(endpoint, data)
+    local success, resp = pcall(function()
+        return HttpService:PostAsync(API_BASE .. endpoint, HttpService:JSONEncode(data), Enum.HttpContentType.ApplicationJson)
+    end)
+    if success then
+        return HttpService:JSONDecode(resp)
+    end
+    return {success = false, error = "Connection failed"}
+end
+
+-- Validate Key
+local function validateKey(key)
+    local hwid = getHWID()
+    local response = apiRequest("/api/validate_key", {key = key, hwid = hwid})
+    if response.success and response.valid then
+        return true, response
+    else
+        return false, response
+    end
+end
+
+-- KeySystem
+local KeySystem = {}
+KeySystem.Key = nil
+KeySystem.Authenticated = false
+KeySystem.OnSuccess = nil
+
+function KeySystem:Initialize()
+    local player = Players.LocalPlayer
+    local playerGui = player:WaitForChild("PlayerGui")
+
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Name = "Da7muKeySystem"
+    ScreenGui.ResetOnSpawn = false
+    ScreenGui.DisplayOrder = 9999
+    ScreenGui.Parent = playerGui
+
+    local Frame = Instance.new("Frame")
+    Frame.Size = UDim2.new(0, 420, 0, 280)
+    Frame.Position = UDim2.new(0.5, -210, 0.5, -140)
+    Frame.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+    Frame.BorderSizePixel = 0
+    Frame.Parent = ScreenGui
+
+    local FrameCorner = Instance.new("UICorner")
+    FrameCorner.CornerRadius = UDim.new(0, 12)
+    FrameCorner.Parent = Frame
+
+    local FrameStroke = Instance.new("UIStroke")
+    FrameStroke.Color = Color3.fromRGB(100, 100, 255)
+    FrameStroke.Thickness = 2
+    FrameStroke.Parent = Frame
+
+    local Title = Instance.new("TextLabel")
+    Title.Size = UDim2.new(1, 0, 0, 60)
+    Title.BackgroundTransparency = 1
+    Title.Text = "Da7mu Key System"
+    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Title.TextSize = 28
+    Title.Font = Enum.Font.GothamBold
+    Title.Parent = Frame
+
+    local Subtitle = Instance.new("TextLabel")
+    Subtitle.Size = UDim2.new(1, 0, 0, 30)
+    Subtitle.Position = UDim2.new(0, 0, 0, 60)
+    Subtitle.BackgroundTransparency = 1
+    Subtitle.Text = "Enter your license key below"
+    Subtitle.TextColor3 = Color3.fromRGB(180, 180, 180)
+    Subtitle.TextSize = 16
+    Subtitle.Font = Enum.Font.Gotham
+    Subtitle.Parent = Frame
+
+    local KeyInput = Instance.new("TextBox")
+    KeyInput.Size = UDim2.new(0.9, 0, 0, 50)
+    KeyInput.Position = UDim2.new(0.05, 0, 0, 100)
+    KeyInput.BackgroundColor3 = Color3.fromRGB(30, 30, 45)
+    KeyInput.Text = ""
+    KeyInput.PlaceholderText = "Paste key here..."
+    KeyInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+    KeyInput.PlaceholderColor3 = Color3.fromRGB(120, 120, 120)
+    KeyInput.TextSize = 18
+    KeyInput.Font = Enum.Font.Gotham
+    KeyInput.ClearTextOnFocus = false
+    KeyInput.Parent = Frame
+
+    local InputCorner = Instance.new("UICorner")
+    InputCorner.CornerRadius = UDim.new(0, 8)
+    InputCorner.Parent = KeyInput
+
+    local SubmitBtn = Instance.new("TextButton")
+    SubmitBtn.Size = UDim2.new(0.9, 0, 0, 50)
+    SubmitBtn.Position = UDim2.new(0.05, 0, 0, 160)
+    SubmitBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
+    SubmitBtn.Text = "Authenticate"
+    SubmitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    SubmitBtn.TextSize = 20
+    SubmitBtn.Font = Enum.Font.GothamBold
+    SubmitBtn.Parent = Frame
+
+    local BtnCorner = Instance.new("UICorner")
+    BtnCorner.CornerRadius = UDim.new(0, 8)
+    BtnCorner.Parent = SubmitBtn
+
+    local StatusLabel = Instance.new("TextLabel")
+    StatusLabel.Size = UDim2.new(1, 0, 0, 30)
+    StatusLabel.Position = UDim2.new(0, 0, 1, -40)
+    StatusLabel.BackgroundTransparency = 1
+    StatusLabel.Text = ""
+    StatusLabel.TextSize = 16
+    StatusLabel.Font = Enum.Font.Gotham
+    StatusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+    StatusLabel.Parent = Frame
+
+    -- Dragging
+    local dragging = false
+    local dragStart = nil
+    local startPos = nil
+
+    Frame.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            dragStart = input.Position
+            startPos = Frame.Position
+        end
+    end)
+
+    UserInputService.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
+            local delta = input.Position - dragStart
+            Frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        end
+    end)
+
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = false
+        end
+    end)
+
+    -- Auth
+    SubmitBtn.MouseButton1Click:Connect(function()
+        local key = KeyInput.Text:gsub("%s+", "")
+
+        if #key < 10 then
+            StatusLabel.Text = "Key too short!"
+            StatusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+            return
+        end
+
+        SubmitBtn.Text = "Checking..."
+        SubmitBtn.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+
+        local valid, response = validateKey(key)
+
+        if valid then
+            KeySystem.Key = key
+            KeySystem.Authenticated = true
+            StatusLabel.Text = "Success! Loading..."
+            StatusLabel.TextColor3 = Color3.fromRGB(100, 255, 100)
+
+            wait(1)
+            ScreenGui:Destroy()
+
+            if KeySystem.OnSuccess then
+                KeySystem.OnSuccess(key, response)
+            end
+        else
+            StatusLabel.Text = response.error or "Invalid key"
+            StatusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+            SubmitBtn.Text = "Authenticate"
+            SubmitBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
+        end
+    end)
+end
+
+function KeySystem:Checkpoint(name)
+    if not self.Authenticated or not self.Key then return false end
+    local resp = apiRequest("/api/checkpoint", {key = self.Key})
+    if resp.success then
+        print("[Checkpoint] " .. name .. " (" .. (resp.checkpoints or 0) .. ")")
+    end
+    return resp.success
+end
+
+return KeySystem
