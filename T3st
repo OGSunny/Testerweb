@@ -17,7 +17,56 @@ if game.CreatorId == 7381705 then
         MinimizeKey = Enum.KeyCode.LeftControl
     })
 
-    local a=Instance.new("ScreenGui")local b=Instance.new("ImageButton")local c=Instance.new("UICorner")a.Name="MobileMinimize"a.Parent=game:GetService("CoreGui")a.ZIndexBehavior=Enum.ZIndexBehavior.Sibling;b.Parent=a;b.BackgroundColor3=Color3.fromRGB(0,0,0)b.BorderColor3=Color3.fromRGB(0,0,0)b.BorderSizePixel=0;b.Position=UDim2.new(0,584,0,14);local originalSize=UDim2.new(0,45,0,45)b.Size=originalSize+UDim2.new(0,originalSize.X.Offset*0.15,0,originalSize.Y.Offset*0.15)b.Image="rbxassetid://131642672159441"c.CornerRadius=UDim.new(0.2,0)c.Parent=b;local dragging=false;local dragInput,mousePos,framePos;b.InputBegan:Connect(function(input)if input.UserInputType==Enum.UserInputType.MouseButton1 then dragging=true;mousePos=input.Position;framePos=b.Position;input.Changed:Connect(function()if input.UserInputState==Enum.UserInputState.End then dragging=false end end)end end)b.InputChanged:Connect(function(input)if input.UserInputType==Enum.UserInputType.MouseMovement then dragInput=input end end)game:GetService("UserInputService").InputChanged:Connect(function(input)if input==dragInput and dragging then local delta=input.Position-mousePos;b.Position=UDim2.new(framePos.X.Scale,framePos.X.Offset+delta.X,framePos.Y.Scale,framePos.Y.Offset+delta.Y)end end)b.MouseButton1Click:Connect(function()Window:Minimize()end)
+    local a=Instance.new("ScreenGui")
+local b=Instance.new("ImageButton")
+local c=Instance.new("UICorner")
+a.Name="MobileMinimize"
+a.Parent=game:GetService("CoreGui")
+a.ZIndexBehavior=Enum.ZIndexBehavior.Sibling
+b.Parent=a
+b.BackgroundColor3=Color3.fromRGB(0,0,0)
+b.BorderColor3=Color3.fromRGB(0,0,0)
+b.BorderSizePixel=0
+b.Position=UDim2.new(0,584,0,14)
+local originalSize=UDim2.new(0,45,0,45)
+b.Size=originalSize+UDim2.new(0,originalSize.X.Offset*0.15,0,originalSize.Y.Offset*0.15)
+b.Image="rbxassetid://131642672159441"
+c.CornerRadius=UDim.new(0.2,0)
+c.Parent=b
+
+local dragging=false
+local dragInput,mousePos,framePos
+
+b.InputBegan:Connect(function(input)
+    if input.UserInputType==Enum.UserInputType.MouseButton1 then 
+        dragging=true
+        mousePos=input.Position
+        framePos=b.Position
+        input.Changed:Connect(function()
+            if input.UserInputState==Enum.UserInputState.End then 
+                dragging=false 
+            end 
+        end)
+    end 
+end)
+
+b.InputChanged:Connect(function(input)
+    if input.UserInputType==Enum.UserInputType.MouseMovement then 
+        dragInput=input 
+    end 
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if input==dragInput and dragging then 
+        local delta=input.Position-mousePos
+        b.Position=UDim2.new(framePos.X.Scale,framePos.X.Offset+delta.X,framePos.Y.Scale,framePos.Y.Offset+delta.Y)
+    end 
+end)
+
+-- This click handler now runs AFTER Window is defined
+b.MouseButton1Click:Connect(function()
+    Window:Minimize()
+end)
     
     -- // // // Services // // // --
     local VirtualInputManager = game:GetService("VirtualInputManager")
