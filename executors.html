@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZVIOS HUB // EXECUTORS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --accent: #ff003c; --bg: #050505; --surface: #0d0d0d; --border: #1a1a1a; --text: #fff; }
+        body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; }
+        
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 1.5rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid var(--border);
+        }
+
+        .logo { font-family: 'Chakra Petch'; font-weight: 800; font-size: 1.5rem; letter-spacing: 2px; text-decoration: none; color: white;}
+        .logo span { color: var(--accent); }
+
+        .menu-btn { font-size: 1.5rem; cursor: pointer; z-index: 102; }
+        .side-menu {
+            position: fixed; top: 0; right: -100%; width: 300px; height: 100%;
+            background: var(--surface); z-index: 101; padding: 8rem 2rem;
+            transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1); border-left: 1px solid var(--accent);
+        }
+        .side-menu.active { right: 0; }
+        .side-menu a { display: block; color: var(--text); text-decoration: none; font-size: 1.2rem; margin-bottom: 2rem; text-transform: uppercase; }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 8rem 2rem; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        
+        .exec-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 8px;
+            position: relative;
+            transition: 0.3s;
+        }
+        .exec-card:hover { border-color: var(--accent); background: #111; }
+        
+        .status { position: absolute; top: 1rem; right: 1rem; font-size: 0.7rem; padding: 0.3rem 0.6rem; border-radius: 4px; font-weight: 800; }
+        .status.working { background: #00ff6622; color: #00ff66; border: 1px solid #00ff6644; }
+        .status.premium { background: #ff003c22; color: #ff003c; border: 1px solid #ff003c44; }
+
+        .exec-card h3 { font-family: 'Chakra Petch'; font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .exec-card p { color: #888; font-size: 0.9rem; margin-bottom: 1.5rem; }
+
+        .btn {
+            display: block; width: 100%; text-align: center; padding: 0.8rem;
+            background: var(--accent); color: white; text-decoration: none;
+            font-weight: 700; border-radius: 4px; transition: 0.3s;
+        }
+        .btn:hover { filter: brightness(1.2); transform: translateY(-3px); }
+
+        .platform-tag { font-size: 0.8rem; color: var(--accent); font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 0.5rem; }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">ZVIOS<span>HUB</span></a>
+        <div class="menu-btn" id="menuToggle"><i class="fas fa-bars"></i></div>
+    </nav>
+
+    <div class="side-menu" id="sideMenu">
+        <a href="index.html">Main Hub</a>
+        <a href="executors.html">Executors</a>
+        <a href="https://discord.gg/yourlink">Discord Server</a>
+    </div>
+
+    <div class="container">
+        <h1 style="font-size: 3rem; margin-bottom: 3rem; font-weight: 800;">EXECUTOR<br>DATABASE</h1>
+        
+        <div class="grid">
+            <div class="exec-card">
+                <span class="status working">STABLE</span>
+                <span class="platform-tag">Mobile</span>
+                <h3>DELTA</h3>
+                <p>The leading mobile executor with a massive script hub and stable environment.</p>
+                <a href="https://discord.gg/deltax" class="btn">ACCESS</a>
+            </div>
+
+            <div class="exec-card">
+                <span class="status working">STABLE</span>
+                <span class="platform-tag">Mobile</span>
+                <h3>HYDROGEN</h3>
+                <p>Advanced mobile execution with a clean UI and frequent updates for Android.</p>
+                <a href="https://discord.gg/hydrogen" class="btn">ACCESS</a>
+            </div>
+
+            <div class="exec-card">
+                <span class="status premium">PAID</span>
+                <span class="platform-tag">Windows</span>
+                <h3>WAVE</h3>
+                <p>High-tier PC execution. Boasts the highest UNC rating on the current market.</p>
+                <a href="https://discord.gg/rARhPpN7fY" class="btn">PURCHASE</a>
+            </div>
+
+            <div class="exec-card">
+                <span class="status premium">PAID</span>
+                <span class="platform-tag">Windows</span>
+                <h3>SELIWARE</h3>
+                <p>Built for reliability. A powerful paid alternative with unique features.</p>
+                <a href="https://discord.com/invite/nzEggEE9vx" class="btn">PURCHASE</a>
+            </div>
+
+            <div class="exec-card">
+                <span class="status working">KEY SYSTEM</span>
+                <span class="platform-tag">Windows</span>
+                <h3>BUNNI</h3>
+                <p>The most popular free PC executor. Requires a daily key to operate.</p>
+                <a href="https://discord.com/invite/9DPW2G22cF" class="btn">ACCESS</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const btn = document.getElementById('menuToggle');
+        const menu = document.getElementById('sideMenu');
+        const icon = btn.querySelector('i');
+
+        btn.onclick = () => {
+            menu.classList.toggle('active');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        };
+    </script>
+</body>
+</html>
