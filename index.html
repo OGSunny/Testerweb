@@ -3,23 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zvios Hub | Premium Scripting</title>
+    <title>ZVIOS // HUB</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-glow: rgba(99, 102, 241, 0.6);
-            --accent: #d946ef;
-            --accent-glow: rgba(217, 70, 239, 0.6);
-            --bg-dark: #030014;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
+            --bg: #050505;
+            --surface: #0a0a0a;
+            --surface-hover: #111111;
+            --border: #222;
+            --border-hover: #444;
+            --text-main: #ededed;
+            --text-muted: #888;
+            --accent: #5b21b6; /* Deep Violet */
+            --accent-bright: #8b5cf6;
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
@@ -29,604 +28,451 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none; /* Custom cursor handling */
         }
 
         body {
-            font-family: 'Outfit', sans-serif;
-            background-color: var(--bg-dark);
+            background-color: var(--bg);
             color: var(--text-main);
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            line-height: 1.6;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Dynamic Background --- */
-        .bg-mesh {
+        /* --- Noise Overlay for Texture --- */
+        .noise {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            z-index: -1;
-            background: 
-                radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.15), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(217, 70, 239, 0.15), transparent 25%);
-            filter: blur(40px);
-            animation: pulseBg 10s infinite alternate;
-        }
-
-        @keyframes pulseBg {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
-        }
-
-        /* --- Custom Cursor --- */
-        .cursor {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--primary);
-            border-radius: 50%;
-            position: fixed;
             pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s, background 0.3s;
-            mix-blend-mode: difference;
-        }
-        
-        .cursor.hovered {
-            width: 50px;
-            height: 50px;
-            background: rgba(99, 102, 241, 0.2);
-            border-color: var(--accent);
+            z-index: 50;
+            opacity: 0.03;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* --- Scrollbar --- */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-dark);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 4px;
+        /* --- Grid Background --- */
+        .grid-bg {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background-size: 50px 50px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            z-index: -1;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
         }
 
-        /* --- Layout & Typography --- */
+        /* --- Layout --- */
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 4rem 1.5rem;
         }
 
-        h1, h2, h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            text-transform: uppercase;
+        /* --- Typography --- */
+        h1, h2, h3, .mono {
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: -0.03em;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #fff, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         /* --- Header --- */
         header {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             text-align: center;
+            margin-bottom: 6rem;
             position: relative;
         }
 
-        .hero-logo {
-            font-size: 5rem;
-            font-weight: 800;
-            line-height: 1;
-            position: relative;
-            background: linear-gradient(to right, #fff, #a5b4fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        /* Glitch Effect */
-        .glitch-wrapper {
-            position: relative;
-        }
-        .glitch-wrapper::before, .glitch-wrapper::after {
-            content: "ZVIOS HUB";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-dark);
-            opacity: 0.8;
-        }
-        .glitch-wrapper::before {
-            color: #0ff;
-            z-index: -1;
-            animation: glitch-effect 3s infinite;
-        }
-        .glitch-wrapper::after {
-            color: #f0f;
-            z-index: -2;
-            animation: glitch-effect 2s infinite reverse;
-        }
-
-        @keyframes glitch-effect {
-            0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 1px); }
-            20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); }
-            40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); }
-            60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); }
-            80% { clip-path: inset(10% 0 70% 0); transform: translate(-1px, 1px); }
-            100% { clip-path: inset(30% 0 50% 0); transform: translate(1px, -1px); }
-        }
-
-        .tagline {
-            font-size: 1.5rem;
-            color: var(--primary);
-            letter-spacing: 4px;
-            margin-top: 1rem;
-            text-shadow: 0 0 20px var(--primary-glow);
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 50px;
-            animation: bounce 2s infinite;
-            opacity: 0.7;
-        }
-
-        /* --- Cards & Sections --- */
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            display: flex;
+        .badge {
+            display: inline-flex;
             align-items: center;
-            gap: 1rem;
-            color: #fff;
-            border-bottom: 1px solid var(--glass-border);
-            padding-bottom: 1rem;
-        }
-        
-        .section-title i {
-            color: var(--primary);
-            text-shadow: 0 0 15px var(--primary);
+            padding: 0.4rem 0.8rem;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 4px;
+            color: var(--accent-bright);
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
         }
 
-        .card-grid {
+        .dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-bright);
+            border-radius: 50%;
+            margin-right: 8px;
+            box-shadow: 0 0 8px var(--accent-bright);
+            animation: pulse 2s infinite;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 1rem;
+            letter-spacing: -0.05em;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* --- Bento Grid Layout --- */
+        .bento-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 1.5rem;
             margin-bottom: 4rem;
         }
 
-        .glass-card {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
             padding: 2rem;
-            backdrop-filter: blur(12px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.03), transparent);
-            transform: translateX(-100%);
-            transition: 0.5s;
+        .card:hover {
+            border-color: var(--border-hover);
+            background: var(--surface-hover);
         }
 
-        .glass-card:hover::before {
-            transform: translateX(100%);
+        .col-12 { grid-column: span 12; }
+        .col-8 { grid-column: span 8; }
+        .col-6 { grid-column: span 6; }
+        .col-4 { grid-column: span 4; }
+
+        @media (max-width: 900px) {
+            .col-8, .col-6, .col-4 { grid-column: span 12; }
         }
 
-        .glass-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px -10px var(--primary-glow);
-        }
-
-        /* --- Rules Specific --- */
-        .rule-grid {
-            display: grid;
-            grid-template-columns: 1fr;
+        /* --- Section Headers --- */
+        .section-header {
+            display: flex;
+            align-items: center;
             gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
         }
 
-        .rule-item {
-            background: rgba(255, 255, 255, 0.02);
-            padding: 1rem 1.5rem;
-            border-left: 3px solid var(--text-muted);
-            border-radius: 0 8px 8px 0;
-            transition: 0.3s;
+        .section-header i {
+            color: var(--text-muted);
         }
 
-        .rule-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-left-color: var(--accent);
-            padding-left: 2rem;
+        /* --- Rules List --- */
+        .rule-list {
+            list-style: none;
         }
-
-        .rule-title {
-            color: var(--warning);
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            margin-bottom: 0.2rem;
-        }
-
-        /* --- Executors --- */
-        .exec-header {
+        
+        .rule-list li {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
         }
 
-        .exec-name {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #fff;
-        }
+        .rule-list li:last-child { border-bottom: none; }
+        .rule-list li strong { color: var(--text-main); }
 
-        .exec-status {
-            font-size: 0.8rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .status-best { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #fbbf24; box-shadow: 0 0 10px rgba(251, 191, 36, 0.2); }
-        .status-working { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #34d399; }
-
-        .btn-glow {
-            display: block;
-            width: 100%;
-            padding: 1rem;
-            margin-top: 1rem;
-            text-align: center;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            color: white;
-            text-decoration: none;
-            font-weight: 700;
-            border-radius: 8px;
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
-            transition: 0.3s;
-        }
-
-        .btn-glow:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 20px var(--accent-glow);
-        }
-
-        /* --- Offenses --- */
-        .offense-box {
+        /* --- Offense Tags --- */
+        .tag-cloud {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
         }
-        
-        .chip {
-            padding: 0.5rem 1rem;
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #fca5a5;
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 0.3rem 0.6rem;
+            background: #151515;
+            border: 1px solid #333;
+            color: #aaa;
             border-radius: 4px;
-            font-size: 0.9rem;
-            transition: 0.3s;
+        }
+        
+        .tag.red { border-color: rgba(239, 68, 68, 0.3); color: #fca5a5; background: rgba(239, 68, 68, 0.05); }
+
+        /* --- Executor Table Style --- */
+        .exec-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 0.75rem;
+            background: #080808;
+            transition: 0.2s;
         }
 
-        .chip:hover {
-            background: rgba(239, 68, 68, 0.2);
-            border-color: var(--danger);
-            box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+        .exec-item:hover {
+            border-color: var(--accent);
+            transform: translateX(5px);
         }
+
+        .exec-info h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .exec-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--text-muted);
+        }
+        .status-dot.green { background: var(--success); box-shadow: 0 0 5px var(--success); }
+        .status-dot.gold { background: var(--warning); box-shadow: 0 0 5px var(--warning); }
+
+        .btn-mini {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            text-decoration: none;
+            color: var(--text-main);
+            background: var(--border);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            transition: 0.2s;
+        }
+
+        .btn-mini:hover {
+            background: var(--text-main);
+            color: #000;
+        }
+
+        /* --- Sanctions Table --- */
+        .sanction-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+        .sanction-row:last-child { border: none; }
+        .sanction-val { text-align: right; color: var(--text-muted); }
 
         /* --- Footer --- */
         footer {
-            text-align: center;
-            padding: 4rem 0;
-            border-top: 1px solid var(--glass-border);
-            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            padding-top: 2rem;
             margin-top: 4rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
         }
 
-        /* --- Animations --- */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-10px);}
-            60% {transform: translateY(-5px);}
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-
-        /* Mobile Adjustments */
-        @media (max-width: 768px) {
-            .hero-logo { font-size: 3rem; }
-            .container { padding: 1rem; }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
     </style>
 </head>
 <body>
-    <div class="cursor"></div>
-    <div class="bg-mesh"></div>
 
-    <header>
-        <div class="glitch-wrapper">
-            <div class="hero-logo">ZVIOS HUB</div>
-        </div>
-        <div class="tagline">PREMIUM ROBLOX AUTOMATION</div>
-        <div class="owner-badge reveal" style="margin-top: 2rem;">
-            <span style="background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 50px; border: 1px solid rgba(255,255,255,0.2);">
-                👑 <span style="color: #fbbf24;">@Owner - Zvios</span>
-            </span>
-        </div>
-        <div class="scroll-indicator">
-            <i class="fas fa-chevron-down" style="color: var(--text-muted); font-size: 1.5rem;"></i>
-        </div>
-    </header>
+    <div class="noise"></div>
+    <div class="grid-bg"></div>
 
     <div class="container">
-        
-        <section class="reveal">
-            <div class="section-title">
-                <i class="fas fa-gavel"></i>
-                <h2>Protocol & Guidelines</h2>
+        <header>
+            <div class="badge">
+                <div class="dot"></div>
+                SYSTEM OPERATIONAL
             </div>
-            
-            <div class="card-grid">
-                <div class="glass-card">
-                    <h3 style="color: var(--primary); margin-bottom: 1rem;">📜 Core Rules</h3>
-                    <div class="rule-grid">
-                        <div class="rule-item">
-                            <div class="rule-title">Common Sense</div>
-                            <div>Use logic. If it creates chaos, don't do it.</div>
-                        </div>
-                        <div class="rule-item">
-                            <div class="rule-title">Hierarchy</div>
-                            <div>All decisions by Zvios & Staff are final.</div>
-                        </div>
-                        <div class="rule-item">
-                            <div class="rule-title">Respect</div>
-                            <div>Zero tolerance for toxicity towards members.</div>
-                        </div>
-                    </div>
-                </div>
+            <h1>ZVIOS<span style="color: #333">///</span>HUB</h1>
+            <p class="subtitle">Premium Roblox Automation & Scripting Resources.<br>Engineered for performance. Managed by <span style="color: #fff; font-weight: 600;">@Zvios</span>.</p>
+        </header>
 
-                <div class="glass-card" style="border-color: rgba(239, 68, 68, 0.4);">
-                    <h3 style="color: var(--danger); margin-bottom: 1rem;">⚠️ Sanction Ladder</h3>
-                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 0.5rem 0;">
-                            <span>2-9 Warns</span>
-                            <span style="color: var(--warning);">Timed Mutes</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 0.5rem 0;">
-                            <span>10 Warns</span>
-                            <span style="color: var(--danger);">Kick + Role Strip</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; padding: 0.5rem 0;">
-                            <span>15 Warns</span>
-                            <span style="color: #ff0000; font-weight: bold; text-shadow: 0 0 10px red;">PERMANENT BAN</span>
-                        </div>
+        <div class="bento-grid">
+            <div class="card col-8" style="background: linear-gradient(135deg, #0a0a0a 0%, #151515 100%);">
+                <h3 style="color: var(--text-muted); margin-bottom: 1rem;">SUPPORTED TITLES</h3>
+                <div style="display: flex; gap: 2rem; align-items: center;">
+                    <div>
+                        <h2 class="mono">FISCH</h2>
+                        <span style="color: var(--success); font-size: 0.8rem;">● DETECTED: 0%</span>
+                    </div>
+                    <div style="width: 1px; height: 40px; background: var(--border);"></div>
+                    <div>
+                        <h2 class="mono">THE FORGE</h2>
+                        <span style="color: var(--success); font-size: 0.8rem;">● DETECTED: 0%</span>
                     </div>
                 </div>
             </div>
-        </section>
+            <div class="card col-4" style="display: flex; flex-direction: column; justify-content: center;">
+                <h3 style="color: var(--text-muted); font-size: 0.8rem;">SERVER OWNER</h3>
+                <div style="font-size: 1.2rem; font-weight: 700; margin-top: 0.2rem;">👑 Zvios</div>
+            </div>
+        </div>
 
-        <section class="reveal">
-            <div class="section-title">
-                <i class="fas fa-shield-alt"></i>
-                <h2>Infractions</h2>
-            </div>
-            
-            <div class="card-grid">
-                <div class="glass-card">
-                    <h3 style="margin-bottom: 1rem; color: var(--warning);">Moderate Offenses</h3>
-                    <div class="offense-box">
-                        <span class="chip">NSFW References</span>
-                        <span class="chip">Trolling</span>
-                        <span class="chip">Disrespect</span>
-                        <span class="chip">Light Sexism</span>
-                        <span class="chip">Encouraging Rule Breaks</span>
-                        <span class="chip">Ignoring Staff</span>
-                    </div>
-                </div>
-                <div class="glass-card" style="box-shadow: 0 0 20px rgba(239, 68, 68, 0.1);">
-                    <h3 style="margin-bottom: 1rem; color: var(--danger);">Severe Offenses (Ban Risk)</h3>
-                    <div class="offense-box">
-                        <span class="chip" style="border-color: var(--danger);">Slurs / Hate Speech</span>
-                        <span class="chip" style="border-color: var(--danger);">NSFW Content</span>
-                        <span class="chip" style="border-color: var(--danger);">Raiding</span>
-                        <span class="chip" style="border-color: var(--danger);">Death Threats</span>
-                        <span class="chip" style="border-color: var(--danger);">Doxxing / IP Logging</span>
-                        <span class="chip" style="border-color: var(--danger);">Beaming</span>
-                        <span class="chip" style="border-color: var(--danger);">Self Harm Content</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <div class="section-header">
+            <h2 class="mono">01 // PROTOCOLS</h2>
+        </div>
 
-        <section class="reveal">
-            <div class="section-title">
-                <i class="fas fa-gamepad"></i>
-                <h2>Supported Games</h2>
-            </div>
-            <div class="glass-card" style="display: flex; gap: 2rem; align-items: center; justify-content: space-around; flex-wrap: wrap;">
-                <div style="text-align: center;">
-                    <i class="fas fa-fish" style="font-size: 3rem; color: #38bdf8; margin-bottom: 1rem; display: block;"></i>
-                    <h3>FISCH</h3>
-                    <span class="exec-status status-working" style="margin-top: 0.5rem; display: inline-block;">Operational</span>
-                </div>
-                <div style="height: 50px; width: 1px; background: var(--glass-border);"></div>
-                <div style="text-align: center;">
-                    <i class="fas fa-hammer" style="font-size: 3rem; color: #fbbf24; margin-bottom: 1rem; display: block;"></i>
-                    <h3>THE FORGE</h3>
-                    <span class="exec-status status-working" style="margin-top: 0.5rem; display: inline-block;">Operational</span>
-                </div>
-            </div>
-        </section>
-
-        <section class="reveal" style="margin-top: 4rem;">
-            <div class="section-title">
-                <i class="fas fa-microchip"></i>
-                <h2>Executor Database</h2>
-            </div>
-
-            <h3 style="color: var(--text-muted); margin-bottom: 1.5rem; border-left: 4px solid var(--accent); padding-left: 1rem;">📱 Mobile Architecture</h3>
-            <div class="card-grid">
-                <div class="glass-card">
-                    <div class="exec-header">
-                        <div class="exec-name">DELTA</div>
-                        <span class="exec-status status-best">Top Pick</span>
-                    </div>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">High stability, regular updates.</p>
-                    <a href="https://discord.gg/deltax" target="_blank" class="btn-glow">Join Discord</a>
-                </div>
-                <div class="glass-card">
-                    <div class="exec-header">
-                        <div class="exec-name">HYDROGEN</div>
-                        <span class="exec-status status-working">Working</span>
-                    </div>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">Reliable alternative for Android.</p>
-                    <a href="https://discord.gg/hydrogen" target="_blank" class="btn-glow">Join Discord</a>
-                </div>
-                <div class="glass-card">
-                    <div class="exec-header">
-                        <div class="exec-name">VEGA X</div>
-                        <span class="exec-status status-working">Working</span>
-                    </div>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">Good key system, decent UNC.</p>
-                    <a href="https://discord.gg/vegasupport" target="_blank" class="btn-glow">Join Discord</a>
+        <div class="bento-grid">
+            <div class="card col-6">
+                <h3 style="margin-bottom: 1.5rem;">CORE RULES</h3>
+                <ul class="rule-list">
+                    <li><strong>01. Common Sense</strong> <span>Use logic.</span></li>
+                    <li><strong>02. Hierarchy</strong> <span>Staff verdict is final.</span></li>
+                    <li><strong>03. Respect</strong> <span>No toxicity allowed.</span></li>
+                    <li><strong>04. Exposure</strong> <span>No NSFW / Doxxing.</span></li>
+                </ul>
+                <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 4px; font-size: 0.8rem; color: #fca5a5;">
+                    Severe offenses (Raiding, Slurs, Threats) result in immediate termination.
                 </div>
             </div>
 
-            <h3 style="color: var(--text-muted); margin-bottom: 1.5rem; border-left: 4px solid var(--primary); padding-left: 1rem;">🖥️ PC Premium (Paid)</h3>
-            <div class="card-grid">
-                <div class="glass-card">
-                    <div class="exec-header">
-                        <div class="exec-name">WAVE</div>
-                        <span class="exec-status status-best">Best UNC</span>
-                    </div>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">Industry leading execution power.</p>
-                    <a href="https://discord.gg/rARhPpN7fY" target="_blank" class="btn-glow">Join Discord</a>
+            <div class="card col-6">
+                <h3 style="margin-bottom: 1.5rem;">SANCTION LADDER</h3>
+                <div class="sanction-row">
+                    <span>2 Warnings</span>
+                    <span class="sanction-val">Mute (1h)</span>
                 </div>
-                <div class="glass-card">
-                    <div class="exec-header">
-                        <div class="exec-name">VOLCANO</div>
-                        <span class="exec-status status-working">Stable</span>
-                    </div>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">External execution.</p>
-                    <a href="https://volcano.wtf" target="_blank" class="btn-glow">Visit Site</a>
+                <div class="sanction-row">
+                    <span>4 Warnings</span>
+                    <span class="sanction-val">Mute (3h)</span>
                 </div>
-                <div class="glass-card">
-                    <div class="exec-header">
-                        <div class="exec-name">SELIWARE</div>
-                        <span class="exec-status status-working">Working</span>
-                    </div>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">Solid performance.</p>
-                    <a href="https://discord.com/invite/nzEggEE9vx" target="_blank" class="btn-glow">Join Discord</a>
+                <div class="sanction-row">
+                    <span>7 Warnings</span>
+                    <span class="sanction-val">Mute (12h)</span>
+                </div>
+                <div class="sanction-row">
+                    <span>10 Warnings</span>
+                    <span class="sanction-val" style="color: var(--danger)">KICK + WIPE</span>
+                </div>
+                <div class="sanction-row">
+                    <span>15 Warnings</span>
+                    <span class="sanction-val" style="color: var(--danger); font-weight: bold;">PERMANENT BAN</span>
+                </div>
+                
+                <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 0.9rem;">INFRACTIONS</h3>
+                <div class="tag-cloud">
+                    <span class="tag">Spamming</span>
+                    <span class="tag">Advertising</span>
+                    <span class="tag">Begging</span>
+                    <span class="tag red">Hate Speech</span>
+                    <span class="tag red">NSFW</span>
+                    <span class="tag red">IP Logging</span>
                 </div>
             </div>
-            
-            <h3 style="color: var(--text-muted); margin-bottom: 1.5rem; border-left: 4px solid var(--success); padding-left: 1rem;">🆓 PC Free / Key</h3>
-             <div class="card-grid">
-                 <div class="glass-card">
-                     <div class="exec-header">
-                         <div class="exec-name">BUNNI</div>
-                         <span class="exec-status status-best">Popular</span>
-                     </div>
-                     <p style="color: var(--text-muted); font-size: 0.9rem;">Best free option currently available.</p>
-                     <a href="https://discord.com/invite/9DPW2G22cF" target="_blank" class="btn-glow">Join Discord</a>
-                 </div>
-                 <div class="glass-card">
-                     <div class="exec-header">
-                         <div class="exec-name">SWIFT</div>
-                         <span class="exec-status status-working">Working</span>
-                     </div>
-                     <p style="color: var(--text-muted); font-size: 0.9rem;">Lightweight and fast.</p>
-                     <a href="https://discord.com/invite/getswiftgg" target="_blank" class="btn-glow">Join Discord</a>
-                 </div>
-             </div>
+        </div>
 
-        </section>
+        <div class="section-header">
+            <h2 class="mono">02 // EXECUTORS</h2>
+        </div>
+
+        <div class="bento-grid">
+            <div class="card col-4">
+                <h3 style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">MOBILE ARCHITECTURE</h3>
+                
+                <div class="exec-item">
+                    <div class="exec-info">
+                        <h4>DELTA</h4>
+                        <div class="exec-meta"><div class="status-dot gold"></div> BEST</div>
+                    </div>
+                    <a href="https://discord.gg/deltax" class="btn-mini">GET</a>
+                </div>
+
+                <div class="exec-item">
+                    <div class="exec-info">
+                        <h4>HYDROGEN</h4>
+                        <div class="exec-meta"><div class="status-dot green"></div> STABLE</div>
+                    </div>
+                    <a href="https://discord.gg/hydrogen" class="btn-mini">GET</a>
+                </div>
+
+                <div class="exec-item">
+                    <div class="exec-info">
+                        <h4>VEGA X</h4>
+                        <div class="exec-meta"><div class="status-dot green"></div> WORKING</div>
+                    </div>
+                    <a href="https://discord.gg/vegasupport" class="btn-mini">GET</a>
+                </div>
+            </div>
+
+            <div class="card col-4">
+                <h3 style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">PC (PREMIUM)</h3>
+                
+                <div class="exec-item">
+                    <div class="exec-info">
+                        <h4>WAVE</h4>
+                        <div class="exec-meta"><div class="status-dot gold"></div> HIGH UNC</div>
+                    </div>
+                    <a href="https://discord.gg/rARhPpN7fY" class="btn-mini">GET</a>
+                </div>
+
+                <div class="exec-item">
+                    <div class="exec-info">
+                        <h4>VOLCANO</h4>
+                        <div class="exec-meta"><div class="status-dot green"></div> EXTERNAL</div>
+                    </div>
+                    <a href="https://volcano.wtf" class="btn-mini">GET</a>
+                </div>
+
+                <div class="exec-item">
+                    <div class="exec-info">
+                        <h4>SELIWARE</h4>
+                        <div class="exec-meta"><div class="status-dot green"></div> STABLE</div>
+                    </div>
+                    <a href="https://discord.com/invite/nzEggEE9vx" class="btn-mini">GET</a>
+                </div>
+            </div>
+
+            <div class="card col-4">
+                <h3 style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">PC (FREE/KEY)</h3>
+                
+                <div class="exec-item">
+                    <div class="exec-info">
+                        <h4>BUNNI</h4>
+                        <div class="exec-meta"><div class="status-dot gold"></div> POPULAR</div>
+                    </div>
+                    <a href="https://discord.com/invite/9DPW2G22cF" class="btn-mini">GET</a>
+                </div>
+
+                <div class="exec-item">
+                    <div class="exec-info">
+                        <h4>SWIFT</h4>
+                        <div class="exec-meta"><div class="status-dot green"></div> LIGHT</div>
+                    </div>
+                    <a href="https://discord.com/invite/getswiftgg" class="btn-mini">GET</a>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>ZVIOS HUB &copy; 2025</p>
+            <p class="mono" style="opacity: 0.5; margin-top: 0.5rem;">ID: 928-112-X // SECURE CONNECTION</p>
+        </footer>
     </div>
 
-    <footer>
-        <h2 class="hero-logo" style="font-size: 2rem;">ZVIOS</h2>
-        <p style="margin: 1rem 0;">Dominating the Roblox Scripting Scene.</p>
-        <div style="font-size: 0.8rem; opacity: 0.5;">
-            &copy; 2025 Zvios Hub. All Systems Operational.
-        </div>
-    </footer>
-
-    <script>
-        // Custom Cursor Logic
-        const cursor = document.querySelector('.cursor');
-        
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
-
-        document.querySelectorAll('a, .glass-card, .btn-glow').forEach(item => {
-            item.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-            item.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
-        });
-
-        // Scroll Animation Logic
-        const revealElements = document.querySelectorAll('.reveal');
-
-        const revealOnScroll = () => {
-            const windowHeight = window.innerHeight;
-            const elementVisible = 150;
-
-            revealElements.forEach((reveal) => {
-                const elementTop = reveal.getBoundingClientRect().top;
-                if (elementTop < windowHeight - elementVisible) {
-                    reveal.classList.add('active');
-                }
-            });
-        }
-
-        window.addEventListener('scroll', revealOnScroll);
-        // Trigger once on load
-        revealOnScroll();
-
-        // Smooth Scroll for specific anchor tags if added later
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
 </body>
 </html>
