@@ -3,385 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZVIOS // OPERATIONAL</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Russo+One&display=swap" rel="stylesheet">
+    <title>ZVIOS HUB // CORE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
         :root {
-            --primary: #ff0f0f; /* Aggressive Red */
-            --primary-dim: #5c0000;
+            --accent: #ff003c;
             --bg: #050505;
-            --panel: #111111;
-            --border: #333;
-            --text: #e0e0e0;
+            --surface: #0d0d0d;
+            --border: #1a1a1a;
+            --text: #ffffff;
+            --text-dim: #888;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: 'Chakra Petch', sans-serif;
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.6;
             overflow-x: hidden;
-            background-image: 
-                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
-                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(255, 0, 0, 0.02));
-            background-size: 100% 2px, 3px 100%;
         }
 
-        /* --- Scanline Overlay --- */
-        .scanlines {
+        /* --- Navigation & Menu --- */
+        nav {
             position: fixed;
             top: 0;
-            left: 0;
             width: 100%;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo { font-family: 'Chakra Petch'; font-weight: 800; font-size: 1.5rem; letter-spacing: 2px; }
+        .logo span { color: var(--accent); }
+
+        .menu-btn {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text);
+            transition: 0.3s;
+            z-index: 102;
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
             height: 100%;
-            background: linear-gradient(
-                to bottom,
-                rgba(255,255,255,0),
-                rgba(255,255,255,0) 50%,
-                rgba(0,0,0,0.2) 50%,
-                rgba(0,0,0,0.2)
-            );
-            background-size: 100% 4px;
-            pointer-events: none;
-            z-index: 999;
-            opacity: 0.6;
+            background: var(--surface);
+            z-index: 101;
+            padding: 8rem 2rem;
+            transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            border-left: 1px solid var(--accent);
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
+        .side-menu.active { right: 0; }
+        .side-menu a {
+            display: block;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
+        .side-menu a:hover { color: var(--accent); }
 
-        /* --- Header --- */
+        /* --- Hero --- */
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 2rem;
-            margin-bottom: 3rem;
-            position: relative;
+            padding: 10rem 2rem 5rem;
+            text-align: center;
+            background: radial-gradient(circle at center, #1a0006 0%, #050505 70%);
         }
 
-        header::after {
-            content: '';
-            position: absolute;
-            bottom: -6px;
-            right: 0;
-            width: 100px;
-            height: 10px;
-            background: var(--primary);
-            clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%);
-        }
+        .hero-title { font-size: clamp(3rem, 10vw, 6rem); font-weight: 800; text-transform: uppercase; line-height: 0.9; }
+        .hero-tag { color: var(--accent); font-family: 'Chakra Petch'; letter-spacing: 5px; margin-top: 1rem; }
 
-        .brand {
-            font-family: 'Russo One', sans-serif;
-            font-size: 3.5rem;
-            text-transform: uppercase;
-            color: #fff;
-            text-shadow: 2px 2px 0px var(--primary);
-            letter-spacing: 2px;
-            line-height: 1;
-        }
-
-        .brand span {
-            color: var(--primary);
-        }
-
-        .status-box {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            padding: 0.5rem 1.5rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%);
-        }
-
-        .blinker {
-            width: 10px;
-            height: 10px;
-            background: var(--primary);
-            box-shadow: 0 0 10px var(--primary);
-            animation: blink 1s infinite;
-        }
-
-        /* --- Sections --- */
-        .section-title {
-            font-family: 'Russo One', sans-serif;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            color: #fff;
-            border-left: 5px solid var(--primary);
+        /* --- Content Sections --- */
+        .container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+        
+        .section-header {
+            margin: 4rem 0 2rem;
+            border-left: 4px solid var(--accent);
             padding-left: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
         }
+        .section-header h2 { font-size: 2rem; text-transform: uppercase; }
 
-        .section-title::after {
-            content: '///';
-            color: var(--primary-dim);
-            letter-spacing: -2px;
-        }
-
-        /* --- Tech Cards --- */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 4rem;
-        }
-
-        .tech-card {
-            background: var(--panel);
+        .rule-card {
+            background: var(--surface);
             border: 1px solid var(--border);
             padding: 1.5rem;
-            position: relative;
-            transition: 0.3s;
-            /* Angled Corners */
-            clip-path: polygon(
-                0 0, 
-                100% 0, 
-                100% 85%, 
-                92% 100%, 
-                0 100%
-            );
-        }
-
-        .tech-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(255, 15, 15, 0.1);
-        }
-
-        .tech-card:hover h3 {
-            color: var(--primary);
-        }
-
-        .tech-card h3 {
-            font-size: 1.4rem;
             margin-bottom: 1rem;
-            text-transform: uppercase;
+            border-radius: 4px;
             transition: 0.3s;
         }
+        .rule-card:hover { border-color: var(--accent); transform: translateX(10px); }
+        .rule-card h3 { color: var(--accent); font-size: 1rem; margin-bottom: 0.5rem; text-transform: uppercase; }
+        .rule-card p { color: var(--text-dim); font-size: 0.95rem; }
 
-        /* --- Rules Styling --- */
-        .rule-row {
-            display: flex;
-            align-items: baseline;
+        /* --- Sanctions --- */
+        .sanction-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
-            padding: 0.8rem 0;
-            border-bottom: 1px solid #222;
+            margin-top: 2rem;
         }
-        
-        .rule-num {
-            color: var(--primary);
-            font-weight: 700;
-            font-family: 'Russo One';
-        }
-
-        .sanction-bar {
-            height: 4px;
-            background: #222;
-            width: 100%;
-            margin: 2rem 0 1rem 0;
-            position: relative;
-        }
-        
-        .sanction-progress {
-            position: absolute;
-            height: 100%;
-            background: linear-gradient(90deg, #444, var(--primary));
-            width: 100%;
-        }
-
-        /* --- Buttons --- */
-        .btn-tech {
-            display: inline-block;
-            background: transparent;
-            color: var(--primary);
-            border: 1px solid var(--primary);
-            padding: 0.5rem 1.5rem;
-            text-transform: uppercase;
-            font-weight: 700;
-            text-decoration: none;
-            margin-top: 1rem;
-            transition: 0.2s;
-            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
-        }
-
-        .btn-tech:hover {
-            background: var(--primary);
-            color: #000;
-        }
-
-        .tag {
-            background: #220000;
-            color: #ff5555;
-            border: 1px solid #440000;
-            padding: 2px 6px;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            margin-left: 10px;
-        }
-
-        /* --- Footer --- */
-        footer {
-            border-top: 2px solid var(--border);
-            padding: 2rem;
+        .sanction-item {
+            background: #1a050a;
+            border: 1px solid #3d0010;
+            padding: 1rem;
             text-align: center;
-            color: #555;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            border-radius: 4px;
         }
+        .sanction-item span { display: block; font-weight: 800; color: var(--accent); font-size: 1.2rem; }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
+        footer { text-align: center; padding: 4rem; color: var(--text-dim); border-top: 1px solid var(--border); }
 
-        /* Mobile */
-        @media (max-width: 768px) {
-            header { flex-direction: column; text-align: center; gap: 1rem; }
-            .brand { font-size: 2.5rem; }
-        }
     </style>
 </head>
 <body>
 
-    <div class="scanlines"></div>
+    <nav>
+        <div class="logo">ZVIOS<span>HUB</span></div>
+        <div class="menu-btn" id="menuToggle"><i class="fas fa-bars"></i></div>
+    </nav>
+
+    <div class="side-menu" id="sideMenu">
+        <a href="index.html">Main Hub</a>
+        <a href="executors.html">Executors</a>
+        <a href="https://discord.gg/yourlink">Discord Server</a>
+    </div>
+
+    <header>
+        <h1 class="hero-title">LEGAL<br>DOCS</h1>
+        <p class="hero-tag">STRICT ADHERENCE REQUIRED</p>
+    </header>
 
     <div class="container">
-        <header>
-            <div class="brand">Zvios <span>Hub</span></div>
-            <div class="status-box">
-                <div class="blinker"></div>
-                System Active
-            </div>
-        </header>
-
-        <div class="grid">
-            <div class="tech-card" style="border-left: 4px solid var(--primary);">
-                <h3><i class="fas fa-crown"></i> Administration</h3>
-                <p>Managed by <strong>@Zvios</strong></p>
-                <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">The hub provides premium automation scripts. All systems are currently fully operational and undetected.</p>
-            </div>
-            
-            <div class="tech-card">
-                <h3><i class="fas fa-gamepad"></i> Game Targets</h3>
-                <div style="margin-top: 1rem;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                        <span>FISCH</span>
-                        <span style="color: var(--primary)">UNDETECTED</span>
-                    </div>
-                    <div style="width: 100%; height: 2px; background: #222;">
-                        <div style="width: 100%; height: 100%; background: var(--primary); box-shadow: 0 0 10px var(--primary);"></div>
-                    </div>
-                </div>
-                <div style="margin-top: 1.5rem;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                        <span>THE FORGE</span>
-                        <span style="color: var(--primary)">UNDETECTED</span>
-                    </div>
-                    <div style="width: 100%; height: 2px; background: #222;">
-                        <div style="width: 100%; height: 100%; background: var(--primary); box-shadow: 0 0 10px var(--primary);"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section-title">Protocols</div>
-        <div class="grid">
-            <div class="tech-card">
-                <h3>Directives</h3>
-                <div class="rule-row"><span class="rule-num">01</span> Common sense is mandatory.</div>
-                <div class="rule-row"><span class="rule-num">02</span> Staff hierarchy is absolute.</div>
-                <div class="rule-row"><span class="rule-num">03</span> No disrespect or toxicity.</div>
-                <div class="rule-row"><span class="rule-num">04</span> NSFW/Gore is strictly prohibited.</div>
-                <div class="rule-row"><span class="rule-num">05</span> No begging or advertising.</div>
-            </div>
-
-            <div class="tech-card">
-                <h3>Sanction Escalation</h3>
-                <div class="sanction-bar"></div>
-                <ul style="list-style: none; color: #aaa; font-size: 0.9rem; line-height: 1.8;">
-                    <li><span style="color: #fff;">2-9 Warnings:</span> Temporary Mutes (1h - 24h)</li>
-                    <li><span style="color: #fff;">10 Warnings:</span> Kick + Role Strip</li>
-                    <li><span style="color: var(--primary);">15 Warnings:</span> <strong style="color: var(--primary);">PERMANENT BAN</strong></li>
-                </ul>
-                
-                <h4 style="margin-top: 1.5rem; color: #fff;">Critical Offenses</h4>
-                <div style="margin-top: 0.5rem;">
-                    <span class="tag">Raiding</span>
-                    <span class="tag">Slurs</span>
-                    <span class="tag">Threats</span>
-                    <span class="tag">Doxxing</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="section-title">Injection Methods</div>
+        <div class="section-header"><h2>01. General Protocol</h2></div>
         
-        <h4 style="color: #666; margin-bottom: 1rem; text-transform: uppercase;">// Mobile Platforms</h4>
-        <div class="grid">
-            <div class="tech-card">
-                <h3>Delta <span class="tag">REC</span></h3>
-                <p style="color: #888;">Best performance for mobile devices.</p>
-                <a href="https://discord.gg/deltax" class="btn-tech">Connect</a>
-            </div>
-            <div class="tech-card">
-                <h3>Hydrogen</h3>
-                <p style="color: #888;">Stable alternative.</p>
-                <a href="https://discord.gg/hydrogen" class="btn-tech">Connect</a>
-            </div>
-            <div class="tech-card">
-                <h3>Vega X</h3>
-                <p style="color: #888;">Good key system.</p>
-                <a href="https://discord.gg/vegasupport" class="btn-tech">Connect</a>
-            </div>
+        <div class="rule-card">
+            <h3>Common Sense</h3>
+            <p>Not every violation is written. If you are being a nuisance or disrupting the community flow, staff will intervene regardless of specific rules.</p>
+        </div>
+        <div class="rule-card">
+            <h3>Staff Authority</h3>
+            <p>Staff decisions are final. Arguments in public channels result in an immediate mute. Appeals must be sent via Ticket with evidence.</p>
+        </div>
+        <div class="rule-card">
+            <h3>Alt Accounting</h3>
+            <p>Using secondary accounts to bypass mutes or bans will result in a permanent IP-ban from our infrastructure.</p>
         </div>
 
-        <h4 style="color: #666; margin-bottom: 1rem; text-transform: uppercase;">// PC Platforms</h4>
-        <div class="grid">
-            <div class="tech-card" style="border-color: var(--primary-dim);">
-                <h3>Wave <span class="tag">PAID</span></h3>
-                <p style="color: #888;">Premium execution capabilities.</p>
-                <a href="https://discord.gg/rARhPpN7fY" class="btn-tech">Connect</a>
-            </div>
-            <div class="tech-card">
-                <h3>Bunni <span class="tag">FREE</span></h3>
-                <p style="color: #888;">Top rated free executor.</p>
-                <a href="https://discord.com/invite/9DPW2G22cF" class="btn-tech">Connect</a>
-            </div>
-            <div class="tech-card">
-                <h3>Seliware <span class="tag">PAID</span></h3>
-                <p style="color: #888;">Reliable and undetected.</p>
-                <a href="https://discord.com/invite/nzEggEE9vx" class="btn-tech">Connect</a>
-            </div>
+        <div class="section-header"><h2>02. Severe Violations</h2></div>
+        
+        <div class="rule-card" style="border-left: 4px solid var(--accent);">
+            <h3>Malicious Activity (Beaming)</h3>
+            <p>Any attempt to compromise accounts via phishing, QR-logging, or suspicious links is an instant blacklist. We do not tolerate "beaming" here.</p>
+        </div>
+        <div class="rule-card">
+            <h3>Hate Speech & Slurs</h3>
+            <p>Zero tolerance for racial, homophobic, or transphobic slurs. Bypassing filters to post these will lead to a permanent ban without warning.</p>
+        </div>
+        <div class="rule-card">
+            <h3>Doxxing & Threats</h3>
+            <p>Leaking private information or making credible threats towards members or staff will lead to legal reporting and permanent removal.</p>
+        </div>
+        <div class="rule-card">
+            <h3>NSFW Content</h3>
+            <p>This includes baits, profile pictures, and stickers. Keep the hub professional. We are a scripting community, not a dump.</p>
         </div>
 
+        <div class="section-header"><h2>03. Sanction Ladder</h2></div>
+        <p style="color: var(--text-dim); margin-bottom: 1rem;">Accumulating warnings leads to automated system triggers:</p>
+        
+        <div class="sanction-box">
+            <div class="sanction-item"><span>2 WARNS</span> 1H Mute</div>
+            <div class="sanction-item"><span>5 WARNS</span> 7H Mute</div>
+            <div class="sanction-item"><span>10 WARNS</span> Server Kick</div>
+            <div class="sanction-item" style="background: var(--accent); color: white; border: none;"><span>15 WARNS</span> HARD BAN</div>
+        </div>
     </div>
 
     <footer>
-        <p>Zvios Hub // Unauthorized Access Prohibited // Est. 2025</p>
+        <p>&copy; 2025 Zvios Hub. All rights reserved.</p>
     </footer>
 
+    <script>
+        const btn = document.getElementById('menuToggle');
+        const menu = document.getElementById('sideMenu');
+        const icon = btn.querySelector('i');
+
+        btn.onclick = () => {
+            menu.classList.toggle('active');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        };
+    </script>
 </body>
 </html>
