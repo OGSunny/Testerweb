@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZVIOS HUB // CORE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Outfit:wght@300;500;800&display=swap" rel="stylesheet">
+    <title>ZVIOS HUB // LEGAL CORE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Outfit:wght@300;500;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -16,6 +16,8 @@
             --border: #1f1f1f;
             --text: #ffffff;
             --text-dim: #888;
+            --terminal-bg: #080808;
+            --code-green: #00ff66;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -67,11 +69,6 @@
             font-family: 'Chakra Petch'; position: relative; transition: 0.3s;
         }
         .side-menu a:hover { color: var(--accent); padding-left: 10px; }
-        .side-menu a::before {
-            content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
-            width: 0; height: 2px; background: var(--accent); transition: 0.3s;
-        }
-        .side-menu a:hover::before { width: 100%; opacity: 0.2; }
 
         /* --- Hero --- */
         header {
@@ -79,7 +76,6 @@
             position: relative; overflow: hidden;
         }
         
-        /* Glow blob behind header */
         header::before {
             content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 300px; height: 300px; background: var(--accent); opacity: 0.15;
@@ -108,42 +104,65 @@
         }
         .section-header h2 {
             font-size: 2rem; text-transform: uppercase; font-family: 'Chakra Petch';
-            letter-spacing: 1px;
+            letter-spacing: 1px; white-space: nowrap;
         }
         .line { height: 1px; background: #333; flex-grow: 1; }
 
-        /* Modern Cards */
+        /* Standard Cards */
         .rule-card {
             background: rgba(255,255,255,0.02);
             border: 1px solid var(--border);
             padding: 1.5rem 2rem; margin-bottom: 1rem;
             transition: 0.3s; position: relative; overflow: hidden;
         }
-        
-        .rule-card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 100%;
-            background: #333; transition: 0.3s;
-        }
-
-        .rule-card:hover {
-            background: rgba(255,255,255,0.04);
-            transform: translateX(5px);
-            border-color: #333;
-        }
-        
-        .rule-card:hover::before { background: var(--accent); box-shadow: 0 0 15px var(--accent); }
-
-        .rule-card h3 { 
-            color: var(--text); font-size: 1.1rem; margin-bottom: 0.5rem; 
-            text-transform: uppercase; font-family: 'Chakra Petch'; letter-spacing: 1px;
-        }
+        .rule-card:hover { background: rgba(255,255,255,0.04); transform: translateX(5px); border-color: #333; }
+        .rule-card h3 { color: var(--text); font-size: 1.1rem; margin-bottom: 0.5rem; text-transform: uppercase; font-family: 'Chakra Petch'; }
         .rule-card p { color: var(--text-dim); font-size: 0.95rem; }
 
-        /* Severe Section Special Style */
-        .severe .rule-card { border-color: rgba(255, 0, 60, 0.2); }
-        .severe .rule-card h3 { color: var(--accent); }
+        /* --- TERMINAL EULA SECTION --- */
+        .terminal-container {
+            background: var(--terminal-bg);
+            border: 1px solid #222;
+            padding: 0;
+            font-family: 'JetBrains Mono', monospace;
+            border-radius: 4px;
+            margin-top: 1rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
 
-        /* --- Sanctions Table Style --- */
+        .terminal-header {
+            background: #111;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #222;
+            display: flex; gap: 8px; align-items: center;
+        }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27c93f; }
+        .term-title { margin-left: 10px; color: #666; font-size: 0.8rem; }
+
+        .terminal-body { padding: 2rem; font-size: 0.85rem; color: #aaa; }
+
+        .term-row { margin-bottom: 1.5rem; display: block; border-left: 2px solid #333; padding-left: 1rem; }
+        .term-row:last-child { margin-bottom: 0; }
+        
+        .code-keyword { color: var(--accent); font-weight: bold; }
+        .code-var { color: #fff; font-weight: bold; }
+        .code-string { color: #888; font-style: italic; }
+
+        .highlight-box {
+            background: rgba(255, 0, 60, 0.05);
+            border: 1px solid rgba(255, 0, 60, 0.2);
+            color: var(--accent);
+            padding: 1rem;
+            margin-top: 1rem;
+            font-weight: bold;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        /* --- Sanctions --- */
         .sanction-box {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1px; background: var(--border); border: 1px solid var(--border);
@@ -152,27 +171,19 @@
             background: var(--bg); padding: 2rem 1rem; text-align: center;
             transition: 0.3s;
         }
-        .sanction-item:hover { background: var(--surface-hover); }
-        
         .sanction-item span {
             display: block; font-weight: 800; color: var(--accent);
             font-size: 1.8rem; font-family: 'Chakra Petch'; margin-bottom: 0.5rem;
         }
         .sanction-item small { color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; }
 
-        .hard-ban {
-            background: linear-gradient(45deg, #1a0006, #000);
-            position: relative; overflow: hidden;
-        }
-        .hard-ban span { text-shadow: 0 0 10px var(--accent); }
+        .hard-ban { background: linear-gradient(45deg, #1a0006, #000); }
 
         footer { 
             text-align: center; padding: 6rem 2rem; color: #444; 
-            font-size: 0.9rem; margin-top: 4rem;
-            border-top: 1px solid var(--border);
+            font-size: 0.9rem; margin-top: 4rem; border-top: 1px solid var(--border);
         }
-        
-        /* Glitch Animation Keyframes */
+
         @keyframes glitch {
             0% { transform: translate(0) }
             20% { transform: translate(-2px, 2px) }
@@ -195,12 +206,12 @@
     <div class="side-menu" id="sideMenu">
         <a href="index.html">Main Hub</a>
         <a href="executors.html">Executors</a>
-        <a href="https://discord.gg/KfTZQ4cGfu">Discord Server</a>
+        <a href="https://discord.gg/yourlink">Discord Server</a>
     </div>
 
     <header>
         <h1 class="hero-title">Protocol<br>V.1.0</h1>
-        <div><span class="hero-tag">STATUS: STRICT ENFORCEMENT</span></div>
+        <div><span class="hero-tag">STATUS: ENFORCED</span></div>
     </header>
 
     <div class="container">
@@ -218,37 +229,76 @@
             <h3>Staff Authority</h3>
             <p>Decisions are absolute. Public arguments result in immediate muting. Use the Ticket system.</p>
         </div>
-        <div class="rule-card">
-            <h3>Alt Evasion</h3>
-            <p>Bypassing sanctions via alternate accounts results in a permanent hardware ID ban.</p>
-        </div>
 
         <div class="section-header">
             <h2 style="color: var(--accent);">02 // Critical Violations</h2>
             <div class="line" style="background: var(--accent);"></div>
         </div>
         
-        <div class="severe">
-            <div class="rule-card">
-                <h3>Malicious Activity</h3>
-                <p>Phishing, QR-logging, "beaming," or distributing malware is an instant blacklist.</p>
+        <div class="rule-card" style="border-left: 2px solid var(--accent);">
+            <h3>Malicious Activity</h3>
+            <p>Phishing, QR-logging, "beaming," or distributing malware is an instant hardware blacklist.</p>
+        </div>
+        <div class="rule-card">
+            <h3>Hate Speech</h3>
+            <p>Zero tolerance for slurs. Filter bypassing is not clever, it's a permanent ban.</p>
+        </div>
+
+        <div class="section-header">
+            <h2>03 // SOFTWARE LICENSE (EULA)</h2>
+            <div class="line"></div>
+        </div>
+
+        <div class="terminal-container">
+            <div class="terminal-header">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+                <div class="term-title">user@zvios-mainframe:~/legal/license.txt</div>
             </div>
-            <div class="rule-card">
-                <h3>Hate Speech</h3>
-                <p>Zero tolerance for slurs or discriminatory language. Filter bypassing is not clever, it's a ban.</p>
-            </div>
-            <div class="rule-card">
-                <h3>Doxxing & Threats</h3>
-                <p>Leaking PII (Personally Identifiable Information) or credible threats are reported to authorities.</p>
-            </div>
-            <div class="rule-card">
-                <h3>NSFW Material</h3>
-                <p>Keep the environment sterile. No shock content, gore, or adult material.</p>
+            <div class="terminal-body">
+                <p style="margin-bottom: 1.5rem; color: var(--accent);">
+                    WARNING: ACCESSING OR USING ZVIOS SOFTWARE CONSTITUTES ACCEPTANCE OF THE FOLLOWING TERMS.
+                </p>
+
+                <div class="term-row">
+                    <div class="code-keyword">CLAUSE_01: REVERSE ENGINEERING</div>
+                    <div class="code-string">
+                        "Strictly Prohibited."
+                    </div>
+                    <p style="margin-top: 0.5rem;">
+                        You may not decompile, disassemble, reverse engineer, or attempt to derive the source code of any Zvios Hub script or executable. Any attempt to "dump" or "deobfuscate" our code triggers an automatic HWID flag and permanent ban.
+                    </p>
+                </div>
+
+                <div class="term-row">
+                    <div class="code-keyword">CLAUSE_02: INTELLECTUAL PROPERTY</div>
+                    <div class="code-string">
+                        "Ownership Rights."
+                    </div>
+                    <p style="margin-top: 0.5rem;">
+                        All scripts, UI assets, and obfuscation methods are the sole property of Zvios Hub. Unauthorized redistribution, selling, or "leaking" of premium scripts will result in immediate termination of service and blacklisting across all partner hubs.
+                    </p>
+                </div>
+
+                <div class="term-row">
+                    <div class="code-keyword">CLAUSE_03: BYPASSING PROTECTIONS</div>
+                    <div class="code-string">
+                        "Anti-Tamper."
+                    </div>
+                    <p style="margin-top: 0.5rem;">
+                        Modifying the script integrity check, spoofing HTTP requests, or bypassing the Key System is a violation of this agreement. We log all injection headers.
+                    </p>
+                </div>
+
+                <div class="highlight-box">
+                    VIOLATION = PERMANENT HWID BLACKLIST
+                </div>
             </div>
         </div>
 
         <div class="section-header">
-            <h2>03 // Auto-Sanctions</h2>
+            <h2>04 // Auto-Sanctions</h2>
             <div class="line"></div>
         </div>
         
