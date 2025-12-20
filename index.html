@@ -3,25 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZVIOS // HUB</title>
+    <title>ZVIOS // OPERATIONAL</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Russo+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         :root {
+            --primary: #ff0f0f; /* Aggressive Red */
+            --primary-dim: #5c0000;
             --bg: #050505;
-            --surface: #0a0a0a;
-            --surface-hover: #111111;
-            --border: #222;
-            --border-hover: #444;
-            --text-main: #ededed;
-            --text-muted: #888;
-            --accent: #5b21b6; /* Deep Violet */
-            --accent-bright: #8b5cf6;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
+            --panel: #111111;
+            --border: #333;
+            --text: #e0e0e0;
         }
 
         * {
@@ -32,447 +27,361 @@
 
         body {
             background-color: var(--bg);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            font-family: 'Chakra Petch', sans-serif;
             overflow-x: hidden;
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
+            background-image: 
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(255, 0, 0, 0.02));
+            background-size: 100% 2px, 3px 100%;
         }
 
-        /* --- Noise Overlay for Texture --- */
-        .noise {
+        /* --- Scanline Overlay --- */
+        .scanlines {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.2) 50%,
+                rgba(0,0,0,0.2)
+            );
+            background-size: 100% 4px;
             pointer-events: none;
-            z-index: 50;
-            opacity: 0.03;
-            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            z-index: 999;
+            opacity: 0.6;
         }
 
-        /* --- Grid Background --- */
-        .grid-bg {
-            position: fixed;
-            width: 100vw;
-            height: 100vh;
-            background-size: 50px 50px;
-            background-image: 
-                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            z-index: -1;
-            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-        }
-
-        /* --- Layout --- */
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 4rem 1.5rem;
-        }
-
-        /* --- Typography --- */
-        h1, h2, h3, .mono {
-            font-family: 'JetBrains Mono', monospace;
-            letter-spacing: -0.03em;
-        }
-
-        .gradient-text {
-            background: linear-gradient(to right, #fff, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
         }
 
         /* --- Header --- */
         header {
-            text-align: center;
-            margin-bottom: 6rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 2rem;
+            margin-bottom: 3rem;
             position: relative;
         }
 
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.4rem 0.8rem;
-            background: rgba(139, 92, 246, 0.1);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            border-radius: 4px;
-            color: var(--accent-bright);
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            font-family: 'JetBrains Mono', monospace;
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            right: 0;
+            width: 100px;
+            height: 10px;
+            background: var(--primary);
+            clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%);
         }
 
-        .dot {
-            width: 6px;
-            height: 6px;
-            background-color: var(--accent-bright);
-            border-radius: 50%;
-            margin-right: 8px;
-            box-shadow: 0 0 8px var(--accent-bright);
-            animation: pulse 2s infinite;
-        }
-
-        h1 {
-            font-size: clamp(3rem, 8vw, 5rem);
-            font-weight: 700;
+        .brand {
+            font-family: 'Russo One', sans-serif;
+            font-size: 3.5rem;
+            text-transform: uppercase;
+            color: #fff;
+            text-shadow: 2px 2px 0px var(--primary);
+            letter-spacing: 2px;
             line-height: 1;
-            margin-bottom: 1rem;
-            letter-spacing: -0.05em;
         }
 
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            max-width: 500px;
-            margin: 0 auto;
+        .brand span {
+            color: var(--primary);
         }
 
-        /* --- Bento Grid Layout --- */
-        .bento-grid {
+        .status-box {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        .blinker {
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+            animation: blink 1s infinite;
+        }
+
+        /* --- Sections --- */
+        .section-title {
+            font-family: 'Russo One', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            color: #fff;
+            border-left: 5px solid var(--primary);
+            padding-left: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .section-title::after {
+            content: '///';
+            color: var(--primary-dim);
+            letter-spacing: -2px;
+        }
+
+        /* --- Tech Cards --- */
+        .grid {
             display: grid;
-            grid-template-columns: repeat(12, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 1.5rem;
             margin-bottom: 4rem;
         }
 
-        .card {
-            background: var(--surface);
+        .tech-card {
+            background: var(--panel);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 2rem;
+            padding: 1.5rem;
             position: relative;
-            overflow: hidden;
-            transition: transform 0.2s ease, border-color 0.2s ease;
+            transition: 0.3s;
+            /* Angled Corners */
+            clip-path: polygon(
+                0 0, 
+                100% 0, 
+                100% 85%, 
+                92% 100%, 
+                0 100%
+            );
         }
 
-        .card:hover {
-            border-color: var(--border-hover);
-            background: var(--surface-hover);
+        .tech-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(255, 15, 15, 0.1);
         }
 
-        .col-12 { grid-column: span 12; }
-        .col-8 { grid-column: span 8; }
-        .col-6 { grid-column: span 6; }
-        .col-4 { grid-column: span 4; }
-
-        @media (max-width: 900px) {
-            .col-8, .col-6, .col-4 { grid-column: span 12; }
+        .tech-card:hover h3 {
+            color: var(--primary);
         }
 
-        /* --- Section Headers --- */
-        .section-header {
+        .tech-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        /* --- Rules Styling --- */
+        .rule-row {
             display: flex;
-            align-items: center;
+            align-items: baseline;
             gap: 1rem;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .section-header i {
-            color: var(--text-muted);
-        }
-
-        /* --- Rules List --- */
-        .rule-list {
-            list-style: none;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #222;
         }
         
-        .rule-list li {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--border);
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .rule-list li:last-child { border-bottom: none; }
-        .rule-list li strong { color: var(--text-main); }
-
-        /* --- Offense Tags --- */
-        .tag-cloud {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .tag {
-            font-size: 0.75rem;
-            padding: 0.3rem 0.6rem;
-            background: #151515;
-            border: 1px solid #333;
-            color: #aaa;
-            border-radius: 4px;
-        }
-        
-        .tag.red { border-color: rgba(239, 68, 68, 0.3); color: #fca5a5; background: rgba(239, 68, 68, 0.05); }
-
-        /* --- Executor Table Style --- */
-        .exec-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            margin-bottom: 0.75rem;
-            background: #080808;
-            transition: 0.2s;
-        }
-
-        .exec-item:hover {
-            border-color: var(--accent);
-            transform: translateX(5px);
-        }
-
-        .exec-info h4 {
-            font-size: 1rem;
+        .rule-num {
+            color: var(--primary);
             font-weight: 700;
-            margin-bottom: 0.2rem;
+            font-family: 'Russo One';
         }
 
-        .exec-meta {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
+        .sanction-bar {
+            height: 4px;
+            background: #222;
+            width: 100%;
+            margin: 2rem 0 1rem 0;
+            position: relative;
+        }
+        
+        .sanction-progress {
+            position: absolute;
+            height: 100%;
+            background: linear-gradient(90deg, #444, var(--primary));
+            width: 100%;
         }
 
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--text-muted);
-        }
-        .status-dot.green { background: var(--success); box-shadow: 0 0 5px var(--success); }
-        .status-dot.gold { background: var(--warning); box-shadow: 0 0 5px var(--warning); }
-
-        .btn-mini {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
+        /* --- Buttons --- */
+        .btn-tech {
+            display: inline-block;
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 0.5rem 1.5rem;
+            text-transform: uppercase;
+            font-weight: 700;
             text-decoration: none;
-            color: var(--text-main);
-            background: var(--border);
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
+            margin-top: 1rem;
             transition: 0.2s;
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
         }
 
-        .btn-mini:hover {
-            background: var(--text-main);
+        .btn-tech:hover {
+            background: var(--primary);
             color: #000;
         }
 
-        /* --- Sanctions Table --- */
-        .sanction-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.85rem;
+        .tag {
+            background: #220000;
+            color: #ff5555;
+            border: 1px solid #440000;
+            padding: 2px 6px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            margin-left: 10px;
         }
-        .sanction-row:last-child { border: none; }
-        .sanction-val { text-align: right; color: var(--text-muted); }
 
         /* --- Footer --- */
         footer {
-            border-top: 1px solid var(--border);
-            padding-top: 2rem;
-            margin-top: 4rem;
+            border-top: 2px solid var(--border);
+            padding: 2rem;
             text-align: center;
-            color: var(--text-muted);
+            color: #555;
             font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            header { flex-direction: column; text-align: center; gap: 1rem; }
+            .brand { font-size: 2.5rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="noise"></div>
-    <div class="grid-bg"></div>
+    <div class="scanlines"></div>
 
     <div class="container">
         <header>
-            <div class="badge">
-                <div class="dot"></div>
-                ZVIO ONTOP
+            <div class="brand">Zvios <span>Hub</span></div>
+            <div class="status-box">
+                <div class="blinker"></div>
+                System Active
             </div>
-            <h1>ZVIOS<span style="color: #333">///</span>HUB</h1>
-            <p class="subtitle">Roblox Automation & Scripting Resources.<br>Engineered for performance. Managed by <span style="color: #fff; font-weight: 600;">Zvio</span>.</p>
         </header>
 
-        <div class="bento-grid">
-            <div class="card col-8" style="background: linear-gradient(135deg, #0a0a0a 0%, #151515 100%);">
-                <h3 style="color: var(--text-muted); margin-bottom: 1rem;">SUPPORTED SCRIPTS</h3>
-                <div style="display: flex; gap: 2rem; align-items: center;">
-                    <div>
-                        <h2 class="mono">FISCH</h2>
-                        <span style="color: var(--success); font-size: 0.8rem;">● DETECTED: 0%</span>
+        <div class="grid">
+            <div class="tech-card" style="border-left: 4px solid var(--primary);">
+                <h3><i class="fas fa-crown"></i> Administration</h3>
+                <p>Managed by <strong>@Zvios</strong></p>
+                <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">The hub provides premium automation scripts. All systems are currently fully operational and undetected.</p>
+            </div>
+            
+            <div class="tech-card">
+                <h3><i class="fas fa-gamepad"></i> Game Targets</h3>
+                <div style="margin-top: 1rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>FISCH</span>
+                        <span style="color: var(--primary)">UNDETECTED</span>
                     </div>
-                    <div style="width: 1px; height: 40px; background: var(--border);"></div>
-                    <div>
-                        <h2 class="mono">THE FORGE</h2>
-                        <span style="color: var(--success); font-size: 0.8rem;">● DETECTED: 0%</span>
+                    <div style="width: 100%; height: 2px; background: #222;">
+                        <div style="width: 100%; height: 100%; background: var(--primary); box-shadow: 0 0 10px var(--primary);"></div>
+                    </div>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>THE FORGE</span>
+                        <span style="color: var(--primary)">UNDETECTED</span>
+                    </div>
+                    <div style="width: 100%; height: 2px; background: #222;">
+                        <div style="width: 100%; height: 100%; background: var(--primary); box-shadow: 0 0 10px var(--primary);"></div>
                     </div>
                 </div>
             </div>
-            <div class="card col-4" style="display: flex; flex-direction: column; justify-content: center;">
-                <h3 style="color: var(--text-muted); font-size: 0.8rem;">SERVER OWNER</h3>
-                <div style="font-size: 1.2rem; font-weight: 700; margin-top: 0.2rem;">👑 Zvios</div>
+        </div>
+
+        <div class="section-title">Protocols</div>
+        <div class="grid">
+            <div class="tech-card">
+                <h3>Directives</h3>
+                <div class="rule-row"><span class="rule-num">01</span> Common sense is mandatory.</div>
+                <div class="rule-row"><span class="rule-num">02</span> Staff hierarchy is absolute.</div>
+                <div class="rule-row"><span class="rule-num">03</span> No disrespect or toxicity.</div>
+                <div class="rule-row"><span class="rule-num">04</span> NSFW/Gore is strictly prohibited.</div>
+                <div class="rule-row"><span class="rule-num">05</span> No begging or advertising.</div>
             </div>
-        </div>
 
-        <div class="section-header">
-            <h2 class="mono">01 // PROTOCOLS</h2>
-        </div>
-
-        <div class="bento-grid">
-            <div class="card col-6">
-                <h3 style="margin-bottom: 1.5rem;">CORE RULES</h3>
-                <ul class="rule-list">
-                    <li><strong>01. Common Sense</strong> <span>Use logic.</span></li>
-                    <li><strong>02. Hierarchy</strong> <span>Staff verdict is final.</span></li>
-                    <li><strong>03. Respect</strong> <span>No toxicity allowed.</span></li>
-                    <li><strong>04. Exposure</strong> <span>No NSFW / Doxxing.</span></li>
+            <div class="tech-card">
+                <h3>Sanction Escalation</h3>
+                <div class="sanction-bar"></div>
+                <ul style="list-style: none; color: #aaa; font-size: 0.9rem; line-height: 1.8;">
+                    <li><span style="color: #fff;">2-9 Warnings:</span> Temporary Mutes (1h - 24h)</li>
+                    <li><span style="color: #fff;">10 Warnings:</span> Kick + Role Strip</li>
+                    <li><span style="color: var(--primary);">15 Warnings:</span> <strong style="color: var(--primary);">PERMANENT BAN</strong></li>
                 </ul>
-                <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 4px; font-size: 0.8rem; color: #fca5a5;">
-                    Severe offenses (Raiding, Slurs, Threats) result in immediate termination.
-                </div>
-            </div>
-
-            <div class="card col-6">
-                <h3 style="margin-bottom: 1.5rem;">SANCTION LADDER</h3>
-                <div class="sanction-row">
-                    <span>2 Warnings</span>
-                    <span class="sanction-val">Mute (1h)</span>
-                </div>
-                <div class="sanction-row">
-                    <span>4 Warnings</span>
-                    <span class="sanction-val">Mute (3h)</span>
-                </div>
-                <div class="sanction-row">
-                    <span>7 Warnings</span>
-                    <span class="sanction-val">Mute (12h)</span>
-                </div>
-                <div class="sanction-row">
-                    <span>10 Warnings</span>
-                    <span class="sanction-val" style="color: var(--danger)">KICK + WIPE</span>
-                </div>
-                <div class="sanction-row">
-                    <span>15 Warnings</span>
-                    <span class="sanction-val" style="color: var(--danger); font-weight: bold;">PERMANENT BAN</span>
-                </div>
                 
-                <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 0.9rem;">INFRACTIONS</h3>
-                <div class="tag-cloud">
-                    <span class="tag">Spamming</span>
-                    <span class="tag">Advertising</span>
-                    <span class="tag">Begging</span>
-                    <span class="tag red">Hate Speech</span>
-                    <span class="tag red">NSFW</span>
-                    <span class="tag red">IP Logging</span>
+                <h4 style="margin-top: 1.5rem; color: #fff;">Critical Offenses</h4>
+                <div style="margin-top: 0.5rem;">
+                    <span class="tag">Raiding</span>
+                    <span class="tag">Slurs</span>
+                    <span class="tag">Threats</span>
+                    <span class="tag">Doxxing</span>
                 </div>
             </div>
         </div>
 
-        <div class="section-header">
-            <h2 class="mono">02 // EXECUTORS</h2>
-        </div>
-
-        <div class="bento-grid">
-            <div class="card col-4">
-                <h3 style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">MOBILE ARCHITECTURE</h3>
-                
-                <div class="exec-item">
-                    <div class="exec-info">
-                        <h4>DELTA</h4>
-                        <div class="exec-meta"><div class="status-dot gold"></div> BEST</div>
-                    </div>
-                    <a href="https://discord.gg/deltax" class="btn-mini">GET</a>
-                </div>
-
-                <div class="exec-item">
-                    <div class="exec-info">
-                        <h4>HYDROGEN</h4>
-                        <div class="exec-meta"><div class="status-dot green"></div> STABLE</div>
-                    </div>
-                    <a href="https://discord.gg/hydrogen" class="btn-mini">GET</a>
-                </div>
-
-                <div class="exec-item">
-                    <div class="exec-info">
-                        <h4>VEGA X</h4>
-                        <div class="exec-meta"><div class="status-dot green"></div> WORKING</div>
-                    </div>
-                    <a href="https://discord.gg/vegasupport" class="btn-mini">GET</a>
-                </div>
+        <div class="section-title">Injection Methods</div>
+        
+        <h4 style="color: #666; margin-bottom: 1rem; text-transform: uppercase;">// Mobile Platforms</h4>
+        <div class="grid">
+            <div class="tech-card">
+                <h3>Delta <span class="tag">REC</span></h3>
+                <p style="color: #888;">Best performance for mobile devices.</p>
+                <a href="https://discord.gg/deltax" class="btn-tech">Connect</a>
             </div>
-
-            <div class="card col-4">
-                <h3 style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">PC (PREMIUM)</h3>
-                
-                <div class="exec-item">
-                    <div class="exec-info">
-                        <h4>WAVE</h4>
-                        <div class="exec-meta"><div class="status-dot gold"></div> HIGH UNC</div>
-                    </div>
-                    <a href="https://discord.gg/rARhPpN7fY" class="btn-mini">GET</a>
-                </div>
-
-                <div class="exec-item">
-                    <div class="exec-info">
-                        <h4>VOLCANO</h4>
-                        <div class="exec-meta"><div class="status-dot green"></div> EXTERNAL</div>
-                    </div>
-                    <a href="https://volcano.wtf" class="btn-mini">GET</a>
-                </div>
-
-                <div class="exec-item">
-                    <div class="exec-info">
-                        <h4>SELIWARE</h4>
-                        <div class="exec-meta"><div class="status-dot green"></div> STABLE</div>
-                    </div>
-                    <a href="https://discord.com/invite/nzEggEE9vx" class="btn-mini">GET</a>
-                </div>
+            <div class="tech-card">
+                <h3>Hydrogen</h3>
+                <p style="color: #888;">Stable alternative.</p>
+                <a href="https://discord.gg/hydrogen" class="btn-tech">Connect</a>
             </div>
-
-            <div class="card col-4">
-                <h3 style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">PC (FREE/KEY)</h3>
-                
-                <div class="exec-item">
-                    <div class="exec-info">
-                        <h4>BUNNI</h4>
-                        <div class="exec-meta"><div class="status-dot gold"></div> POPULAR</div>
-                    </div>
-                    <a href="https://discord.com/invite/9DPW2G22cF" class="btn-mini">GET</a>
-                </div>
-
-                <div class="exec-item">
-                    <div class="exec-info">
-                        <h4>SWIFT</h4>
-                        <div class="exec-meta"><div class="status-dot green"></div> LIGHT</div>
-                    </div>
-                    <a href="https://discord.com/invite/getswiftgg" class="btn-mini">GET</a>
-                </div>
+            <div class="tech-card">
+                <h3>Vega X</h3>
+                <p style="color: #888;">Good key system.</p>
+                <a href="https://discord.gg/vegasupport" class="btn-tech">Connect</a>
             </div>
         </div>
 
-        <footer>
-            <p>ZVIOS HUB &copy; 2025</p>
-            <p class="mono" style="opacity: 0.5; margin-top: 0.5rem;">ID: 928-112-X // SECURE CONNECTION</p>
-        </footer>
+        <h4 style="color: #666; margin-bottom: 1rem; text-transform: uppercase;">// PC Platforms</h4>
+        <div class="grid">
+            <div class="tech-card" style="border-color: var(--primary-dim);">
+                <h3>Wave <span class="tag">PAID</span></h3>
+                <p style="color: #888;">Premium execution capabilities.</p>
+                <a href="https://discord.gg/rARhPpN7fY" class="btn-tech">Connect</a>
+            </div>
+            <div class="tech-card">
+                <h3>Bunni <span class="tag">FREE</span></h3>
+                <p style="color: #888;">Top rated free executor.</p>
+                <a href="https://discord.com/invite/9DPW2G22cF" class="btn-tech">Connect</a>
+            </div>
+            <div class="tech-card">
+                <h3>Seliware <span class="tag">PAID</span></h3>
+                <p style="color: #888;">Reliable and undetected.</p>
+                <a href="https://discord.com/invite/nzEggEE9vx" class="btn-tech">Connect</a>
+            </div>
+        </div>
+
     </div>
+
+    <footer>
+        <p>Zvios Hub // Unauthorized Access Prohibited // Est. 2025</p>
+    </footer>
 
 </body>
 </html>
