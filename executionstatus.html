@@ -261,19 +261,28 @@
             }
         });
 
-        // API for external scripts
-        async function handleRequest(req) {
-            if (req.method === 'POST') {
-                increment();
-                return { success: true, count: data.total };
+        // Fetch count from API
+        async function fetchCount() {
+            try {
+                const response = await fetch('/api/count');
+                const apiData = await response.json();
+                if (apiData.total !== undefined) {
+                    data.total = apiData.total;
+                    update();
+                }
+            } catch (error) {
+                console.log('Using local count');
             }
-            return { total: data.total, today: data.today };
         }
+
+        // Sync with API every 3 seconds
+        setInterval(fetchCount, 3000);
 
         // Expose increment function globally
         window.incrementCounter = increment;
 
         load();
+        fetchCount();
     </script>
 </body>
 </html>
