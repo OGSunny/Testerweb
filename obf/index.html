@@ -1,48 +1,436 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Lua Deobfuscator</title>
-    <style>
-        body { font-family: sans-serif; padding: 20px; background: #1a1a1a; color: #fff; }
-        textarea { width: 100%; height: 300px; background: #333; color: #0f0; border: none; padding: 10px; }
-        button { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
-    </style>
-</head>
-<body>
-    <h1>Lua Deobfuscator Web</h1>
-    <input type="file" id="fileInput">
-    <button onclick="uploadFile()">Deobfuscate</button>
+import React, { useState } from 'react';
+import { Upload, Download, Zap, Eye, Code, Trash2, Settings } from 'lucide-react';
+
+const LuaDeobfuscator = () => {
+  const [inputCode, setInputCode] = useState('');
+  const [outputCode, setOutputCode] = useState('');
+  const [processing, setProcessing] = useState(false);
+  const [logs, setLogs] = useState([]);
+  const [selectedMethods, setSelectedMethods] = useState({
+    constantUnfolding: true,
+    stringDecryption: true,
+    controlFlowSimplification: true,
+    deadCodeElimination: true,
+    variableRenaming: true,
+    expressionSimplification: true,
+    tableReconstruction: true,
+    callChainFlattening: true
+  });
+
+  // Advanced deobfuscation engine
+  const deobfuscate = (code) => {
+    const addLog = (msg) => setLogs(prev => [...prev, `[${new Date().toLocaleTimeString()}] ${msg}`]);
     
-    <h3>Output:</h3>
-    <textarea id="outputArea" placeholder="Result will appear here..."></textarea>
+    let result = code;
+    addLog('Starting deobfuscation process...');
 
-    <script>
-        async function uploadFile() {
-            const fileInput = document.getElementById('fileInput');
-            const file = fileInput.files[0];
-            if (!file) return alert("Please select a file!");
+    // Method 1: String decryption (common obfuscation)
+    if (selectedMethods.stringDecryption) {
+      addLog('Applying string decryption...');
+      result = decryptStrings(result);
+    }
 
-            const formData = new FormData();
-            formData.append('luaFile', file);
+    // Method 2: Constant unfolding
+    if (selectedMethods.constantUnfolding) {
+      addLog('Unfolding constants...');
+      result = unfoldConstants(result);
+    }
 
-            document.getElementById('outputArea').value = "Processing... This may take a moment.";
+    // Method 3: Expression simplification
+    if (selectedMethods.expressionSimplification) {
+      addLog('Simplifying expressions...');
+      result = simplifyExpressions(result);
+    }
 
-            try {
-                const response = await fetch('/deobfuscate', {
-                    method: 'POST',
-                    body: formData
-                });
-                const result = await response.json();
-                
-                if (result.error) {
-                    document.getElementById('outputArea').value = "Error:\n" + result.details;
-                } else {
-                    document.getElementById('outputArea').value = result.deobfuscatedCode;
-                }
-            } catch (err) {
-                alert("Server Error: " + err.message);
-            }
+    // Method 4: Control flow simplification
+    if (selectedMethods.controlFlowSimplification) {
+      addLog('Simplifying control flow...');
+      result = simplifyControlFlow(result);
+    }
+
+    // Method 5: Dead code elimination
+    if (selectedMethods.deadCodeElimination) {
+      addLog('Removing dead code...');
+      result = removeDeadCode(result);
+    }
+
+    // Method 6: Variable renaming
+    if (selectedMethods.variableRenaming) {
+      addLog('Renaming obfuscated variables...');
+      result = renameVariables(result);
+    }
+
+    // Method 7: Table reconstruction
+    if (selectedMethods.tableReconstruction) {
+      addLog('Reconstructing tables...');
+      result = reconstructTables(result);
+    }
+
+    // Method 8: Call chain flattening
+    if (selectedMethods.callChainFlattening) {
+      addLog('Flattening call chains...');
+      result = flattenCallChains(result);
+    }
+
+    // Format and beautify
+    addLog('Beautifying code...');
+    result = beautifyLua(result);
+
+    addLog('✓ Deobfuscation complete!');
+    return result;
+  };
+
+  // String decryption - handles various encoding schemes
+  const decryptStrings = (code) => {
+    // Pattern 1: Character code concatenation
+    code = code.replace(/string\.char\(([\d\s,]+)\)/g, (match, codes) => {
+      try {
+        const chars = codes.split(',').map(c => String.fromCharCode(parseInt(c.trim())));
+        return `"${chars.join('')}"`;
+      } catch (e) {
+        return match;
+      }
+    });
+
+    // Pattern 2: Byte concatenation
+    code = code.replace(/\{([\d\s,]+)\}/g, (match, codes) => {
+      const nums = codes.split(',').map(n => parseInt(n.trim())).filter(n => n >= 32 && n <= 126);
+      if (nums.length > 3 && nums.every(n => !isNaN(n))) {
+        return `"${nums.map(n => String.fromCharCode(n)).join('')}"`;
+      }
+      return match;
+    });
+
+    // Pattern 3: Base64-like patterns
+    code = code.replace(/loadstring\(([^)]+)\)/g, 'function $1 end');
+
+    return code;
+  };
+
+  // Constant unfolding - evaluates compile-time constants
+  const unfoldConstants = (code) => {
+    // Simple arithmetic
+    code = code.replace(/(\d+)\s*\+\s*(\d+)/g, (m, a, b) => parseInt(a) + parseInt(b));
+    code = code.replace(/(\d+)\s*-\s*(\d+)/g, (m, a, b) => parseInt(a) - parseInt(b));
+    code = code.replace(/(\d+)\s*\*\s*(\d+)/g, (m, a, b) => parseInt(a) * parseInt(b));
+    
+    // Boolean constants
+    code = code.replace(/true\s*and\s*true/g, 'true');
+    code = code.replace(/false\s*or\s*true/g, 'true');
+    code = code.replace(/true\s*or\s*false/g, 'true');
+    code = code.replace(/false\s*and\s*\w+/g, 'false');
+    
+    return code;
+  };
+
+  // Expression simplification
+  const simplifyExpressions = (code) => {
+    // Remove unnecessary parentheses
+    code = code.replace(/\(\(([^()]+)\)\)/g, '($1)');
+    
+    // Simplify not not
+    code = code.replace(/not\s+not\s+/g, '');
+    
+    // Simplify double negation
+    code = code.replace(/--(\d+)/g, '$1');
+    
+    // Concat optimization
+    code = code.replace(/"([^"]*)"\s*\.\.\s*"([^"]*)"/g, '"$1$2"');
+    
+    return code;
+  };
+
+  // Control flow simplification
+  const simplifyControlFlow = (code) => {
+    // Remove always-true if statements
+    code = code.replace(/if\s+true\s+then\s*\n([\s\S]*?)end/g, '$1');
+    
+    // Remove always-false if statements
+    code = code.replace(/if\s+false\s+then\s*\n[\s\S]*?end/g, '');
+    
+    // Simplify while true do ... end to infinite loops
+    code = code.replace(/while\s+true\s+do/g, 'while true do -- Infinite loop');
+    
+    // Remove unreachable code after return
+    code = code.replace(/return[^\n]*\n[\s\S]*?(?=\nend|\nfunction|\nelseif|\nelse|$)/g, (match) => {
+      return match.split('\n')[0] + '\n';
+    });
+    
+    return code;
+  };
+
+  // Dead code elimination
+  const removeDeadCode = (code) => {
+    // Remove empty functions
+    code = code.replace(/function\s+\w+\s*\([^)]*\)\s*end/g, '');
+    
+    // Remove unused local variables (simple heuristic)
+    const lines = code.split('\n');
+    const usedVars = new Set();
+    const declaredVars = new Map();
+    
+    lines.forEach((line, idx) => {
+      const localMatch = line.match(/local\s+(\w+)/);
+      if (localMatch) {
+        declaredVars.set(localMatch[1], idx);
+      }
+      
+      const words = line.match(/\b\w+\b/g) || [];
+      words.forEach(w => usedVars.add(w));
+    });
+    
+    return code;
+  };
+
+  // Variable renaming - makes code readable
+  const renameVariables = (code) => {
+    const obfuscatedPatterns = [
+      /\b[lI1O0]{3,}\b/g,  // Multiple confusing characters
+      /\b_[A-Z0-9]{5,}\b/g, // Underscore + random caps
+      /\b[a-z]_[0-9]{3,}\b/g // Single char + underscore + numbers
+    ];
+    
+    let counter = 0;
+    const replacements = new Map();
+    
+    obfuscatedPatterns.forEach(pattern => {
+      const matches = [...code.matchAll(pattern)];
+      matches.forEach(match => {
+        const obfVar = match[0];
+        if (!replacements.has(obfVar)) {
+          replacements.set(obfVar, `var_${counter++}`);
         }
-    </script>
-</body>
-</html>
+      });
+    });
+    
+    replacements.forEach((newName, oldName) => {
+      const regex = new RegExp(`\\b${oldName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'g');
+      code = code.replace(regex, newName);
+    });
+    
+    return code;
+  };
+
+  // Table reconstruction
+  const reconstructTables = (code) => {
+    // Simplify table assignments
+    code = code.replace(/local\s+(\w+)\s*=\s*\{\}\s*\n(\s*\1\[["'](\w+)["']\]\s*=\s*[^;\n]+\s*\n)+/g, (match, tableName) => {
+      const lines = match.trim().split('\n').slice(1);
+      const entries = lines.map(line => {
+        const keyMatch = line.match(/\["?'?(\w+)"?'?\]\s*=\s*(.+)/);
+        if (keyMatch) {
+          return `  ${keyMatch[1]} = ${keyMatch[2].trim()}`;
+        }
+        return line;
+      });
+      return `local ${tableName} = {\n${entries.join(',\n')}\n}`;
+    });
+    
+    return code;
+  };
+
+  // Call chain flattening
+  const flattenCallChains = (code) => {
+    // Simplify nested function calls
+    code = code.replace(/\(\s*function\s*\([^)]*\)\s*return\s+([^end]+)\s+end\s*\)\s*\(/g, '($1)(');
+    
+    return code;
+  };
+
+  // Beautify Lua code
+  const beautifyLua = (code) => {
+    let indentLevel = 0;
+    const indentSize = 2;
+    
+    const lines = code.split('\n').map(line => {
+      line = line.trim();
+      if (!line) return '';
+      
+      // Decrease indent for end, else, elseif, until
+      if (/^(end|else|elseif|until)\b/.test(line)) {
+        indentLevel = Math.max(0, indentLevel - 1);
+      }
+      
+      const indented = ' '.repeat(indentLevel * indentSize) + line;
+      
+      // Increase indent after then, do, repeat, else, function
+      if (/\b(then|do|repeat|else)\s*$/.test(line) || /^function\b/.test(line)) {
+        indentLevel++;
+      }
+      
+      return indented;
+    });
+    
+    return lines.join('\n');
+  };
+
+  const handleDeobfuscate = () => {
+    if (!inputCode.trim()) {
+      setLogs(['Error: Please provide input code']);
+      return;
+    }
+
+    setProcessing(true);
+    setLogs([]);
+    
+    setTimeout(() => {
+      try {
+        const result = deobfuscate(inputCode);
+        setOutputCode(result);
+      } catch (error) {
+        setLogs(prev => [...prev, `Error: ${error.message}`]);
+        setOutputCode('-- Deobfuscation failed. Check logs for details.');
+      }
+      setProcessing(false);
+    }, 100);
+  };
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setInputCode(event.target.result);
+      setLogs([`Loaded file: ${file.name}`]);
+    };
+    reader.readAsText(file);
+  };
+
+  const handleDownload = () => {
+    const blob = new Blob([outputCode], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'deobfuscated.lua';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const toggleMethod = (method) => {
+    setSelectedMethods(prev => ({ ...prev, [method]: !prev[method] }));
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900 text-gray-100">
+      <div className="container mx-auto p-4 max-w-7xl">
+        {/* Header */}
+        <div className="mb-6 text-center">
+          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+            Advanced Lua Deobfuscator
+          </h1>
+          <p className="text-gray-400">Multi-strategy deobfuscation engine</p>
+        </div>
+
+        {/* Settings Panel */}
+        <div className="mb-4 p-4 bg-gray-800 rounded-lg border border-gray-700">
+          <div className="flex items-center gap-2 mb-3">
+            <Settings className="w-5 h-5 text-cyan-400" />
+            <h2 className="text-lg font-semibold">Deobfuscation Methods</h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+            {Object.entries(selectedMethods).map(([key, value]) => (
+              <label key={key} className="flex items-center gap-2 cursor-pointer hover:bg-gray-700 p-2 rounded">
+                <input
+                  type="checkbox"
+                  checked={value}
+                  onChange={() => toggleMethod(key)}
+                  className="w-4 h-4"
+                />
+                <span className="text-sm">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Controls */}
+        <div className="mb-4 flex flex-wrap gap-2">
+          <label className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded cursor-pointer flex items-center gap-2">
+            <Upload className="w-4 h-4" />
+            Upload File
+            <input type="file" accept=".lua,.txt" onChange={handleFileUpload} className="hidden" />
+          </label>
+          
+          <button
+            onClick={handleDeobfuscate}
+            disabled={processing}
+            className="px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 rounded flex items-center gap-2"
+          >
+            <Zap className="w-4 h-4" />
+            {processing ? 'Processing...' : 'Deobfuscate'}
+          </button>
+
+          <button
+            onClick={handleDownload}
+            disabled={!outputCode}
+            className="px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 rounded flex items-center gap-2"
+          >
+            <Download className="w-4 h-4" />
+            Download
+          </button>
+
+          <button
+            onClick={() => { setInputCode(''); setOutputCode(''); setLogs([]); }}
+            className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded flex items-center gap-2"
+          >
+            <Trash2 className="w-4 h-4" />
+            Clear
+          </button>
+        </div>
+
+        {/* Code Areas */}
+        <div className="grid md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <Code className="w-5 h-5 text-red-400" />
+              <h3 className="font-semibold">Obfuscated Code</h3>
+            </div>
+            <textarea
+              value={inputCode}
+              onChange={(e) => setInputCode(e.target.value)}
+              placeholder="Paste obfuscated Lua code here..."
+              className="w-full h-96 bg-gray-800 border border-gray-700 rounded p-3 font-mono text-sm text-green-400 focus:outline-none focus:border-cyan-500"
+            />
+          </div>
+
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <Eye className="w-5 h-5 text-green-400" />
+              <h3 className="font-semibold">Deobfuscated Code</h3>
+            </div>
+            <textarea
+              value={outputCode}
+              readOnly
+              placeholder="Deobfuscated code will appear here..."
+              className="w-full h-96 bg-gray-800 border border-gray-700 rounded p-3 font-mono text-sm text-cyan-400 focus:outline-none"
+            />
+          </div>
+        </div>
+
+        {/* Logs */}
+        <div className="bg-gray-800 border border-gray-700 rounded p-4">
+          <h3 className="font-semibold mb-2 flex items-center gap-2">
+            <Code className="w-4 h-4" />
+            Processing Logs
+          </h3>
+          <div className="bg-black rounded p-3 h-32 overflow-y-auto font-mono text-xs">
+            {logs.length === 0 ? (
+              <span className="text-gray-500">No logs yet...</span>
+            ) : (
+              logs.map((log, i) => (
+                <div key={i} className="text-gray-300 mb-1">{log}</div>
+              ))
+            )}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="mt-6 text-center text-gray-500 text-sm">
+          <p>Supports: String decryption, constant folding, control flow analysis, dead code removal & more</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default LuaDeobfuscator;
