@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lua Deobfuscator</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #1a1a1a; color: #fff; }
+        textarea { width: 100%; height: 300px; background: #333; color: #0f0; border: none; padding: 10px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Lua Deobfuscator Web</h1>
+    <input type="file" id="fileInput">
+    <button onclick="uploadFile()">Deobfuscate</button>
+    
+    <h3>Output:</h3>
+    <textarea id="outputArea" placeholder="Result will appear here..."></textarea>
+
+    <script>
+        async function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (!file) return alert("Please select a file!");
+
+            const formData = new FormData();
+            formData.append('luaFile', file);
+
+            document.getElementById('outputArea').value = "Processing... This may take a moment.";
+
+            try {
+                const response = await fetch('/deobfuscate', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                
+                if (result.error) {
+                    document.getElementById('outputArea').value = "Error:\n" + result.details;
+                } else {
+                    document.getElementById('outputArea').value = result.deobfuscatedCode;
+                }
+            } catch (err) {
+                alert("Server Error: " + err.message);
+            }
+        }
+    </script>
+</body>
+</html>
