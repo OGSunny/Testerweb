@@ -18,6 +18,7 @@
             --text-dim: #888;
             --terminal-bg: #080808;
             --code-green: #00ff66;
+            --warning: #ffbd2e;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -29,170 +30,443 @@
             line-height: 1.6;
             overflow-x: hidden;
             background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 30px 30px;
+                radial-gradient(circle at 20% 50%, rgba(255, 0, 60, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 255, 102, 0.02) 0%, transparent 50%),
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+            background-position: 0 0, 0 0, 0 0, 0 0;
+            animation: bgScroll 20s linear infinite;
+        }
+
+        @keyframes bgScroll {
+            0% { background-position: 0 0, 0 0, 0 0, 0 0; }
+            100% { background-position: 0 0, 0 0, 40px 40px, 40px 40px; }
         }
 
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, var(--accent), #aa0028);
+            border-radius: 5px; 
+        }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
         /* --- Nav --- */
         nav {
-            position: fixed; top: 0; width: 100%; padding: 1.5rem 2rem;
+            position: fixed; top: 0; width: 100%; padding: 1.5rem 4rem;
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(5, 5, 5, 0.7); backdrop-filter: blur(12px);
-            z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05);
+            background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(20px) saturate(180%);
+            z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
         }
 
-        .logo { font-family: 'Chakra Petch'; font-weight: 800; font-size: 1.5rem; letter-spacing: 2px; }
-        .logo span { color: var(--accent); text-shadow: 0 0 10px var(--accent-glow); }
+        .logo { 
+            font-family: 'Chakra Petch'; 
+            font-weight: 800; 
+            font-size: 1.6rem; 
+            letter-spacing: 3px;
+            position: relative;
+        }
+        .logo span { 
+            color: var(--accent); 
+            text-shadow: 0 0 20px var(--accent-glow), 0 0 40px var(--accent-glow);
+            animation: pulse 2s ease-in-out infinite;
+        }
 
-        .menu-btn { font-size: 1.5rem; cursor: pointer; color: var(--text); transition: 0.3s; z-index: 102; }
-        .menu-btn:hover { color: var(--accent); transform: scale(1.1); }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .menu-btn { 
+            font-size: 1.6rem; 
+            cursor: pointer; 
+            color: var(--text); 
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 102;
+            padding: 0.5rem;
+        }
+        .menu-btn:hover { 
+            color: var(--accent); 
+            transform: scale(1.15) rotate(90deg);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
 
         .side-menu {
-            position: fixed; top: 0; right: -100%; width: 300px; height: 100%;
-            background: var(--bg); z-index: 101; padding: 8rem 2rem;
-            transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            border-left: 1px solid var(--border);
-            box-shadow: -20px 0 50px rgba(0,0,0,0.8);
+            position: fixed; top: 0; right: -100%; width: 350px; height: 100%;
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.98) 0%, rgba(20, 5, 10, 0.98) 100%);
+            backdrop-filter: blur(20px);
+            z-index: 101; padding: 8rem 3rem;
+            transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            border-left: 1px solid rgba(255, 0, 60, 0.2);
+            box-shadow: -30px 0 60px rgba(0,0,0,0.9);
         }
         .side-menu.active { right: 0; }
         .side-menu a {
             display: block; color: var(--text); text-decoration: none;
-            font-size: 1.5rem; font-weight: 800; margin-bottom: 2rem;
-            text-transform: uppercase; letter-spacing: 1px;
-            font-family: 'Chakra Petch'; position: relative; transition: 0.3s;
+            font-size: 1.6rem; font-weight: 800; margin-bottom: 2.5rem;
+            text-transform: uppercase; letter-spacing: 2px;
+            font-family: 'Chakra Petch'; position: relative; transition: all 0.4s;
+            padding-left: 0;
         }
-        .side-menu a:hover { color: var(--accent); padding-left: 10px; }
+        .side-menu a::before {
+            content: '//';
+            position: absolute;
+            left: -30px;
+            color: var(--accent);
+            opacity: 0;
+            transition: all 0.4s;
+        }
+        .side-menu a:hover { 
+            color: var(--accent); 
+            padding-left: 15px;
+            text-shadow: 0 0 20px var(--accent-glow);
+        }
+        .side-menu a:hover::before {
+            opacity: 1;
+            left: -15px;
+        }
 
         /* --- Hero --- */
         header {
-            padding: 12rem 2rem 6rem; text-align: center;
-            position: relative; overflow: hidden;
+            padding: 14rem 2rem 8rem; 
+            text-align: center;
+            position: relative; 
+            overflow: hidden;
         }
         
         header::before {
-            content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 300px; height: 300px; background: var(--accent); opacity: 0.15;
-            filter: blur(100px); border-radius: 50%; z-index: -1;
+            content: ''; 
+            position: absolute; 
+            top: 40%; 
+            left: 50%; 
+            transform: translate(-50%, -50%);
+            width: 500px; 
+            height: 500px; 
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            opacity: 0.12;
+            filter: blur(120px);
+            animation: heroGlow 6s ease-in-out infinite;
+        }
+
+        @keyframes heroGlow {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.12; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.18; }
         }
 
         .hero-title {
-            font-size: clamp(3rem, 10vw, 7rem); font-weight: 800;
-            text-transform: uppercase; line-height: 0.9;
+            font-size: clamp(3.5rem, 12vw, 8rem); 
+            font-weight: 800;
+            text-transform: uppercase; 
+            line-height: 0.85;
             font-family: 'Chakra Petch';
-            position: relative; display: inline-block;
+            position: relative; 
+            display: inline-block;
+            background: linear-gradient(180deg, #fff 0%, #aaa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .hero-tag {
-            color: var(--accent); font-family: 'Chakra Petch'; letter-spacing: 4px;
-            margin-top: 1.5rem; font-weight: 600; font-size: 0.9rem;
-            background: rgba(255, 0, 60, 0.1); display: inline-block;
-            padding: 0.5rem 1rem; border: 1px solid rgba(255, 0, 60, 0.2);
+            color: var(--accent); 
+            font-family: 'Chakra Petch'; 
+            letter-spacing: 5px;
+            margin-top: 2rem; 
+            font-weight: 700; 
+            font-size: 0.95rem;
+            background: rgba(255, 0, 60, 0.08); 
+            display: inline-block;
+            padding: 0.75rem 2rem; 
+            border: 1px solid rgba(255, 0, 60, 0.3);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(255, 0, 60, 0.2);
+        }
+
+        .hero-tag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
 
         /* --- Content --- */
-        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 2rem 3rem; }
         
         .section-header {
-            margin: 5rem 0 2rem; display: flex; align-items: center; gap: 1rem;
+            margin: 6rem 0 3rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 1.5rem;
         }
         .section-header h2 {
-            font-size: 2rem; text-transform: uppercase; font-family: 'Chakra Petch';
-            letter-spacing: 1px; white-space: nowrap;
+            font-size: 2.2rem; 
+            text-transform: uppercase; 
+            font-family: 'Chakra Petch';
+            letter-spacing: 2px; 
+            white-space: nowrap;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
         }
-        .line { height: 1px; background: #333; flex-grow: 1; }
+        .line { 
+            height: 2px; 
+            background: linear-gradient(90deg, #333 0%, transparent 100%);
+            flex-grow: 1; 
+        }
 
-        /* Standard Cards */
+        /* Enhanced Cards */
         .rule-card {
-            background: rgba(255,255,255,0.02);
+            background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
             border: 1px solid var(--border);
-            padding: 1.5rem 2rem; margin-bottom: 1rem;
-            transition: 0.3s; position: relative; overflow: hidden;
+            padding: 2rem 2.5rem; 
+            margin-bottom: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative; 
+            overflow: hidden;
+            border-radius: 2px;
         }
-        .rule-card:hover { background: rgba(255,255,255,0.04); transform: translateX(5px); border-color: #333; }
-        .rule-card h3 { color: var(--text); font-size: 1.1rem; margin-bottom: 0.5rem; text-transform: uppercase; font-family: 'Chakra Petch'; }
-        .rule-card p { color: var(--text-dim); font-size: 0.95rem; }
+
+        .rule-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 3px;
+            height: 0;
+            background: var(--accent);
+            transition: height 0.4s ease;
+        }
+
+        .rule-card:hover {
+            background: rgba(255,255,255,0.05); 
+            transform: translateX(10px);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .rule-card:hover::before {
+            height: 100%;
+        }
+
+        .rule-card h3 { 
+            color: var(--text); 
+            font-size: 1.2rem; 
+            margin-bottom: 0.75rem; 
+            text-transform: uppercase; 
+            font-family: 'Chakra Petch';
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .rule-card p { 
+            color: var(--text-dim); 
+            font-size: 1rem; 
+            line-height: 1.7;
+        }
+
+        .rule-card.critical {
+            border-left: 3px solid var(--accent);
+            background: linear-gradient(135deg, rgba(255, 0, 60, 0.05) 0%, rgba(255, 0, 60, 0.01) 100%);
+        }
+
+        .rule-card.critical h3 {
+            color: var(--accent);
+        }
 
         /* --- TERMINAL EULA SECTION --- */
         .terminal-container {
             background: var(--terminal-bg);
-            border: 1px solid #222;
+            border: 1px solid #2a2a2a;
             padding: 0;
             font-family: 'JetBrains Mono', monospace;
-            border-radius: 4px;
-            margin-top: 1rem;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            border-radius: 8px;
+            margin-top: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255, 255, 255, 0.03);
+            overflow: hidden;
         }
 
         .terminal-header {
-            background: #111;
-            padding: 0.5rem 1rem;
-            border-bottom: 1px solid #222;
-            display: flex; gap: 8px; align-items: center;
+            background: linear-gradient(180deg, #1a1a1a 0%, #111 100%);
+            padding: 0.75rem 1.5rem;
+            border-bottom: 1px solid #2a2a2a;
+            display: flex; 
+            gap: 8px; 
+            align-items: center;
         }
-        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot { 
+            width: 12px; 
+            height: 12px; 
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
         .dot.red { background: #ff5f56; }
         .dot.yellow { background: #ffbd2e; }
         .dot.green { background: #27c93f; }
-        .term-title { margin-left: 10px; color: #666; font-size: 0.8rem; }
+        .term-title { 
+            margin-left: 15px; 
+            color: #666; 
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
 
-        .terminal-body { padding: 2rem; font-size: 0.85rem; color: #aaa; }
+        .terminal-body { 
+            padding: 2.5rem; 
+            font-size: 0.9rem; 
+            color: #aaa; 
+            line-height: 1.8;
+        }
 
-        .term-row { margin-bottom: 1.5rem; display: block; border-left: 2px solid #333; padding-left: 1rem; }
+        .term-row { 
+            margin-bottom: 2.5rem; 
+            display: block; 
+            border-left: 3px solid #333; 
+            padding-left: 1.5rem;
+            transition: all 0.3s;
+        }
+        .term-row:hover {
+            border-left-color: var(--accent);
+        }
         .term-row:last-child { margin-bottom: 0; }
         
-        .code-keyword { color: var(--accent); font-weight: bold; }
+        .code-keyword { 
+            color: var(--accent); 
+            font-weight: bold;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
         .code-var { color: #fff; font-weight: bold; }
-        .code-string { color: #888; font-style: italic; }
+        .code-string { 
+            color: #888; 
+            font-style: italic;
+            display: block;
+            margin-bottom: 1rem;
+        }
 
         .highlight-box {
-            background: rgba(255, 0, 60, 0.05);
-            border: 1px solid rgba(255, 0, 60, 0.2);
+            background: linear-gradient(135deg, rgba(255, 0, 60, 0.08) 0%, rgba(255, 0, 60, 0.12) 100%);
+            border: 2px solid rgba(255, 0, 60, 0.3);
             color: var(--accent);
-            padding: 1rem;
-            margin-top: 1rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
             font-weight: bold;
             text-align: center;
             text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(255, 0, 60, 0.2);
+        }
+
+        .highlight-box::before {
+            content: '⚠';
+            position: absolute;
+            font-size: 4rem;
+            opacity: 0.1;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
         /* --- Sanctions --- */
         .sanction-box {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1px; background: var(--border); border: 1px solid var(--border);
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2px; 
+            background: var(--border); 
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 2rem;
         }
         .sanction-item {
-            background: var(--bg); padding: 2rem 1rem; text-align: center;
-            transition: 0.3s;
+            background: var(--bg); 
+            padding: 3rem 1.5rem; 
+            text-align: center;
+            transition: all 0.4s;
+            position: relative;
+        }
+        .sanction-item:hover {
+            background: rgba(255, 255, 255, 0.02);
+            transform: translateY(-5px);
         }
         .sanction-item span {
-            display: block; font-weight: 800; color: var(--accent);
-            font-size: 1.8rem; font-family: 'Chakra Petch'; margin-bottom: 0.5rem;
+            display: block; 
+            font-weight: 800; 
+            color: var(--accent);
+            font-size: 3rem; 
+            font-family: 'Chakra Petch'; 
+            margin-bottom: 0.75rem;
+            text-shadow: 0 0 20px var(--accent-glow);
         }
-        .sanction-item small { color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; }
+        .sanction-item small { 
+            color: var(--text-dim); 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .sanction-item .penalty {
+            margin-top: 1rem; 
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
 
-        .hard-ban { background: linear-gradient(45deg, #1a0006, #000); }
+        .hard-ban { 
+            background: linear-gradient(135deg, #1a0006 0%, #000 100%);
+            border: 2px solid var(--accent);
+        }
+        .hard-ban span {
+            animation: dangerPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes dangerPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
 
         footer { 
-            text-align: center; padding: 6rem 2rem; color: #444; 
-            font-size: 0.9rem; margin-top: 4rem; border-top: 1px solid var(--border);
+            text-align: center; 
+            padding: 8rem 2rem 4rem; 
+            color: #444; 
+            font-size: 0.9rem; 
+            margin-top: 6rem; 
+            border-top: 1px solid var(--border);
+            font-family: 'Chakra Petch';
+            letter-spacing: 2px;
         }
 
         @keyframes glitch {
             0% { transform: translate(0) }
-            20% { transform: translate(-2px, 2px) }
-            40% { transform: translate(-2px, -2px) }
-            60% { transform: translate(2px, 2px) }
-            80% { transform: translate(2px, -2px) }
+            20% { transform: translate(-3px, 3px) }
+            40% { transform: translate(-3px, -3px) }
+            60% { transform: translate(3px, 3px) }
+            80% { transform: translate(3px, -3px) }
             100% { transform: translate(0) }
         }
-        .hero-title:hover { animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite; }
+        .hero-title:hover { 
+            animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 1.5rem 2rem; }
+            .container { padding: 2rem; }
+            .section-header h2 { font-size: 1.6rem; }
+            .side-menu { width: 100%; }
+        }
 
     </style>
 </head>
@@ -204,9 +478,9 @@
     </nav>
 
     <div class="side-menu" id="sideMenu">
-        <a href="index.html">Main Hub</a>
-        <a href="executors.html">Executors</a>
-        <a href="https://discord.gg/yourlink">Discord Server</a>
+        <a href="index.html"><i class="fas fa-home"></i> Main Hub</a>
+        <a href="executors.html"><i class="fas fa-code"></i> Executors</a>
+        <a href="https://discord.gg/9crrfQNyBz"><i class="fab fa-discord"></i> Discord Server</a>
     </div>
 
     <header>
@@ -222,30 +496,38 @@
         </div>
         
         <div class="rule-card">
-            <h3>Common Sense</h3>
-            <p>Unwritten rules apply. If you disrupt the flow, staff will intervene. Use judgment.</p>
+            <h3><i class="fas fa-brain"></i> Common Sense</h3>
+            <p>Unwritten rules apply. If you disrupt the flow, staff will intervene. Use judgment and respect the community standards.</p>
         </div>
         <div class="rule-card">
-            <h3>Staff Authority</h3>
-            <p>Decisions are absolute. Public arguments result in immediate muting. Use the Ticket system.</p>
+            <h3><i class="fas fa-gavel"></i> Staff Authority</h3>
+            <p>Decisions are absolute. Public arguments result in immediate muting. Use the Ticket system for disputes or concerns.</p>
+        </div>
+        <div class="rule-card">
+            <h3><i class="fas fa-comments"></i> Communication Standards</h3>
+            <p>Keep discussions productive and on-topic. Spam, excessive caps, or flooding will result in warnings.</p>
         </div>
 
         <div class="section-header">
             <h2 style="color: var(--accent);">02 // Critical Violations</h2>
-            <div class="line" style="background: var(--accent);"></div>
+            <div class="line" style="background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);"></div>
         </div>
         
-        <div class="rule-card" style="border-left: 2px solid var(--accent);">
-            <h3>Malicious Activity</h3>
-            <p>Phishing, QR-logging, "beaming," or distributing malware is an instant hardware blacklist.</p>
+        <div class="rule-card critical">
+            <h3><i class="fas fa-skull-crossbones"></i> Malicious Activity</h3>
+            <p>Phishing, QR-logging, "beaming," or distributing malware is an instant hardware blacklist. No exceptions, no appeals.</p>
         </div>
-        <div class="rule-card">
-            <h3>Hate Speech</h3>
-            <p>Zero tolerance for slurs. Filter bypassing is not clever, it's a permanent ban.</p>
+        <div class="rule-card critical">
+            <h3><i class="fas fa-ban"></i> Hate Speech</h3>
+            <p>Zero tolerance for slurs, discriminatory language, or hate speech. Filter bypassing is not clever—it's a permanent ban.</p>
+        </div>
+        <div class="rule-card critical">
+            <h3><i class="fas fa-user-shield"></i> Doxxing & Harassment</h3>
+            <p>Sharing personal information or coordinating harassment will result in immediate removal and potential legal action.</p>
         </div>
 
         <div class="section-header">
-            <h2>03 // SOFTWARE LICENSE (EULA)</h2>
+            <h2>03 // Software License (EULA)</h2>
             <div class="line"></div>
         </div>
 
@@ -257,8 +539,8 @@
                 <div class="term-title">user@zvios-mainframe:~/legal/license.txt</div>
             </div>
             <div class="terminal-body">
-                <p style="margin-bottom: 1.5rem; color: var(--accent);">
-                    WARNING: ACCESSING OR USING ZVIOS SOFTWARE CONSTITUTES ACCEPTANCE OF THE FOLLOWING TERMS.
+                <p style="margin-bottom: 2rem; color: var(--accent); font-weight: bold; font-size: 1rem;">
+                    <i class="fas fa-exclamation-triangle"></i> WARNING: ACCESSING OR USING ZVIOS SOFTWARE CONSTITUTES ACCEPTANCE OF THE FOLLOWING TERMS.
                 </p>
 
                 <div class="term-row">
@@ -277,7 +559,7 @@
                         "Ownership Rights."
                     </div>
                     <p style="margin-top: 0.5rem;">
-                        All scripts, UI assets, and obfuscation methods are the sole property of Zvios Hub. Unauthorized redistribution, selling, or "leaking" of premium scripts will result in immediate termination of service and blacklisting across all partner hubs.
+                        All scripts, UI assets, and obfuscation methods are the sole property of Zvios Hub. Unauthorized redistribution, selling, or "leaking" of scripts will result in immediate termination of service and blacklisting across all partner hubs.
                     </p>
                 </div>
 
@@ -287,12 +569,22 @@
                         "Anti-Tamper."
                     </div>
                     <p style="margin-top: 0.5rem;">
-                        Modifying the script integrity check, spoofing HTTP requests, or bypassing the Key System is a violation of this agreement. We log all injection headers.
+                        Modifying the script integrity check, spoofing HTTP requests, or bypassing security measures is a violation of this agreement. We log all injection attempts and unauthorized modifications.
+                    </p>
+                </div>
+
+                <div class="term-row">
+                    <div class="code-keyword">CLAUSE_04: NO WARRANTY</div>
+                    <div class="code-string">
+                        "As-Is Provision."
+                    </div>
+                    <p style="margin-top: 0.5rem;">
+                        All software is provided "as-is" without warranty of any kind. Zvios Hub is not responsible for any damages, bans, or issues arising from the use of our scripts.
                     </p>
                 </div>
 
                 <div class="highlight-box">
-                    VIOLATION = PERMANENT HWID BLACKLIST
+                    <i class="fas fa-exclamation-circle"></i> VIOLATION = PERMANENT HWID BLACKLIST
                 </div>
             </div>
         </div>
@@ -306,28 +598,38 @@
             <div class="sanction-item">
                 <span>2</span>
                 <small>Warnings</small>
-                <div style="margin-top:0.5rem; color: #fff;">1H Mute</div>
+                <div class="penalty">1H Mute</div>
             </div>
             <div class="sanction-item">
                 <span>5</span>
                 <small>Warnings</small>
-                <div style="margin-top:0.5rem; color: #fff;">24H Mute</div>
+                <div class="penalty">24H Mute</div>
             </div>
             <div class="sanction-item">
                 <span>10</span>
                 <small>Warnings</small>
-                <div style="margin-top:0.5rem; color: #fff;">Kick</div>
+                <div class="penalty">Kick</div>
             </div>
             <div class="sanction-item hard-ban">
                 <span>15</span>
                 <small style="color:var(--accent);">CRITICAL</small>
-                <div style="margin-top:0.5rem; color: #fff;">PERMA BAN</div>
+                <div class="penalty" style="color: var(--accent);">PERMA BAN</div>
             </div>
+        </div>
+
+        <div style="margin-top: 4rem; padding: 2rem; background: rgba(255, 255, 255, 0.02); border-left: 3px solid var(--accent);">
+            <h3 style="font-family: 'Chakra Petch'; margin-bottom: 1rem; color: var(--accent);">
+                <i class="fas fa-info-circle"></i> Important Notes
+            </h3>
+            <p style="color: var(--text-dim); line-height: 1.8;">
+                All warnings are tracked automatically via our moderation system. Bans issued for critical violations are permanent and non-negotiable. Appeals for standard sanctions can be submitted via the ticket system after the initial penalty period. By using Zvios Hub services, you acknowledge that you've read and agreed to these terms.
+            </p>
         </div>
     </div>
 
     <footer>
-        <p>EST 2025 // ZVIOS NETWORK</p>
+        <p>EST 2025 // ZVIOS NETWORK // ALL RIGHTS RESERVED</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem; opacity: 0.5;">PROTOCOL VERSION 1.0.0</p>
     </footer>
 
     <script>
@@ -340,6 +642,26 @@
             icon.classList.toggle('fa-bars');
             icon.classList.toggle('fa-times');
         };
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!menu.contains(e.target) && !btn.contains(e.target) && menu.classList.contains('active')) {
+                menu.classList.remove('active');
+                icon.classList.add('fa-bars');
+                icon.classList.remove('fa-times');
+            }
+        });
+
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
     </script>
 </body>
 </html>
