@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zvios Hub - Staff Application</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8b5cf6;
+            --primary-glow: rgba(139, 92, 246, 0.5);
+            --bg-dark: #0f172a;
+            --glass-bg: rgba(15, 23, 42, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #020617;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        body::before {
+            background: #7c3aed;
+            top: -10%;
+            left: -10%;
+        }
+
+        body::after {
+            background: #db2777;
+            bottom: -10%;
+            right: -10%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(50px, 50px); }
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            padding: 60px 40px;
+            text-align: center;
+            border-bottom: 1px solid var(--glass-border);
+            background: linear-gradient(180deg, rgba(139, 92, 246, 0.1) 0%, transparent 100%);
+            position: relative;
+        }
+
+        .admin-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 0.9em;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+
+        .admin-toggle:hover {
+            background: rgba(0, 0, 0, 0.5);
+            color: var(--text-main);
+        }
+
+        .header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3.5em;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, #c4b5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+            text-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 1.2em;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .applications-closed {
+            background: rgba(239, 68, 68, 0.15);
+            border: 2px solid rgba(239, 68, 68, 0.4);
+            color: #fecaca;
+            padding: 60px 40px;
+            margin: 40px;
+            border-radius: 16px;
+            text-align: center;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .applications-closed h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.2em;
+            margin-bottom: 15px;
+            color: #ef4444;
+        }
+
+        .applications-closed p {
+            font-size: 1.15em;
+            line-height: 1.6;
+        }
+
+        .notice-box {
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            color: #fecaca;
+            padding: 20px 25px;
+            margin: 30px 40px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .notice-box h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ef4444;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .notice-box ul {
+            list-style: none;
+            padding-left: 5px;
+        }
+
+        .notice-box li {
+            position: relative;
+            padding-left: 24px;
+            margin-top: 5px;
+            font-size: 0.95em;
+        }
+
+        .notice-box li::before {
+            content: '•';
+            position: absolute;
+            left: 5px;
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .form-content {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 12px;
+            color: #e2e8f0;
+            font-weight: 500;
+            font-size: 1.05em;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .required {
+            color: #f472b6;
+            margin-left: 4px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1em;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+            line-height: 1.6;
+        }
+
+        .radio-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .radio-option:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .radio-option.selected {
+            background: rgba(139, 92, 246, 0.15);
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.1);
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 12px;
+            accent-color: var(--primary);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 20px;
+            margin-top: 30px;
+            background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .submit-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(124, 58, 237, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+            filter: grayscale(1);
+        }
+
+        .success-message,
+        .error-message {
+            display: none;
+            padding: 20px 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 500;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success-message {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #4ade80;
+            font-size: 1.05em;
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+            font-size: 1.05em;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+            margin: 50px 0;
+        }
+
+        .admin-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .admin-content {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .admin-content h2 {
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .admin-input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: white;
+            font-size: 1em;
+        }
+
+        .admin-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .admin-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .admin-btn.login {
+            background: linear-gradient(135deg, #7c3aed, #4f46e5);
+            color: white;
+        }
+
+        .admin-btn.cancel {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .status-controls {
+            display: none;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .status-controls h3 {
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .status-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .status-btn {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .status-btn.active {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            border-color: #22c55e;
+        }
+
+        .status-btn.inactive {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border-color: #ef4444;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 12px;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.5em; }
+            .container { margin: 10px; }
+            .form-content, .notice-box { padding: 20px; margin: 20px; }
+            .radio-group { grid-template-columns: 1fr; }
+            .admin-toggle { top: 10px; right: 10px; font-size: 0.8em; }
+        }
+
+        @keyframes spin { 
+            100% { transform: rotate(360deg); } 
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Panel Modal -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-content">
+            <h2>🔐 Admin Access</h2>
+            <input type="password" class="admin-input" id="adminPassword" placeholder="Enter admin password">
+            <div class="admin-buttons">
+                <button class="admin-btn login" onclick="adminLogin()">Login</button>
+                <button class="admin-btn cancel" onclick="closeAdminPanel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="admin-toggle" onclick="openAdminPanel()">⚙️ Admin</div>
+            <h1>ZVIOS HUB</h1>
+            <p>Staff Application Form</p>
+        </div>
+
+        <!-- Status Controls (Hidden by default, shown when admin logged in) -->
+        <div class="status-controls" id="statusControls">
+            <h3>📊 Application Status</h3>
+            <div class="status-toggle">
+                <button class="status-btn" id="openBtn" onclick="setApplicationStatus(true)">✅ Open Applications</button>
+                <button class="status-btn" id="closeBtn" onclick="setApplicationStatus(false)">🚫 Close Applications</button>
+            </div>
+            <button class="logout-btn" onclick="adminLogout()">🚪 Logout</button>
+        </div>
+
+        <!-- Applications Closed Message -->
+        <div class="applications-closed" id="closedMessage" style="display: none;">
+            <h2>🚫 Applications Currently Closed</h2>
+            <p>Staff applications are not accepting submissions at this time.<br>Please check back later for future opportunities.</p>
+        </div>
+
+        <div class="notice-box" id="noticeBox">
+            <h3>⚠️ Important Notice</h3>
+            <ul>
+                <li>Please fill all questions honestly and do not use ChatGPT or another AI.</li>
+                <li>Using AI to generate answers = <strong>INSTANT REJECTION</strong>.</li>
+            </ul>
+        </div>
+
+        <div class="form-content" id="formContent">
+            <div class="success-message" id="successMessage">
+                ✨ Application submitted successfully! Check your Discord DMs for updates.
+            </div>
+
+            <div class="error-message" id="errorMessage">
+                ❌ Failed to submit application. Please try again.
+            </div>
+
+            <form id="applicationForm">
+                <div class="form-group">
+                    <label for="email">What is your Gmail? <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required placeholder="your.email@gmail.com">
+                </div>
+
+                <div class="form-group">
+                    <label>Did you read about the rules before filling this application? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="read_rules" value="Yes" required>
+                            Yes
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="read_rules" value="No">
+                            No
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="discord_id">What is Your Discord ID? <span class="required">*</span></label>
+                    <input type="text" id="discord_id" name="discord_id" required placeholder="username or User ID">
+                </div>
+
+                <div class="form-group">
+                    <label for="hours_discord">How many hours do you spend on Discord daily? <span class="required">*</span></label>
+                    <input type="text" id="hours_discord" name="hours_discord" required placeholder="e.g., 5-6 hours">
+                </div>
+
+                <div class="form-group">
+                    <label for="discord_experience">How long have you been using Discord? <span class="required">*</span></label>
+                    <input type="text" id="discord_experience" name="discord_experience" required placeholder="e.g., 3 years">
+                </div>
+
+                <div class="form-group">
+                    <label for="age">How old are you? [17+] <span class="required">*</span></label>
+                    <input type="text" id="age" name="age" required placeholder="Enter your age">
+                </div>
+
+                <div class="form-group">
+                    <label for="country">Where are you from? [Country] <span class="required">*</span></label>
+                    <input type="text" id="country" name="country" required placeholder="Enter your country">
+                </div>
+
+                <div class="section-divider"></div>
+
+                <div class="form-group">
+                    <label for="promoting_scripts">What will you do if there's a member promoting other scripts? [Explain Your Reason] <span class="required">*</span></label>
+                    <textarea id="promoting_scripts" name="promoting_scripts" required placeholder="Explain your course of action..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="staff_experience">Do you have any experience as staff in a server before? [Explain Your Reason] <span class="required">*</span></label>
+                    <textarea id="staff_experience" name="staff_experience" required placeholder="List previous roles and responsibilities..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="script_knowledge">Do you have any knowledge about Scripts & Executors? [Explain Details] <span class="required">*</span></label>
+                    <textarea id="script_knowledge" name="script_knowledge" required placeholder="Which executors do you use? Can you script?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="spam_handling">What will you do if there's a member spamming in chat? <span class="required">*</span></label>
+                    <textarea id="spam_handling" name="spam_handling" required placeholder="Steps you would take to moderate spam..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="staff_abuse">If you saw another staff member abusing their power, what will you do? [Main Reason] <span class="required">*</span></label>
+                    <textarea id="staff_abuse" name="staff_abuse" required placeholder="How would you handle internal conflict/abuse?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="help_guide">If a member asks for help/guide to execute a script, what will you do? <span class="required">*</span></label>
+                    <textarea id="help_guide" name="help_guide" required placeholder="How do you assist members?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="malicious_code">If a member posts unsafe or malicious code, what would you do? <span class="required">*</span></label>
+                    <textarea id="malicious_code" name="malicious_code" required placeholder="Your reaction to security threats..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Can you work collaboratively with other staff? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="work_with_staff" value="Yes, I do" required>
+                            Yes, I do
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="work_with_staff" value="No, I don't want">
+                            No, I don't want
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="work_with_staff" value="Maybe, I prefer solo">
+                            Maybe, I prefer solo
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Are you ready to be interviewed? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="ready_interview" value="Yes" required>
+                            Yes
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="ready_interview" value="No">
+                            No
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span style="position: relative; z-index: 1;">Submit Application</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const WEBHOOK_URL = 'https://discord.com/api/webhooks/1449175276104843274/1Fd7LMsUWlrcu6XqB8B-8l7IjUbp8PqKAO6XIYZvn0-xYkHfYvbniL_AoFMupgj7X4Sz';
+        const ADMIN_PASSWORD = 'zvios2025'; // Change this to your secure password
+        const STORAGE_KEY = 'zvios_app_status';
+        const ADMIN_KEY = 'zvios_admin_auth';
+
+        // State
+        let applicationsOpen = true;
+        let isAdmin = false;
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            checkAdminStatus();
+            loadApplicationStatus();
+            updateUI();
+        });
+
+        // Admin Panel Functions
+        function openAdminPanel() {
+            document.getElementById('adminPanel').style.display = 'flex';
+            document.getElementById('adminPassword').value = '';
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('adminPanel').style.display = 'none';
+        }
+
+        function adminLogin() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                isAdmin = true;
+                sessionStorage.setItem(ADMIN_KEY, 'true');
+                closeAdminPanel();
+                updateUI();
+            } else {
+                alert('❌ Incorrect password');
+            }
+        }
+
+        function adminLogout() {
+            isAdmin = false;
+            sessionStorage.removeItem(ADMIN_KEY);
+            updateUI();
+        }
+
+        function checkAdminStatus() {
+            isAdmin = sessionStorage.getItem(ADMIN_KEY) === 'true';
+        }
+
+        // Application Status Functions
+        function setApplicationStatus(status) {
+            applicationsOpen = status;
+            localStorage.setItem(STORAGE_KEY, status.toString());
+            updateUI();
+            
+            // Send status update to Discord
+            sendStatusUpdate(status);
+        }
+
+        function loadApplicationStatus() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            applicationsOpen = stored !== 'false';
+        }
+
+        function updateUI() {
+            const statusControls = document.getElementById('statusControls');
+            const closedMessage = document.getElementById('closedMessage');
+            const formContent = document.getElementById('formContent');
+            const noticeBox = document.getElementById('noticeBox');
+            const openBtn = document.getElementById('openBtn');
+            const closeBtn = document.getElementById('closeBtn');
+
+            // Show admin controls if logged in
+            statusControls.style.display = isAdmin ? 'block' : 'none';
+
+            // Update button states
+            openBtn.className = applicationsOpen ? 'status-btn active' : 'status-btn';
+            closeBtn.className = !applicationsOpen ? 'status-btn inactive' : 'status-btn';
+
+            // Show/hide form based on status
+            if (applicationsOpen) {
+                closedMessage.style.display = 'none';
+                formContent.style.display = 'block';
+                noticeBox.style.display = 'flex';
+            } else {
+                closedMessage.style.display = 'block';
+                formContent.style.display = 'none';
+                noticeBox.style.display = 'none';
+            }
+        }
+
+        // Send status update to Discord
+        async function sendStatusUpdate(status) {
+            const statusEmbed = {
+                embeds: [{
+                    title: '⚙️ APPLICATION STATUS CHANGED',
+                    description: status 
+                        ? '✅ **Applications are now OPEN**\nUsers can submit staff applications.' 
+                        : '🚫 **Applications are now CLOSED**\nNo new submissions will be accepted.',
+                    color: status ? 2664261 : 14495300,
+                    timestamp: new Date().toISOString(),
+                    footer: { text: 'Zvios Hub Admin System' }
+                }]
+            };
+
+            try {
+                await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(statusEmbed)
+                });
+            } catch (error) {
+                console.error('Failed to send status update:', error);
+            }
+        }
+
+        // Radio button selection
+        document.querySelectorAll('.radio-option input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const group = this.name;
+                document.querySelectorAll(`input[name="${group}"]`).forEach(r => {
+                    r.closest('.radio-option').classList.remove('selected');
+                });
+                this.closest('.radio-option').classList.add('selected');
+            });
+        });
+
+        // Form submission
+        const form = document.getElementById('applicationForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!applicationsOpen) {
+                errorMessage.textContent = '❌ Applications are currently closed.';
+                errorMessage.style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span style="position: relative; z-index: 1;">Sending... <span style="display:inline-block; animation:spin 1s linear infinite">↻</span></span>';
+
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            // Create rich Discord embed
+            const discordPayload = {
+                content: '@here New staff application received!',
+                embeds: [{
+                    author: {
+                        name: 'ZVIOS HUB STAFF APPLICATION',
+                        icon_url: 'https://cdn.discordapp.com/embed/avatars/0.png'
+                    },
+                    title: '📋 New Application Submitted',
+                    description: `**Applicant Discord:** ${data.discord_id}\n**Email:** ${data.email}`,
+                    color: 9125366,
+                    fields: [
+                        {
+                            name: '📖 Basic Information',
+                            value: `**Read Rules:** ${data.read_rules}\n**Age:** ${data.age}\n**Country:** ${data.country}`,
+                            inline: false
+                        },
+                        {
+                            name: '💬 Discord Activity',
+                            value: `**Daily Hours:** ${data.hours_discord}\n**Experience:** ${data.discord_experience}`,
+                            inline: false
+                        },
+                        {
+                            name: '🚫 Handling Script Promotion',
+                            value: data.promoting_scripts.substring(0, 1020) + (data.promoting_scripts.length > 1020 ? '...' : ''),
+                            inline: false
+                        },
+                        {
+                            name: '⭐ Previous Staff Experience',
+                            value: data.staff_experience.substring(0, 1020) + (data.staff_experience.length > 1020 ? '...' : ''),
+                            inline: false
+                        },
+                        {
+                            name: '💻 Script & Executor Knowledge',
+                            value: data.script_knowledge.substring(0, 1020) + (data.script_knowledge.length > 1020 ? '...' : ''),
+                            inline: false
+                        },
+                        {
+                            name: '📢 Handling Spam',
+                            value: data.spam_handling.substring(0, 1020) + (data.spam_handling.length > 1020 ? '...' : ''),
+                            inline: false
+                        },
+                        {
+                            name: '⚖️ Handling Staff Abuse',
+                            value: data.staff_abuse.substring(0, 1020) + (data.staff_abuse.length > 1020 ? '...' : ''),
+                            inline: false
+                        },
+                        {
+                            name: '❓ Helping Members',
+                            value: data.help_guide.substring(0, 1020) + (data.help_guide.length > 1020 ? '...' : ''),
+                            inline: false
+                        },
+                        {
+                            name: '🛡️ Handling Malicious Code',
+                            value: data.malicious_code.substring(0, 1020) + (data.malicious_code.length > 1020 ? '...' : ''),
+                            inline: false
+                        },
+                        {
+                            name: '🤝 Team Collaboration',
+                            value: data.work_with_staff,
+                            inline: true
+                        },
+                        {
+                            name: '🎤 Interview Ready',
+                            value: data.ready_interview,
+                            inline: true
+                        }
+                    ],
+                    thumbnail: {
+                        url: 'https://cdn.discordapp.com/embed/avatars/5.png'
+                    },
+                    timestamp: new Date().toISOString(),
+                    footer: { 
+                        text: 'Zvios Hub Application System • Review and respond promptly',
+                        icon_url: 'https://cdn.discordapp.com/embed/avatars/0.png'
+                    }
+                }]
+            };
+
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(discordPayload)
+                });
+
+                if (response.ok) {
+                    successMessage.style.display = 'block';
+                    form.reset();
+                    document.querySelectorAll('.radio-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    throw new Error('Failed to submit');
+                }
+            } catch (error) {
+                console.error(error);
+                errorMessage.textContent = '❌ Failed to submit application. Please check your connection and try again.';
+                errorMessage.style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span style="position: relative; z-index: 1;">Submit Application</span>';
+            }
+        });
+
+        // Allow Enter key in admin password field
+        document.getElementById('adminPassword').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                adminLogin();
+            }
+        });
+    </script>
+</body>
+</html>
